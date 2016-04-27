@@ -1,0 +1,23 @@
+--- Makefile.in.orig	2016-03-21 01:04:54.355578284 -0500
++++ Makefile.in	2016-03-21 01:08:59.307574911 -0500
+@@ -79,6 +79,7 @@
+ CC = @CC@
+ DEFS = @DEFS@
+ LIBS = @LIBS@
++AX_PROG_CC_FOR_BUILD = @CC_FOR_BUILD@
+ 
+ # Set this to -g if you want to be able to debug the client, otherwise
+ # use -O to have the compiler do some optimization instead.
+@@ -344,10 +345,10 @@
+ 	$(srcdir)/mkmksiginc.pl > $(srcdir)/mksiginc.c
+ 
+ mksiginc.o: mksiginc.c
+-	$(CC) $(INCLUDES) $(CFLAGS) $(DEFS) -c $(srcdir)/mksiginc.c
++	$(CC_FOR_BUILD) $(INCLUDES) $(DEFS) -c $(srcdir)/mksiginc.c
+ 
+ mksiginc: mksiginc.o
+-	$(CC) $(INCLUDES) $(CFLAGS) $(LDFLAGS) $(DEFS) -o $@ mksiginc.o $(LIBS)
++	$(CC_FOR_BUILD) $(INCLUDES) $(LDFLAGS) $(DEFS) -o $@ mksiginc.o $(LIBS)
+ 
+ sig.inc: mksiginc
+ 	./mksiginc > sig.inc.tmp && mv sig.inc.tmp sig.inc

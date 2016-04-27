@@ -1,0 +1,13 @@
+
+moused on netbsd
+----------------
+
+Use the mouse on the console in netbsd.
+
+
+  /etc/rc.d/wsmoused onestart
+
+  echo "wsmoused=yes" >> /etc/rc.conf
+
+
+(C) 2014, Documentation , cgraf

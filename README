@@ -1,0 +1,128 @@
+
+Description
+-----------
+
+	To some extent all of the components of grafland are standalone. 
+	The core functionality (excluding the toolchain) depends on only 
+	the standard C library and a few POSIX extensions to it. This 
+	being the case it should work fine on linux, mac, NetBSD and 
+	FreeBSD.
+
+
+BUILDING:
+---------
+
+	make
+
+INSTALLATION:
+-------------
+
+	make install DESTDIR=$(pwd)/myroot
+
+
+PARTIAL INSTALLATION:
+--------------------
+        Install a single component of grafos: 
+          
+       		cd grafos/cbin
+        	make
+        	make install DESTDIR=/path/to/target
+
+
+CROSS BUILDING:
+--------------- 
+	The cross toolchain build system located inside of
+	toolchain/ can be used to create a cross toolchain
+	and then cross build the rest of the OS:
+
+		make toolchain
+
+		export `make buildenvars`
+
+		make
+
+		make install DESTDIR=$(pwd)/myroot
+
+
+	For finer grained control over the cross toolchain
+	(such as changing architectures) you'll want to change
+	directories to toolchain/ and view the documentation
+	within toolchain/README.
+
+
+DOCUMENTATION:
+--------------
+	Each subdirectory has a README which documents its usage.
+
+RELENG:
+-------
+
+	make release
+
+UPSTREAM:
+---------
+	git clone https://github.com/cmgraff/Grafos
+
+
+HIER:
+----
+	cbin/
+		Userland applications written in C (native)
+	clib/
+		Standard C library components and helper libraries, (native)
+		
+		Gshline. An editline/readline like implementation. This
+		library is used to supply line editing and history to
+		the graff shell (Gsh) and Grafos irc client. The latter
+		is supplied with a unique ircline() funtion (native).
+
+	cmath/
+		Trancendental mathematics functions written in C (native).
+	docs/
+		Whitepages I have written to document various OS and books (native).
+	editor/
+		A native editor.
+	wm/
+		A rewrite of dwm.
+	Gsh/
+		A native shell.
+	irc/
+		A native irc client and library.
+	README
+		This README.
+	shbin/
+		Userland applications and libraries written in POSIX shell (native).
+	toolchain/
+		The omnicross toolchain (native)
+			-Link grafos components up into the toolchain
+			 for compilation and installation.
+			-Build and maintain outside software.
+
+	ottercross/
+		The ottercross PoC toolchain (native)
+			-This toolchain is incredibly powerful and has surpassed
+			 the quality of the original omnicross toolchain/.
+			 If you came to Grafos looking to build toolchains for
+			 your OS this is what you want.
+
+	musl-otter-cross/
+		An even smaller toolchain which is musl based for clarity.
+			- If you came to Grafos wanting ideas for your own
+			  OS, I wrote this toolchain specifically tot require 
+			  the smallest number of possible unique steps.
+
+			- ( some oddities remain such as;
+				$(XZ) -d -c | $(ARCHIVE) -x
+			  These easily can be replaced if they 
+			  seem inappropriate. )
+
+	experimental/
+		Android support stub.
+	
+
+RELEASES: 
+
+http://www.csit.parkland.edu/~cgraff1/grafland-0.2c.tar.gz
+
+http://www.csit.parkland.edu/~cgraff1/grafland-0.2d.tar.gz
+

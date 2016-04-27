@@ -1,0 +1,49 @@
+each term is rather complex, the numerator refers to 
+http://en.wikipedia.org/wiki/Bernoulli_number while the denominator 
+refers to factorials
+((B(2*n) * (-4)^n * (1 - 4^n)) / (2n)!) * x^(2*n - 1)
+the sides just happen to reduce to another sequence
+http://www.wolframalpha.com/input/?i=%28%28Bernoulli%282*n%29+*+%28-4%29%5En+*+%281+-+4%5En%29%29+%2F+%282n%29%21%29+*+x%5E%282*n+-+1%29
+in a format W|A gets :p
+there's apparently also a +/- series pi/2 - 1/x + 1/3x^3 - 1/5x^5... for tan
+(which only works when x^2>1, but lol)
+also sin(2*x)/(cos(2*x)+1) is better than sin(x)/(cos(x))
+
+
+
+
+
+
+the arc-functions should only take -1 to 1
+the rest should accept -pi to pi
+
+
+clever manipulation can mean you only need to closely approximate 0 
+to pi/2 for some, but still, no relation to 1
+
+the rest should take (-inf,inf)
+but supporting that requires argument reduction
+arctangent should accept anything right up to infinity
+
+
+
+
+
+cos(inf) is nan
+
+
+
+
+
+
+if you want to use taylor or maclaurin series for trig 
+functions each has to be written out seperately. using 
+trig identities builds up too much error
+
+you need argument reduction too
+
+if you try to use taylor series for arbitrarily large arguments, (1) 
+you'll need exploding numbers of terms to compute a reasonable 
+approximation in theory, and (2) due to rounding error accumulations, 
+you'll likely never get a good approximation with floating point for 
+large arguments

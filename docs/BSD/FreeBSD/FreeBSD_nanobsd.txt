@@ -1,0 +1,25 @@
+
+
+
+W o r k  i n  p r o g r e s s 
+
+d o  n o t  u s e
+
+
+
+FreeBSD nanobsd
+---------------
+
+Build nanobsd for a foreign architecture.
+
+
+
+cd /usr/src/tools/tools/nanobsd
+cat >> nanobsd.conf <<EOF
+NANO_ARCH=
+EOF
+sh nanobsd.sh -c nanobsd.conf
+cd /usr/obj/nanobsd.full
+dd if=_.disk.full of=/dev/da0 bs=64k
+
+

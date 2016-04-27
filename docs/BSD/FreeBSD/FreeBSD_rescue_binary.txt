@@ -1,0 +1,25 @@
+
+FreeBSD build the /rescue system
+--------------------------------
+
+The FreeBSD rescue system uses a statically compiled crunchgen
+made binary. This binary can also be used to create a minimal
+FreeBSD installation or customized rescue environment.
+
+   make -C /usr/src/rescue 
+
+The resulting binary: 
+
+   /usr/src/rescue/rescue/rescue
+
+
+The newly built rescue system can then be installed, or you 
+can simply use the stand alone binary above.
+
+   make install
+
+
+
+
+
+(C) 2014, Docs,  cgraf

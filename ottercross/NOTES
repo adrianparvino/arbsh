@@ -1,0 +1,34 @@
+DEVELOPMENT:
+-----------
+
+        An engine for creating packages is supplied.
+
+        Add an otter package
+
+                cd ottercross
+
+                make \
+                otterpacktarg \
+                pack=bash \
+                version=bash-4.3.30 \
+                mirror=https://ftp.gnu.org/gnu/bash/ \
+                patch-mirror=https://ftp.gnu.org/gnu/bash/bash-4.3-patches/ \
+                keyring=ftp://ftp.gnu.org/gnu/gnu-keyring.gpg \
+                sign=bash-4.3.30.tar.gz.sig
+
+
+
+        Add an otter library
+
+                cd ottercross
+
+                make \
+                createhost \
+                pack=pcre \
+                version=pcre-8.38 \
+                mirror=https://sourceforge.net/projects/pcre/files/pcre/8.38/ \
+                patch-mirror=http://www.none.org \
+                keyring=ftp://ftp.gnu.org/gnu/gnu-keyring.gpg \
+                sign=pcre-8.38.tar.gz.sig
+
+

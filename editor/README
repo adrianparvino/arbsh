@@ -1,0 +1,17 @@
+Editor
+=========================================
+A simple text editor with no dependencies
+
+
+	Controls:
+		ctrl-x to save
+		ctrl-n to quit
+
+Editor does not depend on ncurses/curses.
+
+Editor's screen drawing library is located
+at grafland's ../clib/ansicode.h. Which is 
+a small (<500loc) ANSI screen drawing 
+library.
+
+
