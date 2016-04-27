@@ -1,0 +1,239 @@
+
+BUILDING:
+---------
+	Build a toolchain:
+
+		make
+
+INSTALLATION:
+-------------
+	Install the toolchain to a root.
+
+		make install DESTDIR=/full/path/ 
+
+EXTERNAL USAGE:
+---------------
+
+	Dump the environment needed to use the built toolchain:
+
+		make buildenvars
+
+		Most users will want to export these as environment
+		variables:
+	
+			export `make buildenvars`
+	
+		The environment can be normalized with the
+		clearenvars target:
+
+			export `make clearenvars`
+
+
+DESCRIPTION:
+------------
+
+The toolchain build system supports musl, uClibc and glibc C
+libraries, the effectveness of which in that order. The toolchain 
+build system supports multiple C library vendors. The default libc 
+is musl. To set the desired libc override the variable USELIBC as 
+follws:
+
+	Build with uClibc:
+
+		make USELIBC=uclibc
+
+	Build with musl:
+
+		make USELIBC=musl
+
+	Build with glibc:
+
+		make USELIBC=gnu
+
+	... or open the single Makefile and set it as desired.
+
+The default is to cross build for i686, this is modified by setting
+the primary tuplet prefix. To do this, open the Makefile and modify
+the following four lines:
+
+	USELIBC=musl
+	OM_TARG=i686-pc-linux-$(USELIBC)
+	OM_LINUXARCH=x86
+	OM_BACKWARDCOMPAT=i386 
+
+	
+TARGET PACKAGES:
+----------------
+
+Using the internal package building system:
+
+	The toolchain supports a minimal number of packages internally
+	on an experimental basis:
+
+		Target packages:
+
+		1	coreutils_target
+		2	vim_target
+		3	htop_target
+		4	utillinux_target
+		5	dhcp_target
+		6	strace_target 
+		7	dash_target
+		8	linux_target
+		9	busybox_target
+		10	htop_target
+		11	dhcp_target
+		12	coreutils_target
+		13	dropbear_target
+		14	strace_target
+		15	gcc_target 
+		16	ef2sprogs_target
+		17	parted_target
+		18	grub_target
+		19	sstrip_target
+		20	links_target
+		21	gdb_target
+		22	python_target
+		23	perl_target
+		24	bash_target
+		25	bison_target
+		26	ocrad_target
+		27	xorriso_target
+		28	nano_target
+		29	groff_target
+		30	bc_target
+		31	cpio_target
+		32	rsync_target
+		33	libressl_target
+		34	openssl_target
+		35	gawk_target
+		36	gettext_target
+		37	patch_target
+		38	irssi_target
+		39	wirelesstools_target
+		40	libpam_target
+		41	mutt_target
+		42	inetutils_target
+		43	zsh_target
+		44	ircii_target
+		45	xz_target
+		46	gptfdisk_target
+		47	pdksh_target
+
+
+		Host packages:
+
+		1	gdb_host
+		2	ncurses_host
+		3	ncurses_host
+		4	zlib_host
+		5	mpc_host
+		6	mpfr_host
+		7	gmp_host
+		8	ef2sprogs_host
+		9	pixman_host
+		10	libffi_host
+		11	libiconv_host
+		12	libunistring_host
+		13	libtool_host
+		14	pcre_host
+		15	glib_host
+		16	libpam_host
+		17	popt_host
+		18	netbsdcurses_host
+		19	slibtool_host
+		20	netbsd_tools
+
+
+	Example:
+		To equip your toolchains with ncurses:
+		
+			make curses_host 
+
+		To install htop on the target:
+
+			make htop_target
+
+
+	*_host make targets install a package that the local toolchain
+	might need to build a package or library for the installation 
+	target.
+
+	*_target make targets install a package or library to the
+	installation target.
+
+
+	Create a bootable distribution with gcc and a number of other
+	useful packages:
+
+		make
+		make distribute
+
+
+	Compiler on target:
+
+		make
+		make compiler
+
+
+
+ADDING TARGET PACKAGES:
+-----------------------
+
+
+	Adding a source code package to the package build system:
+
+		A basic method is provided for programmers wishing
+		to add new packages to the build system. 
+	
+			make createtarg pack=mynewpackage
+
+		Then open the Makefile (omnicross has only one) and 
+		add something like this to the list of definition at 
+		the top:
+		
+			OM_NEWPACKAGE=mynewpackage-1.1.1
+
+		And finally add a line to the "populate:" target.
+
+			@cd src && test -e $(OM_NEWPACKAGE).$(OM_SFX) || \
+				wget $(GENERIC_MRR)/$(OM_NEPACKAGE).$(OM_SFX)
+
+
+		Though this may seem archaic, the process is simple and fast.
+		One can add a basic package, build it and test it in less 
+		than three minutes.
+
+
+		Test it:
+
+			make populate
+			make mynewpackage_target
+		
+
+
+
+
+
+
+ASSUMPTIONS:
+------------ 
+
+
+	All tarballs must end in the same suffix. That suffix can be 
+	overridden by setting OM_SFX=.
+
+	The omnicross build system makes an assumption that you will be
+	trying to use a specialized C library. Therefore much of the code
+	will be one-off and pertaining to this.
+
+	The omnicross build system makes the assumption that you wish to 
+	use a build system that is contained within a single file. There-
+	fore advanced functionalities that would be best implemented with
+	multiple files are left as an exercize for the user.
+
+	The omnicross build system makes _no assumptions_ regarding hier
+	and instead use any given packages' DESTDIR=. It is assumed that
+	this is what you desire.
+
+

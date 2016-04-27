@@ -1,0 +1,108 @@
+
+FreeBSD post installation sequence
+----------------------------------
+
+This is a proposed post installation sequence. The steps contained here
+are almost always repeated over and over again after each install. Please
+feel free to vary, omit, augment and or otherwise change these settings.
+This is an example only.
+
+
+A series of simple post install modifications:
+
+1) Create a colored root login shell and `ls' output.
+su
+cd /root
+cat >> .cshrc << EOF 
+set prompt = "%{\033[32m%}%B<%n@%{\033[33m%}%m%{\033[33m%}>%b%{\033[0m%}%/ # "
+alias ls ls -LGIla
+EOF
+
+2) Set non-priv user to use csh as their login shell.
+chsh -s csh someuser
+su someuser
+cd /home/someuser
+cat >> .cshrc << EOF
+set prompt = "%{\033[32m%}%B<%n@%{\033[33m%}%m%{\033[33m%}>%b%{\033[0m%}%/ $ "
+alias ls ls -LGIla
+EOF
+
+
+3) Enable linux binaries.
+cat >> /etc/rc.conf << EOF
+linux_enable="YES"
+EOF
+
+
+4) Enable mouse on console.
+cat >> /etc/rc.conf << EOF
+moused_enable="YES"
+EOF
+
+
+5) Put /tmp into ram at boot
+cat >> /etc/fstab <<EOF
+tmpfs   /tmp   tmpfs   rw   0  0
+EOF
+
+
+6) Compile a custom kernel with tmpfs built in.
+tar -xf src.txz -C /
+cp /usr/src/sys/i386/conf/GENERIC /usr/src/sys/i386/conf/NEW_KERNEL
+cat >> /usr/src/sys/i386/conf/NEW_KERNEL <<EOF
+options		tmpfs
+EOF
+make -C /usr/src buildkernel KERNCONF=NEW_KERNEL 
+make -C /usr/src installkernel KERNCONF=NEW_KERNEL
+
+
+7) Build world and install it into a chroot
+make -C /usr/src buildworld
+make -C /usr/src buildkernel
+mkdir -p /newroot
+make -C /usr/src installworld   DESTDIR=/newroot
+make -C /usr/src installkernel  DESTDIR=/newroot
+make -C /usr/src distribution   DESTDIR=/newroot
+
+
+8) List and load kernel modules
+kldload nullfs
+kldstat
+
+
+9) Speed boot time
+cat >> /boot/loader.conf << EOF
+hw.memtest.test=0
+hw.usb.no_pf=1
+autoboot_delay="2"
+EOF
+
+
+10) Make an rc startup script
+printf '
+#!/bin/sh 
+. /etc/rc.subr 
+name="dummy"
+start_cmd="${name}_start"
+stop_cmd=":" 
+dummy_start()
+{
+	echo "Nothing started."
+} 
+load_rc_config $name
+run_rc_command "$1" 
+' /etc/rc.d/dummy
+
+chmod +x /etc/rc.d/dummy
+
+/etc/rc.d/dummy start
+
+
+
+
+
+
+
+
+
+(C) 2014, Documentation,  cgraf

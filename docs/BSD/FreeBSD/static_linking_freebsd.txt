@@ -1,0 +1,43 @@
+
+Create statically linked binaries with FreeBSD
+----------------------------------------------
+Create a temporary "arbitrary.conf" configuration file, 
+export the environment variable "__MAKE_CONF" to point to 
+the new configuration file, compile an example binary, 
+and test it with `ldd' which should output 
+the message "not a dynamic ELF executable".
+
+if you are using bourne shell (/bin/sh in FreeBSD) :
+
+  echo 'LDFLAGS="-static"' > /etc/arbitrary.conf
+  export __MAKE_CONF="/etc/arbitrary.conf" 
+  make -C /usr/src/bin/sh clean
+  make -C /usr/src/bin/sh
+  ldd /usr/src/bin/sh/sh
+
+Depending on how your machine is configured the resulting binary
+might be located in a different directory. It can easily be
+installed to a dummy directory.
+
+  mkdir -p CHROOTDIR/bin
+  make -C /usr/src/bin/sh  install  DESTDIR=`pwd`/CHROOTDIR
+  file CHROOTDIR/bin/sh
+
+One way to see if the statically linked utility "sh" works correctly,
+is to chroot into the DESTDIR "CHROOTDIR" and test it.
+
+
+  chroot CHROOTDIR /bin/sh
+  pwd
+  exit 
+  pwd
+
+
+
+
+
+(C) 2014, Docs, cgraf
+
+  
+
+

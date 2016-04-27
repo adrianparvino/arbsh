@@ -1,0 +1,18 @@
+
+
+FreeBSD buildworld into a chroot
+--------------------------------
+
+A simple example using `buildworld' and `buildkernel'. This
+leaves a fully functional FreeBSD system inside of "/newroot",
+an arbitrarily named directory.
+
+  make -C /usr/src buildworld
+  make -C /usr/src buildkernel
+  mkdir -p /newroot
+  make -C /usr/src installworld   DESTDIR=/newroot
+  make -C /usr/src installkernel  DESTDIR=/newroot
+  make -C /usr/src distribution   DESTDIR=/newroot
+
+(C) 2014, Docs, cgraf
+

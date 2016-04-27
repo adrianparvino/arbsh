@@ -1,0 +1,40 @@
+
+Some simple userland utilities/scripts implemented in portable shell syntax. 
+They are intended to be ran with ash, dash, bash or ksh.
+
+To rename the .sh files and make them executable, invoke make:
+
+	cd shbin
+	make
+
+
+
+	./
+		dog
+			A `cat'-like utility.
+		duwrap
+			A wrapper to make du simpler to use in scripts.
+		grop
+			A `grep'-like utility.
+		headsh
+			A `head'-like utility.
+		README
+			This file.
+		remaster
+			A sophisticated backup and remastery script for x86.
+			See remaster.README.
+		remaster.README
+		which
+			The `which' utility.
+
+	./lib/
+		exponentation  
+			For shells without exponentation
+		hex_to_int 
+		hex_to_ip  
+		integer_to_spoken
+			Convert numbers to spoken text.
+		sort
+			Insertion sort.
+
+

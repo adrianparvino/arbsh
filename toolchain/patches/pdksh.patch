@@ -1,0 +1,21 @@
+--- sh.h.orig	2016-03-25 23:52:09.617478128 -0500
++++ sh.h	2016-03-25 23:52:33.425478265 -0500
+@@ -244,16 +244,8 @@
+ /* Find a integer type that is at least 32 bits (or die) - SIZEOF_* defined
+  * by autoconf (assumes an 8 bit byte, but I'm not concerned).
+  * NOTE: INT32 may end up being more than 32 bits.
+- */
+-#if SIZEOF_INT >= 4
+-# define INT32	int
+-#else /* SIZEOF_INT */
+-# if SIZEOF_LONG >= 4
+-#  define INT32	long
+-# else /* SIZEOF_LONG */
+-   #error cannot find 32 bit type...
+-# endif /* SIZEOF_LONG */
+-#endif /* SIZEOF_INT */
++ */ 
++#define INT32	int
+ 
+ /* end of common headers */
+ 

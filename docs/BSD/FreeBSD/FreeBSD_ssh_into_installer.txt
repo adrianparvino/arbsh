@@ -1,0 +1,47 @@
+
+ FreeBSD ssh into installer
+ --------------------------
+
+
+There are some conditions which need to be met in order to
+ssh into the FreeBSD installer. First a non-privileged 
+user account must be added so we can ssh in and su to root.
+In order for this to be possible we must first make the 
+installation writeable with a series of union mounts 
+to tmpfs with unionfs, create the user, add them to the 
+wheel group and set their password.
+
+
+  mount -t tmpfs tmpfs /tmp
+
+  mkdir -p /tmp/etc
+  mkdir -p /tmp/var
+  mkdir -p /tmp/usr
+
+  mount -t tmpfs tmpfs /tmp/etc
+  mount -t tmpfs tmpfs /tmp/var
+  mount -t tmpfs tmpfs /tmp/usr 
+
+  mount -t unionfs /tmp/etc /etc
+  mount -t unionfs /tmp/var /var
+  mount -t unionfs /tmp/usr /usr
+
+  pw user add liveuser -G wheel 
+  passwd liveuser
+
+  dhclient re0
+  /etc/rc.d/sshd onestart
+ 
+Then from outside the installation `ssh' into the newly
+created user account:
+
+  ssh liveuser@192.168.1.XXX
+
+
+
+(C) 2014, Docs, cgraf
+
+
+
+
+

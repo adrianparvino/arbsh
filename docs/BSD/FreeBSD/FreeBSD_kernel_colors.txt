@@ -1,0 +1,30 @@
+
+Modify FreeBSD kernel output color
+---------------------------------
+
+If not already done, the FreeBSD source code is fetched and unarchived. The 
+"GENERIC" configuration file is renamed, augmented with new options, and
+compiled with a call to the `buildworld' function from "/usr/src/Makefile"
+
+
+fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/`uname -m`/`uname -m`/`uname -r`/src.txz
+tar -xf src.txz -C /
+
+
+cp /usr/src/sys/i386/conf/GENERIC /usr/src/sys/i386/conf/ARBITRARY
+
+
+cat >> /usr/src/sys/i386/conf/ARBITRARY <<EOF
+options         SC_NORM_ATTR=(FG_GREEN|BG_BLACK)
+options         SC_NORM_REV_ATTR=(FG_YELLOW|BG_GREEN)
+options         SC_KERNEL_CONS_ATTR=(FG_RED|BG_BLACK)
+options         SC_KERNEL_CONS_REV_ATTR=(FG_BLACK|BG_RED)
+EOF
+
+
+make -C /usr/src buildkernel KERNCONF=ARBITRARY
+
+
+
+
+(C) 2014, Docs, cgraf

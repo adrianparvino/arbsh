@@ -1,0 +1,30 @@
+`remaster': Backup and/or remaster a linux OS
+(C) Copyright 2015 `backup' CM Graff, GPLv2
+
+Options:
+        --archive=      iso|tar|cpio          'tar'
+        --backup        Perform a system backup and save
+                           as 'backup.tar.gz'.
+        --remaster      Remaster 'backup.tar.gz'
+                           onto a bootable disk image
+                           named 'binary.img'.
+        --file=         Create or restore from FILE
+        --compression=  gzip|bzip2|xz
+                        lzip|lzop|lzma        'gzip'
+        --repath=        Restore path          '.'
+        --fs=           ext2|ext3|ext4|btrfs  'ext4'
+        --size=         Image size in 100M blocks
+        --root=         source dir            '/'
+        --bootld=       grub|syslinux         'syslinux'
+        --whome         Include /home
+        --help          Display this menu
+
+Perform a system backup of "/":
+  remaster --backup
+
+Restore from an existing backup:
+  remaster --file=FILE --repath=/path
+
+Remaster "/" onto a bootable disk image
+  remaster --backup --remaster
+

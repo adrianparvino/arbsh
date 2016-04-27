@@ -1,0 +1,32 @@
+
+
+FreeBSD buildworld onto a UFS disk image
+----------------------------------------
+
+A simple example using `buildworld' and `buildkernel'. This
+leaves a fully functional FreeBSD system inside of "/newroot",
+an arbitrarily named directory.
+
+  dd if=/dev/zero of=binary.img bs=1M count=1000
+  mdconfig -a -t vnode -f binary.img -u 0
+  bsdlabel -w -B md0 auto
+  newfs -m 0 md0a
+  mount /dev/md0a /mnt 
+
+  make -C /usr/src buildworld
+  make -C /usr/src buildkernel
+
+  make -C /usr/src installworld   DESTDIR=/mnt
+  make -C /usr/src installkernel  DESTDIR=/mnt
+  make -C /usr/src distribution   DESTDIR=/mnt
+
+  echo "/dev/ada0a  /  ufs  rw  0  0" >> /mnt/etc/fstab
+  echo live | chroot /mnt pw mod user root -h 0
+
+  umount /mnt
+  mdconfig -d -u 0
+
+The resulting disk image will be called "binary.img".
+
+
+(c) 2014, Docs, cgraf

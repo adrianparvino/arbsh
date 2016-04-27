@@ -1,0 +1,20 @@
+
+FreeBSD faster boot time
+------------------------
+
+cat >> /boot/loader.conf << EOF
+hw.memtest.test=0
+EOF
+
+as long as you know you wont use any USB NICs :
+cat >> /boot/loader.conf << EOF
+hw.usb.no_pf=1
+EOF
+
+cat >> /boot/loader.conf << EOF
+autoboot_delay="2"
+EOF
+
+
+
+(c) 2014, Docs, cgraf
