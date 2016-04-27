@@ -1,0 +1,29 @@
+
+FreeBSD ports
+-------------
+
+Compile and install a simple program using the FreeBSD ports.
+
+Get and unarchive the tarball "ports.txz",  and then specify
+the working directory with `make -C' or simply by changing to
+the source code directory for the program.
+
+As an example, compile the shell "dash". All of these commands 
+were run as root.
+
+  fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/`uname -m`/`uname -m`/`uname -r`/ports.txz
+  tar -xf ports.txz -C / 
+  make -C /usr/ports/shells/dash/ 
+  make install -C /usr/ports/shells/dash/ 
+ 
+
+If there were no compile errors your program should now be
+installed, and can be invoked by typing:
+
+  dash 
+
+
+
+(C) 2014, Docs, cgraf
+
+

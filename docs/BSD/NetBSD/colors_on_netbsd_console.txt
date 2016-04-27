@@ -1,0 +1,13 @@
+
+Colors on NetBSD console
+------------------------
+
+   wsconsctl -d -w  msg.default.bg=blue msg.default.fg=green
+
+or for kernel messages:
+
+   wsconsctl -d -w msg.kernel.fg=white
+
+
+These originate from:
+   src/sys/dev/wscons/wsdisplayvar.h
