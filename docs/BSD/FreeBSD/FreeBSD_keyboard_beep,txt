@@ -1,0 +1,17 @@
+
+ FreeBSD keyboard beep
+ ---------------------
+
+Disable the pc speaker beep associated with keyboard strokes.
+
+  kbdcontrol -b off
+
+  sysctl hw.syscons.bell=0  
+
+Or to add it permanently :
+  echo "hw.syscons.bell=0" >>/etc/sysctl.conf
+
+
+
+(C) 2014, Docs, cgraf
+

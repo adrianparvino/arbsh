@@ -1,0 +1,34 @@
+
+NAME:
+-----
+
+	Cbin
+
+	
+DESCRIPTION:
+------------
+
+	Cbin is a set of userland utilities which strives for POSIX
+	compliance. When a feature is implemented it is to meet POSIX
+	specifications. No additional features are added.
+
+BUILDING:
+---------
+
+	cd cbin
+	make
+
+
+INSTALLATION:
+-------------
+
+	cd cbin
+	make install DESTDIR=/path/to/install/
+
+COLOPHON:
+---------
+	This document belongs to the grafos project's cbin
+	set of utilities written by CM Graff.
+
+
+

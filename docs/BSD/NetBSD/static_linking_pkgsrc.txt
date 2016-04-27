@@ -1,0 +1,20 @@
+05:30 < dh`> there are more aggressive things you can do to try to force it
+05:30 < dh`> but most likely they'll just break builds.
+05:43 < dcmg> I am fine with that, If you have any suggestions.
+05:44 < dcmg> ( not really a normal user here, I try to maintain as many static 
+              binaries for the various OS and architectures as possible)
+05:44 < dcmg> If things break, it is not a big deal for me
+05:46 < dcmg> I am the only person who uses the binaries to my knowledge ( 
+              maybe a few linux users user my ``mplayer'' but that is it
+06:18 < dh`> well
+06:19 < dh`> in a pkgsrc-only section of mk.conf you can put LDFLAGS+=-static
+06:19 < dh`> a lot of packages honor pkgsrc LDFLAGS because that's how rpaths 
+             get set
+06:20 < dh`> however, this will probably just flatly break the build of 
+             packages that build libraries
+06:20 < dh`> you can also try _WRAP_EXTRA_ARGS.CC+=-static
+06:21 < dh`> or possibly _WRAP_EXTRA_ARGS.LDCC, not sure
+06:21 < dh`> (or CCLD maybe)
+06:22 < dh`> but it would probably be more productive to build in a chroot that 
+             just doesn't have shared libs
+06:53 < ASau> The use of static linking breaks all packages that use FFI.

@@ -1,0 +1,13 @@
+--- ifconfig/system/linux.c.orig	2016-03-20 18:22:50.867905054 -0500
++++ ifconfig/system/linux.c	2016-03-20 18:23:03.075905887 -0500
+@@ -50,6 +50,10 @@
+ #include "../ifconfig.h"
+ 
+ 
++#ifndef PATH_PROCNET_DEV
++  #define PATH_PROCNET_DEV "/proc/net/dev"
++#endif
++
+ /* ARPHRD stuff.  */
+ 
+ static void

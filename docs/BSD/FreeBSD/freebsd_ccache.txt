@@ -1,0 +1,27 @@
+
+FreeBSD using ccache with gcc
+-----------------------------
+
+These HERE docs will not copy paste correctly, They are taken from
+/usr/local/share/doc/ccache/ccache-howto-freebsd.txt. Use a text 
+editor to create their contents.
+
+
+
+pkg_add -r ccache
+
+cat >> /etc/make.conf << EOF
+.if (!empty(.CURDIR:M/usr/src*) || !empty(.CURDIR:M/usr/obj*))
+.if !defined(NOCCACHE)
+CC:=${CC:C,^cc,/usr/local/libexec/ccache/world/cc,1}
+CXX:=${CXX:C,^c\+\+,/usr/local/libexec/ccache/world/c++,1}
+.endif
+.endif
+EOF
+
+cat >> /etc/csh.cshrc << EOF 
+setenv PATH /usr/local/libexec/ccache:$PATH
+setenv CCACHE_PATH /usr/bin:/usr/local/bin 
+EOF
+
+source  /etc/csh.cshrc

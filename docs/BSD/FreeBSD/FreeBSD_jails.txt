@@ -1,0 +1,15 @@
+
+Static binary in jail
+---------------------
+
+This jail includes only a single static binary. 
+
+  ln -s /rescue /arbitrary/
+
+  jail -c path=/arbitrary command=/sh -c 'echo This is from within the jail' 
+
+To remove the jail:
+
+  rm /arbitrary
+
+(C) 2014, Docs, cgraf 

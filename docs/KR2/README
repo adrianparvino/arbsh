@@ -1,0 +1,7 @@
+
+Exercizes and/or functions from K&R2
+
+To avoind namespace collision functions are prefixed
+with 'kr2'.
+
+

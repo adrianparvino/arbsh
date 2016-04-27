@@ -1,0 +1,16 @@
+--- Makefile.orig	2016-03-20 18:40:06.443893151 -0500
++++ Makefile	2016-03-20 18:39:53.259892157 -0500
+@@ -9,10 +9,10 @@
+ endif
+ 
+ ## Compiler to use (modify this for cross compile).
+-CC = gcc
++CC ?= gcc
+ ## Other tools you need to modify for cross compile (static lib only).
+-AR = ar
+-RANLIB = ranlib
++AR ?= ar
++RANLIB ?= ranlib
+ 
+ ## Uncomment this to build tools using static version of the library.
+ ## Mostly useful for embedded platforms without ldd, or to create
