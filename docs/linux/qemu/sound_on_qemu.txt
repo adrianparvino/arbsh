@@ -1,0 +1,1 @@
+sudo kvm -kernel output/images/bzImage -initrd output/images/rootfs.cpio -device AC97,id=sound0,bus=pci.0,addr=0x4

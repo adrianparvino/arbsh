@@ -1,0 +1,101 @@
+
+NAME
+	ansihexen, ansigetch, ansiinit, ansicreate, ansiwaddch, ansiredraw
+
+SYNOPSIS
+	#include <string.h>
+	#include <stdlib.h>
+	#include <sys/ioctl.h>
+	#include <termios.h>
+	#include "../clib/ansicode.h" 
+	int ansigetch(void);
+	int termcatch(int flags, int reset);
+	void writenumber(int desc, size_t height); 
+	void setcursor(size_t x, size_t y);
+	void ansihorizon(size_t top, size_t bottom); 
+	int ansiinit(void) 
+	int ansicreate(void); 
+	int ansidestroy(void); 
+	int ansiwaddch(int ch, int position); 
+	int ansiaddmem(char *, int position, size_t end); 
+	int ansiredraw(size_t lim, size_t x, size_t y, size_t rightmarg); 
+
+DESCRIPTION
+	The ansihexen family of functions replaces the older curses API.
+
+	int ansigetch(void);
+		ansigetch() is a very heavy getchar-like function which stores,
+		changes and then returns the terminal settings to normal. Some
+		programmers may choose to use a simple call to read() for this
+		purpose instead. Ansigetch() returns immediatly upon recieving 
+		any character.
+
+		ansigetch() returns -1 upon error. Otherwise it returns the 
+		character it read.
+
+	int termcatch(int flags, int reset);
+		termcatch() takes a series of bitflag arguments for termios.h.
+		The second field can be either a 0 or 1, which saves or restores
+		the user's terminal settings.
+	
+			Example:
+				termcatch(~(ICANON | ECHO), 0);
+	
+		termcatch() returns -1 upon error, 0 upon success.
+
+	void writenumber(int desc, size_t number);
+		writenumber() is an internal function that is used to
+		emit escape sequences. Programmers may find it useful for
+		debugging or emitting custom escape sequences. The first 
+		argument is the file descriptor to write to. The second 
+		argument is a numerical argument which will be written to
+		desc.
+
+	void setcursor(size_t x, size_t y) 
+		setcursor() sets the cursor to the specified x,y coordinates on
+		the terminal.  
+
+			Set the cursor to row 1 column 1: |x    |
+							  |     |
+    							  |     |    
+				setcursor(1. 1);
+
+
+			Set the cursor to row 2 column 3: |     |
+                                                          |  x  |
+                                                          |     |
+                                setcursor(2. 3);
+
+	int ansiinit(void); 
+		ansinit() initializes the ansiglb structure which has the following 
+		members:
+		struct ansiglb
+                	size_t row;     /* global rows    */
+                	size_t col;     /* global columns */
+                	size_t t;       /* total windows  */
+                	size_t c; 	/* current window */
+	
+	
+	The "dothink" global allows ansihexen to know that the screen has changed
+	and to allow the redraw logic to pass. Setting it to "1" allows the redraw
+	logic to pass over.
+
+	int dothink = 0; /* allow redraw logic to pass during screen changes */ 
+
+	struct ANSIWINDOW
+        	size_t len;		/* length of primary buffer 	*/
+		size_t counter;		/* A countdown mechanism	*/
+        	char *ansiwinbuf;	/* primary buffer 		*/
+		char *ansilastmap;	/* last buffer printed 		*/
+
+	ansigetch --	get a char of user input and return it
+	termcatch -- 	set the ter
+
+RETURN VALUE
+	These functions return the character written, or the number of characters
+	written upon success, or -1 upon error.
+
+CONFORMING TO
+	The ansihexen() family of function seeks compliance with ANSI terminal
+	specifications.
+	

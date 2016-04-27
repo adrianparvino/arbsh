@@ -1,0 +1,12 @@
+
+NetBSD mailing list example
+---------------------------
+
+Figure out the mailing list pertaining to your use case:
+
+Descriptions of mailing lists:
+http://www.netbsd.org/mailinglists/#descriptions-of-mailing-lists
+
+Mailing lists:
+http://www.netbsd.org/mailinglists/#list-of-mailing-lists
+

@@ -1,0 +1,16 @@
+
+FreeBSD show all kernel modules
+-------------------------------
+
+Show all available kernel modules and options for FreeBSD kernel.
+In this example `uname -m` corresponds to your hosts architecture.
+
+  make -C /usr/src/sys/`uname -m`/conf LINT 
+
+  cat /usr/src/sys/`uname -m`/conf/LINT
+
+
+
+
+
+(c) 2014, Docs, cgraf
