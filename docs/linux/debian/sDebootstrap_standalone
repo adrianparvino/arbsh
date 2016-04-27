@@ -1,0 +1,44 @@
+#!/bin/bash
+
+Dateddir(){ i="$(date +debian_build__%s)"; mkdir "${i}"; cd "${i}" ;}; Dateddir
+
+MakeDisk(){
+dd if=/dev/zero of=binary.img bs=1M count=1000
+/sbin/mkfs.ext2 -F -j binary.img
+/sbin/tune2fs -c 0 -i 0 binary.img
+} ; MakeDisk
+
+
+Debootstrap(){
+include="linux-image-3.2.0-4-686-pae"
+if [[ -e ../primarychroot ]]
+then  cp -r ../primarychroot . ; sync
+else  mkdir primarychroot
+      debootstrap  --include="${include}"  wheezy  primarychroot http://ftp.us.debian.org/debian/
+      echo "root:live" | chroot primarychroot chpasswd --md5
+      cp -r primarychroot ../primarychroot ; sync
+fi
+} ; Debootstrap
+
+
+Transfer(){
+mkdir chrootdir
+sudo mount binary.img chrootdir -o loop -t ext2 
+cp -r primarychroot/* chrootdir
+} ; Transfer
+
+Extlinux_do(){
+extlinux --install chrootdir/boot
+cat > chrootdir/boot/extlinux.conf << EOF
+default linux
+timeout 0
+prompt 0
+label linux
+kernel /boot/vmlinuz-3.2.0-4-686-pae
+append initrd=/boot/initrd.img-3.2.0-4-686-pae root=/dev/sda clocksource=kvm-clock
+EOF
+} ; Extlinux_do
+
+Unmountit(){ sudo umount chrootdir;}; Unmountit
+
+Testdisk(){ kvm -hda binary.img -m 1024 ;}; Testdisk

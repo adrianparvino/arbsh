@@ -1,0 +1,472 @@
+  
+cd "${MYPREF}/${MYTARG}/"
+        (
+                IFS='/'
+
+
+
+
+For glibc:
+#"${MYSTARTDIR}/${MYGCC}/configure" \
+        #--prefix="${MYPREF}" \
+        #--target="${MYTARG}" \
+        #--enable-languages="${MYLANGS}" \
+        #--disable-libmudflap \
+        #--disable-libsanitizer \
+        #--disable-libssp \
+        #--disable-nls \
+        #--disable-libquadmath \
+        #--disable-threads \
+        #--disable-decimal-float \
+        #--disable-libmudflap \
+        #--disable-libgomp \
+        #--disable-libatomic \
+        #--with-headers="${MYPREF}/${MYTARG}/include" \
+        #--with-ld="${MYPREF}/bin/${MYTARG}-ld" \
+        #--with-as="${MYPREF}/bin/${MYTARG}-as" \
+        #--disable-werror \
+        #--disable-shared \
+        #$MYCONF 
+
+
+
+                for i in ${MYPREF}/${MYTARG}/
+                do      j="${j}../"
+                done
+                mkdir_cd "./${MYPREF}/${MYTARG}/"
+                ln -s "${j}/lib" lib
+        )
+        "${MYTARG}-gcc" \
+        -nostdlib \
+        -nostartfiles -shared -x c /dev/null -o "${MYPREF}/${MYTARG}/lib/libc.so"
+
+#LDFLAGS="-static -Wl,-Bstatic -static-libgcc "
+        # CC="gcc"' -Wl,-Bstatic -static-libgcc
+        # -static -Wl,-Bstatic -static-libgcc"
+
+
+
+
+
+
+Notes:
+
+
+        These are the versions of various tools used to build this script.
+        They are here for documentation purposes so that the steps can be
+        reproduced at a later date if needed.
+
+
+        date
+        Wed Jul 15 17:27:55 CDT 2015
+
+        make -v
+        GNU Make 3.81
+        This program built for x86_64-pc-linux-gnu
+
+        gawk -V
+        GNU Awk 4.0.1
+        1991-2012 Free Software Foundation.
+
+        gcc -v
+        Target: x86_64-linux-gnu
+        Thread model: posix
+        gcc version 4.7.2 (Debian 4.7.2-5)
+
+        cat /etc/debian_version
+        7.7
+
+        uname -a
+        Linux debiah 3.2.0-4-amd64 #1 SMP Debian 3.2.63-2+deb7u1
+                 x86_64 GNU/Linux
+
+References:
+        "Building Embedded Linux Systems", Karim Yaghmour
+
+
+
+Heuristics:
+
+
+Sat Aug 15 17:23:20 CDT 2015
+# works, musl, glibc, dietlibc and uClibc
+MYBINUTILS="binutils-2.25"
+MYGCC="gcc-4.9.2"
+MYGMP="gmp-5.1.3"
+MYMPC="mpc-1.0.2"
+MYMPFR="mpfr-3.1.2"
+MYLINUX="linux-4.1"
+MYMUSL="musl-1.1.6"
+MYGLIBC="glibc-2.20"
+MYUCLIBC="uClibc-ng-1.0.4"
+MYDIET="dietlibc-0.33"
+MYNEWLIB="newlib-2.2.0"
+
+
+
+get_packages
+make_environment
+make_gmp_target
+make_mpfr_target
+make_mpc_target
+make_libroot
+make_binutils_target
+make_gcc_target
+
+
+newlib_stage()
+{ 
+        rm -rf "${MYSTARTDIR}/${MYNEWLIB}"
+        tar -xf "${MYSRC}/${MYNEWLIB}.${MYSFX}" -C "${MYSTARTDIR}"
+        mkdir_cd "${MYSTARTDIR}/${MYNEWLIB}-build"
+        "${MYSTARTDIR}/${MYNEWLIB}/configure" \
+        --host="${MYTARG}" \
+        --prefix="${MYPREF}" \
+        --target="${MYTARG}" \
+        $MYCONF
+        make "${MYJOBS}"
+        make install
+}
+dietlibc_stage()
+{ 
+        rm -rf "${MYSTARTDIR}/${MYDIET}"
+        tar -xf "${MYSRC}/${MYDIET}.${MYSFX}" -C "${MYSTARTDIR}"
+        cd "${MYSTARTDIR}/${MYDIET}"
+        set +e
+        make ARCH="${MYBACKWARDCOMPAT}" CROSS="${MYTARG}-" all
+        make ARCH="${MYBACKWARDCOMPAT}" CROSS="${MYTARG}-" dyn
+        make ARCH="${MYBACKWARDCOMPAT}" DESTDIR="${MYPREF}" prefix="" install
+        cp "bin-${MYBACKWARDCOMPAT}/diet" "${MYPREF}/bin/"
+        cp "bin-${MYBACKWARDCOMPAT}/diet" "${MYPREF}/bin/${MYTARG}-diet"
+        printf "To use the dietlibc cross compiler run:\n"
+        printf "PATH=$PATH \\\\\n"
+        printf "  diet ${MYTARG}-gcc some.c\n"
+}
+
+
+make_busybox()
+{ 
+        mkdir -p "${MYSTARTDIR}/libroot"
+        tar -xf "${MYSRC}/${MYBUSYBOX}.${MYSFX}" -C "${MYSTARTDIR}"
+        cd "${MYSTARTDIR}/${MYBUSYBOX}"
+        make defconfig CC="${MYTARG}-gcc" ARCH="i686" CROSS_COMPILE="${MYTARG}-" 
+        make "${MYJOBS}" CC="${MYTARG}-gcc" ARCH="i686" CROSS_COMPILE="${MYTARG}-"
+        make CONFIG_PREFIX="${MYSTARTDIR}/libroot" install
+} 
+
+make_dash()
+{ 
+        mkdir -p "${MYSTARTDIR}/libroot"
+        cd "${MYSTARTDIR}/dash-0.5.7" 
+        "${MYSTARTDIR}/dash-0.5.7/configure" \
+        --prefix="${MYSTARTDIR}/libroot" \
+        --host="${MYTARG}"
+        make "${MYJOBS}"
+        make install
+}
+
+#--with-headers="${MYPREF}/${MYTARG}/include" \
+        #--with-mpfr="${MYSTARTDIR}/${MYMPFR}" \
+        #--with-mpc="${MYSTARTDIR}/${MYMPC}" \
+        #--with-gmp="${MYSTARTDIR}/${MYGMP}" \
+make_busybox()
+{ 
+        mkdir -p "${MYSTARTDIR}/libroot"
+        tar -xf "${MYSRC}/${MYBUSYBOX}.${MYSFX}" -C "${MYSTARTDIR}"
+        cd "${MYSTARTDIR}/${MYBUSYBOX}"
+       
+        #make menuconfig
+        #sed  -i "s|# CONFIG_STATIC is not set|CONFIG_STATIC=y|g" .config
+        #cp ${MYSTARTDIR}/busybox_defconfig .config
+
+        export ARCH="i386"
+        export CROSS_COMPILE="${MYTARG}-"
+
+        make defconfig CC="${MYTARG}-gcc" ARCH="i686" CROSS_COMPILE="${MYTARG}-"
+        #make allnoconfig CC="${MYTARG}-gcc" ARCH="i386" CROSS_COMPILE="${MYTARG}-"
+        #echo "CONFIG_CROSS_COMPILER_PREFIX=\"${MYTARG}-\"" >> .config
+        #echo  FEATURE_UTMP
+         #sed  -i "s|FEATURE_UTMP=y|# FEATURE_UTMP=n|g" .config
+        #sed  -i "s|# CONFIG_STATIC is not set|CONFIG_STATIC=y|g" .config
+        #make menuconfig
+        
+
+        make "${MYJOBS}" CC="${MYTARG}-gcc" ARCH="i686" CROSS_COMPILE="${MYTARG}-"
+        make CONFIG_PREFIX="${MYSTARTDIR}/libroot" install
+} 
+
+
+make_environment()
+{
+        export CC="${MYTARG}-gcc" 
+        export CXX="${MYTARG}-g++" 
+        export CPP="${MYTARG}-cpp" 
+        export AS="${MYTARG}-as"
+        export LD="${MYTARG}-ld" 
+        export GDB="${MYTARG}-gdb"
+        export STRIP="${MYTARG}-strip"
+        export RANLIB="${MYTARG}-ranlib"
+        export OBJCOPY="${MYTARG}-objcopy"
+        export OBJDUMP="${MYTARG}-objdump"
+        export AR="${MYTARG}-ar"
+        export NM="${MYTARG}-nm"
+}
+
+
+# /lib/ld-musl-x86_64.so.1 --preload=libm.so --list 
+        #     /lib/ld-musl-x86_64.so.1 
+        # $(syslibdir)/../etc/ld-musl-$(ARCH).path
+
+
+
+i686-linux-gcc -c cat.c -o cat.o ; i686-linux-ld -o cat -dynamic-linker ld-uClibc-1.0.4.so crt1.o crti.o cat.o -lc crtn.o
+
+
+
+
+        # /lib/ld-musl-x86_64.so.1 --preload=libm.so --list 
+        #     /lib/ld-musl-x86_64.so.1 
+        # $(syslibdir)/../etc/ld-musl-$(ARCH).path 
+
+
+# Configuration area
+
+
+# aarch64       Tested good: glibc 
+        #MYTARG="aarch64-linux" 
+        #MYLINUXARCH="arm64" 
+
+# i586          
+#               i586-linux
+#               Tested good: dietlibc musl dietlibc
+        #MYTARG="i586-linux"
+        #MYLINUXARCH="x86"
+        #MYBACKWARDCOMPAT="i386"
+
+# i686   
+#               i686-linux
+#               Tested good: dietlibc musl dietlibc
+        #MYTARG="i686-linux" 
+        #MYLINUXARCH="x86"
+        #MYBACKWARDCOMPAT="i386" 
+
+#               i686-pc-linux-uclibc
+#               Tested good: uClibc 
+        #MYTARG="i686-pc-linux-musl"
+        #MYLINUXARCH="x86"
+        #MYBACKWARDCOMPAT="i386"
+
+        MYTARG="i686-pc-linux-musl"
+        MYLINUXARCH="x86"
+        MYBACKWARDCOMPAT="i386"
+
+#               i686-pc-linux-musl
+#               Tested good: uClibc 
+        #MYTARG="i686-pc-linux-musl"
+        #MYLINUXARCH="x86" 
+
+# i386 is really just an historical target ..
+# i386          Tested good: glibc musl dietlibc 
+        #MYTARG="i386-linux"
+        #MYLINUXARCH="x86"
+        #MYBACKWARDCOMPAT="i386" 
+
+# x86_64        
+#               Tested good: glibc musl dietlibc 
+        #MYTARG="x86_64-linux"
+        #MYLINUXARCH="x86_64" 
+        #MYBACKWARDCOMPAT="x86_64" 
+
+musl_stage()
+{
+        # /lib/ld-musl-x86_64.so.1 --preload=libm.so --list 
+        #     /lib/ld-musl-x86_64.so.1 
+        # $(syslibdir)/../etc/ld-musl-$(ARCH).path 
+        rm -rf "${MYSTARTDIR}/${MYMUSL}"
+        tar -xf "${MYSRC}/${MYMUSL}.${MYSUFFIX}" -C ${MYSTARTDIR}
+        #(
+                cd "${MYSTARTDIR}/${MYMUSL}"
+                ./configure \
+                --prefix="/" \
+                --enable-debug \
+                --enable-optimize \
+                CROSS_COMPILE="${MYTARG}-" CC="${MYTARG}-gcc"
+                make "${MYJOBS}"
+                make install DESTDIR="${MYPREF}/${MYTARG}/"
+        #)
+
+        # gcc 2
+        if [ ! -e "$MYPREF/${MYTARG}/lib/libc.so" ]
+        then    MYCONF="${MYCONF} --disable-shared "
+        fi
+
+        rm -rf "${MYSTARTDIR}/${MYGCC}-build-second"
+        mkdir "${MYSTARTDIR}/${MYGCC}-build-second"
+        #(
+                cd "${MYSTARTDIR}/${MYGCC}-build-second"
+                "${MYSTARTDIR}/${MYGCC}/configure" \
+                --prefix="${MYPREF}" \
+                --target="${MYTARG}" \
+                --enable-languages="${MYLANGS}" \
+                --disable-libmudflap \
+                --disable-libsanitizer \
+                --disable-nls \
+                $MYCONF
+                make "${MYJOBS}"
+                make install
+        #) 
+
+        #(
+                cd "${MYSTARTDIR}/${MYMUSL}"
+                make install DESTDIR="${MYPREF}/${MYTARG}/"
+        #)
+
+}
+
+
+
+glibc_stage()
+{
+        tar -xf "${MYSRC}/${MYGLIBC}.${MYSUFFIX}"
+        mkdir -p "${MYGLIBC}-build"
+        cd "${MYGLIBC}-build"
+        "${MYSTARTDIR}/${MYGLIBC}/configure" \
+        --prefix="${MYPREF}/${MYTARG}" \
+        --build="${MACHTYPE}" \
+        --host="${MYTARG}" \
+        --target="${MYTARG}" \
+        --with-headers="${MYPREF}/${MYTARG}/include" \
+        ${MYCONF} libc_cv_forced_unwind=yes
+        make install-bootstrap-headers=yes install-headers
+        make "${MYJOBS}" csu/subdir_lib
+        install csu/crt1.o csu/crti.o csu/crtn.o "${MYPREF}/${MYTARG}/lib"
+        "${MYTARG}-gcc" \
+        -nostdlib \
+        -nostartfiles -shared -x c /dev/null -o "${MYPREF}/${MYTARG}/lib/libc.so"
+        touch "${MYPREF}/${MYTARG}/include/gnu/stubs.h"
+        touch "${MYPREF}/${MYTARG}/include/gnu/stubs-32.h"
+        touch "${MYPREF}/${MYTARG}/include/gnu/stubs-64.h"
+        cd "${MYSTARTDIR}"
+        cd "${MYGCC}-build"
+        make "${MYJOBS}" all-target-libgcc
+        make install-target-libgcc
+        cd "${MYSTARTDIR}"
+        cd "${MYGLIBC}-build"
+        make "${MYJOBS}"
+        make install
+        cd "${MYSTARTDIR}"
+}
+
+#echo "RUNTIME_PREFIX=\"/\"" >> .config
+        #echo "DEVEL_PREFIX=\"/\"" >> .config 
+        #make CROSS="${MYTARG}-" PREFIX="${MYPREF}/${MYTARG}/" install
+
+
+
+
+
+echo "MULTILIB_DIR=\"lib\"" >> .config
+        echo "HARDWIRED_ABSPATH=y" >> .config
+
+
+  #--with-as="${MYPREF}/bin/${MYTARG}-as" \
+        #--with-ld="${MYPREF}/bin/${MYTARG}-ld" \
+        #$MYCONF
+
+
+
+./toolchain//bin/i686-linux-ld -o cat -dynamic-linker          toolchain/i686-linux/lib/ld-uClibc-1.0.4.so toolchain/i686-linux/lib/crt1.o          toolchain/i686-linux/lib/crti.o cat.o -lc toolchain/i686-linux/lib/crtn.o
+
+crt1.o crti.o crtn.o ld.so with gcc
+uclibc_stage()
+{
+
+        rm -rf "${MYUCLIBC}"
+        tar -xf "${MYSRC}/${MYUCLIBC}.${MYSUFFIX}"
+        cd "${MYUCLIBC}"
+
+        echo "KERNEL_HEADERS=\"${MYPREF}/${MYTARG}/include/\"" >> .config
+        echo "TARGET_${MYBACKWARDCOMPAT}=y" >> .config
+        echo "RUNTIME_PREFIX=\"${MYPREF}/${MYTARG}/\"" >> .config
+        echo "DEVEL_PREFIX=\"${MYPREF}/${MYTARG}/\"" >> .config
+        echo "HAVE_SHARED=y" >> .config
+        echo "UCLIBC_HAS_THREADS_NATIVE=y" >> .config
+        echo "CROSS_COMPILER_PREFIX=\"${MYTARG}-\"" >> .config
+        echo "LDSO_STANDALONE_SUPPORT=y" >> .config
+        echo "LDSO_LDD_SUPPORT=y" >> .config
+        echo "LDSO_BASE_FILENAME=\"ld-uClibc.so\"" >> .config
+        echo "UCLIBC_STATIC_LDCONFIG=y" >> .config
+
+
+        echo y |  make CROSS="${MYTARG}-"  "${MYJOBS}" oldconfig
+        make CROSS="${MYTARG}-" PREFIX="" install
+
+
+        cd utils
+        make CROSS="${MYTARG}-" "${MYJOBS}"
+        install ldd "${MYPREF}/${MYTARG}/"
+        install ldconfig "${MYPREF}/${MYTARG}/"
+        install getconf "${MYPREF}/${MYTARG}/"
+
+        # test before second stage
+        exit
+
+        cd "${MYSTARTDIR}"
+
+        rm -rf "${MYGCC}-build-second"
+        mkdir "${MYGCC}-build-second"
+        cd "${MYGCC}-build-second"
+
+        "${MYSTARTDIR}/${MYGCC}/configure" \
+        --prefix="${MYPREF}" \
+        --target="${MYTARG}" \
+        --enable-languages="${MYLANGS}" \
+        --disable-libquadmath \
+        $MYCONF
+
+        make "${MYJOBS}"
+        make install
+
+        cd "${MYSTARTDIR}"
+
+}
+
+
+
+#echo "SHARED_LIB_LOADER_PREFIX=\"${MYPREF}/${MYTARG}/lib/\"" >> .config 
+        #echo "MULTILIB_DIR=\"${MYPREF}/${MYTARG}/lib/\"" >> .config
+        #echo "MULTILIB_DIR=\"lib/\"" >> .config
+        #echo "MULTILIB_DIR=\"/lib/\"" >> .config
+        #echo "HARDWIRED_ABSPATH=n" >> .config
+
+
+        echo "KERNEL_HEADERS=\"${MYPREF}/${MYTARG}/include/\"" >> .config
+        echo "TARGET_${MYBACKWARDCOMPAT}=y" >> .config
+        echo "RUNTIME_PREFIX=\"${MYPREF}/${MYTARG}/\"" >> .config
+        echo "DEVEL_PREFIX=\"${MYPREF}/${MYTARG}/\"" >> .config
+        #echo "RUNTIME_PREFIX=\"${MYPREF}/${MYTARG}/\"" >> .config 
+        #echo "RUNTIME_PREFIX=\"${MYPREF}/${MYTARG}/usr\"" >> .config
+        echo "HAVE_SHARED=y" >> .config
+
+        #echo "UCLIBC_HAS_THREADS=y" >> .config 
+        echo "UCLIBC_HAS_THREADS_NATIVE=y" >> .config
+        echo "CROSS_COMPILER_PREFIX=\"${MYTARG}-\"" >> .config
+        echo "LDSO_STANDALONE_SUPPORT=y" >> .config
+        #echo "LDSO_PRELOAD_FILE_SUPPORT=y" >> .config 
+        #echo "LDSO_RUNPATH=y"  >> .config 
+        echo "LDSO_LDD_SUPPORT=y" >> .config
+        #echo "LDSO_CACHE_SUPPORT=y" >> .config 
+        echo "LDSO_BASE_FILENAME=\"ld-uClibc.so\"" >> .config
+        echo "UCLIBC_STATIC_LDCONFIG=y" >> .config
+        echo "LDSO_CACHE_SUPPORT=n"  >> .config
+
+        #echo "LDSO_RUNPATH=y" >> .config
+        #echo "LDSO_SEARCH_INTERP_PATH=y" >> .config 
+        #echo "LDSO_PRELOAD_FILE_SUPPORT=y" >> .config 
+        #echo "LDSO_PRELINK_SUPPORT=y" >> .config 
+        #echo "LDSO_RUNPATH=y" >> .config
+        #echo "LDSO_RUNPATH_OF_EXECUTABLE=y" >> .config 
+        #echo "FORCE_SHAREABLE_TEXT_SEGMENTS=y" >> .config 
+        #echo "# HARDWIRED_ABSPATH is not set" >> .config
+        # LDSO_BASE_FILENAME="ld-uClibc.so" 
+

@@ -1,0 +1,225 @@
+# Irc client 
+
+# An irc client with no dependencies.
+#
+
+
+Irc Client -- An irc client without dependencies.:
+-------------------------------------------------- 
+        
+	*) Colorful ascii and ansi escape sequence based interface.
+        *) Portable self contained ANSI terminal handling library. 
+        *) Supports multiple servers and channels.
+        *) Keybind based channel toggling.
+	*) Looks and feels like irssi.
+	*) Uninterupted multiplexing asynchronous user input.
+
+	Running the client:
+	-------------------
+	
+		Command line options:
+		--------------------- 
+			server=
+			port=
+			nick=
+			channel=
+
+			Use command line options to connect to freenode:
+			------------------------------------------------ 
+                	./irc \
+                	server='irc.freenode.net' \
+                	port=6667 \
+                	nick="$USER" \
+               		channel="#irctest" 
+			
+
+
+		Builtin irc commands:
+		---------------------
+
+                ctrl-n                  Toggle between channels.
+
+		ctrl-x			Toggle between servers.
+
+                /j #channel             Join a channel.
+
+		/p #channel		Part a channel.
+
+		/c irc.oftc.net	6667	Join a server.
+
+		/d irc.oftc.net		Disconnect from a server.
+
+		/n newnick		Change nickname.
+
+                /q                      Quit.
+
+                /r FORM DATA            Send a raw command and data to the 
+					server.
+                                        Eg: /r PRIVMSG nickname hello!
+	
+		PageUp                  Scroll up.
+
+                PageDown                Scroll down.
+
+		UpArrow			Line history.
+		
+		DownArrow		Line history.
+	
+		LeftArrow		Cursor left.
+
+		RightArrow		Cursor right.
+
+
+
+	
+	Examples:
+	---------
+	
+		Connect to oftc:
+		----------------
+			./irc \
+			server='irc.oftc.net' \
+			port=6667 \
+			nick="$USER"
+	
+			/j #moocows
+
+		Set up multiple connections from the user itnerface:
+		----------------------------------------------------
+			./irc
+
+				[[]]>> /c irc.oftc.net 6667
+				
+				[[]]>> /j #moocows
+
+				[[]]>> /c irc.rizon.net 6667
+
+				[[]]>> /j #help
+
+				[[]]>> /j #frogs
+
+
+
+	Minimal support for raw CTCP commands:
+	--------------------------------------
+
+		Irc is programmed to respond to CTCP VERSION requests
+		automatically. However other than this functionality there 
+		is no built in support for CTCP (client to client protocol) 
+		except as follows:
+
+		Send a CTCP based notice:
+		-------------------------
+			/z NOTICE otheruser :
+			/x
+			/z VERSION
+			/x
+			/y
+		What are these commands?
+		------------------------
+			These commands allow a person to hack out
+			CTCP protocol commands despite the client
+			not supporting them. Their internal
+			meaning is as follows:
+				/z	Simply outputs data to the current server
+				/x	Prints a '\001' char CTCP message delimiter
+				/y	Prints "\r\n" which ends the message.
+
+
+
+
+More about this project:
+------------------------
+	Irc client is more than just a replacement for other irc clients.
+	It is a paradigmatic replacement for curses/ncurses as well. The
+	library ansicode.h has many useful ANSI escape sequences which 
+	can be used in conjunction with the provided termplex() function to
+	create an asynchronous multiplexing user interface which recognizes
+	and responds to keystrokes.
+	(read; this irc client can be ran with nothing but a kernel and a C
+	 library.).
+
+
+Building this repository:
+-------------------------
+	
+	Build:
+	------
+		git clone https://github.com/cmgraff/Grafos
+		cd Grafos/irc
+		make
+
+	Installation:
+	------------- 
+		make install DESTDIR=/path/to/installation/
+
+	Uninstallation:
+	--------------- 
+		make uninstall
+
+
+
+Statically linking the IRC client:
+----------------------------------
+	
+	Simple way:
+	
+		Use a C library that supports static linking of getaddrinfo()
+		like musl or uClibc-ng and then:
+
+			make CFLAGS=-static
+
+	Hard way:
+
+		Use a C library that _does not_ support static linking of 
+		getaddrinfo() like glibc and then remove getaddrinfo() as
+		follows:
+		
+		
+		In the library dial.h there is a function called dialip(), 
+		comment out everything but this function.
+		
+		Then in irc.c change the dialurl() function to dialip():
+			sed -i 's|dialurl|dialip|g' irc.c
+		
+		Compile statically:
+			make CFLAGS=-static
+
+		Start the client by specifying an ip address instead of a url.
+			./irc \
+        		server=38.229.70.22 \
+        		port=6667 \
+        		nick=somenickasd \
+        		channel='#irctest'
+
+		This produces a rather deficient client as the user must always
+		specify an ip address. However it suffices for statically
+		linking against glibc or any other libc that are picky about
+		statically linking getaddrinf().
+	
+
+Releases:
+--------- 
+	Releases will be available as part of stable Grafos releases. 
+
+References:
+-----------
+	RFC2812 protocol
+	https://tools.ietf.org/html/rfc2812
+
+	A public domained ncurses based irc client
+	http://c9x.me/irc/
+
+	Useful website which provides a chart of various RFC protocol
+	https://www.alien.net.au/irc/irc2numerics.html
+
+
+Licensing / Copying:
+-------------------- 
+
+	2015 (C) Copyright, CM Graff MIT/BSD Licensed 
+        See LICENSE for copying details.
+
+
+	
+	

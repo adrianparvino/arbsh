@@ -1,0 +1,23 @@
+
+Make statically linked executables for NetBSD
+---------------------------------------------
+
+   echo "LDSTATIC=-static" >> /etc/mk.conf
+
+This is actually all that is required.
+
+To test ``cd'' into a direcotory of source code, make the binary
+, and then test it with ldd, and a final time by running it.
+
+   cd /usr/src/csh
+   make
+
+   ldd csh
+
+This should output the text:
+
+   ldd: csh: not dynamically linked
+
+(C) 2014 Documentation , cgraf
+
+

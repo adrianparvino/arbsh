@@ -1,0 +1,68 @@
+for (i = 0; i < (unsigned int)num_new_procs; i++) {
+                if (new_procs[i]) {
+                        old_proc = find_old_proc(new_procs[i]->pid);
+                        if (old_proc) {
+                                new_procs[i]->delta_utime = new_procs[i]->utime - old_proc->utime;
+                                new_procs[i]->delta_stime = new_procs[i]->stime - old_proc->stime;
+                        } else {
+                                new_procs[i]->delta_utime = 0;
+                                new_procs[i]->delta_stime = 0;
+                        }
+                        new_procs[i]->delta_time = new_procs[i]->delta_utime + new_procs[i]->delta_stime;
+                }
+        }
+
+        total_delta_time = (new_cpu.utime + new_cpu.ntime + new_cpu.stime + new_cpu.itime)
+                                         - (old_cpu.utime + old_cpu.ntime + old_cpu.stime + old_cpu.itime);
+
+ buflen += sprintf(buffer + buflen, "%d  ", p->pid);
+                buflen += sprintf(buffer + buflen, "%ld%%  ", p->delta_time * 100 / total_delta_time);
+                buflen += sprintf(buffer + buflen, "%c  ", p->state);
+                buflen += sprintf(buffer + buflen, "%ld  ", (p->vss / 1024));
+                buflen += sprintf(buffer + buflen, "%ldK  ", (p->rss * getpagesize() / 1024));
+
+                buflen += sprintf(buffer + buflen, "%d  ", (p->uid));
+                buflen += sprintf(buffer + buflen, "%s ", p->name);
+
+
+
+
+struct proc_info *old_proc, *p;
+        long unsigned total_delta_time = 10;
+        for (i = 0; i < (unsigned int)num_new_procs; i++) {
+                if (new_procs[i]) {
+                        old_proc = find_old_proc(new_procs[i]->pid);
+                        if (old_proc) {
+                                new_procs[i]->delta_utime = new_procs[i]->utime - old_proc->utime;
+                                new_procs[i]->delta_stime = new_procs[i]->stime - old_proc->stime;
+                        } else {
+                                new_procs[i]->delta_utime = 0;
+                                new_procs[i]->delta_stime = 0;
+                        }
+                        new_procs[i]->delta_time = new_procs[i]->delta_utime + new_procs[i]->delta_stime;
+                }
+        }
+
+        total_delta_time = (new_cpu.utime + new_cpu.ntime + new_cpu.stime + new_cpu.itime)
+                                         - (old_cpu.utime + old_cpu.ntime + old_cpu.stime + old_cpu.itime);
+
+//size_t len;
+        //i = len = 0; 
+        //ansiglb.c = 9; 
+        //len += ansiaddmem(buffer + ((limitoff) * ansiglb.col) -1, 0, buflen); 
+        //ansiredraw(len, (ansiglb.row - limiter), 0, 0); 
+
+proc_stat(filename);
+                strcpy(proc->name, proct.lines[0].fields[1]);
+                proc->state = proct.lines[0].fields[2][0];
+                proc->utime = atoi(proct.lines[0].fields[13]);
+                proc->stime = atoi(proct.lines[0].fields[14]);
+                proc->vss = atoi(proct.lines[0].fields[22]);
+                proc->rss = atoi(proct.lines[0].fields[23]);
+
+buflen += sprintf(buffer + buflen, "%d  ", p->pid);
+                buflen += sprintf(buffer + buflen, "%c  ", p->state);
+                buflen += sprintf(buffer + buflen, "%ld  ", (p->vss / 1024));
+                buflen += sprintf(buffer + buflen, "%ldK  ", (p->rss * getpagesize() / 1024));
+                buflen += sprintf(buffer + buflen, "%s ", p->name);
+

@@ -1,0 +1,39 @@
+Fix backspace bug in ircline.h if reproducable  Hard 
+	Rewrite ircline.h to use setcursor() coordinate based
+	drawing instead of the current relative position 
+	technique. Really Hard
+
+
+
+Concatenate write() messages by passing them to vsnprintf()
+so they can be written to server with a single write. Medium difficulty
+
+
+
+Fold server data into tidy character grids. Medium difficulty
+
+
+
+Pass these character grids to grafos's screen drawing library ansicode.h Hard
+
+
+
+Add a timed interface to handle password connections. Easy
+
+
+
+Decode another server message and do something semi-useful with it. Easy
+
+
+
+connect to various servers and document bugs. Easy
+
+
+
+Find whatever causes the socket/select() busyloops and stop it. super hard level
+
+
+
+Find whatever causes the socket/select() busyloops and make it have sanity checks. Easy
+
+
