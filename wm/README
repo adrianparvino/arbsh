@@ -1,0 +1,94 @@
+graff-dwm - graff's rewrite of dwm (dynamic window manager)
+============================
+	graff-dwm is a rewrite of dwm (which is an extremely fast, small, 
+	and dynamic window manager for X) with a focus on clear concise
+	programming for the purpose of education (mostly my own).
+
+
+Requirements
+------------
+	In order to build graff-dwm you need the Xlib header files.
+
+
+Installation
+------------ 
+	graff-dwm is not intended to be installed. Instead simply invoke 
+	make and then add an entry for the executable in .xinitrc. The 
+	window manager can then be started using `startx';
+	
+		make 
+
+		echo "exec $(pwd)/graff-dwm" >> ~/.xinitrc 
+
+		startx
+
+	This is suitable as graff-dwm is an experimental fork so there
+	is really no reason to be installing it as a primary window
+	manager at this time.
+
+
+Changing display
+---------------- 
+	DISPLAY=foo.bar:1 exec graff-dwm 
+
+
+Configuration
+-------------
+	The configuration of graff-dwm is done by modifying graff-dwm.c
+	and recompiling.
+
+
+Why does this project exist when normal dwm is probably better?
+--------------------------------------------------------------- 
+	I found that despite dwm's concise code and simple user
+	interface that its combined 2000 LOC of source 100 LOC
+	of Makefile and around 100 LOC of configuration makes
+	for a complex read. The effect being that many people look
+	at dwm's code, admire the simplicity -- yet walk away not 
+	understanding that much about it. This project aims to 
+	rectify that and wrap dwm's beauty up into an educational
+	resource that is easy to follow along.  
+
+
+Features that have been removed from the original dwm
+-----------------------------------------------------
+	1) Xinerama -- dual monitor support
+	2) Checks to ensure no other window managers are running
+	3) Version argument -v as argv[1]
+	4) User configuration file config.h
+	5) Most of the environment variables in the Makefile
+	   have been removed.
+	6) Some elements of fullscreen support.
+	
+	Perhaps too many to list..  
+
+
+When will graff-dwm be done?
+----------------------------
+	When there is nothing left to remove.
+
+
+Notes originally in dwm.c
+-------------------------
+ *
+ * dynamic window manager is designed like any other X client as well. It is
+ * driven through handling X events. In contrast to other X clients, a window
+ * manager selects for SubstructureRedirectMask on the root window, to receive
+ * events about window (dis-)appearance.  Only one X connection at a time is
+ * allowed to select for this event mask.
+ *
+ * The event handlers of dwm are organized in an array which is accessed
+ * whenever a new event has been fetched. This allows event dispatching
+ * in O(1) time.
+ *
+ * Each child of the root window is called a client, except windows which have
+ * set the override_redirect flag.  Clients are organized in a linked client
+ * list on each monitor, the focus history is remembered through a stack list
+ * on each monitor. Each client contains a bit array to indicate the tags of a
+ * client.
+ *
+ * Keys and tagging rules are organized as arrays and defined in config.h.
+ *
+ * To understand everything else, start reading main().
+
+

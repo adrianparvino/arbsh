@@ -1,0 +1,207 @@
+
+		The Graff shell implements a small subset of POSIX shell options 
+	with the aspiration to add more specification conformant functionalities 
+	at a later date.
+
+
+        (Copyright) 2014-2015, "shell.c", CM Graff
+
+        Gsh (the Graff shell)
+
+        Lexical structure:
+
+                Redirection operators
+                        < > >>
+                Control operators
+                        | ; & || &&
+
+        Double Quotes:
+
+                Remove the special meaning of whitespace and tokens.  
+
+        Builtins
+                exit [NUMBER]
+
+                cd [DEST]:
+
+        Options
+                -c
+                        Use argument string instead of stdin 
+                -t
+                        Test the parser with a dry run 
+
+
+		This shell does not use yacc to create its grammar. For the
+	sake of communicating with future developers I have included a 
+	description of the tokens and corresponding logic used to create its 
+	grammar
+
+		Gsh has its own line editing library located within Grafos at
+	../readline/gshline.h. For Gsh's line editing capabilities see
+	gshline()'s documentation at ../readline/README.
+
+
+GRAMMAR KEYWORDS/
+-
+
+	aredir		is after a redir
+
+	atoken		is after a token
+
+	awhite		is after a whitespace
+
+	aquote		is within a quoted space
+
+
+
+GRAMMAR/
+-
+	This particular grammar should always describe the behaviour of the
+	shell as it is coded -- not necessarily the correct grammar. Correct
+	grammars should be obtained from the POSIX sh specification then
+	worked into the shell and then finally this document.
+
+	';'		is a token	is a command next		NUL
+		aredir	no
+		atoken	yes
+		awhite	no
+
+	'\n' && !'\n'	is a token	is a command next		NUL
+		aredir	no
+                atoken	yes
+                awhite	no
+			Note: This should perhaps be changed to:
+				'\n' && !isspace()
+
+	'\n'		is a token	is not a command next		NUL
+		aredir	no
+                atoken	yes
+                awhite	no
+
+	'|'		is a token	is a command next		NUL
+		aredir	no
+                atoken	yes
+                awhite	no
+
+	"|' '|'		is a token	is a command next		NUL
+		aredir	no
+                atoken	yes
+                awhite	no
+
+	'&'             is a token	is a command next		NUL
+		aredir	no
+                atoken	yes
+                awhite	no
+
+	'&' '&'		is a token	is a command next		NUL
+		aredir	no
+                atoken	yes
+                awhite	no
+
+	' ' || '\t'		is not a token	is an ARG next if after token	NUL
+		--> has a count pertaining to a COMMAND
+		aredir		USED HERE FOR LOGIC
+                atoken		USED HERE FOR LOGIC
+                awhite	yes	USED HERE FOR LOGIC
+		aquote		USED HERE FOR LOGIC
+
+	'alpha'		is not a token	is a COMMAND or FILE		SAVE
+		--> has a count of COMMANDS or FILES
+		aredir		USED HERE FOR LOGIC
+                atoken	no
+                awhite	no
+
+	'>'		is a token	a FILE is next 			NUL 
+		aredir	yes
+                atoken	yes
+                awhite	no
+
+	'>' '>'		is a token	a FILE is next			NUL
+		aredir	yes
+                atoken	yes
+                awhite	no
+
+	'<'		is a token	a FILE is next			NUL
+		aredir	yes
+                atoken	eys
+                awhite	no
+
+	'"'
+		aquote	yes						NUL
+			
+
+
+
+
+		Quotes essentially disassociate argument based context in 
+	language. As they do in the shell. A quoted area no longer uses 
+	whitespace to associate a list with a word.
+
+		The boy John of Locklear
+			
+			vs:
+		
+		The boy "John of Locklear"
+
+	This quoted verse unquoted grammar defines whether "John of Locklear"
+	is a single argument to "The" (which in turn has the whitespace
+	delineated argument "boy") or is in itself an argument consisting of
+	the surname (surname from person or place).
+
+
+
+License and disclaimers
+-----------------------
+
+
+The MIT License (MIT)
+
+Copyright (c) 2015-2016, CM Graff
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+BSD 2 clause
+
+Copyright (c) 2015-2016, CM Graff
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation and/or
+other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+

@@ -1,0 +1,197 @@
+      
+
+      #====  =  =   = =  ==== ===> ==\   <==== ==>  ==>
+      #| || ||\/|| ||\||  ||  ||   |=/   || || ||=\ ||=\
+      #===> V    V V   V ==== ===> V `\' ====> <==/ <==/ 
+
+
+Omnicross  Build a musl, uClibc, glibc or dietlibc based cross compiler.
+	
+(C) Copyright 2015. `Omnicross'. MIT/BSD License, CM Graff 
+
+
+
+Installation:
+	Retrieve the source code:
+		git clone https://github.com/cmgraff/Grafos
+		cd Grafos/toolchain
+
+	Build:
+		./build.sh 
+
+
+
+Modifying and understanding the code in Omnicross:
+
+	At this juncture in time all code and configuration is contained
+	within a single file "build.sh". The "patches" and "src" dirs
+	contain the needed compressed packages to make a cross compiler (
+	gcc, gmp, libc etc). If they are not populated with the utility
+	versions you need then the simple network retrieval function 
+	"common_obtain_source_code" will attempt to download them
+	from upstream. The upstream tarballs must have the same suffix as
+	the variable "MYSFX".
+	
+	All variable declarations are made at the beginning of the file and
+	are prefixed with "MY" so as to maitain clarity and not interfere
+	with any aspects of the build environment or shell.
+
+	To select an architecture, open the main build.sh file and modify
+	MYTARG and MYLINUXARCH.  
+
+	uClibc and dietlibc both depend on the MYBACKWARDCOMPAT variable
+	which allows simple backwards compatibility for i386 and other
+	historical designations.  
+	
+
+       		MYTARG="i586-linux"
+       		MYLINUXARCH="x86"
+		MYBACKWARDCOMPAT="i386" 
+
+	
+	Functions that are C library specific are prefixed with "glibc_" 
+	or "musl_" whereas functions that are shared between all package 
+	sets (libc's) are prefixed with "common_".  
+
+	If you are building against musl C libraries any functions
+	not prefixed as "common_" or "musl_" should be commented out or
+	controlled by various tests that the user/developer might 
+	insert. And likewise for glibc or dietlibc, only functions prefixed 
+	"*libc_" and "common_" should be invoked.
+	
+	These functions are invoked at the end of the script in a section
+	labeled "stages", it appears as follows, modify it accordingly to 
+	your needs:
+		# stages:
+		common_install_path
+		common_source_stage 
+		common_clean_stage 
+		common_binutils_stage_make 
+		common_binutils_stage_install
+		common_linux_stage
+		common_gcc_stage_make 
+		common_gcc_stage_install
+
+		#glibc_stage 
+		musl_stage
+		#newlib_stage 
+		#uclibc_stage 
+		#dietlibc_stage 
+
+	Alternatively these functions can be invoked as command line arguments
+	to build.sh. In this case they are ran in the order specified and 
+	build.sh exits before running it's normal stages. 
+
+	A common usage for the omnicross command line arguments might be to 
+	clean between builds: 
+	
+		./build.sh common_clean_stage
+
+	Though one could feasibly also use command line arguments to control
+	an entire toolchain build:
+		./build.sh \
+		common_install_path \
+                common_source_stage \
+                common_clean_stage \
+                common_binutils_stage_make \
+                common_binutils_stage_install \
+                common_linux_stage \
+                common_gcc_stage_make \
+                common_gcc_stage_install \
+                musl_stage 
+
+	A new section has been added to omnicross to cross compile a 
+	native compiler for $TARGET. It appears as follows: 
+
+		make_environment
+		make_libroot
+
+		make_gmp_target
+		make_mpfr_target
+		make_mpc_target
+		make_binutils_target
+		make_gcc_target 
+		
+		make_linux_target
+
+		get_packages
+		make_dash_target
+		make_busybox_target
+
+
+	This native compiler support is experimental. If you do not
+	wish to have a compiler on your target then comment this section
+	out.
+
+
+	As of release 1.4 all libc specific functions are not manipulated in the 
+	list described above. but instead the list appears as:
+		common_install_path
+        	common_source_stage
+        	common_clean_stage
+        	common_binutils_stage_make
+        	common_binutils_stage_install
+        	common_linux_stage
+       	 	common_gcc_stage_make
+        	common_gcc_stage_install
+
+        	"${USELIBC}_stage"
+
+	The libc used will be set by the variable USELIBC. This complicates 
+	omnicross code, but allows for more robust tests to be inserted into the 
+	build system. In essence the structure or the program is unaffected by this
+	change and the early documentation above should still prove useful.
+
+	
+Notes on passing options to the build system: 
+	--disable-multilib
+		x86_64 will create a cross compiler with no options but fails to 
+		create more complex native packages in the final build stages unless
+		--disable-multilib is specified as MYCONF="--disable-multilib "
+
+
+Using the remastery script to build a bootable disk image:
+	After you have successfully created a destination target (probably named
+	libroot) it can easily be made bootable with the script remaster.sh.
+
+		sudo ../shbin/remaster.sh \
+		--backup \
+		--remaster \
+		--root=libroot \
+		--fs=ext2
+
+	This will result in the creation of a bootable binary disk image name 
+	"binary.img" which can be written to a USB or booted directly with a 
+	virtual machine:
+
+		sudo kvm binary.img 
+	
+
+Notes on efficacy: 
+	Newlib has minimal support for running on linux. However bare metal
+	support is well maintained by upstream. If you would like to try the 
+	bare-metal newlib support with omnicross run it with MYTARG="aarch64-elf".
+
+
+IRC / email:
+	Omnicross has a support channel on freenode #omnicross.
+	I can also be reached at cm0graff@gmail.com.
+
+
+
+TODO: 
+	linux support with clang
+	bsd support with gcc
+	bsd support with clang
+	
+
+References:
+	"Building Embedded Linux Systems", Karim Yaghmour
+
+
+Archived releases:
+	http://www.csit.parkland.edu/~cgraff1/omnicross-1.2.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/omnicross-1.1.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/omnicross-1.0.tar.gz 
+	http://www.csit.parkland.edu/~cgraff1//omnicross-1.3.tar.gz
+	http://www.csit.parkland.edu/~cgraff1//omnicross-1.4.tar.gz

@@ -1,0 +1,26 @@
+
+
+NetBSD compile kernel
+---------------------
+
+NetBSD 6.0 was installed with all options as defaults, and all distribution
+sets except for X.
+
+
+  ftp ftp://ftp.NetBSD.org/pub/NetBSD/NetBSD-6.0/source/sets/gnusrc.tgz
+  ftp ftp://ftp.NetBSD.org/pub/NetBSD/NetBSD-6.0/source/sets/syssrc.tgz
+  ftp ftp://ftp.NetBSD.org/pub/NetBSD/NetBSD-6.0/source/sets/src.tgz
+  ftp ftp://ftp.NetBSD.org/pub/NetBSD/NetBSD-6.0/source/sets/sharesrc.tgz
+  for i in *tgz
+  do tar -zxf $i -C /
+  done
+  mkdir /usr/obj
+  cd /usr/src
+  ./build.sh tools
+  cp /usr/src/sys/arch/i386/conf/GENERIC /usr/src/sys/arch/i386/conf/MY_KERNEL
+  ./build.sh  kernel=MY_KERNEL 
+
+  
+
+# (C) 2014 Documentation, cgraf
+

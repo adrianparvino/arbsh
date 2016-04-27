@@ -1,0 +1,50 @@
+sysmon
+
+sysmon is a system monitor based on top / htop
+
+sysmon is not really for everyday use, but instead was programmed
+to test grafos' ansicode.h screen drawing library.
+
+	Controls:
+
+		Up Arrow:	toggle process list up
+
+		Down Arrow:	toggle process list down
+
+		Ctrl-x:		quit
+
+		q		quit
+
+
+
+The output should look something like this: 
+
+	   ./sysmon
+
+		 CPU [||                                           ]
+		 0   [||||                                         ] UPTIME 0:21:27
+		 1   [                                             ] LOADAVG 0.01 0.05 0.05
+		 2   [|                                            ] TIME 06:48
+		 3   [|                                            ]
+		 MEM [||||||||                                     ]
+		 SWP [                                             ] 
+		 PID CPU% S #THR VSS RSS UID
+		   26   0%  S     0      0K root     bdi-default 
+		   27   0%  S     0      0K root     kintegrityd
+		   28   0%  S     0      0K root     kblockd
+		   31   0%  S     0      0K root     kworker/3:1
+		   32   0%  S     0      0K root     khungtaskd
+		   33   0%  S     0      0K root     kswapd0
+		   34   0%  S     0      0K root     ksmd
+		   35   0%  S     0      0K root     khugepaged
+		   36   0%  S     0      0K root     fsnotify_mark
+
+	  
+			....
+			....
+
+
+
+There are some aspirations to add native support for freebsd.
+
+

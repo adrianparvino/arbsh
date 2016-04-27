@@ -1,0 +1,11 @@
+--- copy.c	2016-04-22 14:05:27.014885055 -0500
++++ copy.c.orig	2016-04-22 14:03:45.738885164 -0500
+@@ -2981,7 +2981,7 @@
+ static bool
+ owner_failure_ok (struct cp_options const *x)
+ {
+-  return (errno == EOPNOTSUP || ((errno == EPERM || errno == EINVAL) && !x->owner_privileges));
++  return ((errno == EPERM || errno == EINVAL) && !x->owner_privileges);
+ }
+ 
+ /* Return the user's umask, caching the result.

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+_ARCHITECTURE="amd64"
+
+_RELEASE="squeeze"
+
+_TAR_BALL="/home/tarball_with_kernel_grub_exclude_aptitude.tar"
+
+_INCLUDES="\
+htop,\
+nmap,\
+busybox,\
+cryptsetup,\
+linux-image-2.6.32-5-amd64,\
+grub2"
+
+_EXCLUDES="\
+nano,\
+aptitude,\
+manpages"
+
+_CHROOT_DIR="/mnt/my_chrootlffnl"
+
+_MIRROR="http://cdn.debian.net/debian/"
+
+
+# Debootstrap into the chroot
+debootstrap                       \
+--arch "${_ARCHITECTURE}"         \
+--make-tarball="${_TAR_BALL}"     \
+--include="${_INCLUDES}"          \
+--exclude="${_EXCLUDES}"          \
+--verbose                         \
+"${_RELEASE}"                     \
+"${_CHROOT_DIR}"                  \
+"${_MIRROR}"
