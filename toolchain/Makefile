@@ -61,6 +61,7 @@ OM_BUSYBOX = busybox-1.21.1
 OM_DROPBEAR = dropbear-2015.67
 OM_ZLIB = zlib-1.2.8
 OM_PARTED = parted-3.1
+OM_PARTED_MRR = $(GENERIC_MRR)
 OM_E2FSPROGS = e2fsprogs-1.42.13
 OM_GRUB = grub-2.00
 OM_LINKS = links-2.9
@@ -745,7 +746,7 @@ populate:
 	@cd src && test -e $(OM_VIM).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_VIM).$(OM_SFX)
 	@cd src && test -e $(OM_DHCP).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_DHCP).$(OM_SFX)
 	@cd src && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_BUSYBOX).$(OM_SFX)
-	@cd src && test -e $(OM_PARTED).$(OM_SFX) || wget $(GNU_MRR)/parted/$(OM_PARTED).$(OM_SFX)
+	@cd src && test -e $(OM_PARTED).$(OM_SFX) || wget $(OM_PARTED_MRR)/$(OM_PARTED).$(OM_SFX)
 	@cd src && test -e $(OM_GRUB).$(OM_SFX) || wget $(GNU_MRR)/grub/$(OM_GRUB).$(OM_SFX)
 	@cd src && test -e $(OM_GDB).$(OM_SFX) || wget $(GNU_MRR)/gdb/$(OM_GDB).$(OM_SFX)
 	@cd src && test -e $(OM_PERL).$(OM_SFX) || wget $(OM_PERL_MRR)/$(OM_PERL).$(OM_SFX)
