@@ -801,7 +801,7 @@ populate:
 	@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(OM_NCURSES_MRR)/$(OM_NCURSES).$(OM_SFX)
 	#@cd src && test -e $(OM_PDKSH).$(OM_SFX) || wget $(OM_PDKSH_MRR)/$(OM_PDKSH).$(OM_SFX)
 	@cd src && test -e $(OM_PDCURSES).$(OM_SFX) || wget $(OM_PDCURSES_MRR)/$(OM_PDCURSES).$(OM_SFX)
-	@cd src && test -e $(OM_NETBSDCURSES).$(OM_SFX) || wget $(OM_NETBSDCURSES_MRR)/$(OM_NETBSDCURSES).$(OM_SFX)
+	#@cd src && test -e $(OM_NETBSDCURSES).$(OM_SFX) || wget $(OM_NETBSDCURSES_MRR)/$(OM_NETBSDCURSES).$(OM_SFX)
 	@cd src && test -e $(OM_SLIBTOOL).$(OM_SFX) || wget $(OM_SLIBTOOL_MRR)/$(OM_SLIBTOOL).$(OM_SFX)
 	@cd patches && test -e gcc-4.7.4-musl.diff || wget $(GENERIC_MRR)/gcc-4.7.4-musl.diff
 	@cd patches && test -e gcc-4.8.5-musl.diff || wget $(GENERIC_MRR)/gcc-4.8.5-musl.diff
