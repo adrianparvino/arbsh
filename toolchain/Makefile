@@ -663,9 +663,9 @@ endif
 
 gcc_target: install_path
 
-	#$(MAKE) -i gmp_host
-	#$(MAKE) -i mpfr_host
-	#$(MAKE) -i mpc_host
+	$(MAKE) -i gmp_host
+	$(MAKE) -i mpfr_host
+	$(MAKE) -i mpc_host
 
 	-$(MAKE) -i binutils_target
 	rm -rf $(OM_GCC) $(OM_GCC)-build-target
@@ -902,16 +902,16 @@ test:
 
 compiler:
 
-	$(MAKE) -i gcc_target
-	$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
+	-$(MAKE) -i gcc_target
+	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
 
 ministrap:
 
-	$(MAKE) -i linux_target
-	$(MAKE) -i busybox_target
-	$(MAKE) -i strace_target
-	$(MAKE) -i gcc_target
-	$(MAKE) -C ../shbin
+	-$(MAKE) -i linux_target
+	-$(MAKE) -i busybox_target
+	-$(MAKE) -i strace_target
+	-$(MAKE) -i gcc_target
+	-$(MAKE) -C ../shbin
 	-cp -r ../cbin $(OM_LIBROOT)
 
 	sudo ../shbin/remaster --test --backup --remaster --root=$(OM_LIBROOT)
