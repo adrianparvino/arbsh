@@ -51,6 +51,7 @@ OM_PDCURSES_MRR = https://sourceforge.net/projects/pdcurses/files/pdcurses/3.4/
 OM_HTOP = htop-2.0.1
 OM_HTOP_MRR = https://hisham.hm/htop/releases/2.0.1/
 OM_COREUTILS = coreutils-8.25
+OM_COREUTILS_MRR = https://ftp.gnu.org/gnu/coreutils/
 OM_VIM = vim-7.3.547
 OM_UTILLINUX = util-linux-2.26.2
 OM_DHCP = dhcp-4.1-ESV-R11
@@ -740,7 +741,7 @@ populate:
 	@cd src && test -e $(OM_BINUTILS).$(OM_SFX) || wget $(GNU_MRR)/binutils/$(OM_BINUTILS).$(OM_SFX)
 	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_NCURSES).$(OM_SFX)
 	@cd src && test -e $(OM_HTOP).$(OM_SFX) || wget $(OM_HTOP_MRR)/$(OM_HTOP).$(OM_SFX)
-	@cd src && test -e $(OM_COREUTILS).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_COREUTILS).$(OM_SFX)
+	@cd src && test -e $(OM_COREUTILS).$(OM_SFX) || wget $(OM_COREUTILS_MRR)/$(OM_COREUTILS).$(OM_SFX)
 	@cd src && test -e $(OM_VIM).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_VIM).$(OM_SFX)
 	@cd src && test -e $(OM_DHCP).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_DHCP).$(OM_SFX)
 	@cd src && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_BUSYBOX).$(OM_SFX)
