@@ -1,0 +1,11 @@
+
+[ -e ~/.bashrc ] && . ~/.bashrc 
+
+if [ ! -e /etc/firstrun.stamp ]
+then echo "Change the passwords for root and liveuser"
+     echo "restart the dropbear ssh server. '/etc/rc.d/dropbear restart' "
+     echo
+     touch /etc/firstrun.stamp
+fi
+
+
