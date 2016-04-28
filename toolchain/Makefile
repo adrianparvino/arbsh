@@ -730,7 +730,7 @@ populate:
 	-@mkdir -p $(SPWD)/patches/
 	
 	
-	@cd src && test -e $(OM_GLIBC).$(OM_SFX) || wget $(GNU_MRR)/$(OM_GLIBC).$(OM_SFX)
+	@cd src && test -e $(OM_GLIBC).$(OM_SFX) || wget $(GNU_MRR)/glibc/$(OM_GLIBC).$(OM_SFX)
 	@cd src && test -e $(OM_LINUX).$(OM_SFX) || wget $(KERNEL_MRR)/$(OM_LINUX).$(OM_SFX)
 	@cd src && test -e $(OM_GMP).$(OM_SFX) || wget $(GNU_MRR)/gmp/$(OM_GMP).$(OM_SFX)
 	@cd src && test -e $(OM_MPFR).$(OM_SFX) || wget $(GNU_MRR)/mpfr/$(OM_MPFR).$(OM_SFX)
