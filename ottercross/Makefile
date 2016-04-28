@@ -79,10 +79,22 @@ GLIBC_KRING = ftp://ftp.gnu.org/gnu/gnu-keyring.gpg
 GLIBC_SIG = $(GLIBC).$(ARCHIVE).$(XZ).sig
 
 # mpc
+MPC = mpc-1.0.2
+MPC_MRR = https://ftp.gnu.org/gnu/mpc
+MPC_KRING = ftp://ftp.gnu.org/gnu/gnu-keyring.gpg
+MPC_SIG = $(MPC).$(ARCHIVE).$(XZ).sig
 
 # gmp
+GMP = gmp-5.1.3
+GMP_MRR = https://ftp.gnu.org/gnu/gmp/
+GMP_KRING = ftp://ftp.gnu.org/gnu/gnu-keyring.gpg
+GMP_SIG = $(GMP).$(ARCHIVE).$(XZ).sig
 
 # mpfr
+MPFR = mpfr-3.1.2
+MPFR_MRR = https://ftp.gnu.org/gnu/mpfr/
+MPFR_KRING = ftp://ftp.gnu.org/gnu/gnu-keyring.gpg
+MPFR_SIG = $(MPFR).$(ARCHIVE).$(XZ).sig
 
 # Languages to build (c, c++, fortran, ada and etc.)
 LANGS = c,c++
@@ -419,3 +431,77 @@ cleanhard:
 	-@rm -rf $(LOGDIR)
 
 
+gmp_host: install_path 
+
+	-cd $(SPWD)/$(GMP) && $(BUILDENVVARS) $(SPWD)/$(GMP)/configure \
+	--prefix=$(PREF)/$(TARG) \
+	--host=$(SUBTARG)
+	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(GMP)
+	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(GMP) install
+
+mpc_host: install_path
+
+	-cd $(SPWD)/$(MPC) && $(BUILDENVVARS) $(SPWD)/$(MPC)/configure \
+	--prefix=$(PREF)/$(TARG) \
+	--host=$(SUBTARG)
+	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(MPC)
+	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(MPC) install
+
+mpfr_host: install_path
+       
+	-cd $(SPWD)/$(MPFR) && $(BUILDENVVARS) $(SPWD)/$(MPFR)/configure \
+	--prefix=$(PREF)/$(TARG) \
+	--host=$(SUBTARG)
+	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(MPFR)
+	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(MPFR) install
+
+binutils_target: install_path
+
+	mkdir -p $(BINUTILS)-build-target
+	
+	-cd $(SPWD)/$(BINUTILS)-build-target && $(BUILDENVVARS) $(SPWD)/$(BINUTILS)/configure \
+	--prefix=$(LIBROOT) \
+	--host=$(TARG) \
+	--disable-werror
+	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(BINUTILS)-build-target
+	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(BINUTILS)-build-target install
+
+mpc_retrieve:
+
+	-@mkdir -p $(WORK)
+
+	-@cd $(SRC) && test -e $(MPC).$(ARCHIVE).$(XZ) || \
+		wget $(MPC_MRR)/$(MPC).$(ARCHIVE).$(XZ)
+	-@cd $(SRC) && test -e $(MPC_SIG) || \
+		wget $(MPC_MRR)/$(MPC_SIG)
+	-@cd $(SRC) && test -e ring || wget $(MPC_KRING) -O ring
+	-@cd $(SRC) && gpg --verify --keyring ./ring  \
+		$(MPC_SIG) $(MPC).$(ARCHIVE).$(XZ)
+	-@cd $(WORK) && test -e $(MPC) || \
+		$(XZTOOL) $(SRC)/$(MPC).$(ARCHIVE).$(XZ) | $(ARCHIVETOOL)
+gmp_retrieve:
+
+	-@mkdir -p $(WORK)
+
+	-@cd $(SRC) && test -e $(GMP).$(ARCHIVE).$(XZ) || \
+		wget $(GMP_MRR)/$(GMP).$(ARCHIVE).$(XZ)
+	-@cd $(SRC) && test -e $(GMP_SIG) || \
+		wget $(GMP_MRR)/$(GMP_SIG)
+	-@cd $(SRC) && test -e ring || wget $(GMP_KRING) -O ring
+	-@cd $(SRC) && gpg --verify --keyring ./ring  \
+		$(GMP_SIG) $(GMP).$(ARCHIVE).$(XZ)
+	-@cd $(WORK) && test -e $(GMP) || \
+		$(XZTOOL) $(SRC)/$(GMP).$(ARCHIVE).$(XZ) | $(ARCHIVETOOL)
+mpfr_retrieve:
+
+	-@mkdir -p $(WORK)
+
+	-@cd $(SRC) && test -e $(MPFR).$(ARCHIVE).$(XZ) || \
+		wget $(MPFR_MRR)/$(MPFR).$(ARCHIVE).$(XZ)
+	-@cd $(SRC) && test -e $(MPFR_SIG) || \
+		wget $(MPFR_MRR)/$(MPFR_SIG)
+	-@cd $(SRC) && test -e ring || wget $(MPFR_KRING) -O ring
+	-@cd $(SRC) && gpg --verify --keyring ./ring  \
+		$(MPFR_SIG) $(MPFR).$(ARCHIVE).$(XZ)
+	-@cd $(WORK) && test -e $(MPFR) || \
+		$(XZTOOL) $(SRC)/$(MPFR).$(ARCHIVE).$(XZ) | $(ARCHIVETOOL)
