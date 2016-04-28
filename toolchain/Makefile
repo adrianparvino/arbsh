@@ -6,11 +6,11 @@ MAKEINFO = false
 TEXINFO = false
 OM_PACK = $(shell echo $(pack) | dd conv=ucase)
 OM_ARCH = i686
-OM_SUBTARG = i686
+OM_SUBTARG = $(OM_ARCH)
 KBUILDAREA = $(shell pwd)/kernel
 OM_TUPLEPRSFX = -pc-linux-
 OM_LIBC = musl
-OM_TARG = i686-pc-linux-musl
+OM_TARG = $(OM_ARCH)-pc-linux-musl
 OM_CONF =
 OM_LINUXARCH = x86
 OM_BACKWARDCOMPAT = i386
