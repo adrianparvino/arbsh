@@ -78,6 +78,12 @@ GLIBC_MRR = https://ftp.gnu.org/gnu/glibc/
 GLIBC_KRING = ftp://ftp.gnu.org/gnu/gnu-keyring.gpg
 GLIBC_SIG = $(GLIBC).$(ARCHIVE).$(XZ).sig
 
+# mpc
+
+# gmp
+
+# mpfr
+
 # Languages to build (c, c++, fortran, ada and etc.)
 LANGS = c,c++
 
