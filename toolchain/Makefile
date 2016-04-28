@@ -9,8 +9,8 @@ OM_ARCH = i686
 OM_SUBTARG = $(OM_ARCH)
 KBUILDAREA = $(shell pwd)/kernel
 OM_TUPLEPRSFX = -pc-linux-
-OM_LIBC = musl
-OM_TARG = $(OM_ARCH)-pc-linux-musl
+OM_LIBC = gnu
+OM_TARG = $(OM_ARCH)-pc-linux-$(OM_LIBC)
 OM_CONF =
 OM_LINUXARCH = x86
 OM_BACKWARDCOMPAT = i386
@@ -625,6 +625,7 @@ binutils_target: install_path
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_BINUTILS)-build-target
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_BINUTILS)-build-target install
 
+
 working_gcc_target: install_path
 
 	-$(MAKE) -i binutils_target
@@ -659,6 +660,48 @@ endif
 
 	-mkdir -p $(OM_LIBROOT)/lib/gcc/$(OM_TARG)/4.9.2/
 	cp $(OM_PREF)/lib/gcc/$(OM_TARG)/4.9.2/* $(OM_LIBROOT)/lib/gcc/$(OM_TARG)/4.9.2/
+
+
+gnu_gcc_target: install_path
+
+	$(MAKE) -i gmp_host
+	$(MAKE) -i mpfr_host
+	$(MAKE) -i mpc_host
+	-$(MAKE) -i binutils_target
+
+	rm -rf $(OM_GCC) $(OM_GCC)-build-target
+	mkdir -p $(OM_GCC)-build-target
+	@tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
+
+ifeq ($(OM_LIBC),musl)
+	-@cd $(SPWD)/$(OM_GCC) && patch -p1 < $(SPWD)/patches/$(OM_GCC)-musl.diff
+endif
+
+	-cd $(SPWD)/$(OM_GCC)-build-target && $(INACROSS) $(SPWD)/$(OM_GCC)/configure \
+	--prefix=$(OM_LIBROOT) \
+	--enable-languages=c \
+	--disable-libssp \
+	--disable-nls \
+	--disable-libquadmath \
+	--disable-threads \
+	--disable-decimal-float \
+	--disable-shared \
+	--disable-libmudflap \
+	--disable-libgomp \
+	--disable-libatomic \
+	--disable-werror \
+	--host=$(OM_TARG) \
+	--target=$(OM_TARG)
+
+	-CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" $(INACROSS) $(MAKE) -i -C $(SPWD)/$(OM_GCC)-build-target
+
+	-CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" $(INACROSS) $(MAKE) -i -C $(SPWD)/$(OM_GCC)-build-target install
+
+	-$(INACROSS) $(MAKE) -i -C $(SPWD)/$(OM_GCC)-build-target install DESTDIR=$(OM_LIBROOT)
+	cp $(OM_PREF)/lib/gcc/$(OM_TARG)/4.9.2/* $(OM_LIBROOT)/lib/gcc/$(OM_TARG)/4.9.2/
+
+	#-mkdir -p $(OM_LIBROOT)/lib/gcc/$(OM_TARG)/4.9.2/
+	#cp $(OM_PREF)/lib/gcc/$(OM_TARG)/4.9.2/* $(OM_LIBROOT)/lib/gcc/$(OM_TARG)/4.9.2/
 
 
 gcc_target: install_path
@@ -903,6 +946,11 @@ test:
 compiler:
 
 	-$(MAKE) -i gcc_target
+	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
+
+gnu_compiler:
+
+	-$(MAKE) -i gnu_gcc_target
 	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
 
 ministrap:
