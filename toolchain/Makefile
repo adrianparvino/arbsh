@@ -799,7 +799,7 @@ populate:
 	@cd src && test -e $(OM_GPTFDISK).$(OM_SFX) || wget $(OM_GPTFDISK_MRR)/$(OM_GPTFDISK).$(OM_SFX)
 	@cd src && test -e $(OM_POPT).$(OM_SFX) || wget $(OM_POPT_MRR)/$(OM_POPT).$(OM_SFX)
 	@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(OM_NCURSES_MRR)/$(OM_NCURSES).$(OM_SFX)
-	@cd src && test -e $(OM_PDKSH).$(OM_SFX) || wget $(OM_PDKSH_MRR)/$(OM_PDKSH).$(OM_SFX)
+	#@cd src && test -e $(OM_PDKSH).$(OM_SFX) || wget $(OM_PDKSH_MRR)/$(OM_PDKSH).$(OM_SFX)
 	@cd src && test -e $(OM_PDCURSES).$(OM_SFX) || wget $(OM_PDCURSES_MRR)/$(OM_PDCURSES).$(OM_SFX)
 	@cd src && test -e $(OM_NETBSDCURSES).$(OM_SFX) || wget $(OM_NETBSDCURSES_MRR)/$(OM_NETBSDCURSES).$(OM_SFX)
 	@cd src && test -e $(OM_SLIBTOOL).$(OM_SFX) || wget $(OM_SLIBTOOL_MRR)/$(OM_SLIBTOOL).$(OM_SFX)
