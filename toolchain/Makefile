@@ -48,7 +48,8 @@ OM_NETBSDCURSES = netbsd-curses-0.0.2
 OM_NETBSDCURSES_MRR = http://www.csit.parkland.edu/~cgraff1/src/
 OM_PDCURSES = PDCurses-3.4
 OM_PDCURSES_MRR = https://sourceforge.net/projects/pdcurses/files/pdcurses/3.4/
-OM_HTOP = htop-1.0.3
+OM_HTOP = htop-2.0.1
+OM_HTOP_MRR = https://hisham.hm/htop/releases/2.0.1/htop-2.0.1
 OM_COREUTILS = coreutils-8.25
 OM_VIM = vim-7.3.547
 OM_UTILLINUX = util-linux-2.26.2
@@ -738,7 +739,7 @@ populate:
 	@cd src && test -e $(OM_GCC).$(OM_SFX) || wget $(GNU_MRR)/gcc/$(OM_GCC)/$(OM_GCC).$(OM_SFX)
 	@cd src && test -e $(OM_BINUTILS).$(OM_SFX) || wget $(GNU_MRR)/binutils/$(OM_BINUTILS).$(OM_SFX)
 	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_NCURSES).$(OM_SFX)
-	@cd src && test -e $(OM_HTOP).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_HTOP).$(OM_SFX)
+	@cd src && test -e $(OM_HTOP).$(OM_SFX) || wget $(OM_HTOP_MRR)/$(OM_HTOP).$(OM_SFX)
 	@cd src && test -e $(OM_COREUTILS).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_COREUTILS).$(OM_SFX)
 	@cd src && test -e $(OM_VIM).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_VIM).$(OM_SFX)
 	@cd src && test -e $(OM_DHCP).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_DHCP).$(OM_SFX)
@@ -795,7 +796,7 @@ populate:
 	@cd src && test -e $(OM_XZ).$(OM_SFX) || wget $(OM_XZ_MRR)/$(OM_XZ).$(OM_SFX)
 	@cd src && test -e $(OM_GPTFDISK).$(OM_SFX) || wget $(OM_GPTFDISK_MRR)/$(OM_GPTFDISK).$(OM_SFX)
 	@cd src && test -e $(OM_POPT).$(OM_SFX) || wget $(OM_POPT_MRR)/$(OM_POPT).$(OM_SFX)
-	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(OM_NCURSES_MRR)/$(OM_NCURSES).$(OM_SFX)
+	@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(OM_NCURSES_MRR)/$(OM_NCURSES).$(OM_SFX)
 	@cd src && test -e $(OM_PDKSH).$(OM_SFX) || wget $(OM_PDKSH_MRR)/$(OM_PDKSH).$(OM_SFX)
 	@cd src && test -e $(OM_PDCURSES).$(OM_SFX) || wget $(OM_PDCURSES_MRR)/$(OM_PDCURSES).$(OM_SFX)
 	@cd src && test -e $(OM_NETBSDCURSES).$(OM_SFX) || wget $(OM_NETBSDCURSES_MRR)/$(OM_NETBSDCURSES).$(OM_SFX)
