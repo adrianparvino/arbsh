@@ -1,4 +1,6 @@
-# musl cross compiler, 2 stages, relocatable toolchain, in tree binutils
+# Musl otter cross (MOC)
+# Musl/gcc cross compiler, 2 stages, combined tree, relocatable toolchain, 
+# Written by CM Graff in April of 2016
 
 export MAKEINFO = false
 XZ = gz 
@@ -204,16 +206,6 @@ cleanall:
 
 	-$(RM) -rf $(WORK)
 	-$(RM) -rf $(PREF)
-
-log:
-
-	-git clone https://github.com/cmgraff/0 ../logs
-	-cd ../logs && git pull
-	-cd ../logs && ./makeuniqdir $(LOGDIR)/*
-	-cd ../logs && git add *
-	-cd ../logs && git commit -m "$(LOGDIR)"
-	-cd ../logs && git push origin master
-	
 
 retrieve_mcm_patches:
 
