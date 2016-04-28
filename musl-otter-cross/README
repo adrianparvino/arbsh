@@ -1,14 +1,12 @@
-# Otter Musl Cross (OMC)
+# Musl Otter Cross (MOC)
 # Musl based cross compiler, 2 stages, relocatable toolchain, in tree binutils.
 
 Using gcc-5.3, binutils-2.6 and musl-1.14 (current releases as of
-15/04/2016). At this time however musl-otter-cross is syncing with mcm
-and is using gcc-5.2.0 with binutils-2.25.1.
+15/04/2016).
 
 Musl-otter-cross uses a "two stage" system to create a cross compiler.
 Gcc, musl and binutils are built using "read only source", (they are
 configured and built in an outside directory).
-
 
 The gcc build system is directory based / driven. Musl-otter-cross takes
 advantage of this in (2) ways;
@@ -67,18 +65,6 @@ There are (4) tests:
 Tests are recorded in a report which is named "machtype-report", where 
 'machtype' is the host tuplet. The passing languages are also recorded in 
 the report.
-
-
-Musl-otter-cross has builtin support for staged logs and tests (an auto-
-builder). All stages of a musl-otter-cross build are automatically logged
-in such staged logs. These logs are given a UUID build number and recorded
-along with a copy of the makefile which generated them here:
-
-	https://github.com/cmgraff/0
-
-The autobuilder attempts to push and pull from this site. If you do not
-wish to contribute logs to musl-otter-cross, disable this section in the
-"universe" target of the build's makefile.
 
 
 BUILDING:
