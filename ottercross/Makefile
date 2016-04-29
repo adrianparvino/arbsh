@@ -433,38 +433,38 @@ cleanhard:
 
 gmp_host: install_path 
 
-	-cd $(SPWD)/$(GMP) && $(BUILDENVVARS) $(SPWD)/$(GMP)/configure \
+	-cd $(WORK)/$(GMP) && $(BUILDENVVARS) $(WORK)/$(GMP)/configure \
 	--prefix=$(PREF)/$(TARG) \
 	--host=$(SUBTARG)
-	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(GMP)
-	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(GMP) install
+	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(GMP)
+	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(GMP) install
 
 mpc_host: install_path
 
-	-cd $(SPWD)/$(MPC) && $(BUILDENVVARS) $(SPWD)/$(MPC)/configure \
+	-cd $(WORK)/$(MPC) && $(BUILDENVVARS) $(WORK)/$(MPC)/configure \
 	--prefix=$(PREF)/$(TARG) \
 	--host=$(SUBTARG)
-	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(MPC)
-	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(MPC) install
+	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPC)
+	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPC) install
 
 mpfr_host: install_path
        
-	-cd $(SPWD)/$(MPFR) && $(BUILDENVVARS) $(SPWD)/$(MPFR)/configure \
+	-cd $(WORK)/$(MPFR) && $(BUILDENVVARS) $(WORK)/$(MPFR)/configure \
 	--prefix=$(PREF)/$(TARG) \
 	--host=$(SUBTARG)
-	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(MPFR)
-	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(MPFR) install
+	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPFR)
+	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPFR) install
 
 binutils_target: install_path
 
-	mkdir -p $(BINUTILS)-build-target
+	mkdir -p $(WORK)/$(BINUTILS)-build-target
 	
-	-cd $(SPWD)/$(BINUTILS)-build-target && $(BUILDENVVARS) $(SPWD)/$(BINUTILS)/configure \
+	-cd $(WORK)/$(BINUTILS)-build-target && $(BUILDENVVARS) $(WORK)/$(BINUTILS)/configure \
 	--prefix=$(LIBROOT) \
 	--host=$(TARG) \
 	--disable-werror
-	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(BINUTILS)-build-target
-	-$(BUILDENVVARS) $(MAKE) -C $(SPWD)/$(BINUTILS)-build-target install
+	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(BINUTILS)-build-target
+	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(BINUTILS)-build-target install
 
 mpc_retrieve:
 
