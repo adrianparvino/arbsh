@@ -9,14 +9,14 @@ OM_ARCH = i686
 OM_SUBTARG = $(OM_ARCH)
 KBUILDAREA = $(shell pwd)/kernel
 OM_TUPLEPRSFX = -pc-linux-
-OM_LIBC = gnu
+OM_LIBC = musl
 OM_TARG = $(OM_ARCH)-pc-linux-$(OM_LIBC)
 OM_CONF =
 OM_LINUXARCH = x86
 OM_BACKWARDCOMPAT = i386
 OM_HOST = $(shell uname -m)
 SPWD = $(shell pwd)
-OM_PREF = $(SPWD)/toolchain/
+OM_PREF = $(SPWD)/$(OM_TARG)-toolchain
 OM_SRC = $(SPWD)/src
 OM_PATCH = $(SPWD)/patches
 OM_SFX = tar.gz
@@ -947,6 +947,16 @@ compiler:
 
 	-$(MAKE) -i gcc_target
 	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
+
+test_compiler:
+
+	-$(MAKE) -i ../shbin
+	../sbin/remaster --backup --archive=cpio --root=$(OM_LIBROOT)
+
+	qemu-system-$(OM_SUBTARG) \
+	-kernel $(OM_LIBROOT)/boot/vmlinuz \
+	-initrd backup.cpio.gz \
+	-append "root=/dev/ram rdinit=/bin/sh"
 
 gnu_compiler:
 
