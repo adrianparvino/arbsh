@@ -24,7 +24,7 @@ SYSLINUX="0"
 TARBALL="${NAME}.${ARCV}.${SUFX}" 
 BOOTLOADER="syslinux" 
 QUICKTEST="0"
-TOOLS="du dd parted losetup "
+TOOLS="du dd losetup "
 
 # functions
 unmount()
