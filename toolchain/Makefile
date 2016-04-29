@@ -958,7 +958,7 @@ compiler:
 
 	-../shbin/remaster --backup --archive=cpio --root=$(OM_LIBROOT)
 
-test_compiler2:
+
 	qemu-system-i386 -m 700 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-initrd backup.cpio.gz \
