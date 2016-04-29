@@ -954,10 +954,10 @@ compiler:
 	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
 	-cp -r ../cbin $(OM_LIBROOT)
 	-cp -r ../clib $(OM_LIBROOT)
-	-$(MAKE) -i ../shbin
+	
 
-
-	-../shbin/remaster --backup --archive=cpio --root=$(OM_LIBROOT)
+	chmod +x ../shbin/remaster.sh
+	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
 
 
 	qemu-system-i386 -m 700 -curses \
