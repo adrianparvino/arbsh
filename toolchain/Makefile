@@ -5,15 +5,15 @@ STAGE0OPT = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 MAKEINFO = false
 TEXINFO = false
 OM_PACK = $(shell echo $(pack) | dd conv=ucase)
-OM_ARCH = i686
+OM_ARCH = aarch64
 OM_SUBTARG = $(OM_ARCH)
 KBUILDAREA = $(shell pwd)/kernel
 OM_TUPLEPRSFX = -pc-linux-
 OM_LIBC = musl
 OM_TARG = $(OM_ARCH)-pc-linux-$(OM_LIBC)
 OM_CONF =
-OM_LINUXARCH = x86
-OM_BACKWARDCOMPAT = i386
+OM_LINUXARCH = arm64
+OM_BACKWARDCOMPAT = arm64
 OM_HOST = $(shell uname -m)
 SPWD = $(shell pwd)
 OM_PREF = $(SPWD)/$(OM_TARG)-toolchain
@@ -523,7 +523,7 @@ linux_target: install_path
 	KCONFIG_CONFIG=$(KBUILDAREA)/.config \
 	O=$(KBUILDAREA)
 
-	
+
 	-$(MAKE) -C $(SPWD)/$(OM_LINUX) \
 	INSTALL_PATH=$(OM_LIBROOT)/boot \
 	install ARCH=$(OM_LINUXARCH) \
@@ -960,10 +960,32 @@ compiler:
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
 
 
+
+
 	qemu-system-i386 -m 700 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-initrd backup.cpio.gz \
 	-append "root=/dev/ram rdinit=/bin/sh"
+
+test_compiler:
+
+	qemu-system-arm -M versatilepb -m 700 -curses \
+	-kernel $(OM_LIBROOT)/boot/vmlinuz \
+	-initrd backup.cpio.gz \
+	-append "root=/dev/ram rdinit=/bin/sh"
+
+test_aarch64:
+
+	-qemu-system-aarch64 \
+	-machine virt \
+	-cpu cortex-a57 \
+	-machine type=virt \
+	-nographic -smp 1 \
+	-m 2048 \
+	-kernel libroot/boot/vmlinuz \
+	-initrd backup.cpio.gz \
+	-append "root=/dev/ram rdinit=/bin/sh console=ttyAMA0"
+
 
 gnu_compiler:
 
