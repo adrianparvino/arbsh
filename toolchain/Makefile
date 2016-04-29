@@ -947,13 +947,19 @@ compiler:
 
 	-$(MAKE) -i gcc_target
 	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
-
-test_compiler:
-
+	-$(MAKE) -i gcc_target
+	-$(MAKE) -i linux_target
+	-$(MAKE) -i busybox_target
+	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
+	-cp -r ../cbin $(OM_LIBROOT)
+	-cp -r ../clib $(OM_LIBROOT)
 	-$(MAKE) -i ../shbin
-	../sbin/remaster --backup --archive=cpio --root=$(OM_LIBROOT)
 
-	qemu-system-$(OM_SUBTARG) \
+
+	-../shbin/remaster --backup --archive=cpio --root=$(OM_LIBROOT)
+
+test_compiler2:
+	qemu-system-i386 -m 700 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-initrd backup.cpio.gz \
 	-append "root=/dev/ram rdinit=/bin/sh"
