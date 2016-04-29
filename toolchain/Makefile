@@ -192,7 +192,7 @@ OM_OPENSSL_CROSS_ENV = \
 
 all:
 
-	#$(MAKE) -i populate
+	$(MAKE) -i populate
 	$(MAKE) install_path
 	$(MAKE) binutils_stage_make
 	$(MAKE) binutils_stage_install
@@ -883,7 +883,7 @@ populate:
 	@cd src && test -e $(OM_PDCURSES).$(OM_SFX) || wget $(OM_PDCURSES_MRR)/$(OM_PDCURSES).$(OM_SFX)
 	#@cd src && test -e $(OM_NETBSDCURSES).$(OM_SFX) || wget $(OM_NETBSDCURSES_MRR)/$(OM_NETBSDCURSES).$(OM_SFX)
 	#@cd src && test -e $(OM_SLIBTOOL).$(OM_SFX) || wget $(OM_SLIBTOOL_MRR)/$(OM_SLIBTOOL).$(OM_SFX)
-	@cd patches && test -e omnicross-busybox-minimal.1 wget $(GENERIC_MRR)/omnicross-busybox-minimal.1
+	@cd src && test -e omnicross-busybox-minimal.1 || wget $(GENERIC_MRR)/omnicross-busybox-minimal.1
 	@cd patches && test -e gcc-4.7.4-musl.diff || wget $(GENERIC_MRR)/gcc-4.7.4-musl.diff
 	@cd patches && test -e gcc-4.8.5-musl.diff || wget $(GENERIC_MRR)/gcc-4.8.5-musl.diff
 	@cd patches && test -e gcc-4.9.2-musl.diff || wget $(GENERIC_MRR)/gcc-4.9.2-musl.diff
