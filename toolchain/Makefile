@@ -5,23 +5,25 @@ STAGE0OPT = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 MAKEINFO = false
 TEXINFO = false
 OM_PACK = $(shell echo $(pack) | dd conv=ucase)
-OM_ARCH = aarch64
+OM_ARCH = i686
 OM_SUBTARG = $(OM_ARCH)
 KBUILDAREA = $(shell pwd)/kernel
 OM_TUPLEPRSFX = -pc-linux-
 OM_LIBC = musl
 OM_TARG = $(OM_ARCH)-pc-linux-$(OM_LIBC)
 OM_CONF =
-OM_LINUXARCH = arm64
-OM_BACKWARDCOMPAT = arm64
+OM_LINUXARCH = x86
+OM_BACKWARDCOMPAT = i386
 OM_HOST = $(shell uname -m)
 SPWD = $(shell pwd)
 OM_PREF = $(SPWD)/$(OM_TARG)-toolchain
 OM_SRC = $(SPWD)/src
 OM_PATCH = $(SPWD)/patches
 OM_SFX = tar.gz
-OM_BINUTILS = binutils-2.25
-OM_GCC = gcc-4.9.2
+#OM_BINUTILS = binutils-2.25
+OM_BINUTILS = binutils-2.26
+#OM_GCC = gcc-4.9.2
+OM_GCC = gcc-5.3.0
 OM_GCCV = 4.9.2
 OM_GMP = gmp-5.1.3
 OM_MPC = mpc-1.0.2
@@ -947,22 +949,16 @@ test:
 compiler:
 
 	-$(MAKE) -i gcc_target
-	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
-	-$(MAKE) -i gcc_target
 	-$(MAKE) -i linux_target
 	-$(MAKE) -i busybox_target
 	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
 	-cp -r ../cbin $(OM_LIBROOT)
 	-cp -r ../clib $(OM_LIBROOT)
-	
 
 	chmod +x ../shbin/remaster.sh
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
 
-
-
-
-	qemu-system-i386 -m 700 -curses \
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 700 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-initrd backup.cpio.gz \
 	-append "root=/dev/ram rdinit=/bin/sh"
