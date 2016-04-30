@@ -20,6 +20,16 @@ FEATURES:
 	Multiple C library vendors are supported:
 		(Musl, glibc and uClibc)
 
+	Root filesystems created without special permissions.
+		(rootfs.cpio.gz fascilitate remote testing with qemu).
+
+	20 host libraries.
+		(ncurses, openssl, libffi and etc)
+	
+	50 target packages.
+		(bash, htop, vim, busybox and etc)
+	
+
 
 
 EXTERNAL USAGE:
