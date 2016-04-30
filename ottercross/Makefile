@@ -568,8 +568,8 @@ endif
 install_libc: install_path
 
 	-@mkdir -p $(DESTDIR)/
-ifeq ($(WEDNOR),musl)
-	$(MAKE) -C $(WORK)/$(MUSL) install
+ifeq ($(VENDOR),musl)
+	$(MAKE) -C $(WORK)/$(MUSL) install DESTDIR=$(LIBROOT)
 endif
 ifeq ($(VENDOR),uclibc)
 	$(MAKE) -C $(WORK)/$(UCLIBC) \
