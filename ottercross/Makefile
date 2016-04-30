@@ -520,22 +520,22 @@ gcc_target: install_path
 
 	-$(MAKE) -i binutils_target
 	rm -rf $(GCC) $(GCC)-build-target
-	mkdir -p $(GCC)-build-target
-	@tar -xf $(SRC)/$(GCC).$(ARCHIVE).$(XZ) -C $(SPWD)
+	mkdir -p $(WORK)/$(GCC)-build-target
+	@tar -xf $(SRC)/$(GCC).$(ARCHIVE).$(XZ) -C $(WORK)
 
 ifeq ($(VENDOR),musl)
-	-@cd $(SPWD)/$(GCC) && patch -p1 < $(SPWD)/patches/$(GCC)-musl.diff
+	-@cd $(WORK)/$(GCC) && patch -p1 < $(SPWD)/patches/$(GCC)-musl.diff
 endif
 
-	-cd $(SPWD)/$(GCC)-build-target && $(BUILDENVVARS) $(SPWD)/$(GCC)/configure \
+	-cd $(WORK)/$(GCC)-build-target && $(BUILDENVVARS) $(WORK)/$(GCC)/configure \
 	--prefix=$(LIBROOT) \
 	--enable-languages=c,c++ \
 	--disable-libssp \
 	--host=$(TARG) \
 	--target=$(TARG)
 
-	-CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" $(BUILDENVVARS) $(MAKE) -i -C $(SPWD)/$(GCC)-build-target
+	-CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" $(BUILDENVVARS) $(MAKE) -i -C $(WORK)/$(GCC)-build-target
 
-	-$(BUILDENVVARS) $(MAKE) -i -C $(SPWD)/$(GCC)-build-target install
-	-$(BUILDENVVARS) $(MAKE) -i -C $(SPWD)/$(GCC)-build-target install DESTDIR=$(LIBROOT)
+	-$(BUILDENVVARS) $(MAKE) -i -C $(WORK)/$(GCC)-build-target install
+	-$(BUILDENVVARS) $(MAKE) -i -C $(WORK)/$(GCC)-build-target install DESTDIR=$(LIBROOT)
 
