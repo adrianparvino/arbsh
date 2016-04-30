@@ -29,9 +29,6 @@ FEATURES:
 
 	Automatically logged stages.
 		(Logs for bug reports are always present and organized.)
-
-	Parallel batch mode.
-		(Multiple targets can be built at the same time.)
 		
 USAGE:
 ------
