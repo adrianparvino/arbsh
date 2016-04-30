@@ -13,14 +13,13 @@ FEATURES:
 	
 
 	Compilers on targets.
-		(Gcc can be installed into the into the final build!)
-		(A built root can build roots)
+		(Gcc can be installed into the final build!)
 
 	Supports 3 linux libc.
 		(Musl, glibc and uClibc/uClibc-ng.)
 
 	Gpg signature checking.
-		(Many tiny build systems don't have this!)
+		(Stronger security than most small build systems.)
 
 	Cross compiling is the default build type.
 		(Like in netbsd, all builds are cross builds.)
@@ -31,7 +30,9 @@ FEATURES:
 	Automatically logged stages.
 		(Logs for bug reports are always present and organized.)
 
-
+	Parallel batch mode.
+		(Multiple targets can be built at the same time.)
+		
 USAGE:
 ------
 	Build a toolchain;
