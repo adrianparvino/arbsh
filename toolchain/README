@@ -11,6 +11,17 @@ INSTALLATION:
 
 		make install DESTDIR=/full/path/ 
 
+FEATURES:
+---------
+
+	Gcc on target.
+		(cross built as a target package).
+
+	Multiple C library vendors are supported:
+		(Musl, glibc and uClibc)
+
+
+
 EXTERNAL USAGE:
 ---------------
 
@@ -32,11 +43,11 @@ EXTERNAL USAGE:
 DESCRIPTION:
 ------------
 
-The toolchain build system supports musl, uClibc and glibc C
-libraries, the effectveness of which in that order. The toolchain 
-build system supports multiple C library vendors. The default libc 
-is musl. To set the desired libc override the variable USELIBC as 
-follws:
+
+The toolchain build system supports multiple C library vendors.
+At this time they are: musl, uClibc and glibc, the effectveness
+of which in that order. The default libc is musl. To set the
+desired libc override the variable USELIBC as follows:
 
 	Build with uClibc:
 
