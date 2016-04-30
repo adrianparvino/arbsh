@@ -955,20 +955,17 @@ compiler:
 	-cp -r ../cbin $(OM_LIBROOT)
 	-cp -r ../clib $(OM_LIBROOT)
 
-	chmod +x ../shbin/remaster.sh
+	-chmod +x ../shbin/remaster.sh
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
 
+test_i386:
+
+	-chmod +x ../shbin/remaster.sh
+	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
 	qemu-system-$(OM_BACKWARDCOMPAT) -m 700 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-initrd backup.cpio.gz \
-	-append "root=/dev/ram rdinit=/bin/sh"
-
-test_compiler:
-
-	qemu-system-arm -M versatilepb -m 700 -curses \
-	-kernel $(OM_LIBROOT)/boot/vmlinuz \
-	-initrd backup.cpio.gz \
-	-append "root=/dev/ram rdinit=/bin/sh"
+	-append "root=/dev/ram rdinit=/bin/sh" 
 
 test_aarch64:
 
