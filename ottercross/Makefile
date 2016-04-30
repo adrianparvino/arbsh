@@ -538,4 +538,40 @@ endif
 
 	-$(BUILDENVVARS) $(MAKE) -i -C $(WORK)/$(GCC)-build-target install
 	-$(BUILDENVVARS) $(MAKE) -i -C $(WORK)/$(GCC)-build-target install DESTDIR=$(LIBROOT)
+	-$(MAKE) install_libc
+
+
+install_libc: install_path
+
+	-@mkdir -p $(DESTDIR)/
+ifeq ($(WEDNOR),musl)
+	$(MAKE) -C $(WORK)/$(MUSL) install
+endif
+ifeq ($(VENDOR),uclibc)
+	$(MAKE) -C $(WORK)/$(UCLIBC) \
+	CROSS="$(TARG)-" \
+	RUNTIME_PREFIX="/" \
+	DEVEL_PREFIX="/" \
+	install
+endif
+
+ifeq ($(VENDOR),gnu)
+
+	mkdir -p $(GLIBC)-build-final
+	 @cd $(WORK)/$(GLIBC)-build-final && $(WORK)/$(GLIBC)/configure \
+	--prefix=/ \
+	--host=$(TARG) \
+	--build=$(HTUPLE) \
+	--target=$(TARG) \
+	--with-headers=$(PREF)/$(TARG)/include \
+	--disable-werror \
+	--enable-obsolete-rpc \
+	--enable-kernel=2.6.32 \
+	--enable-add-ons \
+	libc_cv_forced_unwind=yes \
+	libc_cv_c_cleanup=yes \
+	libc_cv_ctors_header=yes \
+	$(CONF)
+	$(MAKE) -C $(WORK)/$(GLIBC)-build-final install
+endif
 
