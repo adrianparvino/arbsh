@@ -10,9 +10,11 @@ DESCRIPTION:
 
 FEATURES:
 --------
+	
 
-	Compilers on target.
+	Compilers on targets.
 		(Gcc can be installed into the into the final build!)
+		(A built root can build roots)
 
 	Supports 3 linux libc.
 		(Musl, glibc and uClibc/uClibc-ng.)
@@ -38,7 +40,7 @@ USAGE:
 
 	Build a toolchain using a different libc (musl is the default).
 
-		make VENDOR=glibc
+		make VENDOR=gnu
 
 	Changing architectures:
 
@@ -61,7 +63,11 @@ USAGE:
 	Put the above options together to create a more difficult to configure
 	toolchain (such as i686-pc-linux-uclibc).
 
-		make VENDOR=uclibc ARCH=i686 LINUXARCH=x86 
+		make VENDOR=uclibc ARCH=i686 LINUXARCH=x86
+
+			or 
+
+		make VENDOR=gnu ARCH=aarch64 LINUXARCH=arm64
 
 
 	Quiet builds:
