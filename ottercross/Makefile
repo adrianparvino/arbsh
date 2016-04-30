@@ -277,6 +277,10 @@ musl_stage: install_path
 	$(MAKE) -C $(WORK)/$(MUSL)
 	$(MAKE) -C $(WORK)/$(MUSL) install DESTDIR=$(PREF)/$(TARG)/
 
+musl_install:
+
+	$(MAKE) -C $(WORK)/$(MUSL) install DESTDIR=$(LIBROOT)/
+
 musl_gcc_stage1:
 
 	-@rm -rf $(WORK)/$(GCC)-stage1
@@ -431,31 +435,31 @@ cleanhard:
 	-@rm -rf $(LOGDIR)
 
 
-gmp_host: install_path 
+gmp_host: install_path gmp_retrieve
 
 	-cd $(WORK)/$(GMP) && $(BUILDENVVARS) $(WORK)/$(GMP)/configure \
 	--prefix=$(PREF)/$(TARG) \
-	--host=$(SUBTARG)
+	--host=$(ARCH)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(GMP)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(GMP) install
 
-mpc_host: install_path
+mpc_host: install_path mpc_retrieve
 
 	-cd $(WORK)/$(MPC) && $(BUILDENVVARS) $(WORK)/$(MPC)/configure \
 	--prefix=$(PREF)/$(TARG) \
-	--host=$(SUBTARG)
+	--host=$(ARCH)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPC)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPC) install
 
-mpfr_host: install_path
+mpfr_host: install_path mpfr_retrieve
        
 	-cd $(WORK)/$(MPFR) && $(BUILDENVVARS) $(WORK)/$(MPFR)/configure \
 	--prefix=$(PREF)/$(TARG) \
-	--host=$(SUBTARG)
+	--host=$(ARCH)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPFR)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPFR) install
 
-binutils_target: install_path
+binutils_target: install_path binutils_retrieve
 
 	mkdir -p $(WORK)/$(BINUTILS)-build-target
 	
@@ -466,7 +470,7 @@ binutils_target: install_path
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(BINUTILS)-build-target
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(BINUTILS)-build-target install
 
-mpc_retrieve:
+mpc_retrieve: install_path
 
 	-@mkdir -p $(WORK)
 
@@ -479,7 +483,8 @@ mpc_retrieve:
 		$(MPC_SIG) $(MPC).$(ARCHIVE).$(XZ)
 	-@cd $(WORK) && test -e $(MPC) || \
 		$(XZTOOL) $(SRC)/$(MPC).$(ARCHIVE).$(XZ) | $(ARCHIVETOOL)
-gmp_retrieve:
+
+gmp_retrieve: install_path
 
 	-@mkdir -p $(WORK)
 
@@ -492,7 +497,8 @@ gmp_retrieve:
 		$(GMP_SIG) $(GMP).$(ARCHIVE).$(XZ)
 	-@cd $(WORK) && test -e $(GMP) || \
 		$(XZTOOL) $(SRC)/$(GMP).$(ARCHIVE).$(XZ) | $(ARCHIVETOOL)
-mpfr_retrieve:
+
+mpfr_retrieve: install_path
 
 	-@mkdir -p $(WORK)
 
@@ -505,3 +511,31 @@ mpfr_retrieve:
 		$(MPFR_SIG) $(MPFR).$(ARCHIVE).$(XZ)
 	-@cd $(WORK) && test -e $(MPFR) || \
 		$(XZTOOL) $(SRC)/$(MPFR).$(ARCHIVE).$(XZ) | $(ARCHIVETOOL)
+
+gcc_target: install_path
+
+	$(MAKE) -i gmp_host
+	$(MAKE) -i mpfr_host
+	$(MAKE) -i mpc_host
+
+	-$(MAKE) -i binutils_target
+	rm -rf $(GCC) $(GCC)-build-target
+	mkdir -p $(GCC)-build-target
+	@tar -xf $(SRC)/$(GCC).$(ARCHIVE).$(XZ) -C $(SPWD)
+
+ifeq ($(VENDOR),musl)
+	-@cd $(SPWD)/$(GCC) && patch -p1 < $(SPWD)/patches/$(GCC)-musl.diff
+endif
+
+	-cd $(SPWD)/$(GCC)-build-target && $(BUILDENVVARS) $(SPWD)/$(GCC)/configure \
+	--prefix=$(LIBROOT) \
+	--enable-languages=c,c++ \
+	--disable-libssp \
+	--host=$(TARG) \
+	--target=$(TARG)
+
+	-CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" $(BUILDENVVARS) $(MAKE) -i -C $(SPWD)/$(GCC)-build-target
+
+	-$(BUILDENVVARS) $(MAKE) -i -C $(SPWD)/$(GCC)-build-target install
+	-$(BUILDENVVARS) $(MAKE) -i -C $(SPWD)/$(GCC)-build-target install DESTDIR=$(LIBROOT)
+
