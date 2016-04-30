@@ -8,19 +8,19 @@ export XZ = gz
 export XZTOOL = gzip -d -c
 export ARCHIVE = tar
 export ARCHIVETOOL = tar -x
-export ARCH = i686
+export OM_ARCH ?= i686
 export PLATFORM = pc-linux
 export VENDOR = musl
-export TARG = $(ARCH)-$(PLATFORM)-$(VENDOR)
+export TARG = $(OM_ARCH)-$(PLATFORM)-$(VENDOR)
 export LINUXARCH = x86
 export UCLIBCTARG = i386
 export HOST = $(shell uname -m)
 export SPWD = $(shell pwd)
 export PREF = $(SPWD)/$(TARG)-toolchain
 export WORK = $(PREF)-work
-export SRC = $(SPWD)/$(TARG)-src
-export PATCH = $(SPWD)/$(TARG)-patches/
-export LIBROOT = $(SPWD)/$(TARG)-libroot
+export SRC = $(SPWD)/src
+export PATCH = $(SPWD)/patches
+export LIBROOT = $(SPWD)/$(TARG)-targroot
 
 # Build system environment API.
 export BUILDENVVARS = \
@@ -463,7 +463,7 @@ gmp_host: install_path gmp_retrieve
 
 	-cd $(WORK)/$(GMP) && $(BUILDENVVARS) $(WORK)/$(GMP)/configure \
 	--prefix=$(PREF)/$(TARG) \
-	--host=$(ARCH)
+	--host=$(OM_ARCH)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(GMP)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(GMP) install
 
@@ -471,7 +471,7 @@ mpc_host: install_path mpc_retrieve
 
 	-cd $(WORK)/$(MPC) && $(BUILDENVVARS) $(WORK)/$(MPC)/configure \
 	--prefix=$(PREF)/$(TARG) \
-	--host=$(ARCH)
+	--host=$(OM_ARCH)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPC)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPC) install
 
@@ -479,7 +479,7 @@ mpfr_host: install_path mpfr_retrieve
        
 	-cd $(WORK)/$(MPFR) && $(BUILDENVVARS) $(WORK)/$(MPFR)/configure \
 	--prefix=$(PREF)/$(TARG) \
-	--host=$(ARCH)
+	--host=$(OM_ARCH)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPFR)
 	-$(BUILDENVVARS) $(MAKE) -C $(WORK)/$(MPFR) install
 
