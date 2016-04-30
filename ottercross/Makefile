@@ -3,7 +3,7 @@
 HTUPLE = $(shell uname -m) 
 
 # exported variables may be used in the build system API (a stub)
-export LIBROOT = $(PWD)/libroot
+
 export XZ = gz
 export XZTOOL = gzip -d -c
 export ARCHIVE = tar
@@ -20,6 +20,7 @@ export PREF = $(SPWD)/$(TARG)-toolchain
 export WORK = $(PREF)-work
 export SRC = $(SPWD)/src/
 export PATCH = $(SPWD)/patches/
+export LIBROOT = $(SPWD)/$(TARG)-libroot
 
 # This is not used here, it's part of the build system API (a stub)
 export BUILDENVVARS = \
@@ -109,8 +110,7 @@ PESSIMIZE = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 
 # autologger
 HTUPLE = $(shell gcc -dumpmachine)
-LOGDIR = $(HTUPLE)_logs
-LOG = $(LOGDIR)/$(TARG)-log
+LOG = $(WORK)/log
 LOGM ?= 2>&1 | tee
 
 # gpg checking
