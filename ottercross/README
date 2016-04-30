@@ -11,6 +11,9 @@ DESCRIPTION:
 FEATURES:
 --------
 
+	Compilers on target.
+		(Gcc can be installed into the into the final build!)
+
 	Supports 3 linux libc.
 		(Musl, glibc and uClibc/uClibc-ng.)
 
