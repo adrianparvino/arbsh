@@ -15,20 +15,21 @@ FEATURES:
 	Compilers on targets.
 		(Gcc can be installed into the final build!)
 
-	Supports 3 linux libc.
+	Supports all major linux libc vendors.
 		(Musl, glibc and uClibc/uClibc-ng.)
 
 	Gpg signature checking.
-		(Stronger security than most small build systems.)
+		(Strong security.)
 
 	Cross compiling is the default build type.
-		(Like in netbsd, all builds are cross builds.)
+		(As in netbsd, all builds are cross builds.)
 
 	Relocatable toolchains.
 		(Toolchains are built using a sysroot.)
 
 	Automatically logged stages.
-		(Logs for bug reports are always present and organized.)
+		(Individuated logged stages are compatible with autobuilders.)
+
 		
 USAGE:
 ------
@@ -78,7 +79,7 @@ USAGE:
 EXTENDED DESCRIPTIONS:
 ----------------------
 
-	Autologger:
+	Automatic logging:
 	
 		Ottecross is equiped with an autologging mechanism which logs
 		each stage of the build, names them and gathers them into a logs
