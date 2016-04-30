@@ -18,11 +18,11 @@ export HOST = $(shell uname -m)
 export SPWD = $(shell pwd)
 export PREF = $(SPWD)/$(TARG)-toolchain
 export WORK = $(PREF)-work
-export SRC = $(SPWD)/src/
-export PATCH = $(SPWD)/patches/
+export SRC = $(SPWD)/$(TARG)-src
+export PATCH = $(SPWD)/$(TARG)-patches/
 export LIBROOT = $(SPWD)/$(TARG)-libroot
 
-# This is not used here, it's part of the build system API (a stub)
+# Build system environment API.
 export BUILDENVVARS = \
 	CROSS_COMPILE=$(TARG)- \
 	CC=$(TARG)-gcc \
