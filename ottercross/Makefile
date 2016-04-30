@@ -38,6 +38,8 @@ export BUILDENVVARS = \
 	HOSTCC=gcc \
 	PATH=$(PREF)/bin:$(PATH)
 
+
+
 # Configuration to "tack on" ( --with-sysroot= is supplied as an example )
 #CONF = --with-sysroot=$(PREF)/$(TARG)
 CONF = --with-sysroot=$(PREF)/$(TARG) --disable-multilib
@@ -58,6 +60,8 @@ LINUX = linux-4.1
 LINUX_MRR = https://www.kernel.org/pub/linux/kernel/v4.x/
 LINUX_KRING =
 LINUX_SIG = $(LINUX).$(ARCHIVE).sign
+
+KBUILDAREA = $(WORK)/$(LINUX)-build-target
 
 # musl
 MUSL = musl-1.1.14
@@ -197,6 +201,26 @@ linux_stage_headers: linux_stage
 	INSTALL_HDR_PATH=$(PREF)/$(TARG)/ \
 	headers_install \
 	O=$(WORK)/$(LINUX)-build
+
+linux_target: install_path linux_stage
+
+	-mkdir -p $(LIBROOT)/boot
+	-$(MAKE) -C $(WORK)/$(LINUX) ARCH=$(LINUXARCH) defconfig O=$(KBUILDAREA)
+	sed -i 's|# CONFIG_8139CP is not set|CONFIG_8139CP=y|g' $(KBUILDAREA)/.config
+	-$(MAKE) -C $(WORK)/$(LINUX) \
+	ARCH=$(LINUXARCH) \
+	CROSS_COMPILE=$(TARG)- \
+	KCONFIG_CONFIG=$(KBUILDAREA)/.config \
+	O=$(KBUILDAREA)
+
+	-$(MAKE) -C $(WORK)/$(LINUX) \
+	INSTALL_PATH=$(LIBROOT)/boot \
+	install ARCH=$(LINUXARCH) \
+	CROSS_COMPILE=$(TARG)- \
+	O=$(KBUILDAREA)
+
+	-cd $(LIBROOT)/boot && ln vmlinu* vmlinuz
+
 
 linux_stage_clean:
 
