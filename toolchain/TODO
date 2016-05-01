@@ -1,0 +1,17 @@
+
+Targets don't actually need connectivity to bootstrap so this stage should
+probably be handled in a simpler fashion, by supplying the local copy of
+the src code to the target.
+
+	Removes the needs for:
+
+		dhcp / network files
+
+		busybox networking / inetutils
+
+
+
+	Added dependencies:
+
+		A copy up mechanism.
+	
