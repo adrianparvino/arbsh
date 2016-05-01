@@ -3,7 +3,7 @@
 .PHONY: toolchain
 
 
-RELEASE=otterland-0.2g.tar.gz
+RELEASE=grafland-0.2g.tar.gz
 WEBSITE=http://www.csit.parkland.edu/~cgraff1
 
 
