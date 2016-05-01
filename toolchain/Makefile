@@ -1964,8 +1964,8 @@ netbsd_tools:
 	
 make_target: install_path
 
-	@cd $(SRC) && test -e $(OM_NEWPACKAGE).$(OM_SFX) || \
-		wget $(GENERIC_MRR)/$(OM_NEPACKAGE).$(OM_SFX)
+	@cd $(SRC) && test -e $(OM_MAKE).$(OM_SFX) || \
+		wget $(OM_MAKE_MRR)/$(OM_MAKE).$(OM_SFX)
 
 	-rm -rf $(OM_MAKE)
 	cd $(OM_SRC) && test -e $(OM_MAKE).$(OM_SFX) || wget $(OM_MAKE_MRR)/$(OM_MAKE).$(OM_SFX)
