@@ -36,7 +36,7 @@
 	description of the tokens and corresponding logic used to create its 
 	grammar
 
-		Gsh has its own line editing library located within Grafos at
+		Gsh has its own line editing library located within otterland at
 	../readline/gshline.h. For Gsh's line editing capabilities see
 	gshline()'s documentation at ../readline/README.
 

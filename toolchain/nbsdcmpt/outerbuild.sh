@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # rough notes for building netbsd on linux 
-#export EXTERNAL_TOOLCHAIN=/home/blakor/cmgraff/grafos/toolchain/musl-toolchain-gcc-4.9.2-rotrial/
+#export EXTERNAL_TOOLCHAIN=/home/blakor/cmgraff/otterland/toolchain/musl-toolchain-gcc-4.9.2-rotrial/
 #export $(cd .. ; make  buildenvars)
 #env 
 #exit

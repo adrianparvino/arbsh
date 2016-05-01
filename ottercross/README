@@ -12,8 +12,8 @@ FEATURES:
 --------
 	
 
-	Compilers on targets.
-		(Gcc can be installed into the final build!)
+	Gcc/binutuils on target.
+		(Gcc can be installed into the final build's root!)
 
 	Supports all major linux libc vendors.
 		(Musl, glibc and uClibc/uClibc-ng.)
@@ -40,6 +40,10 @@ USAGE:
 	Build a toolchain using a different libc (musl is the default).
 
 		make VENDOR=gnu
+
+	Build a toolchain in a target root:
+
+		make gcc_target
 
 	Changing architectures:
 
