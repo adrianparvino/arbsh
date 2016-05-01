@@ -1,4 +1,4 @@
-## Ottercross, Copyright, 2016. CM Graff. see grafos/LICENSE for copying details
+## Ottercross, Copyright, 2016. CM Graff. see otterland/LICENSE for copying details
 
 HTUPLE = $(shell uname -m) 
 
