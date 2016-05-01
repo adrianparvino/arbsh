@@ -1,6 +1,9 @@
 
-Description
------------
+	Grafland / grafos is a collection of userland tools and 
+	toolchains written by CM Graff.
+
+PORTABILITY:
+------------
 
 	To some extent all of the components of grafland are standalone. 
 	The core functionality (excluding the toolchain) depends on only 
@@ -13,15 +16,8 @@ BUILDING:
 ---------
 
 	make
-
-INSTALLATION:
--------------
-
 	make install DESTDIR=$(pwd)/myroot
 
-
-PARTIAL INSTALLATION:
---------------------
         Install a single component of grafos: 
           
        		cd grafos/cbin
@@ -46,26 +42,15 @@ CROSS BUILDING:
 
 	For finer grained control over the cross toolchain
 	(such as changing architectures) you'll want to change
-	directories to toolchain/ and view the documentation
-	within toolchain/README.
+	directories to toolchain/, view the documentation
+	within toolchain/README and run the build system
+	from there.
 
 
-DOCUMENTATION:
---------------
 	Each subdirectory has a README which documents its usage.
 
-RELENG:
--------
-
-	make release
-
-UPSTREAM:
----------
-	git clone https://github.com/cmgraff/Grafos
-
-
 HIER:
-----
+-----
 	cbin/
 		Userland applications written in C (native)
 	clib/
@@ -100,29 +85,18 @@ HIER:
 
 	ottercross/
 		The ottercross PoC toolchain (native)
-			-This toolchain is incredibly powerful and has surpassed
-			 the quality of the original omnicross toolchain/.
-			 If you came to Grafos looking to build toolchains for
-			 your OS this is what you want.
+			-This toolchain has surpassed the quality of the original
+			 omnicross toolchain/ and focuses on security with gpg
+			 checking. It does not yet support the target packages
+			 of the omnicross toolchain.
 
-	musl-otter-cross/
-		An even smaller toolchain which is musl based for clarity.
-			- If you came to Grafos wanting ideas for your own
-			  OS, I wrote this toolchain specifically tot require 
-			  the smallest number of possible unique steps.
 
-			- ( some oddities remain such as;
-				$(XZ) -d -c | $(ARCHIVE) -x
-			  These easily can be replaced if they 
-			  seem inappropriate. )
-
-	experimental/
-		Android support stub.
-	
 
 RELEASES: 
 
-http://www.csit.parkland.edu/~cgraff1/grafland-0.2c.tar.gz
-
 http://www.csit.parkland.edu/~cgraff1/grafland-0.2d.tar.gz
+
+http://www.csit.parkland.edu/~cgraff1/grafland-0.2e.tar.gz
+
+http://www.csit.parkland.edu/~cgraff1/grafland-0.2f.tar.gz
 
