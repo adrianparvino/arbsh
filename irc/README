@@ -145,8 +145,8 @@ Building this repository:
 	
 	Build:
 	------
-		git clone https://github.com/cmgraff/Grafos
-		cd Grafos/irc
+		git clone https://github.com/cmgraff/otterland
+		cd otterland/irc
 		make
 
 	Installation:
@@ -200,7 +200,7 @@ Statically linking the IRC client:
 
 Releases:
 --------- 
-	Releases will be available as part of stable Grafos releases. 
+	Releases will be available as part of stable otterland releases. 
 
 References:
 -----------

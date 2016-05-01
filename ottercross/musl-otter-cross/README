@@ -70,10 +70,10 @@ the report.
 BUILDING:
 ---------
 
-	Download grafos and chdir to musl-otter-cross:
+	Download otterland and chdir to musl-otter-cross:
 
-		git clone https://github.com/cmgraff/grafos/
-                cd grafos/musl-otter-cross
+		git clone https://github.com/cmgraff/otterland/
+                cd otterland/musl-otter-cross
 
 	Build for the default architecture (i686-pc-linux-musl): 
 

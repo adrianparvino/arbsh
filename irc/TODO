@@ -14,7 +14,7 @@ Fold server data into tidy character grids. Medium difficulty
 
 
 
-Pass these character grids to grafos's screen drawing library ansicode.h Hard
+Pass these character grids to otterland's screen drawing library ansicode.h Hard
 
 
 

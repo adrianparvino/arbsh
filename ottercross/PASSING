@@ -1,4 +1,4 @@
-A sample of passing grafos ottercross cross builds.
+A sample of passing otterland ottercross cross builds.
 
 
 Using gcc-5.3.0 and binutils-2.26 with current release musl, uClibc and glibc.
