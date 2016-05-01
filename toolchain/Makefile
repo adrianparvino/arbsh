@@ -1865,12 +1865,6 @@ gptfdisk_target: install_path
 	#-$(MAKE) e2fsprogs_host
 	-rm -rf $(OM_GPTFDISK)
 	@tar -xf $(OM_SRC)/$(OM_GPTFDISK).$(OM_SFX) -C $(SPWD)
-	#-cd $(SPWD)/$(OM_GPTFDISK) && $(INACROSS) $(SPWD)/$(OM_GPTFDISK)/configure \
-	#--host=$(OM_SUBTARG) \
-	#--target=$(OM_SUBTARG)
-	#-cd $(SPWD)/$(OM_GPTFDISK) && cp ../newmake Makefile
-	#-cd $(SPWD)/$(OM_GPTFDISK) && cp ../Makefile.orig .
-	#-cd $(SPWD)/$(OM_GPTFDISK) && diff -Naur Makefile.orig Makefile > $(SPWD)/patches/gptfdisk-xcompile.patch
 	-cd $(SPWD)/$(OM_GPTFDISK) && patch -p0 < $(SPWD)/patches/gptfdisk-xcompile.patch
 	-mkdir -p $(OM_LIBROOT)
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_GPTFDISK)
