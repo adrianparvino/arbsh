@@ -13,8 +13,8 @@ Omnicross  Build a musl, uClibc, glibc or dietlibc based cross compiler.
 
 Installation:
 	Retrieve the source code:
-		git clone https://github.com/cmgraff/Grafos
-		cd Grafos/toolchain
+		git clone https://github.com/cmgraff/otterland
+		cd otterland/toolchain
 
 	Build:
 		./build.sh 
