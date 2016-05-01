@@ -159,6 +159,10 @@ OM_TMUX_MRR = https://github.com/tmux/tmux/releases/download/2.1/
 OM_VALGRIND = valgrind-3.11.0
 OM_VALGRIND_MRR = http://www.csit.parkland.edu/~cgraff1/src/
 
+# core
+OM_MAKE = make-4.1.tar.gz
+OM_MAKE_MRR = http://ftp.gnu.org/gnu/make/
+
 # xorg packages ( incomplete )
 OM_PIXMAN = pixman-0.32.6
 
@@ -1958,3 +1962,18 @@ netbsd_tools:
 	-@cd nbsdcmpt && ./buildwrapper.sh
 	-@cd nbsdcmpt/usr/src/ && ./build.sh -u -U -m $(OM_ARCH)
 	
+make_target: install_path
+
+	@cd $(SRC) && test -e $(OM_NEWPACKAGE).$(OM_SFX) || \
+		wget $(GENERIC_MRR)/$(OM_NEPACKAGE).$(OM_SFX)
+
+	-rm -rf $(OM_MAKE)
+	cd $(OM_SRC) && test -e $(OM_MAKE).$(OM_SFX) || wget $(OM_MAKE_MRR)/$(OM_MAKE).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_MAKE).$(OM_SFX) -C $(SPWD)
+	-cd $(SPWD)/$(OM_MAKE) && $(INACROSS) $(SPWD)/$(OM_MAKE)/configure \
+	--host=$(OM_SUBTARG) \
+	--target=$(OM_SUBTARG)
+
+	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_MAKE)
+	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_MAKE) install DESTDIR=$(OM_LIBROOT)
+
