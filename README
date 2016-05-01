@@ -1,11 +1,12 @@
 
-	Otterland and ottercross are collections of userland tools and 
-	toolchains written by CM Graff.
+	Grafland and ottercross are collections of userland tools and 
+	toolchains written natively in C, POSIX sh and makefile.
+
 
 PORTABILITY:
 ------------
 
-	To some extent all of the components of otterland are standalone. 
+	To some extent all of the components of grafland are standalone. 
 	The core functionality (excluding the toolchain) depends on only 
 	the standard C library and a few POSIX extensions to it. This 
 	being the case it should work fine on linux, mac, NetBSD and 
@@ -18,9 +19,9 @@ BUILDING:
 	make
 	make install DESTDIR=$(pwd)/myroot
 
-        Install a single component of otterland: 
+        Install a single component of grafland: 
           
-       		cd otterland/cbin
+       		cd grafland/cbin
         	make
         	make install DESTDIR=/path/to/target
 
@@ -58,7 +59,7 @@ HIER:
 		
 		Gshline. An editline/readline like implementation. This
 		library is used to supply line editing and history to
-		the graff shell (Gsh) and otterland irc client. The latter
+		the graff shell (Gsh) and grafland irc client. The latter
 		is supplied with a unique ircline() funtion (native).
 
 	cmath/
@@ -79,7 +80,7 @@ HIER:
 		Userland applications and libraries written in POSIX shell (native).
 	toolchain/
 		The omnicross toolchain (native)
-			-Link otterland components up into the toolchain
+			-Link grafland components up into the toolchain
 			 for compilation and installation.
 			-Build and maintain outside software.
 
@@ -94,11 +95,11 @@ HIER:
 
 RELEASES: 
 
-http://www.csit.parkland.edu/~cgraff1/otterland-0.2d.tar.gz
+http://www.csit.parkland.edu/~cgraff1/grafland-0.2d.tar.gz
 
-http://www.csit.parkland.edu/~cgraff1/otterland-0.2e.tar.gz
+http://www.csit.parkland.edu/~cgraff1/grafland-0.2e.tar.gz
 
-http://www.csit.parkland.edu/~cgraff1/otterland-0.2f.tar.gz
+http://www.csit.parkland.edu/~cgraff1/grafland-0.2f.tar.gz
 
-http://www.csit.parkland.edu/~cgraff1/otterland-0.2g.tar.gz
+http://www.csit.parkland.edu/~cgraff1/grafland-0.2g.tar.gz
 
