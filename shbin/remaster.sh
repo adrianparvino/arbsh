@@ -305,7 +305,7 @@ fi
 
 
 # Check for dependencies
-TOOLS="${TOOLS} ${ARCVTOOL} ${COMPRESSION} ${FILESYS}" 
+TOOLS="${TOOLS} ${ARCVTOOL} ${COMPRESSION} " 
 for CMD in $TOOLS 
 do 	printf "Checking dependency..\n"
 	if command -v "$CMD"

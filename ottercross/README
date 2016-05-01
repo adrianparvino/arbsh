@@ -96,6 +96,13 @@ EXTENDED DESCRIPTIONS:
 		an option to disable or enable signature checking in the future.
 
 
+	Concurrent builds:
+
+		Cocurrent builds are possible with ottercross, However, it must
+		first be 'dry run" to populate the src directory with any tarballs.
+		There is no mechanism to prevent a race between various invocations
+		of ottercross populating the main src directory, but will hopegully
+		be added soon.
 
 
 
