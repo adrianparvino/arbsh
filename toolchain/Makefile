@@ -160,7 +160,7 @@ OM_VALGRIND = valgrind-3.11.0
 OM_VALGRIND_MRR = http://www.csit.parkland.edu/~cgraff1/src/
 
 # core
-OM_MAKE = make-4.1.tar.gz
+OM_MAKE = make-4.1
 OM_MAKE_MRR = http://ftp.gnu.org/gnu/make/
 
 # xorg packages ( incomplete )
