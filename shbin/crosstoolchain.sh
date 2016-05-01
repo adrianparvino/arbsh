@@ -435,7 +435,7 @@ clean_packages()
         rm -rf "${MYSTARTDIR}/${MYCOREUTILS}"
 } 
 
-clean_otterland()
+clean_grafland()
 {
 	rm -rf "${MYSTARTDIR}/Gsh"
 	rm -rf "${MYSTARTDIR}/cbin"
@@ -841,7 +841,7 @@ done
 
 # GrafOS 
 	
-	#clean_otterland
+	#clean_grafland
 	#make_irc_target
 	#make_cbin_target
 	#make_Gsh_target
