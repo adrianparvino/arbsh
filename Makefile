@@ -3,19 +3,9 @@
 .PHONY: toolchain
 
 
-RELEASE=grafland-0.2d.tar.gz
-LIST1=cbin cmath editor grafland.png irc shbin toolchain/Makefile toolchain/README
-LIST2=clib docs wm gsh Makefile sysmon LICENSE README README.html .htaccess \
-	ottercross/Makefile \
-	ottercross/README \
-	ottercross/packages \
-	ottercross/releaseotters.sh \
-	ottercross/PASSING \
-	musl-otter-cross/Makefile \
-	musl-otter-cross/Makefile
-
+RELEASE=grafland-0.2f.tar.gz
 WEBSITE=http://www.csit.parkland.edu/~cgraff1
-SSHADDR=cgraff1@shaula.csit.parkland.edu:public_html/
+
 
 
 
