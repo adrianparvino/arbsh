@@ -1,16 +1,6 @@
 
-	Grafland and ottercross are collections of userland tools and 
+	Grafland is a collection of unique userland tools and 
 	toolchains written natively in C, POSIX sh and makefile.
-
-
-PORTABILITY:
-------------
-
-	To some extent all of the components of grafland are standalone. 
-	The core functionality (excluding the toolchain) depends on only 
-	the standard C library and a few POSIX extensions to it. This 
-	being the case it should work fine on linux, mac, NetBSD and 
-	FreeBSD.
 
 
 BUILDING:
@@ -42,7 +32,8 @@ CROSS BUILDING:
 
 
 	For finer grained control over the cross toolchain
-	(such as changing architectures) you'll want to change
+	(such as changing architectures or using the tool-
+	chain to build other OS)) you'll want to change
 	directories to toolchain/, view the documentation
 	within toolchain/README and run the build system
 	from there.
@@ -65,7 +56,8 @@ HIER:
 	cmath/
 		Trancendental mathematics functions written in C (native).
 	docs/
-		Whitepages I have written to document various OS and books (native).
+		Whitepages I have written to document various OS and books 
+		(native).
 	editor/
 		A native editor.
 	wm/
@@ -77,7 +69,8 @@ HIER:
 	README
 		This README.
 	shbin/
-		Userland applications and libraries written in POSIX shell (native).
+		Userland applications and libraries written in POSIX shell 
+		(native).
 	toolchain/
 		The omnicross toolchain (native)
 			-Link grafland components up into the toolchain
@@ -86,10 +79,22 @@ HIER:
 
 	ottercross/
 		The ottercross PoC toolchain (native)
-			-This toolchain has surpassed the quality of the original
-			 omnicross toolchain/ and focuses on security with gpg
-			 checking. It does not yet support the target packages
-			 of the omnicross toolchain.
+			-This toolchain has surpassed the quality of the origi-
+			 nal omnicross toolchain/ and focuses on security with 
+			 gpg checking. It does not yet support the target pack-
+			 ages of the omnicross toolchain.
+
+
+
+PORTABILITY:
+------------
+
+	To some extent all of the components of grafland are standalone. 
+	The core functionality (excluding the toolchain) depends on only 
+	the standard C library and a few POSIX extensions to it. This 
+	being the case it should work fine on linux, mac, NetBSD and 
+	FreeBSD.
+
 
 CONTACT:
 --------
