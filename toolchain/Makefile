@@ -966,7 +966,7 @@ test_i386:
 
 	-chmod +x ../shbin/remaster.sh
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
-	qemu-system-$(OM_BACKWARDCOMPAT) -m 700 -curses \
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 1500 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-initrd backup.cpio.gz \
 	-append "root=/dev/ram rdinit=/bin/sh" 
