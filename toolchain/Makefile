@@ -962,13 +962,13 @@ compiler:
 	-$(MAKE) -i coreutils_target
 	-cp -r ../cbin $(OM_LIBROOT)
 	-cp -r ../clib $(OM_LIBROOT)
-	mkdir -p $(OM_LIBROOT)/toolchain/src/
-	cp Makefile $(OM_LIBROOT)/toolchain/
-	cp -r src/$(OM_GCC) $(OM_LIBROOT)/toolchain/src/
-	cp -r src/$(OM_BINUTILS) $(OM_LIBROOT)/toolchain/src/
-	cp -r src/$(OM_MPFR) $(OM_LIBROOT)/toolchain/src/
-	cp -r src/$(OM_MPC) $(OM_LIBROOT)/toolchain/src/
-	cp -r src/$(OM_GMP) $(OM_LIBROOT)/toolchain/src/
+	-mkdir -p $(OM_LIBROOT)/toolchain/src/
+	-cp Makefile $(OM_LIBROOT)/toolchain/
+	-cp -r src/$(OM_GCC).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r src/$(OM_BINUTILS).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r src/$(OM_MPFR).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r src/$(OM_MPC).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r src/$(OM_GMP).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
 	-chmod +x ../shbin/remaster.sh
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
 
