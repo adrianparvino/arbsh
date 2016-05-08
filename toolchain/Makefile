@@ -952,10 +952,12 @@ test:
 
 compiler:
 
+	-cp -r ../tree/ $(OM_LIBROOT)
 	-$(MAKE) -i gcc_target
 	-$(MAKE) -i linux_target
-	-$(MAKE) -i busybox_target
 	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
+	-$(MAKE) -i busybox_target
+	-$(MAKE) -i coreutils_target
 	-cp -r ../cbin $(OM_LIBROOT)
 	-cp -r ../clib $(OM_LIBROOT)
 
