@@ -160,9 +160,11 @@ OM_VALGRIND = valgrind-3.11.0
 OM_VALGRIND_MRR = http://www.csit.parkland.edu/~cgraff1/src/
 
 # core
+
 OM_MAKE = make-4.1
 OM_MAKE_MRR = http://ftp.gnu.org/gnu/make/
-
+OM_GENEXTFS = genext2fs-1.4.1
+OM_GENEXTFS_MRR = https://sourceforge.net/projects/genext2fs/files/genext2fs/1.4.1/
 # xorg packages ( incomplete )
 OM_PIXMAN = pixman-0.32.6
 
@@ -960,7 +962,13 @@ compiler:
 	-$(MAKE) -i coreutils_target
 	-cp -r ../cbin $(OM_LIBROOT)
 	-cp -r ../clib $(OM_LIBROOT)
-
+	mkdir -p $(OM_LIBROOT)/toolchain/src/
+	cp Makefile $(OM_LIBROOT)/toolchain/
+	cp -r src/$(OM_GCC) $(OM_LIBROOT)/toolchain/src/
+	cp -r src/$(OM_BINUTILS) $(OM_LIBROOT)/toolchain/src/
+	cp -r src/$(OM_MPFR) $(OM_LIBROOT)/toolchain/src/
+	cp -r src/$(OM_MPC) $(OM_LIBROOT)/toolchain/src/
+	cp -r src/$(OM_GMP) $(OM_LIBROOT)/toolchain/src/
 	-chmod +x ../shbin/remaster.sh
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
 
@@ -968,7 +976,7 @@ test_i386:
 
 	-chmod +x ../shbin/remaster.sh
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
-	qemu-system-$(OM_BACKWARDCOMPAT) -m 1500 -curses \
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 4500 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-initrd backup.cpio.gz \
 	-append "root=/dev/ram rdinit=/bin/sh" 
@@ -1966,9 +1974,6 @@ netbsd_tools:
 	
 make_target: install_path
 
-	@cd $(SRC) && test -e $(OM_MAKE).$(OM_SFX) || \
-		wget $(OM_MAKE_MRR)/$(OM_MAKE).$(OM_SFX)
-
 	-rm -rf $(OM_MAKE)
 	cd $(OM_SRC) && test -e $(OM_MAKE).$(OM_SFX) || wget $(OM_MAKE_MRR)/$(OM_MAKE).$(OM_SFX)
 	@tar -xf $(OM_SRC)/$(OM_MAKE).$(OM_SFX) -C $(SPWD)
@@ -1978,4 +1983,19 @@ make_target: install_path
 
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_MAKE)
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_MAKE) install DESTDIR=$(OM_LIBROOT)
+
+genextfs_host: install_path
+
+	cd $(OM_SRC) && test -e $(OM_GENEXTFS).$(OM_SFX) || wget $(OM_GENEXTFS_MRR)/$(OM_GENEXTFS).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_GENEXTFS).$(OM_SFX) -C $(SPWD)
+	-rm -rf $(OM_GENEXTFS)
+	cd $(OM_SRC) && test -e $(OM_GENEXTFS).$(OM_SFX) || wget $(OM_GENEXTFS_MRR)/$(OM_GENEXTFS).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_GENEXTFS).$(OM_SFX) -C $(SPWD)
+	-cd $(SPWD)/$(OM_GENEXTFS) && $(SPWD)/$(OM_GENEXTFS)/configure \
+	--prefix=$(OM_PREF)/ \
+	--host=$(OM_HOST)
+
+
+	-$(MAKE) -C $(SPWD)/$(OM_GENEXTFS)
+	$(MAKE) -C $(SPWD)/$(OM_GENEXTFS) install
 
