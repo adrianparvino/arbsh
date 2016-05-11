@@ -17,6 +17,9 @@ FEATURES:
 	Gcc on target.
 		(cross built as a target package).
 
+	Self bootstrapping.
+		(Targets can build themselves ad infinitum.)
+
 	Multiple C library vendors are supported:
 		(Musl, glibc and uClibc)
 
