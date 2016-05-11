@@ -969,6 +969,7 @@ bootstrap:
 	-$(MAKE) -i busybox_target
 	-$(MAKE) -i coreutils_target
 	-$(MAKE) -i strace_target
+	-rm $(OM_LIBROOT)/usr/bin/awk
 	-$(MAKE) -i gawk_target
 	-$(MAKE) -i make_target
 	-cp -r ../cbin ../clib ../editor ../irc $(OM_LIBROOT)
@@ -980,6 +981,7 @@ bootstrap_src:
 
 	-mkdir -p $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_LINUX).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_BINUTILS).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_GCC).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_GMP).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_MPFR).$(OM_SFX) $(OM_BOOTSRC)
@@ -990,6 +992,7 @@ bootstrap_src:
 	-cp $(OM_SRC)/$(OM_MAKE).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_BUSYBOX).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_COREUTILS).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_GENEXTFS).$(OM_SFX) $(OM_BOOTSRC)
 	-$(MAKE) -i genext2fs_host
 	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_BOOTSRC) bootsrc.img
 
