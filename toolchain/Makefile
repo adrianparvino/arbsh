@@ -44,6 +44,9 @@ OM_GLIBC = glibc-2.20
 OM_PERL_MRR = http://www.cpan.org/src/5.0/
 OM_PERL_CROSS_MRR = https://github.com/arsv/perl-cross/releases/download/1.0.2/
 
+# Self bootstrapping
+OM_BOOTSRC = $(shell pwd)/bootstrap
+
 # packages
 OM_LIBROOT = $(shell pwd)/libroot
 OM_NCURSES = ncurses-6.0
@@ -972,35 +975,38 @@ bootstrap:
 	-mkdir -p $(OM_LIBROOT)/toolchain/src/
 	-cp Makefile $(OM_LIBROOT)/toolchain/
 	-cp -r patches $(OM_LIBROOT)/toolchain/
-	-cp -r $(OM_SRC)/$(OM_GCC).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r $(OM_SRC)/$(OM_BINUTILS).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r $(OM_SRC)/$(OM_MPFR).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r $(OM_SRC)/$(OM_MPC).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r $(OM_SRC)/$(OM_GMP).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r $(OM_SRC)/$(OM_LINUX).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-chmod +x ../shbin/remaster.sh
-	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
+
+bootstrap_src:
+
+	-mkdir -p $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_LINUX).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_GCC).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_GMP).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_MPFR).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_MPC).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_MUSL).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_PATCH).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_GAWK).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_MAKE).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_BUSYBOX).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_COREUTILS).$(OM_SFX) $(OM_BOOTSRC)
+	-$(MAKE) -i genext2fs_host
+	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_BOOTSRC) bootsrc.img
 
 
 test_i386:
 
+	-$(MAKE) -i bootstrap_src
 	dd if=/dev/zero of=drive.img bs=1M count=5000
 	/sbin/mkfs.ext2 -F drive.img
-	-chmod +x ../shbin/remaster.sh
-	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
-	qemu-system-$(OM_BACKWARDCOMPAT) -m 2000 -curses \
+	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_LIBROOT) binary.img
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
-	-initrd backup.cpio.gz \
-	-append "root=/dev/ram rdinit=/bin/sh" \
-	-hdb drive.img
+	-append "root=/dev/sda" \
+	-hda binary.img \
+	-hdb bootsrc.img \
+	-hdc drive.img
 
-run_i386:
-
-	qemu-system-$(OM_BACKWARDCOMPAT) -m 2000 -curses \
-	-kernel $(OM_LIBROOT)/boot/vmlinuz \
-	-initrd backup.cpio.gz \
-	-append "root=/dev/ram rdinit=/bin/sh" \
-	-hdb drive.img
 
 test_aarch64:
 
@@ -1993,7 +1999,7 @@ make_target: install_path
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_MAKE)
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_MAKE) install DESTDIR=$(OM_LIBROOT)
 
-genextfs_host: install_path
+genext2fs_host: install_path
 
 	cd $(OM_SRC) && test -e $(OM_GENEXTFS).$(OM_SFX) || wget $(OM_GENEXTFS_MRR)/$(OM_GENEXTFS).$(OM_SFX)
 	@tar -xf $(OM_SRC)/$(OM_GENEXTFS).$(OM_SFX) -C $(SPWD)
