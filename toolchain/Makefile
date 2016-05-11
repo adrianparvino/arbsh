@@ -1,4 +1,4 @@
-## Omnicross, Copyright, 2015-2016. see LICENSE for copying details
+# Omnicross, Copyright, 2015-2016. see LICENSE for copying details
 
 SHELL = /bin/sh
 STAGE0OPT = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
@@ -22,12 +22,14 @@ OM_PATCH = $(SPWD)/patches
 OM_SFX = tar.gz
 #OM_BINUTILS = binutils-2.25
 OM_BINUTILS = binutils-2.26
-#OM_GCC = gcc-4.9.2
-OM_GCC = gcc-5.3.0
+OM_GCC = gcc-4.9.2
+#OM_GCC = gcc-5.3.0
+#OM_GCC = gcc-6.1.0
 OM_GCCV = 4.9.2
 OM_GMP = gmp-5.1.3
 OM_MPC = mpc-1.0.2
 OM_MPFR = mpfr-3.1.2
+#OM_MPFR = mpfr-3.1.4
 OM_LINUX = linux-4.1
 OM_MUSL = musl-1.1.14
 OM_LANGS = c,c++
@@ -256,17 +258,17 @@ gcc_stage_make:
 
 	@test -d $(OM_GCC) || tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
 
-	#@tar -xf $(OM_SRC)/$(OM_GMP).$(OM_SFX) -C $(SPWD)
-	#@tar -xf $(OM_SRC)/$(OM_MPFR).$(OM_SFX) -C $(SPWD) 
-	#@tar -xf $(OM_SRC)/$(OM_MPC).$(OM_SFX) -C $(SPWD) 
+	@tar -xf $(OM_SRC)/$(OM_GMP).$(OM_SFX) -C $(SPWD)
+	@tar -xf $(OM_SRC)/$(OM_MPFR).$(OM_SFX) -C $(SPWD) 
+	@tar -xf $(OM_SRC)/$(OM_MPC).$(OM_SFX) -C $(SPWD) 
 
 ifeq ($(OM_LIBC),musl)
 	-@cd $(SPWD)/$(OM_GCC) && patch -p1 -N < $(SPWD)/patches/$(OM_GCC)-musl.diff
 endif
 	
-	#@cd $(SPWD)/$(OM_GCC) && ln -s $(SPWD)/$(OM_MPFR) mpfr 
-	#@cd $(SPWD)/$(OM_GCC) && ln -s $(SPWD)/$(OM_GMP) gmp 
-	#@cd $(SPWD)/$(OM_GCC) && ln -s $(SPWD)/$(OM_MPC) mpc
+	@cd $(SPWD)/$(OM_GCC) && ln -s $(SPWD)/$(OM_MPFR) mpfr 
+	@cd $(SPWD)/$(OM_GCC) && ln -s $(SPWD)/$(OM_GMP) gmp 
+	@cd $(SPWD)/$(OM_GCC) && ln -s $(SPWD)/$(OM_MPC) mpc
 
 	@mkdir -p $(SPWD)/$(OM_GCC)-build
 	@cd $(SPWD)/$(OM_GCC)-build && $(SPWD)/$(OM_GCC)/configure \
@@ -952,34 +954,53 @@ test:
 	@/$(OM_PREF)/bin/$(OM_TARG)-gcc works.c -o $(DESTDIR)/works
 	@sudo chroot $(DESTDIR)/ /works
 
-compiler:
 
-	-cp -r ../tree/ $(OM_LIBROOT)
+
+bootstrap:
+
+	-mkdir -p $(OM_LIBROOT)
+	-cp -r ../tree/* $(OM_LIBROOT)
 	-$(MAKE) -i gcc_target
 	-$(MAKE) -i linux_target
 	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
 	-$(MAKE) -i busybox_target
 	-$(MAKE) -i coreutils_target
-	-cp -r ../cbin $(OM_LIBROOT)
-	-cp -r ../clib $(OM_LIBROOT)
+	-$(MAKE) -i strace_target
+	-$(MAKE) -i gawk_target
+	-$(MAKE) -i make_target
+	-cp -r ../cbin ../clib ../editor ../irc $(OM_LIBROOT)
 	-mkdir -p $(OM_LIBROOT)/toolchain/src/
 	-cp Makefile $(OM_LIBROOT)/toolchain/
-	-cp -r src/$(OM_GCC).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r src/$(OM_BINUTILS).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r src/$(OM_MPFR).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r src/$(OM_MPC).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
-	-cp -r src/$(OM_GMP).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r patches $(OM_LIBROOT)/toolchain/
+	-cp -r $(OM_SRC)/$(OM_GCC).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r $(OM_SRC)/$(OM_BINUTILS).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r $(OM_SRC)/$(OM_MPFR).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r $(OM_SRC)/$(OM_MPC).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r $(OM_SRC)/$(OM_GMP).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
+	-cp -r $(OM_SRC)/$(OM_LINUX).$(OM_SFX) $(OM_LIBROOT)/toolchain/src/
 	-chmod +x ../shbin/remaster.sh
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
+
 
 test_i386:
 
+	dd if=/dev/zero of=drive.img bs=1M count=5000
+	/sbin/mkfs.ext2 -F drive.img
 	-chmod +x ../shbin/remaster.sh
 	-../shbin/remaster.sh --backup --archive=cpio --root=$(OM_LIBROOT)
-	qemu-system-$(OM_BACKWARDCOMPAT) -m 4500 -curses \
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 2000 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-initrd backup.cpio.gz \
-	-append "root=/dev/ram rdinit=/bin/sh" 
+	-append "root=/dev/ram rdinit=/bin/sh" \
+	-hdb drive.img
+
+run_i386:
+
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 2000 -curses \
+	-kernel $(OM_LIBROOT)/boot/vmlinuz \
+	-initrd backup.cpio.gz \
+	-append "root=/dev/ram rdinit=/bin/sh" \
+	-hdb drive.img
 
 test_aarch64:
 
@@ -998,18 +1019,6 @@ gnu_compiler:
 
 	-$(MAKE) -i gnu_gcc_target
 	-$(MAKE) -i install DESTDIR=$(OM_LIBROOT)
-
-ministrap:
-
-	-$(MAKE) -i linux_target
-	-$(MAKE) -i busybox_target
-	-$(MAKE) -i strace_target
-	-$(MAKE) -i gcc_target
-	-$(MAKE) -C ../shbin
-	-cp -r ../cbin $(OM_LIBROOT)
-
-	sudo ../shbin/remaster --test --backup --remaster --root=$(OM_LIBROOT)
-	
 
 distribute:
 
