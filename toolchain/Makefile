@@ -1004,7 +1004,7 @@ bootstrap_src:
 test_i386:
 
 	-$(MAKE) -i bootstrap_src
-	dd if=/dev/zero of=drive.img bs=1M count=5000
+	dd if=/dev/zero of=drive.img bs=1M count=8000
 	dd if=/dev/zero of=output.img bs=1M count=1000
 	/sbin/mkfs.ext2 -F drive.img
 	/sbin/mkfs.ext2 -F output.img
@@ -2095,8 +2095,4 @@ host_path:
 
 	$(eval PATH=$(OM_SELFBLD)/bin:$(OM_SELFBLD)/usr/bin:$(OM_SELFBLD)/usr/local/bin:$(PATH))
 
-test: host_path
 
-	$(MAKE) host_path
-
-	echo $(PATH)
