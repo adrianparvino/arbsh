@@ -7,15 +7,27 @@ BUILDING:
 
 INSTALLATION:
 -------------
-	Install the toolchain to a root.
+	Install a toolchain's libc to a root.
 
-		make install DESTDIR=/full/path/ 
+		make install DESTDIR=/full/path/
+
+SELF BOOTSTRAP:
+---------------
+
+	The toolchain build system provides a mechanism in which targets
+	can bootstrap themselves. The new toolchain will be built into
+	OM_LIBROOT = which defaults to the "libroot" directory under
+	toolchain/libroot. And several root filesystems will be created
+	which contain the needed source code to rebuild the system.
+
+		make
+		make bootstrap
 
 FEATURES:
 ---------
 
 	Gcc on target.
-		(cross built as a target package).
+		(Cross built as a target package).
 
 	Self bootstrapping.
 		(Targets can build themselves ad infinitum.)
@@ -24,7 +36,8 @@ FEATURES:
 		(Musl, glibc and uClibc)
 
 	Root filesystems created without special permissions.
-		(rootfs.cpio.gz fascilitate remote testing with qemu).
+		(Host built genext2fs allows the toolchain to bootstrap itself
+		 and populate a new disk image without root).
 
 	20 host libraries.
 		(ncurses, openssl, libffi and etc)
@@ -60,19 +73,19 @@ DESCRIPTION:
 The toolchain build system supports multiple C library vendors.
 At this time they are: musl, uClibc and glibc, the effectveness
 of which in that order. The default libc is musl. To set the
-desired libc override the variable USELIBC as follows:
+desired libc override the variable OM_LIBC as follows:
 
 	Build with uClibc:
 
-		make USELIBC=uclibc
+		make OM_LIBC=uclibc
 
 	Build with musl:
 
-		make USELIBC=musl
+		make OM_LIBC=musl
 
 	Build with glibc:
 
-		make USELIBC=gnu
+		make OM_LIBC=gnu
 
 	... or open the single Makefile and set it as desired.
 
@@ -80,10 +93,10 @@ The default is to cross build for i686, this is modified by setting
 the primary tuplet prefix. To do this, open the Makefile and modify
 the following four lines:
 
-	USELIBC=musl
-	OM_TARG=i686-pc-linux-$(USELIBC)
-	OM_LINUXARCH=x86
-	OM_BACKWARDCOMPAT=i386 
+	OM_LIBC = musl
+	OM_ARCH = i686
+	OM_LINUXARCH = x86
+	OM_BACKWARDCOMPAT = i386 
 
 	
 TARGET PACKAGES:
@@ -197,7 +210,7 @@ Using the internal package building system:
 	Compiler on target:
 
 		make
-		make compiler
+		make bootstrap
 
 
 
@@ -233,30 +246,10 @@ ADDING TARGET PACKAGES:
 
 			make populate
 			make mynewpackage_target
-		
-
-
-
 
 
 ASSUMPTIONS:
------------- 
-
+------------
 
 	All tarballs must end in the same suffix. That suffix can be 
 	overridden by setting OM_SFX=.
-
-	The omnicross build system makes an assumption that you will be
-	trying to use a specialized C library. Therefore much of the code
-	will be one-off and pertaining to this.
-
-	The omnicross build system makes the assumption that you wish to 
-	use a build system that is contained within a single file. There-
-	fore advanced functionalities that would be best implemented with
-	multiple files are left as an exercize for the user.
-
-	The omnicross build system makes _no assumptions_ regarding hier
-	and instead use any given packages' DESTDIR=. It is assumed that
-	this is what you desire.
-
-
