@@ -2093,8 +2093,3 @@ make_host:
 host_path:
 
 	$(eval PATH=$(OM_SELFBLD)/bin:$(OM_SELFBLD)/usr/bin:$(OM_SELFBLD)/usr/local/bin:$(PATH))
-
-test: host_path
-
-	whereis patch
-
