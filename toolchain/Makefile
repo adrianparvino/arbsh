@@ -47,6 +47,11 @@ OM_PERL_CROSS_MRR = https://github.com/arsv/perl-cross/releases/download/1.0.2/
 # Self bootstrapping
 OM_BOOTSRC = $(shell pwd)/bootstrap
 
+# Self building:
+OM_SELFBLD = $(shell pwd)/$(OM_TARG)-host
+OM_SELFBLDWRK = $(shell pwd)/$(OM_TARG)-host-work
+
+
 # packages
 OM_LIBROOT = $(shell pwd)/libroot
 OM_NCURSES = ncurses-6.0
@@ -957,8 +962,6 @@ test:
 	@/$(OM_PREF)/bin/$(OM_TARG)-gcc works.c -o $(DESTDIR)/works
 	@sudo chroot $(DESTDIR)/ /works
 
-
-
 bootstrap:
 
 	-mkdir -p $(OM_LIBROOT)
@@ -1001,14 +1004,17 @@ test_i386:
 
 	-$(MAKE) -i bootstrap_src
 	dd if=/dev/zero of=drive.img bs=1M count=5000
+	dd if=/dev/zero of=output.img bs=1M count=1000
 	/sbin/mkfs.ext2 -F drive.img
+	/sbin/mkfs.ext2 -F output.img
 	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_LIBROOT) binary.img
 	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-append "root=/dev/sda" \
 	-hda binary.img \
 	-hdb bootsrc.img \
-	-hdc drive.img
+	-hdc drive.img \
+	-hdd output.img
 
 
 test_aarch64:
@@ -2016,4 +2022,51 @@ genext2fs_host: install_path
 
 	-$(MAKE) -C $(SPWD)/$(OM_GENEXTFS)
 	$(MAKE) -C $(SPWD)/$(OM_GENEXTFS) install
+
+busybox_host:
+
+	-rm -rf $(OM_BUSYBOX)
+	cd $(OM_SRC) && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(OM_BUSYBOX_MRR)/$(OM_BUSYBOX).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_BUSYBOX).$(OM_SFX) -C $(SPWD)
+
+	cp $(OM_SRC)/omnicross-busybox-minimal.1 $(OM_BUSYBOX)/.config
+	-$(MAKE) -C $(SPWD)/$(OM_BUSYBOX) CONFIG_PREFIX=$(OM_SELFBLD)
+	-$(MAKE) -C $(SPWD)/$(OM_BUSYBOX) CONFIG_PREFIX=$(OM_SELFBLD)install
+
+
+coreutils_host:
+
+	-rm -rf $(OM_COREUTILS)
+	cd $(OM_SRC) && test -e $(OM_COREUTILS).$(OM_SFX) || wget $(OM_COREUTILS_MRR)/$(OM_COREUTILS).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_COREUTILS).$(OM_SFX) -C $(SPWD)
+	-cd $(SPWD)/$(OM_COREUTILS) && $(SPWD)/$(OM_COREUTILS)/configure \
+	--prefix=$(OM_SELFBLD) \
+	--host=$(OM_HOST)
+
+	-$(MAKE) -C $(SPWD)/$(OM_COREUTILS)
+	-$(MAKE) -C $(SPWD)/$(OM_COREUTILS) install
+
+patch_host:
+
+	-rm -rf $(OM_PATCH)
+	cd $(OM_SRC) && test -e $(OM_PATCH).$(OM_SFX) || wget $(OM_PATCH_MRR)/$(OM_PATCH).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_PATCH).$(OM_SFX) -C $(SPWD)
+	-cd $(SPWD)/$(OM_PATCH) && $(SPWD)/$(OM_PATCH)/configure \
+	--prefix=$(OM_SELFBLD) \
+	--host=$(OM_HOST)
+
+	-$(MAKE) -C $(SPWD)/$(OM_PATCH)
+	-$(MAKE) -C $(SPWD)/$(OM_PATCH) install
+
+gawk_host:
+
+	-rm -rf $(OM_GAWK)
+	cd $(OM_SRC) && test -e $(OM_GAWK).$(OM_SFX) || wget $(OM_GAWK_MRR)/$(OM_GAWK).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_GAWK).$(OM_SFX) -C $(SPWD)
+	-cd $(SPWD)/$(OM_GAWK) && $(SPWD)/$(OM_GAWK)/configure \
+	--prefix=$(OM_SELFBLD) \
+	--host=$(OM_HOST)
+
+	-$(MAKE) -C $(SPWD)/$(OM_GAWK)
+	-$(MAKE) -C $(SPWD)/$(OM_GAWK) install
 
