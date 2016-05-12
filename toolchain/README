@@ -182,6 +182,7 @@ Using the internal package building system:
 		18	netbsdcurses_host
 		19	slibtool_host
 		20	netbsd_tools
+		21	genext2fs_host
 
 
 	Example:
