@@ -17,8 +17,10 @@ SELF BOOTSTRAP:
 	The toolchain build system provides a mechanism in which targets
 	can bootstrap themselves. The new toolchain will be built into
 	OM_LIBROOT = which defaults to the "libroot" directory under
-	toolchain/libroot. And several root filesystems will be created
-	which contain the needed source code to rebuild the system.
+	toolchain/libroot. 3 filesystems are created: 1) The system itself,
+	2) The source code needed to rebuild the system and 3) A blank
+	filesystem onto which the target will rebuild itself. They are
+	drive.img, bootsrc.img and output.img respectively.
 
 		make
 		make bootstrap
