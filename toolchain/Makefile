@@ -2031,7 +2031,7 @@ busybox_host:
 
 	cp $(OM_SRC)/omnicross-busybox-minimal.1 $(OM_BUSYBOX)/.config
 	-$(MAKE) -C $(SPWD)/$(OM_BUSYBOX) CONFIG_PREFIX=$(OM_SELFBLD)
-	-$(MAKE) -C $(SPWD)/$(OM_BUSYBOX) CONFIG_PREFIX=$(OM_SELFBLD)install
+	-$(MAKE) -C $(SPWD)/$(OM_BUSYBOX) CONFIG_PREFIX=$(OM_SELFBLD) install
 
 
 coreutils_host:
