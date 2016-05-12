@@ -211,6 +211,7 @@ OM_OPENSSL_CROSS_ENV = \
 all:
 
 	$(MAKE) -i populate
+	$(MAKE) generate_host_tools
 	$(MAKE) install_path
 	$(MAKE) binutils_stage_make
 	$(MAKE) binutils_stage_install
@@ -232,13 +233,13 @@ ifeq ($(OM_LIBC),gnu)
 	-$(MAKE) -i gnu_stage_three
 endif
 
-install_path: 
+install_path: host_path
 
 	$(eval PATH=$(OM_PREF)/bin:$(PATH))
 	-@mkdir -p $(OM_PREF)/$(OM_TARG)/usr/include
 	-@mkdir -p $(OM_PREF)/$(OM_TARG)/include
 
-binutils_stage_make: 
+binutils_stage_make: host_path
 
 	@test -d $(OM_BINUTILS) || tar -xf $(OM_SRC)/$(OM_BINUTILS).$(OM_SFX) -C $(SPWD)
 	
@@ -249,11 +250,11 @@ binutils_stage_make:
 	$(OM_CONF)
 	$(MAKE) -C $(SPWD)/$(OM_BINUTILS)-build
 
-binutils_stage_install: 
+binutils_stage_install: host_path
 
 	$(MAKE) -C $(SPWD)/$(OM_BINUTILS)-build install 
 
-linux_stage:
+linux_stage: host_path
 
 	@test -d $(OM_LINUX) || tar -xf $(OM_SRC)/$(OM_LINUX).$(OM_SFX) -C $(SPWD)
 	
@@ -262,7 +263,7 @@ linux_stage:
 	INSTALL_HDR_PATH=$(OM_PREF)/$(OM_TARG)/ \
 	headers_install O=$(KBUILDAREA)
 
-gcc_stage_make:
+gcc_stage_make: host_path
 
 	@test -d $(OM_GCC) || tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
 
@@ -297,7 +298,7 @@ endif
 
 	$(STAGE0OPT) $(MAKE) -C $(SPWD)/$(OM_GCC)-build
 
-gcc_stage_install:
+gcc_stage_install: host_path
 
 	$(MAKE) -C $(SPWD)/$(OM_GCC)-build install 
 
@@ -2093,3 +2094,9 @@ make_host:
 host_path:
 
 	$(eval PATH=$(OM_SELFBLD)/bin:$(OM_SELFBLD)/usr/bin:$(OM_SELFBLD)/usr/local/bin:$(PATH))
+
+test: host_path
+
+	$(MAKE) host_path
+
+	echo $(PATH)
