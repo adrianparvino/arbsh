@@ -1870,7 +1870,7 @@ createhost:
 	echo '\t$$(INACROSS)' >> Makefile
 	echo '' >> Makefile
 	echo '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK))' >> Makefile
-	echo '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK))' >> Makefile
+	echo '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK)) install' >> Makefile
 	echo '' >> Makefile
 
 
@@ -2019,9 +2019,17 @@ genext2fs_host: install_path
 	--prefix=$(OM_PREF)/ \
 	--host=$(OM_HOST)
 
-
 	-$(MAKE) -C $(SPWD)/$(OM_GENEXTFS)
 	$(MAKE) -C $(SPWD)/$(OM_GENEXTFS) install
+
+
+generate_host_tools:
+
+	-$(MAKE) busybox_host
+	-$(MAKE) coreutils_host
+	-$(MAKE) patch_host
+	-$(MAKE) gawk_host
+	-$(MAKE) make_host
 
 busybox_host:
 
@@ -2069,4 +2077,16 @@ gawk_host:
 
 	-$(MAKE) -C $(SPWD)/$(OM_GAWK)
 	-$(MAKE) -C $(SPWD)/$(OM_GAWK) install
+
+make_host:
+
+	-rm -rf $(OM_MAKE)
+	cd $(OM_SRC) && test -e $(OM_MAKE).$(OM_SFX) || wget $(OM_MAKE_MRR)/$(OM_MAKE).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_MAKE).$(OM_SFX) -C $(SPWD)
+	-cd $(SPWD)/$(OM_MAKE) && $(SPWD)/$(OM_MAKE)/configure \
+	--prefix=$(OM_SELFBLD) \
+	--host=$(OM_HOST)
+	
+	-$(MAKE) -C $(SPWD)/$(OM_MAKE)
+	-$(MAKE) -C $(SPWD)/$(OM_MAKE) install
 
