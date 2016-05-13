@@ -175,6 +175,10 @@ OM_MAKE = make-4.1
 OM_MAKE_MRR = http://ftp.gnu.org/gnu/make/
 OM_GENEXTFS = genext2fs-1.4.1
 OM_GENEXTFS_MRR = https://sourceforge.net/projects/genext2fs/files/genext2fs/1.4.1/
+OM_M4 = m4-1.4.17
+OM_M4_MRR = https://ftp.gnu.org/gnu/m4/
+
+
 # xorg packages ( incomplete )
 OM_PIXMAN = pixman-0.32.6
 
@@ -976,6 +980,7 @@ bootstrap:
 	-rm $(OM_LIBROOT)/usr/bin/awk
 	-$(MAKE) -i gawk_target
 	-$(MAKE) -i make_target
+	-$(MAKE) -i m4_target
 	-cp -r ../cbin ../clib ../editor ../irc $(OM_LIBROOT)
 	-mkdir -p $(OM_LIBROOT)/toolchain/src/
 	-cp Makefile $(OM_LIBROOT)/toolchain/
@@ -984,6 +989,7 @@ bootstrap:
 bootstrap_src:
 
 	-mkdir -p $(OM_BOOTSRC)
+	-cp -r $(SPWD)/../tree $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_LINUX).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_BINUTILS).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_GCC).$(OM_SFX) $(OM_BOOTSRC)
@@ -995,6 +1001,8 @@ bootstrap_src:
 	-cp $(OM_SRC)/$(OM_GAWK).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_MAKE).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_BUSYBOX).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/$(OM_M4).$(OM_SFX) $(OM_BOOTSRC)
+	-cp $(OM_SRC)/omnicross-busybox-minimal.1 $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_COREUTILS).$(OM_SFX) $(OM_BOOTSRC)
 	-cp $(OM_SRC)/$(OM_GENEXTFS).$(OM_SFX) $(OM_BOOTSRC)
 	-$(MAKE) -i genext2fs_host
@@ -1009,6 +1017,7 @@ test_i386:
 	/sbin/mkfs.ext2 -F drive.img
 	/sbin/mkfs.ext2 -F output.img
 	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_LIBROOT) binary.img
+
 	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-append "root=/dev/sda" \
@@ -1017,6 +1026,33 @@ test_i386:
 	-hdc drive.img \
 	-hdd output.img
 
+testonly:
+
+	-$(MAKE) -i bootstrap_src
+	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_LIBROOT) binary.img
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
+	-kernel $(OM_LIBROOT)/boot/vmlinuz \
+	-append "root=/dev/sda" \
+	-hda binary.img \
+	-hdb bootsrc.img \
+	-hdc drive.img \
+	-hdd output.img
+
+test_final:
+
+	dd if=/dev/zero of=newoutput.img bs=1M count=1000
+	/sbin/mkfs.ext2 -F newoutput.img
+	
+	dd if=/dev/zero of=newdrive.img bs=1M count=8000
+	/sbin/mkfs.ext2 -F newdrive.img
+
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
+	-kernel $(OM_LIBROOT)/boot/vmlinuz \
+	-append "root=/dev/sda init=/bin/sh" \
+	-hda output.img \
+	-hdb bootsrc.img \
+	-hdc newdrive.img \
+	-hdd newoutput.img
 
 test_aarch64:
 
@@ -2095,4 +2131,16 @@ host_path:
 
 	$(eval PATH=$(OM_SELFBLD)/bin:$(OM_SELFBLD)/usr/bin:$(OM_SELFBLD)/usr/local/bin:$(PATH))
 
+
+m4_target: install_path
+
+	-rm -rf $(OM_M4)
+	cd $(OM_SRC) && test -e $(OM_M4).$(OM_SFX) || wget $(OM_M4_MRR)/$(OM_M4).$(OM_SFX)
+	@tar -xf $(OM_SRC)/$(OM_M4).$(OM_SFX) -C $(SPWD)
+	-cd $(SPWD)/$(OM_M4) && $(INACROSS) $(SPWD)/$(OM_M4)/configure \
+	--host=$(OM_SUBTARG) \
+	--target=$(OM_SUBTARG)
+
+	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_M4)
+	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_M4) install DESTDIR=$(OM_LIBROOT)
 
