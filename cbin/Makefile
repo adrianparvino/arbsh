@@ -1,3 +1,5 @@
+.PHONY: uninstall
+
 CFLAGS += -Wall -Wextra
 MAKEFLAGS += -i
 PREFIX ?= /bin
@@ -7,17 +9,19 @@ BIN = $(patsubst %.c,%,$(SRC))
 
 all: $(BIN)
 
-
 install:
+
 	-mkdir -p $(DESTDIR)/$(PREFIX)
 	cp -r $(BIN) $(DESTDIR)/$(PREFIX)
-	echo "cd $(DESTDIR)/$(PREFIX)/ && rm $(BIN)" > uninstal.sh
+	echo "cd $(DESTDIR)/$(PREFIX)/ && rm $(BIN)" > uninstall
 
 uninstall:
-	$(MAKE) uninstal
-	./uninstal
+
+	chmod +x uninstall
+	./uninstall
 
 clean:
+
 	$(RM) $(BIN)
-	$(RM) a.out uninstal uninstal.sh
+	$(RM) a.out uninstall
 
