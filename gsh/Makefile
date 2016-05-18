@@ -1,6 +1,6 @@
 PREFIX ?= /bin
 
-CFLAGS = -Wall -Wextra
+CFLAGS += -Wall -Wextra
 
 all:
 
