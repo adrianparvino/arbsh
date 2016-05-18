@@ -1,8 +1,8 @@
-
+.PHONY: uninstall
 
 PREFIX ?= /bin
 
-CFLAGS = -Wall -Wextra
+CFLAGS += -Wall -Wextra
 
 all:
 
@@ -12,16 +12,15 @@ install:
 
 	-@mkdir -p $(DESTDIR)/$(PREFIX)/
 	-@cp -a irc $(DESTDIR)/$(PREFIX)/
-	-echo "rm $(DESTDIR)/$(PREFIX)/irc" > uninstall.sh
+	-echo "rm $(DESTDIR)/$(PREFIX)/irc" > uninstall
 
 uninstall:
 
-	-chmod +x uninstall.sh
-	-./uninstall.sh
+	-chmod +x uninstall
+	-./uninstall
 
 clean:
-	$(RM) irc
-	$(RM) uninstall.sh
-	
 
+	$(RM) irc
+	$(RM) uninstall
 
