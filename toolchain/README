@@ -11,19 +11,6 @@ INSTALLATION:
 
 		make install DESTDIR=/full/path/
 
-SELF BOOTSTRAP:
----------------
-
-	The toolchain build system provides a mechanism in which targets
-	can bootstrap themselves. The new toolchain will be built into
-	OM_LIBROOT = which defaults to the "libroot" directory under
-	toolchain/libroot. 3 filesystems are created: 1) The system itself,
-	2) The source code needed to rebuild the system and 3) A blank
-	filesystem onto which the target will rebuild itself. They are
-	drive.img, bootsrc.img and output.img respectively.
-
-		make
-		make bootstrap
 
 FEATURES:
 ---------
@@ -32,7 +19,7 @@ FEATURES:
 		(Cross built as a target package).
 
 	Self bootstrapping.
-		(Targets can build themselves ad infinitum.)
+		(Targets can build themselves.(Experimental))
 
 	Multiple C library vendors are supported:
 		(Musl, glibc and uClibc)
@@ -250,9 +237,38 @@ ADDING TARGET PACKAGES:
 			make populate
 			make mynewpackage_target
 
+SELF BOOTSTRAP:
+---------------
 
-ASSUMPTIONS:
-------------
+	The toolchain build system provides a mechanism in which targets
+	can bootstrap themselves. The new toolchain will be built into
+	OM_LIBROOT = which defaults to the "libroot" directory under
+	toolchain/libroot. 3 filesystems are created: 1) The system itself,
+	2) The source code needed to rebuild the system and 3) A blank
+	filesystem onto which the target will rebuild itself. They are
+	drive.img, bootsrc.img and output.img respectively.
+
+		make
+		make bootstrap
+
+	The target can then be booted in qemu (with all 3 disk images
+	attached):
+
+		make test_i386
+
+	On the target machine simply invoke the toolchain build system
+	Simply invoke the same commands again. Watch out for linker errors
+	and errors with gcc's cc1. It may be a good idea to use a new
+	a build path as well:
+
+		make ; make bootstrap
+
+	This functionality is in it's fledgling experimental stages and
+	has not made it past a 3rd generation build lineage.
+
+ASSUMPTIONS ABOUT TARBALLS:
+---------------------------
 
 	All tarballs must end in the same suffix. That suffix can be 
 	overridden by setting OM_SFX=.
+
