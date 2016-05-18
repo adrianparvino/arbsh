@@ -1,31 +1,26 @@
-# editor - A simple text editor 
-# See LICENSE file for copyright and license details.
-
+.PHONY: uninstall
 
 PREFIX ?= /bin
 
-CFLAGS = -Wall -Wextra
+CFLAGS += -Wall -Wextra
 
 all:
 
 	$(CC) editor.c -o editor $(CFLAGS) $(LDFLAGS)
 
-sieve:
-	$(CC) sieve.c -o sieve $(CFLAGS) $(LDFLAGS)
-
 install:
 
 	-@mkdir -p $(DESTDIR)/$(PREFIX)/
 	-@cp -a editor $(DESTDIR)/$(PREFIX)/
-	-echo "rm $(DESTDIR)/$(PREFIX)/editor" > uninstall.sh
+	-echo "rm $(DESTDIR)/$(PREFIX)/editor" > uninstall
 
 uninstall:
 
-	-chmod +x uninstall.sh
-	-./uninstall.sh
+	-chmod +x uninstall
+	-./uninstall
 
 clean:
+
 	$(RM) editor
-	$(RM) uninstall.sh
-	
+	$(RM) uninstall
 
