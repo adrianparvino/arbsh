@@ -219,10 +219,6 @@ gcc_stage1:
 	$(CONFALL) \
 	$(CONF_1)
 
-	#--disable-libmpx 
-	#--disable-libcilkrts
-	#--disable-gnu-indirect-function
-
 	-@$(MAKE) -C $(WORK)/$(GCC)-1
 
 
@@ -238,6 +234,7 @@ cleanall:
 
 	-$(RM) -rf $(WORK)
 	-$(RM) -rf $(PREF)
+	-$(RM) -rf $(USELESS)
 
 retrieve_mcm_patches:
 
