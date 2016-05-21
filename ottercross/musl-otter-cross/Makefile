@@ -36,7 +36,6 @@ CONFALL = \
 	--disable-gnu-indirect-function
 
 
-#CONFALL =
 CONF_0 =
 CONF_1 =
 BINUTILS = binutils-2.26
