@@ -14,17 +14,20 @@ PREF = $(SPWD)/$(TARG)-toolchain
 WORK = $(PREF)-work
 SRC = $(SPWD)/src/
 PATCH = $(SPWD)/patches/
-CONF = --with-sysroot=$(PREF)/$(TARG) --disable-multilib
+#CONF = --with-sysroot=$(PREF)/$(TARG) --disable-multilib
+CONF =
 BINUTILS = binutils-2.26
 BINUTILS_MRR = https://ftp.gnu.org/gnu/binutils/
-GCC = gcc-5.3.0
+#GCC = gcc-5.3.0
+GCC = gcc-6.1.0
 GCC_MRR = https://ftp.gnu.org/gnu/gcc/$(GCC)/
 MUSL = musl-1.1.14
 MUSL_MRR = http://www.musl-libc.org/releases/
-LANGS = c,c++,fortran
+#LANGS = c,c++,fortran
+LANGS = c
 SOURCE = $(SPWD)/source/
 PESSIMIZE = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
-
+#http://port70.net/~nsz/musl/gcc-6.1.0/0003-libgcc_s.patch
 
 # This is only used to document the build
 MACHTYPE = $(shell gcc -dumpmachine)
@@ -146,6 +149,7 @@ gcc_stage0:
 	--disable-libmudflap \
 	--disable-libgomp \
 	--disable-libatomic \
+	--disable-libmpx \
 	$(CONF)
 
 	@$(PESSIMIZE) $(MAKE) -C $(WORK)/$(GCC)-0
@@ -189,7 +193,12 @@ gcc_stage1:
 	--disable-gprof \
 	--disable-ld \
 	--disable-gas \
+	--disable-libmpx \
 	$(CONF)
+
+	#--disable-libmpx 
+	#--disable-libcilkrts
+	#--disable-gnu-indirect-function
 
 	-@$(MAKE) -C $(WORK)/$(GCC)-1
 
