@@ -1,8 +1,8 @@
 # Musl Otter Cross (MOC)
 # Musl based cross compiler, 2 stages, relocatable toolchain, in tree binutils.
 
-Using gcc-5.3, binutils-2.6 and musl-1.14 (current releases as of
-15/04/2016).
+Using gcc-6.1.0, binutils-2.6 and musl-1.14 (current releases as of
+20/05/2016).
 
 Musl-otter-cross uses a "two stage" system to create a cross compiler.
 Gcc, musl and binutils are built using "read only source", (they are
