@@ -1,0 +1,14 @@
+Automatic testing of build from x86_64-linux-gnu;
+PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
+Sat May 21 21:25:41 CEST 2016
+
+binutils: binutils-2.26
+gcc: gcc-6.1.0
+musl: musl-1.1.14
+
+x86_64-linux-gnu	--> aarch64-pc-linux-musl  (pthreads, c, c++, fortran)
+x86_64-linux-gnu	--> x86_64-pc-linux-musl  (pthreads, c, c++, fortran)
+x86_64-linux-gnu	--> sh-pc-linux-musl  (pthreads, c, c++, fortran)
+x86_64-linux-gnu	--> mips-pc-linux-musl  (failed)
+x86_64-linux-gnu	--> microblaze-pc-linux-musl  (pthreads, c, c++, fortran)
+x86_64-linux-gnu	--> i586-pc-linux-musl  (pthreads, c, c++, fortran)
