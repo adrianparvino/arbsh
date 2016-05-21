@@ -16,7 +16,7 @@ PREF = $(SPWD)/$(TARG)-toolchain
 WORK = $(PREF)-work
 SRC = $(SPWD)/src/
 PATCH = $(SPWD)/patches/
-USELESS = $(SPWD)/useless
+USELESS = $(SPWD)/$(TARG)-useless
 CONFALL = \
 	--with-sysroot=$(PREF)/$(TARG) \
 	--disable-multilib \
@@ -109,11 +109,17 @@ universe:
 	printf "musl: %s\n\n" "$(MUSL)" >> $(LOGDIR)/$(HOSTTYPE)-report
 
 	-$(MAKE) all TARG=aarch64-pc-linux-musl
+	-$(MAKE) clean TARG=aarch64-pc-linux-musl
 	-$(MAKE) all TARG=x86_64-pc-linux-musl
+	-$(MAKE) clean TARG=x86_64-pc-linux-musl
 	-$(MAKE) all TARG=sh-pc-linux-musl
+	-$(MAKE) clean TARG=sh-pc-linux-musl
 	-$(MAKE) all TARG=mips-pc-linux-musl
+	-$(MAKE) clean TARG=mips-pc-linux-musl
 	-$(MAKE) all TARG=microblaze-pc-linux-musl
+	-$(MAKE) clean TARG=microblaze-pc-linux-musl
 	-$(MAKE) all TARG=i586-pc-linux-musl
+	-$(MAKE) clean TARG=i586-pc-linux-musl
 	-cp Makefile $(LOGDIR)/BUILDUSED.mak
 	-$(MAKE) log
 
