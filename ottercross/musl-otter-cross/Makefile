@@ -65,9 +65,11 @@ all:
 	-$(MAKE) install_path
 	-$(MAKE) retrieve_musl retrieve_gcc retrieve_binutils
 	-$(MAKE) retrieve_mcm_patches
-ifeq ($(GCC),6.1.0)
+
+ifeq ($(GCC),gcc-6.1.0)
 	-$(MAKE) retrieve_nsz_patches
 endif
+
 	-$(MAKE) gcc_stage0 > $(LOG)-gcc_stage0 2>&1
 	-$(MAKE) gcc_stage0_install > $(LOG)-gcc_stage0_install 2>&1
 	-$(MAKE) musl > $(LOG)-musl 2>&1
