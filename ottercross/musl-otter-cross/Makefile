@@ -93,6 +93,8 @@ endif
 	-$(MAKE) gcc_stage1 > $(LOG)-gcc_stage1 2>&1
 	-$(MAKE) gcc_stage1_install > $(LOG)-gcc_stage1_install 2>&1
 	-$(MAKE) musl_install > $(LOG)-musl_install 2>&1
+	-$(MAKE) test
+	cat $(LOGDIR)/README
 
 	
 universe:
@@ -107,17 +109,11 @@ universe:
 	printf "musl: %s\n\n" "$(MUSL)" >> $(LOGDIR)/$(HOSTTYPE)-report
 
 	-$(MAKE) all TARG=aarch64-pc-linux-musl
-	-$(MAKE) test TARG=aarch64-pc-linux-musl
 	-$(MAKE) all TARG=x86_64-pc-linux-musl
-	-$(MAKE) test TARG=x86_64-pc-linux-musl
 	-$(MAKE) all TARG=sh-pc-linux-musl
-	-$(MAKE) test TARG=sh-pc-linux-musl
 	-$(MAKE) all TARG=mips-pc-linux-musl
-	-$(MAKE) test TARG=mips-pc-linux-musl
 	-$(MAKE) all TARG=microblaze-pc-linux-musl
-	-$(MAKE) test TARG=microblaze-pc-linux-musl
 	-$(MAKE) all TARG=i586-pc-linux-musl
-	-$(MAKE) test TARG=i586-pc-linux-musl
 	-cp Makefile $(LOGDIR)/BUILDUSED.mak
 	-$(MAKE) log
 
