@@ -14,8 +14,8 @@ PREF = $(SPWD)/$(TARG)-toolchain
 WORK = $(PREF)-work
 SRC = $(SPWD)/src/
 PATCH = $(SPWD)/patches/
-#CONF = --with-sysroot=$(PREF)/$(TARG) --disable-multilib
-CONF =
+CONF = --with-sysroot=$(PREF)/$(TARG) --disable-multilib
+#CONF =
 BINUTILS = binutils-2.26
 BINUTILS_MRR = https://ftp.gnu.org/gnu/binutils/
 #GCC = gcc-5.3.0
