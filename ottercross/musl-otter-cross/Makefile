@@ -36,8 +36,28 @@ CONFALL = \
 	--disable-gnu-indirect-function
 
 
-CONF_0 =
-CONF_1 =
+CONF_0 = \
+	--enable-languages=c \
+	--with-newlib \
+	--disable-libssp \
+	--disable-nls \
+	--disable-libquadmath \
+	--disable-threads \
+	--disable-decimal-float \
+	--disable-shared \
+	--disable-libgomp \
+	--disable-libatomic
+
+CONF_1 = \
+	--enable-languages=$(LANGS) \
+	--disable-libsanitizer \
+	--disable-binutils \
+	--disable-zlib \
+	--disable-intl \
+	--disable-gprof \
+	--disable-ld \
+	--disable-gas
+
 BINUTILS = binutils-2.26
 BINUTILS_MRR = https://ftp.gnu.org/gnu/binutils/
 #GCC = gcc-5.3.0
@@ -160,16 +180,6 @@ gcc_stage0:
 	@cd $(WORK)/$(GCC)-0 && $(SOURCE)/$(GCC)/configure \
 	--prefix=$(PREF) \
 	--target=$(TARG) \
-	--enable-languages=c \
-	--with-newlib \
-	--disable-libssp \
-	--disable-nls \
-	--disable-libquadmath \
-	--disable-threads \
-	--disable-decimal-float \
-	--disable-shared \
-	--disable-libgomp \
-	--disable-libatomic \
 	$(CONFALL) \
 	$(CONF_0)
 
@@ -205,14 +215,6 @@ gcc_stage1:
 	-@cd $(WORK)/$(GCC)-1 && $(SOURCE)/$(GCC)/configure \
 	--prefix=$(PREF) \
 	--target=$(TARG) \
-	--enable-languages=$(LANGS) \
-	--disable-libsanitizer \
-	--disable-binutils \
-	--disable-zlib \
-	--disable-intl \
-	--disable-gprof \
-	--disable-ld \
-	--disable-gas \
 	$(CONFALL) \
 	$(CONF_1)
 
