@@ -1,6 +1,8 @@
 # Musl otter cross (MOC)
-# Musl/gcc cross compiler, 2 stages, combined tree, relocatable toolchain, 
-# Written by CM Graff in April of 2016
+# Musl/gcc cross compiler, 2 stages, combined tree, relocatable toolchain
+# Written by CM Graff in April 2016
+# Revised in May 2016 to use gcc 6
+
 
 export MAKEINFO = false
 XZ = gz 
@@ -14,8 +16,24 @@ PREF = $(SPWD)/$(TARG)-toolchain
 WORK = $(PREF)-work
 SRC = $(SPWD)/src/
 PATCH = $(SPWD)/patches/
-CONF = --with-sysroot=$(PREF)/$(TARG) --disable-multilib
-#CONF =
+USELESS = $(SPWD)/useless
+CONFALL = \
+	--with-sysroot=$(PREF)/$(TARG) \
+	--disable-multilib \
+	--disable-libmudflap \
+	--enable-libmpx \
+	--infodir=$(USELESS) \
+	--localedir=$(USELESS) \
+	--mandir=$(USELESS) \
+	--docdir=$(USELESS) \
+	--htmldir=$(USELESS) \
+	--dvidir=$(USELESS) \
+	--pdfdir=$(USELESS) \
+	--psdir=$(USELESS) 
+
+#CONFALL =
+CONF_0 =
+CONF_1 =
 BINUTILS = binutils-2.26
 BINUTILS_MRR = https://ftp.gnu.org/gnu/binutils/
 #GCC = gcc-5.3.0
@@ -31,16 +49,12 @@ PESSIMIZE = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 
 # This is only used to document the build
 MACHTYPE = $(shell gcc -dumpmachine)
-
 LOGDIR = $(SPWD)/$(MACHTYPE)_logs
-
 LOG = $(LOGDIR)/$(TARG)-log
-
 
 
 all:
 
-	
 	-mkdir -p $(LOGDIR)
 	-$(MAKE) install_path
 	-$(MAKE) retrieve_musl retrieve_gcc retrieve_binutils
@@ -146,11 +160,10 @@ gcc_stage0:
 	--disable-threads \
 	--disable-decimal-float \
 	--disable-shared \
-	--disable-libmudflap \
 	--disable-libgomp \
 	--disable-libatomic \
-	--disable-libmpx \
-	$(CONF)
+	$(CONFALL) \
+	$(CONF_0)
 
 	@$(PESSIMIZE) $(MAKE) -C $(WORK)/$(GCC)-0
 
@@ -185,7 +198,6 @@ gcc_stage1:
 	--prefix=$(PREF) \
 	--target=$(TARG) \
 	--enable-languages=$(LANGS) \
-	--disable-libmudflap \
 	--disable-libsanitizer \
 	--disable-binutils \
 	--disable-zlib \
@@ -193,8 +205,8 @@ gcc_stage1:
 	--disable-gprof \
 	--disable-ld \
 	--disable-gas \
-	--disable-libmpx \
-	$(CONF)
+	$(CONFALL) \
+	$(CONF_1)
 
 	#--disable-libmpx 
 	#--disable-libcilkrts
