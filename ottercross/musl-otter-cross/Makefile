@@ -45,9 +45,7 @@ GCC = gcc-6.1.0
 GCC_MRR = https://ftp.gnu.org/gnu/gcc/$(GCC)/
 MUSL = musl-1.1.14
 MUSL_MRR = http://www.musl-libc.org/releases/
-#LANGS = c,c++,fortran
-#LANGS = c
-LANGS = c,c++
+LANGS = c,c++,fortran
 SOURCE = $(SPWD)/source/
 PESSIMIZE = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 #
