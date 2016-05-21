@@ -21,7 +21,7 @@ CONFALL = \
 	--with-sysroot=$(PREF)/$(TARG) \
 	--disable-multilib \
 	--disable-libmudflap \
-	--enable-libmpx \
+	--disable-libmpx \
 	--infodir=$(USELESS) \
 	--localedir=$(USELESS) \
 	--mandir=$(USELESS) \
@@ -29,7 +29,12 @@ CONFALL = \
 	--htmldir=$(USELESS) \
 	--dvidir=$(USELESS) \
 	--pdfdir=$(USELESS) \
-	--psdir=$(USELESS) 
+	--psdir=$(USELESS) \
+	--enable-stage1-languages=c \
+	--with-system-zlib \
+	--disable-libcilkrts \
+	--disable-gnu-indirect-function
+
 
 #CONFALL =
 CONF_0 =
@@ -42,14 +47,15 @@ GCC_MRR = https://ftp.gnu.org/gnu/gcc/$(GCC)/
 MUSL = musl-1.1.14
 MUSL_MRR = http://www.musl-libc.org/releases/
 #LANGS = c,c++,fortran
-LANGS = c
+#LANGS = c
+LANGS = c,c++
 SOURCE = $(SPWD)/source/
 PESSIMIZE = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
-#http://port70.net/~nsz/musl/gcc-6.1.0/0003-libgcc_s.patch
+#
 
 # This is only used to document the build
-MACHTYPE = $(shell gcc -dumpmachine)
-LOGDIR = $(SPWD)/$(MACHTYPE)_logs
+HOSTTYPE = $(shell gcc -dumpmachine)
+LOGDIR = $(SPWD)/$(HOSTTYPE)_logs
 LOG = $(LOGDIR)/$(TARG)-log
 
 
@@ -59,6 +65,9 @@ all:
 	-$(MAKE) install_path
 	-$(MAKE) retrieve_musl retrieve_gcc retrieve_binutils
 	-$(MAKE) retrieve_mcm_patches
+ifeq ($(GCC),6.1.0)
+	-$(MAKE) retrieve_nsz_patches
+endif
 	-$(MAKE) gcc_stage0 > $(LOG)-gcc_stage0 2>&1
 	-$(MAKE) gcc_stage0_install > $(LOG)-gcc_stage0_install 2>&1
 	-$(MAKE) musl > $(LOG)-musl 2>&1
@@ -71,12 +80,12 @@ universe:
 
 	-$(RM) $(LOGDIR)
 	-mkdir -p $(LOGDIR)
-	-printf "Automatic testing of build from %s;\n" "$(MACHTYPE)" > $(LOGDIR)/$(MACHTYPE)-report
-	grep PRETTY_NAME /etc/os-release >> $(LOGDIR)/$(MACHTYPE)-report
-	date >> $(LOGDIR)/$(MACHTYPE)-report
-	printf "\nbinutils: %s\n" "$(BINUTILS)" >> $(LOGDIR)/$(MACHTYPE)-report
-	printf "gcc: %s\n" "$(GCC)" >> $(LOGDIR)/$(MACHTYPE)-report
-	printf "musl: %s\n\n" "$(MUSL)" >> $(LOGDIR)/$(MACHTYPE)-report
+	-printf "Automatic testing of build from %s;\n" "$(HOSTTYPE)" > $(LOGDIR)/$(HOSTTYPE)-report
+	grep PRETTY_NAME /etc/os-release >> $(LOGDIR)/$(HOSTTYPE)-report
+	date >> $(LOGDIR)/$(HOSTTYPE)-report
+	printf "\nbinutils: %s\n" "$(BINUTILS)" >> $(LOGDIR)/$(HOSTTYPE)-report
+	printf "gcc: %s\n" "$(GCC)" >> $(LOGDIR)/$(HOSTTYPE)-report
+	printf "musl: %s\n\n" "$(MUSL)" >> $(LOGDIR)/$(HOSTTYPE)-report
 
 	-$(MAKE) all TARG=aarch64-pc-linux-musl
 	-$(MAKE) test TARG=aarch64-pc-linux-musl
@@ -99,15 +108,15 @@ test:
 	-/$(PREF)/bin/$(TARG)-gcc pthreads-test.c -lpthread && \
 	/$(PREF)/bin/$(TARG)-gcc -v 2>&1 | grep posix && \
 	/$(PREF)/bin/$(TARG)-gcc testing.c && \
-		printf "%s\t--> %s  (pthreads, c" "$(MACHTYPE)" "$(TARG)" >> $(LOGDIR)/$(MACHTYPE)-report || \
-		printf "%s\t--> %s  (failed" "$(MACHTYPE)" "$(TARG)" >> $(LOGDIR)/$(MACHTYPE)-report
+		printf "%s\t--> %s  (pthreads, c" "$(HOSTTYPE)" "$(TARG)" >> $(LOGDIR)/$(HOSTTYPE)-report || \
+		printf "%s\t--> %s  (failed" "$(HOSTTYPE)" "$(TARG)" >> $(LOGDIR)/$(HOSTTYPE)-report
 	-/$(PREF)/bin/$(TARG)-g++ testing.cpp && \
-		printf ", c++" >> $(LOGDIR)/$(MACHTYPE)-report 
+		printf ", c++" >> $(LOGDIR)/$(HOSTTYPE)-report 
 	-/$(PREF)/bin/$(TARG)-gfortran testing.f && \
-		printf ", fortran" >> $(LOGDIR)/$(MACHTYPE)-report
-	-printf ")\n" >> $(LOGDIR)/$(MACHTYPE)-report 
+		printf ", fortran" >> $(LOGDIR)/$(HOSTTYPE)-report
+	-printf ")\n" >> $(LOGDIR)/$(HOSTTYPE)-report 
 	
-	-cp $(LOGDIR)/$(MACHTYPE)-report $(LOGDIR)/README
+	-cp $(LOGDIR)/$(HOSTTYPE)-report $(LOGDIR)/README
 	
 
 install_path: 
@@ -234,4 +243,7 @@ retrieve_mcm_patches:
 	{ cat $(SOURCE)/mcm/patches/$(GCC)/* | ( cd $(SOURCE)/$(GCC) && patch -f -N -p1 ) ; \
 	cat $(SOURCE)/mcm/patches/$(BINUTILS)/* | ( cd $(SOURCE)/$(BINUTILS) && patch -f -N -p1 ) ; } ;
 
+retrieve_nsz_patches:
 
+	-cd $(PATCH) && wget http://port70.net/~nsz/musl/gcc-6.1.0/0003-libgcc_s.patch
+	-cd $(SOURCE)/$(GCC) && patch -f -N -p1 < $(PATCH)/0003-libgcc_s.patch
