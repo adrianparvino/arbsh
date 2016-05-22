@@ -40,6 +40,11 @@ gcc to accept musl based tuples. Musl should no longer need such patches
 after gcc version 6 (we are on 5.3 now).
 
 
+Some patches from nsz are also used, and can be found here:
+
+	 http://port70.net/~nsz/musl/
+
+
 Builds take between 10 and 20 minutes on most machines. I believe with
 proper configuration and build target staging this could be halved.
 
