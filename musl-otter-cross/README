@@ -52,6 +52,9 @@ proper configuration and build target staging this could be halved.
 When musl-otter-cross builds a "universe" or batch of architectures,
 source code is shared between arches so as to minimize workload and 
 disk footprint when testing multiple targets (read only source). 
+Each target is deleted after it is created and teated. These target
+builds are assessed by examining their logs. Remove the cleanll
+recipies after each 'all' recipie in the 'universe' make target.
 
 
 Simple tests are performed after each target is finished building. If the 
