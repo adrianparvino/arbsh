@@ -9,7 +9,12 @@ XZ = gz
 XZTOOL = gzip -d -c
 ARCHIVE = tar
 ARCHIVETOOL = tar -x
-TARG = i686-pc-linux-musl
+TARG = mips-pc-linux-musl
+# Musl only needs kernel headers for a bug with mips + gcc 6.
+LINUX = linux-4.1
+LINUX_MRR = https://www.kernel.org/pub/linux/kernel/v4.x/
+LINUXARCH = mips
+#
 HOST = $(shell uname -m)
 SPWD = $(shell pwd)
 PREF = $(SPWD)/$(TARG)-toolchain
@@ -56,7 +61,8 @@ CONF_1 = \
 	--disable-intl \
 	--disable-gprof \
 	--disable-ld \
-	--disable-gas
+	--disable-gas \
+	--with-headers=$(PREF)/$(TARG)/include
 
 BINUTILS = binutils-2.26
 BINUTILS_MRR = https://ftp.gnu.org/gnu/binutils/
@@ -68,12 +74,12 @@ MUSL_MRR = http://www.musl-libc.org/releases/
 LANGS = c,c++,fortran
 SOURCE = $(SPWD)/source/
 PESSIMIZE = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
-#
 
 # This is only used to document the build
 HOSTTYPE = $(shell gcc -dumpmachine)
 LOGDIR = $(SPWD)/$(HOSTTYPE)_logs
 LOG = $(LOGDIR)/$(TARG)-log
+
 
 
 all:
@@ -85,13 +91,16 @@ all:
 
 ifeq ($(GCC),gcc-6.1.0)
 	-$(MAKE) retrieve_nsz_patches
+ifeq ($(TARG), mips-pc-linux-musl)
+	-$(MAKE) linux_stage_headers
+endif
 endif
 
 	-$(MAKE) gcc_stage0 > $(LOG)-gcc_stage0 2>&1
 	-$(MAKE) gcc_stage0_install > $(LOG)-gcc_stage0_install 2>&1
 	-$(MAKE) musl > $(LOG)-musl 2>&1
 	-$(MAKE) gcc_stage1 > $(LOG)-gcc_stage1 2>&1
-	-$(MAKE) gcc_stage1_check > $(LOG)-gcc_stage1_check 2>&1
+	#-$(MAKE) gcc_stage1_check > $(LOG)-gcc_stage1_check 2>&1
 	-$(MAKE) gcc_stage1_install > $(LOG)-gcc_stage1_install 2>&1
 	-$(MAKE) musl_install > $(LOG)-musl_install 2>&1
 	-$(MAKE) test
@@ -110,11 +119,17 @@ universe:
 	printf "musl: %s\n\n" "$(MUSL)" >> $(LOGDIR)/$(HOSTTYPE)-report
 
 	-$(MAKE) all TARG=aarch64-pc-linux-musl
+	-$(MAKE) cleanall TARG=aarch64-pc-linux-musl
 	-$(MAKE) all TARG=x86_64-pc-linux-musl
+	-$(MAKE) cleanall TARG=x86_64-pc-linux-musl
 	-$(MAKE) all TARG=sh-pc-linux-musl
+	-$(MAKE) cleanall TARG=sh-pc-linux-musl
 	-$(MAKE) all TARG=mips-pc-linux-musl
+	-$(MAKE) cleanall TARG=mips-pc-linux-musl
 	-$(MAKE) all TARG=microblaze-pc-linux-musl
+	-$(MAKE) cleanall TARG=microblaze-pc-linux-musl
 	-$(MAKE) all TARG=i586-pc-linux-musl
+	-$(MAKE) cleanall TARG=i586-pc-linux-musl
 	-cp Makefile $(LOGDIR)/BUILDUSED.mak
 
 test:
@@ -234,6 +249,15 @@ cleanall:
 	-$(RM) -rf $(PREF)
 	-$(RM) -rf $(USELESS)
 
+destroy:
+
+	-$(MAKE) cleanall TARG=aarch64-pc-linux-musl
+	-$(MAKE) cleanall TARG=x86_64-pc-linux-musl
+	-$(MAKE) cleanall TARG=sh-pc-linux-musl
+	-$(MAKE) cleanall TARG=mips-pc-linux-musl
+	-$(MAKE) cleanall TARG=microblaze-pc-linux-musl
+	-$(MAKE) cleanall TARG=i586-pc-linux-musl
+
 retrieve_mcm_patches:
 
 	-git clone https://github.com/richfelker/musl-cross-make $(SOURCE)/mcm && \
@@ -244,3 +268,17 @@ retrieve_nsz_patches:
 
 	-cd $(PATCH) && wget http://port70.net/~nsz/musl/gcc-6.1.0/0003-libgcc_s.patch
 	-cd $(SOURCE)/$(GCC) && patch -f -N -p1 < $(PATCH)/0003-libgcc_s.patch
+
+linux_stage:
+
+	-@cd $(SRC) && test -e $(LINUX).$(ARCHIVE).$(XZ) || \
+		wget $(LINUX_MRR)/$(LINUX).$(ARCHIVE).$(XZ)
+	-@cd $(SOURCE) && test -e $(LINUX) || \
+		$(XZTOOL) $(SRC)/$(LINUX).$(ARCHIVE).$(XZ) | $(ARCHIVETOOL)
+
+linux_stage_headers: linux_stage
+
+	$(MAKE) -C $(SOURCE)/$(LINUX) ARCH=$(LINUXARCH) \
+	INSTALL_HDR_PATH=$(PREF)/$(TARG)/ \
+	headers_install \
+	O=$(WORK)/$(LINUX)-build
