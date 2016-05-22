@@ -37,8 +37,7 @@ Fine tuning of the installation directories:
   --htmldir=DIR           html documentation [DOCDIR]
   --dvidir=DIR            dvi documentation [DOCDIR]
   --pdfdir=DIR            pdf documentation [DOCDIR]
-  --psdir=DIR             ps documentation [DOCDIR]
-
+  --psdir=DIR             ps documentation [DOCDIR] 
 
 System types:
   --build=BUILD     configure for building on BUILD [guessed]
@@ -58,9 +57,7 @@ Optional Features:
   --disable-libstdcxx     do not build libstdc++-v3 directory
   --enable-liboffloadmic=ARG
                           build liboffloadmic [ARG={no,host,target}] 
-  --enable-bootstrap      enable bootstrapping [yes if native build]
-
-
+  --enable-bootstrap      enable bootstrapping [yes if native build] 
   --enable-lto            enable link time optimization support
   --enable-linker-plugin-configure-flags=FLAGS
                           additional flags for configuring linker plugins
@@ -70,10 +67,7 @@ Optional Features:
                           plugins [none]
   --enable-stage1-languages[=all]
                           choose additional languages to build during stage1.
-                          Mostly useful for compiler development
-
- 
-  --enable-vtable-verify  Enable vtable verification feature
+                          Mostly useful for compiler development 
   --enable-serial-[{host,target,build}-]configure
                           force sequential configuration of sub-packages for
                           the host, target or build machine, or all
@@ -89,14 +83,12 @@ Optional Packages:
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-build-libsubdir=DIR  Directory where to find libraries for build system
   --with-system-zlib      use installed libz 
-
   --with-stage1-libs=LIBS libraries for stage1
   --with-stage1-ldflags=FLAGS
                           linker flags for stage1
   --with-boot-libs=LIBS   libraries for stage2 and later
   --with-boot-ldflags=FLAGS
-                          linker flags for stage2 and later
-
+                          linker flags for stage2 and later 
   --with-build-sysroot=SYSROOT
                           use sysroot as the system root during the build 
 
