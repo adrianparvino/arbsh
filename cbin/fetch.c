@@ -15,23 +15,16 @@
 //#include <linux/limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "lib/cutils.c"
-
-
-
+#include "lib/cutils.c" 
 
 /* 
-	Copyright 2015, C. Graff  "fetch" 
-
+	Copyright 2015, C. Graff  "fetch"
 	Usage: fetch http://www.gnu.org/index.html
-
-*/ 
-
+*/
 
 void parseurl(char *);
 void fetch(char *, char *, char *);
-void writeout(int sck, int output); 
-
+void writeout(int, int);
 
 int main (int argc, char *argv[])
 { 
@@ -51,12 +44,12 @@ int main (int argc, char *argv[])
 void parseurl(char *argv)
 { 
 	/* 
-                parseurl() --> fetch() --> writeout()
-        */
+		parseurl() --> fetch() --> writeout()
+	*/
 
-        char *host;
-        char *type;
-        char *page;
+	char *host;
+	char *type;
+	char *page;
 
 	type = host = page = argv;
 	if ( (host = strstr(argv, "://")))
@@ -69,7 +62,7 @@ void parseurl(char *argv)
 
 	printf("Attempting an [%s] protocol on [%s] to retrieve [%s]\n ", type, host, page);
 	fetch(type, host, page);
-        return;
+	return;
 }
 
 void fetch(char *type, char *host, char *page) 
@@ -78,7 +71,7 @@ void fetch(char *type, char *host, char *page)
 		fetch() --> writeout()
 	*/
 
-        struct addrinfo hints, *res; 
+	struct addrinfo hints, *res; 
 	int sck;
 	int output;
 	char *message; 
@@ -93,21 +86,21 @@ void fetch(char *type, char *host, char *page)
 
 	// if ( "http" ) ? 
 	if ( strcmp(type, "http") == 0)
-        	sprintf(message, "GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n", page, host); 
+		sprintf(message, "GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n", page, host); 
 	else
 		cutilerror("Protocol not supported", 0);
-        
-        hints.ai_family = PF_UNSPEC;
-        hints.ai_socktype = SOCK_STREAM;
+	
+	hints.ai_family = PF_UNSPEC;
+	hints.ai_socktype = SOCK_STREAM;
 
-        if ( ( getaddrinfo(host, type, &hints, &res) ) != 0 )
-        	cutilerror("getaddrinfo() failed", 1);
+	if ( ( getaddrinfo(host, type, &hints, &res) ) != 0 )
+		cutilerror("getaddrinfo() failed", 1);
 
-        if ((sck = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1)
+	if ((sck = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1)
 		cutilerror("socket() failed", 1);
 
-        if ( (connect(sck, res->ai_addr, res->ai_addrlen) ) == -1 )
-        	cutilerror("connect() failed", 1);
+	if ( (connect(sck, res->ai_addr, res->ai_addrlen) ) == -1 )
+		cutilerror("connect() failed", 1);
 
 	write(sck, message, strlen(message)); 
 
@@ -116,29 +109,29 @@ void fetch(char *type, char *host, char *page)
 
 	writeout(sck, output);
 
-        freeaddrinfo(res);
-        close(sck);
+	freeaddrinfo(res);
+	close(sck);
 	free(message);
 }
 
 void writeout(int sck, int output)
 {
 	
-        size_t i;
+	size_t i;
 	size_t n; 
 	int http; 
     	char *buf;
 	char *luf;
 
-        if (!(buf = malloc(BUFSIZ) ))
+	if (!(buf = malloc(BUFSIZ) ))
 		cutilerror("Insufficient memory", -1);
    
 	/* override */
 	i = n = http = 0;
 
 	while ( (n = read(sck, buf, BUFSIZ)) > 0 )
-        {
-                i = 0; 
+	{
+		i = 0; 
 		if ( http == 0 )
 		{
 			if ((luf = strstr(buf, "\n\r")))
@@ -149,7 +142,7 @@ void writeout(int sck, int output)
 			http = 1;
 		} 
 		write(output, buf + i, n - i);
-        }
+	}
 	free(buf);
 }
 
