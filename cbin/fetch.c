@@ -42,7 +42,6 @@ int main (int argc, char *argv[])
 
 	if ( argc == 1 )
 		cutilerror("Usage: fetch http://www.some.org/index.html\n", -1); 
-
 	++argv;
 	while (*argv) 
 		parseurl(*argv++); 
