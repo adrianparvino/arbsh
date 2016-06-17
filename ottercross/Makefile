@@ -78,7 +78,8 @@ UCLIBC_KRING = http://waldemar-brodkorb.de/wbx.asc
 UCLIBC_SIG = $(UCLIBC).$(ARCHIVE).$(XZ).asc
 
 # glibc
-GLIBC = glibc-2.20
+#GLIBC = glibc-2.20
+GLIBC = glibc-2.23
 GLIBC_MRR = https://ftp.gnu.org/gnu/glibc/
 GLIBC_KRING = ftp://ftp.gnu.org/gnu/gnu-keyring.gpg
 GLIBC_SIG = $(GLIBC).$(ARCHIVE).$(XZ).sig
