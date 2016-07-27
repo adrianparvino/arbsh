@@ -28,3 +28,11 @@ Restore from an existing backup:
 Remaster "/" onto a bootable disk image
   remaster --backup --remaster
 
+BUGS:
+If you would like to use this tool to remaster your running
+OS or distro, then you will need to uncomment the 8 lines
+which determine whether or not /proc, /sys, /tmp and /home
+are included. This is a temporary hack until a switch is added
+to enable and disable it. The switch will then need to be added
+to all of grafland's tools which use the remaster.sh script.
+
