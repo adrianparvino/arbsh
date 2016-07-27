@@ -326,14 +326,14 @@ then 	# Get a list of useable directories
 
 	for DIR in *
 	do 	case "$DIR" in 
-		*${HOMEDIR}*) 
-			;; 
-		*proc*)
-			;;
-		*sys*)
-			;;
-		*tmp*)
-			;; 
+		#*${HOMEDIR}*) 
+		#	;; 
+		#*proc*)
+		#	;;
+		#*sys*)
+		#	;;
+		#*tmp*)
+		#	;; 
 		*)	printf "selecting /%s\n" "$DIR"
 			DIRLIST="${DIRLIST} ${DIR} "
 			# this is for iso9660 only
