@@ -12,7 +12,7 @@
 
 	Conformance:
 		Aligned with POSIX 2013
-		All POSIX comments are quoted, my own are not
+		All POSIX comments are quoted, the author's are not
 */
 
 size_t strings(char *, size_t, char);
@@ -62,6 +62,8 @@ size_t strings(char *file, size_t number, char format)
 	int fd = STDIN_FILENO;
 	ssize_t ret = 0;
 	char *buf;
+	size_t rotate = 0;
+	int inaword = 0;
 
 	if (!(buf = malloc(4096 * (sizeof buf))))
 		return 0;
@@ -76,6 +78,7 @@ size_t strings(char *file, size_t number, char format)
 	
 	while ((ret = read(fd, buf, 4096)) > 0)
 	{
+		rotate = ret;
 		write(1, buf, ret);
 	}
 	
