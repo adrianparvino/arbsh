@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	int o = 0;
 	size_t number = 0;
 	char *format = NULL;
-	char *h = " [-a] [-t format] [-n number] [file...]\n";
+	char *help = " [-a] [-t format] [-n number] [file...]\n";
 
         while ((o = getopt (argc, argv, "at:n:h")) != -1)
                 switch (o) {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 					write(2, *argv, strlen(*argv));
 				else
 					write(2, "strings", 7);
-				write(2, h, strlen(h));
+				write(2, help, strlen(help));
 				exit(0); /* EXIT_SUCCESS */
                         default:
                                 break;
