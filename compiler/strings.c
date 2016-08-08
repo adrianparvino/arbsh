@@ -1,4 +1,7 @@
 #include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 /*
 	Copyright 2016, "strings.c", C. Graff
@@ -24,6 +27,7 @@ int main(int argc, char *argv[])
 			case 't':
 				break;
 			case 'n':
+				number = strtoll(optarg, 0, 10);
                        		break;
 			case 'h':
 				if ( *argv )
@@ -49,5 +53,6 @@ int main(int argc, char *argv[])
 }
 size_t strings(char *fd, size_t number, char *format)
 {
+	
 	return 0; /* Change this to something useful */
 }
