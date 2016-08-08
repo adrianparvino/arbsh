@@ -79,15 +79,15 @@ size_t strings(char *file, size_t number, char format)
 		}
 	}
 	i = inastring = 0;
-
+	size_t n = 3;
 
 	while ((ret = read(fd, buf, 4096)) > 0)
 	{
 		for (j = 0;j < ret ;j++)
 		{
 			buffer[i] = buf[j];
-
-			if (!isprint(buffer[i])) {
+		
+			if (!isprint(buffer[i]) && buffer[i] != '\t') {
 				if (inastring)
 					write(1, "\n", 1);
 				inastring = 0;
