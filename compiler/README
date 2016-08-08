@@ -1,9 +1,11 @@
-This is an area to expand my understanding of compiler related utilities such
-as ar and strings. These utilities have specifications on POSIX so these
-utilities follow their guidelines.
+
+Compiler related utilities which have definitions in POSIX
+
 
 Ar:
 	http://pubs.opengroup.org/onlinepubs/9699919799/utilities/ar.html
 
 Strings:
 	http://pubs.opengroup.org/onlinepubs/9699919799/utilities/strings.html
+
+
