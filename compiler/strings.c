@@ -5,13 +5,13 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
 /*
 	Copyright 2016, "strings.c", C. Graff
-*/
 
-/*
 	strings - find printable strings in files
+
+	Conformance:
+		Aligned with POSIX 2013
 */
 
 size_t strings(char *, size_t, char);
