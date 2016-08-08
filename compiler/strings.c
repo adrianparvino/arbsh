@@ -79,7 +79,7 @@ size_t strings(char *file, size_t number, char format)
 		}
 	}
 	i = inastring = 0;
-	size_t n = 3;
+	
 
 	while ((ret = read(fd, buf, 4096)) > 0)
 	{
