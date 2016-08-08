@@ -60,6 +60,11 @@ int main(int argc, char *argv[])
 size_t strings(char *file, size_t number, char format)
 {
 	int fd = STDIN_FILENO;
+	ssize_t ret = 0;
+	char *buf;
+
+	if (!(buf = malloc(4096 * (sizeof buf))))
+		return 0;
 
 	if ( file )
 	{
@@ -67,6 +72,11 @@ size_t strings(char *file, size_t number, char format)
 		{
 			return 0;
 		}
+	}
+	
+	while ((ret = read(fd, buf, 4096)) > 0)
+	{
+		write(1, buf, ret);
 	}
 	
 	switch(format){
