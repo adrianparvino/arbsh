@@ -19,8 +19,7 @@
 	Extensions:
 		TODO:
 			-f filename
-*/ 
-
+*/
 
 int strings(char *, size_t, char);
 
@@ -57,7 +56,7 @@ int main(int argc, char *argv[])
 	argc -= optind;
 
 	if ( argc == 0 )
-		sret = trings(NULL, number, format); 
+		ret = strings(NULL, number, format); 
 
 	while ( *(argv) )
 		ret = strings(*argv++, number, format);
@@ -66,8 +65,6 @@ int main(int argc, char *argv[])
 }
 int strings(char *file, size_t number, char format)
 {
-	
-	
 	int fd = STDIN_FILENO;
 	int inastring;
 	char hold[1024];
