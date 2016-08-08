@@ -6,12 +6,13 @@
 #include <fcntl.h>
 
 /*
-	Copyright 2016, "strings.c", C. Graff
+	Copyright 2016, 'strings.c', C. Graff
 
-	strings - find printable strings in files
+	"strings - find printable strings in files'
 
 	Conformance:
 		Aligned with POSIX 2013
+		All POSIX comments are quoted, my own are not
 */
 
 size_t strings(char *, size_t, char);
@@ -69,11 +70,11 @@ size_t strings(char *file, size_t number, char format)
 	}
 	
 	switch(format){
-		case 'd':
+		case 'd': /* "The offset shall be written in decimal." */
 			break;
-		case 'o':
+		case 'o': /* "The offset shall be written in octal." */
 			break;
-		case 'x':
+		case 'x': /* "The offset shall be written in hexadecimal." */
 			break;
 		default:
 			break;
