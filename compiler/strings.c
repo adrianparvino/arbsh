@@ -5,6 +5,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <ctype.h>
 
 /*
 	Copyright 2016, 'strings.c', C. Graff
@@ -21,7 +22,7 @@
 */ 
 
 
-size_t strings(char *, size_t, char);
+int strings(char *, size_t, char);
 
 int main(int argc, char *argv[])
 { 
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
 	size_t number = 3;
 	char format = '\0';
 	char *help = " [-a] [-t format] [-n number] [file...]\n";
+	int ret = EXIT_SUCCESS;
 
 	while ((o = getopt (argc, argv, "at:n:h")) != -1)
 		switch (o) {
@@ -46,7 +48,7 @@ int main(int argc, char *argv[])
 				if ( *argv )
 					write(2, *argv, strlen(*argv));
 				write(2, help, strlen(help));
-				exit(EXIT_SUCCESS);
+				exit(ret);
 			default:
 				break;
 		}
@@ -55,47 +57,46 @@ int main(int argc, char *argv[])
 	argc -= optind;
 
 	if ( argc == 0 )
-		strings(NULL, number, format); 
+		sret = trings(NULL, number, format); 
 
 	while ( *(argv) )
-		strings(*argv++, number, format);
+		ret = strings(*argv++, number, format);
 
-	return 0; 
+	return ret; 
 }
-size_t strings(char *file, size_t number, char format)
+int strings(char *file, size_t number, char format)
 {
 	
 	
 	int fd = STDIN_FILENO;
-	ssize_t ret;
+	int inastring;
+	char hold[1024];
 	char *buf;
 	char *buffer;
+	ssize_t ret;
 	size_t i;
-	int inastring;
 	size_t j;
 	size_t offset;
-	char hold[1024];
 	size_t len;
-	
-	buffer = malloc(number * (sizeof buffer));
+
+
+	if (!(buffer = malloc(number * (sizeof buffer))))
+		return 1;
 
 	if (!(buf = malloc(4096 * (sizeof buf))))
-		return 0;
+		return 1; 
 
-	if ( file )
-	{
-		if ( (fd = open(file, O_RDONLY)) == -1 )
-		{
-			return 0;
-		}
-	}
+	if (file && (fd = open(file, O_RDONLY)) == -1 )
+		return 1;
+
+
 	ret = i = j = offset = inastring = 0;
-	
 
-	while ((ret = read(fd, buf, 4096)) > 0)
+
+	while ((ret = read(fd, buf, 4096)) > 0) 
 	{
 		/* Add some error checking here  or switch to stdio.h functions */
-		for (j = 0;j < ret ;j++, offset++)
+		for (j = 0;(ssize_t)j < ret ;j++, offset++) /* ret is a ssize_t so this cast is safe */
 		{
 			buffer[i] = buf[j];
 		
