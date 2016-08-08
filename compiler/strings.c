@@ -14,6 +14,10 @@
 	Conformance:
 		Aligned with POSIX 2013
 		All POSIX comments are quoted, the author's are not
+
+	Extensions:
+		TODO:
+			-f filename
 */ 
 
 
@@ -63,14 +67,15 @@ size_t strings(char *file, size_t number, char format)
 	
 	
 	int fd = STDIN_FILENO;
-	ssize_t ret = 0;
+	ssize_t ret;
 	char *buf;
 	char *buffer;
 	size_t i;
 	int inastring;
-	size_t j = 0;
-	size_t offset = 0;
+	size_t j;
+	size_t offset;
 	char hold[1024];
+	size_t len;
 	
 	buffer = malloc(number * (sizeof buffer));
 
@@ -84,12 +89,12 @@ size_t strings(char *file, size_t number, char format)
 			return 0;
 		}
 	}
-	i = inastring = 0;
+	ret = i = j = offset = inastring = 0;
 	
 
 	while ((ret = read(fd, buf, 4096)) > 0)
 	{
-		/* Add some error checking here */
+		/* Add some error checking here  or switch to stdio.h functions */
 		for (j = 0;j < ret ;j++, offset++)
 		{
 			buffer[i] = buf[j];
@@ -108,37 +113,30 @@ size_t strings(char *file, size_t number, char format)
 			}
 			if (!inastring) { 
 				inastring = 1;
-				size_t len = 0; 
+				len = 0; 
 				switch(format){
 					case 'd': /* "The offset shall be written in decimal." */
-						len = sprintf(hold, " %d %s", offset - number, buffer);
+						len = snprintf(hold, 1024, " %d %s", offset - number, buffer);
 						break;
 					case 'o': /* "The offset shall be written in octal." */
-						len = sprintf(hold, " %o %s", offset - number, buffer);
+						len = snprintf(hold, 1024, " %o %s", offset - number, buffer);
 						break;
 					case 'x': /* "The offset shall be written in hexadecimal." */
-						len = sprintf(hold, " %x %s", offset - number, buffer); 
+						len = snprintf(hold, 1024, " %x %s", offset - number, buffer); 
 						break;
 					default:
 						
 						break;
-				}
-				
+				} 
 				write(1, hold, len);
-				//write(1, buffer, strlen(buffer));
 				continue;
-			}
-			
+			} 
 			write(1, buffer + i, 1); 
 		}
 	}
 
-	/* not yet used */
-
-	if (fd != STDIN_FILENO)
-	{
+	if (fd != STDIN_FILENO) 
 		close(fd);
-	}
 
 	free(buffer);
 	free(buf);
