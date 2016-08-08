@@ -4,11 +4,17 @@
 	Copyright 2016, "strings.c", C. Graff
 */
 
+/*
+	strings - find printable strings in files
+*/
+
 size_t strings(char *);
 
 int main(int argc, char *argv[])
 { 
 	int o = 0;
+	size_t number = 0;
+	char *format = NULL;
 
         while ((o = getopt (argc, argv, "at:n:")) != -1)
                 switch (o) {
@@ -18,6 +24,8 @@ int main(int argc, char *argv[])
 				break;
 			case 'n':
                        		break;
+			case 'h':
+				printf("strings [-a] [-t format] [-n number] [file...]");
                         default:
                                 break;
                 }
