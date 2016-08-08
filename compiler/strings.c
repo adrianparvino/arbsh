@@ -14,26 +14,7 @@
 	Conformance:
 		Aligned with POSIX 2013
 		All POSIX comments are quoted, the author's are not
-*/
-
-size_t uintostrbase(char *s, size_t n, int base)
-{
-        static size_t i = 0;
-	
-        if ( n == 0 )
-        {
-                s[i] = '0';
-                return 1;
-        }
-        if (n / base )
-        {
-                i = 0;
-                uintostrbase(s, n / base, base);
-        }
-        s[i] = (n % base + '0');
-
-        return ++i;
-} 
+*/ 
 
 
 size_t strings(char *, size_t, char);
@@ -125,28 +106,26 @@ size_t strings(char *file, size_t number, char format)
 				i++;
 				continue;
 			}
-			if (!inastring) {
+			if (!inastring) { 
 				inastring = 1;
-				size_t len = 0;
-				hold[len++] = ' ';
+				size_t len = 0; 
 				switch(format){
 					case 'd': /* "The offset shall be written in decimal." */
-						len = uintostrbase(hold + 1, offset - number, 10);
+						len = sprintf(hold, " %d %s", offset - number, buffer);
 						break;
 					case 'o': /* "The offset shall be written in octal." */
-						len = uintostrbase(hold + 1, offset - number, 8);
+						len = sprintf(hold, " %o %s", offset - number, buffer);
 						break;
 					case 'x': /* "The offset shall be written in hexadecimal." */
-						len = uintostrbase(hold + 1, offset - number, 16);
+						len = sprintf(hold, " %x %s", offset - number, buffer); 
 						break;
 					default:
 						
 						break;
-				} 
-				++len;
-				hold[++len] = ' ';
+				}
+				
 				write(1, hold, len);
-				write(1, buffer, strlen(buffer));
+				//write(1, buffer, strlen(buffer));
 				continue;
 			}
 			
