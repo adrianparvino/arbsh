@@ -21,7 +21,7 @@ size_t strings(char *, size_t, char);
 int main(int argc, char *argv[])
 { 
 	int o = 0;
-	size_t number = 0;
+	size_t number = 3;
 	char format = '\0';
 	char *help = " [-a] [-t format] [-n number] [file...]\n";
 
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 					format = *optarg;
 				break;
 			case 'n':
-				number = strtoll(optarg, 0, 10);
+				number = strtoul(optarg, 0, 10) -1;
 		 		break;
 			case 'h':
 				if ( *argv )
@@ -60,13 +60,17 @@ int main(int argc, char *argv[])
 }
 size_t strings(char *file, size_t number, char format)
 {
+	
+	
 	int fd = STDIN_FILENO;
 	ssize_t ret = 0;
 	char *buf;
-	char buffer[6] = { 0 } ;
+	char *buffer;
 	size_t i;
 	int inastring;
 	size_t j = 0;
+	
+	buffer = malloc(number * (sizeof buffer ));
 
 	if (!(buf = malloc(4096 * (sizeof buf))))
 		return 0;
@@ -95,7 +99,7 @@ size_t strings(char *file, size_t number, char format)
 
 				continue;
 			}
-			if (i < 3) {
+			if (i < number) {
 				i++;
 				continue;
 			}
@@ -108,7 +112,7 @@ size_t strings(char *file, size_t number, char format)
 			write(1, buffer + i, 1); 
 		}
 	}
-	
+	/* not used */
 	switch(format){
 		case 'd': /* "The offset shall be written in decimal." */
 			break;
