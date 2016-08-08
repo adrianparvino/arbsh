@@ -27,14 +27,15 @@ int main(int argc, char *argv[])
 
 	while ((o = getopt (argc, argv, "at:n:h")) != -1)
 		switch (o) {
-			case 'a':
+			case 'a': /* "Scan files in their entirety." */
 				break;
-			case 't':
+			case 't': /* "Write each string preceded by its byte 
+				      offset from the start of the file." */
 				if ( optarg && *optarg )
 					format = *optarg;
 				break;
-			case 'n':
-				number = strtoul(optarg, 0, 10) -1;
+			case 'n':/* "Specify the minimum string length." */ 
+				number = strtoul(optarg, 0, 10) - 1;
 		 		break;
 			case 'h':
 				if ( *argv )
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
 				else
 					write(2, "strings", 7);
 				write(2, help, strlen(help));
-				exit(0); /* EXIT_SUCCESS */
+				exit(EXIT_SUCCESS);
 			default:
 				break;
 		}
@@ -87,6 +88,7 @@ size_t strings(char *file, size_t number, char format)
 
 	while ((ret = read(fd, buf, 4096)) > 0)
 	{
+		/* Add some error checking here */
 		for (j = 0;j < ret ;j++)
 		{
 			buffer[i] = buf[j];
@@ -112,7 +114,7 @@ size_t strings(char *file, size_t number, char format)
 			write(1, buffer + i, 1); 
 		}
 	}
-	/* not used */
+	/* not yet used */
 	switch(format){
 		case 'd': /* "The offset shall be written in decimal." */
 			break;
