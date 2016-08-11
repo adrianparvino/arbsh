@@ -1,6 +1,15 @@
 
-Debian initramfs entry points
+ubuntu initramfs entry points
 -----------------------------
 
+This was done on ubuntu 12.04
 
+
+  mkdir temporary
+
+  cd temporary 
+
+  cat /initrd.img | gzip -d | cpio -i
+
+  ls scripts/ 
 
