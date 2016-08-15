@@ -8,5 +8,5 @@ int main (int argc, char **argv)
 		++argv;
 		execvp(*argv, argv);
 	}
-	return 1;
+	return 0;
 }
