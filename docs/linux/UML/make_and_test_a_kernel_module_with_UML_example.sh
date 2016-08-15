@@ -26,7 +26,7 @@ mkdir -p  drivers/hello
 
 # first makefile
 cat >> drivers/Makefile << EOF
-obj-y                           += hello/
+obj-y			   += hello/
 EOF
 
 # second makefile 
