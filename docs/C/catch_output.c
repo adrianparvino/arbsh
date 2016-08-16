@@ -1,7 +1,7 @@
 #include <unistd.h>
 
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
 	int pipefd[2] = { 0 };
 	char buffer[1024] = { 0 };
@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 			close(pipefd[1]);
 			dup2(pipefd[1], 2);
 
-			execvp(*(argv + 1), (argv + 1));
+			execvp(argv[1], argv + 1);
 			_exit(1);
 		}
 		else
