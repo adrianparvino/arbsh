@@ -17,8 +17,9 @@ int main(int argc, char **argv)
 		{
 			close(pipefd[0]);
 			dup2(pipefd[1], 1);
-			dup2(pipefd[1], 2);
 			close(pipefd[1]);
+			dup2(pipefd[1], 2);
+
 			execvp(*(argv + 1), (argv + 1));
 			_exit(1);
 		}
