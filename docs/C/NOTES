@@ -1,0 +1,7 @@
+
+The catch_output.c program could drive an interpretive language's
+usage of $() to populate arrays of buffers with the oupput from 
+other programs. 
+
+For simplicity it may be best to expand VAR="string here" strings as
+invocations of a dumb /bin/echo.
