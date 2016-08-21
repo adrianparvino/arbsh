@@ -26,12 +26,9 @@ int main(int argc, char *argv[])
 		else
 		{
 			close(pipefd[1]);
-			while (len = read(pipefd[0], buffer, sizeof(buffer)))
-			{
-				if ( len == 0 )
-					break;
+			while ((len = read(pipefd[0], buffer, sizeof(buffer))))
 				total +=len;
-			}
+	
 			write(1, buffer, total);
 		}
 	}
