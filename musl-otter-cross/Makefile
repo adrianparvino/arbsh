@@ -9,7 +9,7 @@ XZ = gz
 XZTOOL = gzip -d -c
 ARCHIVE = tar
 ARCHIVETOOL = tar -x
-TARG = mips-pc-linux-musl
+TARG = i686-pc-linux-musl
 # Musl only needs kernel headers for a bug with mips + gcc 6.
 LINUX = linux-4.1
 LINUX_MRR = https://www.kernel.org/pub/linux/kernel/v4.x/
