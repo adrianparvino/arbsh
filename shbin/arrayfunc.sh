@@ -6,12 +6,13 @@ arrayd()
 {
 	INDICE="$1"
 	if [ $# -gt 1 ]
-	then 	shift
+	then	shift
 	fi
 	printf "%s" $( eval printf '$'$INDICE) 
 }
 
+STRING="$@"
 
-arrayd "$@"
+arrayd $STRING
 
 
