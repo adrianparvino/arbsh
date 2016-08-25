@@ -1,13 +1,17 @@
 #include <unistd.h>
+#include <stdlib.h>
+
 
 
 int main(int argc, char *argv[])
 {
 	int pipefd[2] = { 0 };
-	char buffer[1024] = { 0 };
+	//char buffer[100000024] = { 0 };
 	ssize_t len = 0;
 	size_t total = 0; 
 
+	char *buffer;
+	buffer = malloc(100000024);
 	pipe(pipefd); 
 
 	/* Usage: ./catch_output ls -la */
@@ -26,8 +30,11 @@ int main(int argc, char *argv[])
 		else
 		{
 			close(pipefd[1]);
-			while ((len = read(pipefd[0], buffer, sizeof(buffer))))
+			while ((len = read(pipefd[0], buffer + total, 124)))
+			{
 				total +=len;
+				// realloc here
+			}
 	
 			write(1, buffer, total);
 		}
