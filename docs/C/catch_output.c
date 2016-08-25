@@ -1,17 +1,16 @@
 #include <unistd.h>
 #include <stdlib.h>
-
-
+#include <limits.h>
 
 int main(int argc, char *argv[])
 {
 	int pipefd[2] = { 0 };
-	//char buffer[100000024] = { 0 };
 	ssize_t len = 0;
 	size_t total = 0; 
-
 	char *buffer;
-	buffer = malloc(100000024);
+
+	if (!(buffer = malloc(PIPE_BUF)))
+		return 0;
 	pipe(pipefd); 
 
 	/* Usage: ./catch_output ls -la */
@@ -30,10 +29,11 @@ int main(int argc, char *argv[])
 		else
 		{
 			close(pipefd[1]);
-			while ((len = read(pipefd[0], buffer + total, 124)))
+			while ((len = read(pipefd[0], buffer + total, PIPE_BUF)))
 			{
 				total +=len;
-				// realloc here
+				if (!(buffer = realloc(buffer, total + PIPE_BUF + 1)))
+					return 0;
 			}
 	
 			write(1, buffer, total);
