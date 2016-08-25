@@ -10,10 +10,17 @@
 /*
 	Copyright 2016, 'at.c', C. Graff 
 
+	"at [-m] [-f file] [-q queuename] -t time_arg"
+	"at [-m] [-f file] [-q queuename] timespec..."
+	"at -r at_job_id..."
+	"at -l -q queuename"
+	"at -l [at_job_id...]"
+
 	Conformance:
 		Aligned with POSIX 2013
 		All POSIX comments are quoted, the author's are not
 */
+
 
 void at(char *, int []);
 
@@ -22,11 +29,11 @@ int main(int argc, char *argv[])
 	int o = 0;
 	int ret = EXIT_SUCCESS; 
 	char *help = " \n";
-	/*  options .. e  l  r */
+	/*  options .. flmqrt */
 	int opt[3] = {  };
 
 
-	while ((o = getopt (argc, argv, "")) != -1)
+	while ((o = getopt (argc, argv, "f:l:mq:r:t:")) != -1)
 		switch (o) { 
 			case 'h':
                                 if ( *argv )
