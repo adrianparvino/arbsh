@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 { 
 	int o = 0;
 	int ret = EXIT_SUCCESS; 
-	char *help = " \n";
+	char *help = " -m|-f file|-q queuename -t time_arg\n";
 	/*  options .. flmqrt */
 	int opt[3] = {  };
 
