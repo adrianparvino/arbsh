@@ -111,8 +111,14 @@ PESSIMIZE = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 
 # autologger
 HTUPLE = $(shell gcc -dumpmachine)
-LOG = $(WORK)/log
+#LOG = $(WORK)/log
 LOGM ?= 2>&1 | tee
+
+
+# This is only used to document the build
+HOSTTYPE = $(shell gcc -dumpmachine)
+LOGDIR = $(SPWD)/$(HOSTTYPE)_logs
+LOG = $(LOGDIR)/$(TARG)-log
 
 # gpg checking
 STATUS = $(shell cat status)
@@ -599,4 +605,30 @@ ifeq ($(VENDOR),gnu)
 	$(CONF)
 	$(MAKE) -C $(WORK)/$(GLIBC)-build-final install
 endif
+
+
+test:
+
+	# Some trivial compile time tests
+	-mkdir -p $(LOGDIR) 
+	-/$(PREF)/bin/$(TARG)-gcc tests/pthreads-test.c -lpthread && \
+	/$(PREF)/bin/$(TARG)-gcc -v 2>&1 | grep posix && \
+	/$(PREF)/bin/$(TARG)-gcc tests/testing.c && \
+		printf "%s\t--> %s  (pthreads, c" "$(HOSTTYPE)" "$(TARG)" >> $(LOGDIR)/$(HOSTTYPE)-report || \
+		printf "%s\t--> %s  (failed" "$(HOSTTYPE)" "$(TARG)" >> $(LOGDIR)/$(HOSTTYPE)-report
+	-/$(PREF)/bin/$(TARG)-g++ tests/testing.cpp && \
+		printf ", c++" >> $(LOGDIR)/$(HOSTTYPE)-report 
+	-/$(PREF)/bin/$(TARG)-gfortran tests/testing.f && \
+		printf ", fortran" >> $(LOGDIR)/$(HOSTTYPE)-report
+	-printf ")\n" >> $(LOGDIR)/$(HOSTTYPE)-report 
+	
+	-cp $(LOGDIR)/$(HOSTTYPE)-report $(LOGDIR)/README
+	
+
+
+
+
+
+
+
 
