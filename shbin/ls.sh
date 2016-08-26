@@ -1,5 +1,8 @@
 #!/bin/sh
-
+statfile()
+{
+	stat --printf "%A  %U  %n  \n" "$1"
+}
 LINES=$(tput lines)
 ROWS=$(tput cols)
 
@@ -29,7 +32,6 @@ LEN="0"
 
 TLEN="0"
 
-#for i in $@
 for i in $STARS 
 do	TLEN="${#i}"
 	[ -e "$i" ] || continue
@@ -59,17 +61,18 @@ done
 #done 
   
 C="1"
-
-NUMIT=$(( $ROWS / $LEN))
-
-
-
+if [ $LEN -lt $ROWS ]
+then	NUMIT=$(( $ROWS / $LEN))
+else	NUMIT="1"
+fi
 
 while [ "$C" -lt "$N" ]
-do	printf "%-*s " "$LEN" "$( eval printf '$'ARRAY_$C )"
+do	#printf "%-*s " "$LEN" "$( eval printf '$'ARRAY_$C )"
+	statfile "$( eval printf '$'ARRAY_$C )"
 	if [ $(( $C % $NUMIT )) = "0" ]
 	then	printf "\n"
 	fi
 	C=$(( C + 1 )) 
 done
+
 printf "\n"
