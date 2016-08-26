@@ -9,7 +9,7 @@ if [ $# -gt 0 ]
 then	WORKD="$@"
 fi
 
-STARS="/*"
+STARS="${WORKD}/* ${WORKD}/*/* ${WORKD}/*/*/* "
 
 CYCLE="0"
 
@@ -30,8 +30,9 @@ LEN="0"
 TLEN="0"
 
 #for i in $@
-for i in ${WORKD}/$STARS
+for i in $STARS 
 do	TLEN="${#i}"
+	[ -e "$i" ] || continue
 	if [ "$TLEN" -gt "$LEN" ]
 	then	LEN="${TLEN}"
 	fi
@@ -58,12 +59,15 @@ done
 #done 
   
 C="1"
+
 NUMIT=$(( $ROWS / $LEN))
+
+
 
 
 while [ "$C" -lt "$N" ]
 do	printf "%-*s " "$LEN" "$( eval printf '$'ARRAY_$C )"
-	if [ $(( $C % $NUMIT )) = "1" ]
+	if [ $(( $C % $NUMIT )) = "0" ]
 	then	printf "\n"
 	fi
 	C=$(( C + 1 )) 
