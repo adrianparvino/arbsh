@@ -3,6 +3,8 @@
 
 # (C) 2014, MIT license, "insertion_sort.sh" 
 
+LINES=$(tput lines)
+ROWS=$(tput cols)
 
 insertion_sort()
 {
@@ -72,7 +74,7 @@ LILEN="0"
 
 	#for i in $@
 	for i in ${WORKD}/$STARS
-	do 	TLEN="${#}"
+	do 	TLEN="${#i}"
 		if [ "$TLEN" -gt "$LEN" ]
 		then	LEN="${TLEN}"
 		fi
@@ -98,9 +100,15 @@ LILEN="0"
 	#	C=$(( $C + 1 ))
 	#done 
   
-	C="0" 
-
+	C="1"
+	NUMIT=$(( $ROWS / $LEN))
+	#echo $NUMIT
+	#exit
 	while [ "$C" -lt "$N" ]
-	do 	printf "%s\n"  "$( eval printf '$'ARRAY_$C )" 
+	do 	printf "%-*s " "$LEN" "$( eval printf '$'ARRAY_$C )"
+		if [ $(( $C % $NUMIT )) = "1" ]
+		then	printf "\n"
+		fi
 		C=$(( C + 1 )) 
 	done
+	printf "\n"
