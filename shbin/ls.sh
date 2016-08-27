@@ -51,6 +51,9 @@ ARGSTRING=""
 		-R) LONGLIST="1"
 		   shift
 		;;
+		-*) printf "Argument not understood\n"
+			exit
+		;;
 		*) ARCGSTRING="${ARGSTRING} ${i}"
 		;;
 	   esac
