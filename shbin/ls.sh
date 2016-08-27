@@ -1,35 +1,79 @@
 #!/bin/sh
-statfile()
+
+
+shellstat()
 {
-	stat --printf "%A  %U  %n  \n" "$1"
+
+	FILE="$1"
+
+	WHOAMI=$(whoami)
+
+	printf "..."
+	if [ -r "$FILE" ]
+	then printf "r"
+	else printf "-"
+	fi 
+
+	if [ -w "$FILE" ]
+	then printf "w"
+	else printf "-"
+	fi 
+
+	if [ -x "$FILE" ]
+	then printf "x"
+	else printf "-"
+	fi
+
+	printf "..."
+
+	if [ -G "$FILE" ]
+	then printf " $WHOAMI :"
+	else printf " ....... :"
+	fi
+
+	if [ -O "$FILE" ]
+	then printf " $WHOAMI "
+	else printf " ....... "
+	fi
+	printf " "
+
+	printf "$1"
+	printf "\n"
+
 }
+
+LONGLIST="0"
+ARGSTRING=""
+
+
+	for i in $@
+	do case "$i" in 
+		-R) LONGLIST="1"
+		   shift
+		;;
+		*) ARCGSTRING="${ARGSTRING} ${i}"
+		;;
+	   esac
+	done
+
+
 LINES=$(tput lines)
 ROWS=$(tput cols)
 
 WORKD="."
 
 if [ $# -gt 0 ]
-then	WORKD="$@"
+then	WORKD="$ARGSTRING"
 fi
 
 STARS="${WORKD}/* ${WORKD}/*/* ${WORKD}/*/*/* "
 
-CYCLE="0"
-
-LINED=""
-
-LILEN="0"
-
-#printf "%s" "$LINED"
-
-C="0"
-
-#N="$#"
-
-N="0"
-
-LEN="0"
-
+CYCLE="0" 
+LINED="" 
+LILEN="0" 
+C="0" 
+N="0" 
+LEN="0" 
 TLEN="0"
 
 for i in $STARS 
@@ -67,10 +111,13 @@ else	NUMIT="1"
 fi
 
 while [ "$C" -lt "$N" ]
-do	#printf "%-*s " "$LEN" "$( eval printf '$'ARRAY_$C )"
-	statfile "$( eval printf '$'ARRAY_$C )"
-	if [ $(( $C % $NUMIT )) = "0" ]
-	then	printf "\n"
+do	if [ $LONGLIST -ne "0" ]
+	then	shellstat "$( eval printf '$'ARRAY_$C )"
+	else	printf "%-*s " "$LEN" "$( eval printf '$'ARRAY_$C )"
+	
+		if [ $(( $C % $NUMIT )) = "0" ]
+		then	printf "\n"
+		fi
 	fi
 	C=$(( C + 1 )) 
 done
