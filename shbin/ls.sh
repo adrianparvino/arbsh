@@ -35,10 +35,7 @@ shellstat()
 	then printf " $WHOAMI "
 	else printf " ....... "
 	fi
-	printf " "
-
-	printf "$1"
-	printf "\n"
+	printf " $1\n"
 
 }
 
@@ -46,18 +43,15 @@ LONGLIST="0"
 ARGSTRING=""
 
 
-	for i in $@
-	do case "$i" in 
-		-R) LONGLIST="1"
-		   shift
-		;;
-		-*) printf "Argument not understood\n"
-			exit
-		;;
-		*) ARCGSTRING="${ARGSTRING} ${i}"
-		;;
-	   esac
-	done
+for i in $@
+do	case "$i" in
+	-l) LONGLIST="1"
+	shift
+	;; 
+	*) ARGSTRING="${ARGSTRING} ${i}"
+	;;
+	esac
+done
 
 
 LINES=$(tput lines)
@@ -65,9 +59,12 @@ ROWS=$(tput cols)
 
 WORKD="."
 
-if [ $# -gt 0 ]
+if [ $# -gt "0" ]
 then	WORKD="$ARGSTRING"
 fi
+
+
+
 
 STARS="${WORKD}/* ${WORKD}/*/* ${WORKD}/*/*/* "
 
@@ -87,12 +84,12 @@ do	TLEN="${#i}"
 	fi
 	eval ARRAY_"$C"="$i"
 
-	N=$((N + 1))
+	N=$(( $N + 1))
 	C=$(( $C + 1 ))
 done 
 
-#C="1" 
-
+# sorting
+#C="1"
 #while [ "$C" -lt "$N" ]
 #do D="$C" 
 #while [ "$D" -gt "0" -a \
@@ -107,12 +104,14 @@ done
 #C=$(( $C + 1 ))
 #done 
   
+# screen width calculations
 C="1"
 if [ $LEN -lt $ROWS ]
-then	NUMIT=$(( $ROWS / $LEN))
+then	NUMIT=$(($ROWS / $LEN))
 else	NUMIT="1"
 fi
 
+# print
 while [ "$C" -lt "$N" ]
 do	if [ $LONGLIST -ne "0" ]
 	then	shellstat "$( eval printf '$'ARRAY_$C )"
