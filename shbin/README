@@ -24,8 +24,11 @@ To rename the .sh files and make them executable, invoke make:
 			A sophisticated backup and remastery script for x86.
 			See remaster.README.
 		remaster.README
+		ls
+			An `ls'-like utility.
 		which
 			The `which' utility.
+
 
 	./lib/
 		exponentation  
