@@ -263,7 +263,7 @@ SELF BOOTSTRAP:
 
 		make ; make bootstrap
 
-	This functionality is in it's fledgling experimental stages and
+	This functionality is in its fledgling experimental stages and
 	has not made it past a 3rd generation build lineage.
 
 ASSUMPTIONS ABOUT TARBALLS:
