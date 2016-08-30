@@ -21,9 +21,9 @@ OM_SRC = $(SPWD)/src
 OM_PATCH = $(SPWD)/patches
 OM_SFX = tar.gz
 #OM_BINUTILS = binutils-2.25
-#OM_BINUTILS = binutils-2.26
-OM_GCC = gcc-4.9.2
-#OM_GCC = gcc-5.3.0
+OM_BINUTILS = binutils-2.26
+#OM_GCC = gcc-4.9.2
+OM_GCC = gcc-5.3.0
 #OM_GCC = gcc-6.1.0
 OM_GMP = gmp-5.1.3
 OM_MPC = mpc-1.0.2
@@ -214,7 +214,7 @@ OM_OPENSSL_CROSS_ENV = \
 all:
 
 	$(MAKE) -i populate
-	$(MAKE) generate_host_tools
+	#$(MAKE) generate_host_tools
 	$(MAKE) install_path
 	$(MAKE) binutils_stage_make
 	$(MAKE) binutils_stage_install
