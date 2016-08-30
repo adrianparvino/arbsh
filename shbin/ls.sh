@@ -41,11 +41,17 @@ shellstat()
 
 LONGLIST="0"
 ARGSTRING=""
-
+DEEP="0"
 
 for i in $@
 do	case "$i" in
 	-l) LONGLIST="1"
+	shift
+	;;
+	-R) DEEP="1"
+	shift
+	;; 
+	-r) DEEP="1"
 	shift
 	;; 
 	*) ARGSTRING="${ARGSTRING} ${i}"
@@ -59,14 +65,17 @@ ROWS=$(tput cols)
 
 WORKD="."
 
-if [ $# -gt "0" ]
+if [ "$#" -gt "0" ]
 then	WORKD="$ARGSTRING"
 fi
 
 
 
+STARS="${WORKD}/*"
 
-STARS="${WORKD}/* ${WORKD}/*/* ${WORKD}/*/*/* "
+if [ "$DEEP" = "1" ]
+then	STARS="${WORKD}/* ${WORKD}/*/* ${WORKD}/*/*/* ${WORKD}/*/*/*/* "
+fi
 
 CYCLE="0" 
 LINED="" 
