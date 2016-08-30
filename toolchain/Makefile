@@ -214,7 +214,7 @@ OM_OPENSSL_CROSS_ENV = \
 all:
 
 	$(MAKE) -i populate
-	#$(MAKE) generate_host_tools
+	$(MAKE) generate_host_tools
 	$(MAKE) install_path
 	$(MAKE) binutils_stage_make
 	$(MAKE) binutils_stage_install
