@@ -2,28 +2,15 @@
 
 PREFIX=/shbin/
 
-all:
-	$(MAKE) crosstoolchain
-	$(MAKE) dog
-	$(MAKE) duwrap
-	$(MAKE) grop
-	$(MAKE) headsh
-	$(MAKE) remaster
-	$(MAKE) which
-	$(MAKE) ldd_wrapper
+LIST = crosstoolchain dog duwrap grop headsh remaster which ldd_wrapper ls
+
+
+all: $(LIST)
 
 clean:
-	$(RM) crosstoolchain dog duwrap grop headsh remaster which ldd_wrapper
+	$(RM) $(LIST) 
 	
 install:
 
 	@mkdir -p $(DESTDIR)/$(PREFIX)/
-	@cp -a crosstoolchain \
-	dog \
-	duwrap \
-	grop \
-	headsh \
-	remaster \
-	which \
-	ldd_wrapper \
-	$(DESTDIR)/$(PREFIX)/
+	@cp -a $(LIST) $(DESTDIR)/$(PREFIX)/
