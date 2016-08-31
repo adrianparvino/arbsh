@@ -117,6 +117,18 @@ then	NUMIT=$(($ROWS / $LEN))
 else	NUMIT="1"
 fi
 
+
+cnt="0"
+sft="0"
+sftc="0"
+vary="0"
+
+# shuffle
+#while [ "$cnt" -lt "$N" ]
+#do 
+#	cnt=$(( $cnt + 1 )) 
+#done
+
 # print
 while [ "$C" -lt "$N" ]
 do	if [ $LONGLIST -ne "0" ]
@@ -127,7 +139,31 @@ do	if [ $LONGLIST -ne "0" ]
 		then	printf "\n"
 		fi
 	fi
-	C=$(( C + 1 )) 
+	C=$(( $C + 1 )) 
 done
-
 printf "\n"
+
+
+
+#void shift_alpha(int c, int refactor)
+#{
+#	/* Format columnar lists to alphabetize vertically */
+#	int cnt, sft, sftc, vary = 0;
+#	cnt = sft = sftc = vary = 0;
+#	while ( cnt < c )
+#	{ 
+#		global.output[sft] = global.strings[cnt];
+#		sft = (sft + refactor);
+#		++sftc;
+#		if (sftc == ( c / refactor ) + 1)
+#		{
+#			++vary;
+#			sft = vary;
+#			sftc = 0;
+#		}
+#		++cnt;
+#	} 
+#}
+
+
+
