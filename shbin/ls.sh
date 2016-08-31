@@ -50,10 +50,7 @@ do	case "$i" in
 	;;
 	-R) DEEP="1"
 	shift
-	;; 
-	-r) DEEP="1"
-	shift
-	;; 
+	;;
 	*) ARGSTRING="${ARGSTRING} ${i}"
 	;;
 	esac
