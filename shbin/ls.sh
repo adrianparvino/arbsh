@@ -6,27 +6,29 @@ ROWS=$(tput cols)
 WHOAMI=$(whoami)
 
 shellstat()
-{ 
-	FILE="$1"
+{
 	BOOL="0"
-	[ -h "$FILE" -a "$BOOL" = "0" ] && printf "l" && BOOL="1"
-	[ -b "$FILE" -a "$BOOL" = "0" ] && printf "b" && BOOL="1"
-	[ -c "$FILE" -a "$BOOL" = "0" ] && printf "c" && BOOL="1"
-	[ "$BOOL" = "0" ] && printf "-"
-	
-	printf "..."
-	[ -r "$FILE" ] && printf "r" || printf "-"
-	[ -w "$FILE" ] && printf "w" || printf "-"
-	[ -x "$FILE" ] && printf "x" || printf "-"
-	printf "..."
-	[ -G "$FILE" ] && printf " $WHOAMI :" || printf " ....... :"
-	[ -O "$FILE" ] && printf " $WHOAMI " || printf " ....... "
-	printf " $1\n"
+	S=""
+	[ -e "$1" ] || return
+	[ -k "$1" -a "$BOOL" = "0" ] && S="S" && BOOL="1"
+	[ -h "$1" -a "$BOOL" = "0" ] && S="l" && BOOL="1"
+	[ -b "$1" -a "$BOOL" = "0" ] && S="b" && BOOL="1"
+	[ -c "$1" -a "$BOOL" = "0" ] && S="c" && BOOL="1"
+	[ -d "$1" -a "$BOOL" = "0" ] && S="d" && BOOL="1"
+	[ "$BOOL" = "0" ] && S="-"
+	S="${S}..."
+	[ -r "$1" ] && S="${S}r" || S="${S}-"
+	[ -w "$1" ] && S="${S}w" || S="${S}-"
+	[ -x "$1" ] && S="${S}x" || S="${S}-"
+	S="${S}..."
+	[ -G "$1" ] && S=" ${S} $WHOAMI :" || S="${S} ...... :"
+	[ -O "$1" ] && S=" ${S} $WHOAMI " || S="${S} ......"
+	printf "%s  %s\n" "${S}" "${1}"
 }
 
 # Argument parsing
 LONGLIST="0"
-ARGSTRING=""
+ARGS=""
 DEEP="0"
 HIDDEN="0"
 
@@ -41,7 +43,7 @@ do	case "$i" in
 	-a)	HIDDEN="1"
 		shift
 		;;
-	*)	ARGSTRING="${ARGSTRING} ${i}"
+	*)	ARGS="${ARGS} ${i}"
 		;;
 	esac
 done
@@ -50,7 +52,7 @@ done
 # Default to printing the current working directory
 WORKD="."
 if [ "$#" -gt "0" ]
-then	WORKD="$ARGSTRING"
+then	WORKD="$ARGS"
 fi
 
 # Determine depth and whether to printy hidden files
@@ -70,12 +72,13 @@ fi
 
 
 # Directory walk
-N="1" 
+N="0" 
 LEN="0" 
 TLEN="0"
 for i in $STARS $HSTARS
 do	TLEN="${#i}"
 	[ -e "$i" ] || continue
+	# Save longest line length
 	[ "$TLEN" -gt "$LEN" ] && LEN="${TLEN}"
 	
 	eval ARRAY_"$N"="$i"
@@ -93,37 +96,33 @@ fi
 
 
 # shuffle 
-cnt="1"
-sft="1"
-sftc="1"
-vary="1"
-
-
+cnt="0"
+sft="0"
+sftc="0"
+vary="0"
 
 while [ "$cnt" -lt "$N" ]
 do	#eval OARRAY_"$sft"="$( eval printf '$'ARRAY_$cnt )"
 	eval OARRAY_"$cnt"="$( eval printf '$'ARRAY_$cnt )"
 	sft=$(($sft + $NUMIT ))
-	
+	sftc=$(($sftc + 1))
+	cnt=$(( $cnt + 1 )) 
 	if [ $sftc = $((($N / $NUMIT) + 1)) ]
 	then	vary=$(( $vary + 1 ))
 		sft=$vary
 		sftc="0"
 	fi
-	sftc=$(($sftc + 1))
-	
-	cnt=$(( $cnt + 1 )) 
 done
 
 # print
-C="1"
+C="0"
 while [ "$C" -lt "$N" ]
 do	if [ $LONGLIST -ne "0" ]
 	then	shellstat "$( eval printf '$'OARRAY_$C )"
-	else	printf "%-*s " "$LEN" "$( eval printf '$'OARRAY_$C )"
-		if [ $((($C % $NUMIT) + 1)) = "1" ]
+	else	if [ $((($C % $NUMIT))) = "0"  -a "$C" != "0" ]
 		then	printf "\n"
-		fi
+		fi 
+		printf "%-*s " "$LEN" "$( eval printf '$'OARRAY_$C )"
 	fi
 	C=$(( $C + 1 )) 
 done
