@@ -2,35 +2,26 @@
 
 LINES=$(tput lines)
 ROWS=$(tput cols)
+
 WHOAMI=$(whoami)
 
 shellstat()
 { 
 	FILE="$1"
+	BOOL="0"
+	[ -h "$FILE" -a "$BOOL" = "0" ] && printf "l" && BOOL="1"
+	[ -b "$FILE" -a "$BOOL" = "0" ] && printf "b" && BOOL="1"
+	[ -c "$FILE" -a "$BOOL" = "0" ] && printf "c" && BOOL="1"
+	[ "$BOOL" = "0" ] && printf "-"
+	
 	printf "..."
-	if [ -r "$FILE" ]
-	then	printf "r"
-	else	printf "-"
-	fi 
-	if [ -w "$FILE" ]
-	then	printf "w"
-	else	printf "-"
-	fi 
-	if [ -x "$FILE" ]
-	then	printf "x"
-	else	printf "-"
-	fi
+	[ -r "$FILE" ] && printf "r" || printf "-"
+	[ -w "$FILE" ] && printf "w" || printf "-"
+	[ -x "$FILE" ] && printf "x" || printf "-"
 	printf "..."
-	if [ -G "$FILE" ]
-	then	printf " $WHOAMI :"
-	else	printf " ....... :"
-	fi
-	if [ -O "$FILE" ]
-	then	printf " $WHOAMI "
-	else	printf " ....... "
-	fi
+	[ -G "$FILE" ] && printf " $WHOAMI :" || printf " ....... :"
+	[ -O "$FILE" ] && printf " $WHOAMI " || printf " ....... "
 	printf " $1\n"
-
 }
 
 # Argument parsing
@@ -58,11 +49,11 @@ done
 
 # Default to printing the current working directory
 WORKD="."
-
 if [ "$#" -gt "0" ]
 then	WORKD="$ARGSTRING"
 fi
 
+# Determine depth and whether to printy hidden files
 HSTARS=""
 STARS="${WORKD}/*"
 if [ "$HIDDEN" = "0" ]
@@ -77,16 +68,16 @@ then	if [ "$HIDDEN" = "0" ]
 	fi
 fi
 
+
+# Directory walk
 N="1" 
 LEN="0" 
 TLEN="0"
-
 for i in $STARS $HSTARS
 do	TLEN="${#i}"
 	[ -e "$i" ] || continue
-	if [ "$TLEN" -gt "$LEN" ]
-	then	LEN="${TLEN}"
-	fi
+	[ "$TLEN" -gt "$LEN" ] && LEN="${TLEN}"
+	
 	eval ARRAY_"$N"="$i"
 	eval OARRAY_"$N"="......"
 
@@ -95,31 +86,31 @@ done
 
   
 # screen width calculations
-C="0"
-NUMIT=$(($ROWS / $LEN))
-#if [ "$LEN" -lt "$ROWS" ]
-#then	
-#else	NUMIT="1"
-#fi
+if [ "$LEN" -lt "$ROWS" ]
+then	NUMIT=$(($ROWS / $LEN))
+else	NUMIT="1"
+fi
 
 
+# shuffle 
 cnt="1"
 sft="1"
 sftc="1"
 vary="1"
 
-# shuffle
+
+
 while [ "$cnt" -lt "$N" ]
-do	eval OARRAY_"$sft"="$( eval printf '$'ARRAY_$cnt )"
-	#eval OARRAY_"$cnt"="$( eval printf '$'ARRAY_$cnt )"
+do	#eval OARRAY_"$sft"="$( eval printf '$'ARRAY_$cnt )"
+	eval OARRAY_"$cnt"="$( eval printf '$'ARRAY_$cnt )"
 	sft=$(($sft + $NUMIT ))
-	sftc=$(($sftc + 1))
-	if [ $sftc = $(($(( $N / $NUMIT)) + 1)) ]
+	
+	if [ $sftc = $((($N / $NUMIT) + 1)) ]
 	then	vary=$(( $vary + 1 ))
 		sft=$vary
-		
 		sftc="0"
 	fi
+	sftc=$(($sftc + 1))
 	
 	cnt=$(( $cnt + 1 )) 
 done
@@ -130,7 +121,7 @@ while [ "$C" -lt "$N" ]
 do	if [ $LONGLIST -ne "0" ]
 	then	shellstat "$( eval printf '$'OARRAY_$C )"
 	else	printf "%-*s " "$LEN" "$( eval printf '$'OARRAY_$C )"
-		if [ $(($C % $NUMIT)) = "0" ]
+		if [ $((($C % $NUMIT) + 1)) = "1" ]
 		then	printf "\n"
 		fi
 	fi
