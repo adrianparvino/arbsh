@@ -214,7 +214,7 @@ OM_OPENSSL_CROSS_ENV = \
 all:
 
 	$(MAKE) -i populate
-	$(MAKE) generate_host_tools
+	#$(MAKE) generate_host_tools
 	$(MAKE) install_path
 	$(MAKE) binutils_stage_make
 	$(MAKE) binutils_stage_install
@@ -2143,3 +2143,16 @@ m4_target: install_path
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_M4)
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_M4) install DESTDIR=$(OM_LIBROOT)
 
+simple_dist:
+
+	$(MAKE) install DESTDIR=$(PWD)/libroot
+	$(MAKE) linux_target
+	$(MAKE) busybox_target
+	$(MAKE) genext2fs_host
+
+	
+	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_LIBROOT) binary.img
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
+	-kernel $(OM_LIBROOT)/boot/vmlinuz \
+	-append "root=/dev/sda init=/bin/sh" \
+	-hda binary.img
