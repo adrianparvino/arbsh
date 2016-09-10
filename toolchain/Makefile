@@ -2166,4 +2166,17 @@ simple_dist_test:
 	-append "root=/dev/sda" \
 	-hda binary.img
 
+
+simple_dist_initramfs:
+
+	$(MAKE) install DESTDIR=$(PWD)/libroot
+	$(MAKE) busybox_target
+	-cp -a ../tree/* libroot
+	$(MAKE) linux_target
+
+	
+
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
+	-kernel $(OM_LIBROOT)/boot/vmlinuz \
+	-append "root=/dev/sda rdinit=/bin/init"
 	
