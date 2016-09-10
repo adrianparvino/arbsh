@@ -2149,10 +2149,21 @@ simple_dist:
 	$(MAKE) linux_target
 	$(MAKE) busybox_target
 	$(MAKE) genext2fs_host
+	-cp -a ../tree/* libroot
 
 	
 	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_LIBROOT) binary.img
 	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
-	-append "root=/dev/sda init=/bin/sh" \
+	-append "root=/dev/sda" \
 	-hda binary.img
+
+simple_dist_test:
+
+	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_LIBROOT) binary.img
+	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
+	-kernel $(OM_LIBROOT)/boot/vmlinuz \
+	-append "root=/dev/sda" \
+	-hda binary.img
+
+	
