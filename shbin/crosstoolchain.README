@@ -160,7 +160,7 @@ Using the remastery script to build a bootable disk image:
 		--root=libroot \
 		--fs=ext2
 
-	This will result in the creation of a bootable binary disk image name 
+	This will result in the creation of a bootable binary disk image named
 	"binary.img" which can be written to a USB or booted directly with a 
 	virtual machine:
 
@@ -189,9 +189,3 @@ References:
 	"Building Embedded Linux Systems", Karim Yaghmour
 
 
-Archived releases:
-	http://www.csit.parkland.edu/~cgraff1/omnicross-1.2.tar.gz
-	http://www.csit.parkland.edu/~cgraff1/omnicross-1.1.tar.gz
-	http://www.csit.parkland.edu/~cgraff1/omnicross-1.0.tar.gz 
-	http://www.csit.parkland.edu/~cgraff1//omnicross-1.3.tar.gz
-	http://www.csit.parkland.edu/~cgraff1//omnicross-1.4.tar.gz
