@@ -4,10 +4,11 @@ They are intended to be ran with ash, dash, bash or ksh.
 
 Why?
 Though the shell is deficient for processing text files, it does moderately
-well at exporing and manipulating a filesystem directory structure. ls.sh
+well at exploring and manipulating a filesystem directory structure. ls.sh
 demonstrates the power of the shell's file listing capabilities.
 
-To rename the .sh files and make them executable, invoke make:
+To rename (make uses the shell's '>' redirector to make a copy) the .sh files and 
+make them executable, invoke make:
 
 	cd shbin
 	make
