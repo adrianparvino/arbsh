@@ -18,5 +18,7 @@ int main(int argc, char *argv[])
         m_minus_M = ( m - real_M);
 
 
+	
+	/* log(pow(10, d)) = [(mv - Mv) + 5] / 5 */
         return 0;
 }
