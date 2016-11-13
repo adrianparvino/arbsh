@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
      
 	if (argc < 4 )
 	{
-		fprintf(stderr, "Usage ./ast_calc -apparent-magnitude absolute-magnitude parsecs\n");
+		fprintf(stderr, "Usage ./ast_calc apparent-magnitude absolute-magnitude parsecs\n");
 		return 1;
 	}
    
