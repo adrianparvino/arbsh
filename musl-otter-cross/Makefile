@@ -64,12 +64,13 @@ CONF_1 = \
 	--disable-gas \
 	--with-headers=$(PREF)/$(TARG)/include
 
-BINUTILS = binutils-2.26
+BINUTILS = binutils-2.27
 BINUTILS_MRR = https://ftp.gnu.org/gnu/binutils/
 #GCC = gcc-5.3.0
-GCC = gcc-6.1.0
+#GCC = gcc-6.1.0
+GCC = gcc-6.2.0
 GCC_MRR = https://ftp.gnu.org/gnu/gcc/$(GCC)/
-MUSL = musl-1.1.14
+MUSL = musl-1.1.15
 MUSL_MRR = http://www.musl-libc.org/releases/
 LANGS = c,c++,fortran
 SOURCE = $(SPWD)/source/
@@ -119,6 +120,7 @@ universe:
 	printf "musl: %s\n\n" "$(MUSL)" >> $(LOGDIR)/$(HOSTTYPE)-report
 
 	-$(MAKE) all TARG=aarch64-pc-linux-musl
+	# Delete everything after each test to save disk space
 	-$(MAKE) cleanall TARG=aarch64-pc-linux-musl
 	-$(MAKE) all TARG=x86_64-pc-linux-musl
 	-$(MAKE) cleanall TARG=x86_64-pc-linux-musl
