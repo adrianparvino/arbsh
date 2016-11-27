@@ -9,12 +9,13 @@
 /* globals */
 size_t count[PLACES]      = { 1000000000, 100000000, 10000000, 1000000, 100000, 10000, 1000, 100, 10, 1 };
 double counters[PLACES]   = { .1, .01, .001, .0001, .00001, .000001, .0000001 , .00000001, .000000001, .0000000001};
-size_t imag_count[PLACES] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+//size_t imag_count[PLACES] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
 
 /* functions */
 double multiplication(double, double);
 double turn_imag(size_t);
 size_t turn_real(double);
+//void verbose(float, size_t, int, float, float);
 
 
 int main(int argc, char *argv[])
@@ -66,7 +67,8 @@ double multiplication(double x, double y)
 	{
 		i+=1;
 		ret += imagine_y;
-	} 
+	}
+
 	/* what remains is imagine_y * imagine_x */
 	//printf("imagine_y * imagine_x = %lf\n", (imagine_y * imagine_x));
 
@@ -83,7 +85,7 @@ double multiplication(double x, double y)
 		first += hold; 
 	}
 	
-	/* instead of using division, simply make "first" imaginary again */
+	/* Make the number imaginary again (twice as /10000000000) */
 	//ret += (double)first/10000000000/10000000000; 
 	first = turn_imag(first);
 	ret += turn_imag(first);
@@ -112,9 +114,9 @@ size_t turn_real(double y )
 	/* imagine is always less than 1 .... */ 
 
 	/* adjust for empty places */
-
 	while ( counters[places] > imagine )
 		++places;
+
 	while ( places < PASSES )
 	{ 
 		if (( total + counters[places] > imagine ))
@@ -148,6 +150,7 @@ double turn_imag(size_t y)
 	size_t total = 0; 
 	double realtot = 0; 
 	
+	/* adjust places counting magnitude */
 	while ( count[places] > y )
 		++places;
 
@@ -165,3 +168,5 @@ double turn_imag(size_t y)
 
 	return realtot;
 }
+
+
