@@ -101,6 +101,8 @@ void subtract(char *a, char *b)
 	size_t wb = strlen(b); 
 	char ca = 0;
 	char cb = 0;
+	char *tens;
+	static char sign = '+';
 	
         //width = wa > wb ? wa : wb;
 	if ( wa > wb )
@@ -123,7 +125,18 @@ void subtract(char *a, char *b)
                 }
                 result[i] = sum - 48;
         }
-
+	if ( carry == -1)
+	{
+		sign ='-';
+		size_t z = width + 1;
+		tens = malloc(z);
+		memset(tens, '0', z);
+		tens[0] ='1';
+		tens[z] ='\0';
+		reversestr(result);
+		subtract(tens, result);
+		return;
+	}
         //if (carry == -1) 
 	//	result[i++] = '1'; /* carry + 48 */
 
@@ -131,7 +144,7 @@ void subtract(char *a, char *b)
 
         reversestr(result);
 
-        printf("result = %20s\n", result);
+        printf("result = %c%19s\n", sign, result);
 
 
 }
