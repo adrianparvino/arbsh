@@ -23,9 +23,10 @@ size_t reversestr(char *x)
         }
         return lim;
 }
-
+/* slow but could easily be made faster by passing in known string lengths */
 int getcharval2(const char *s, size_t idx)
 { 
+	
 	size_t len = strlen(s);
         if (idx < len)
         	return s[len - idx - 1];
@@ -103,7 +104,9 @@ void addition(char *a, char *b)
 
 void subtraction(char *a, char *b)
 {
+	
         char result[1000] = { 0 };
+	char tens[1000] = { 0 };
 	size_t i = 0;
 	size_t width = 0;
 	int sum = 0;
@@ -112,17 +115,16 @@ void subtraction(char *a, char *b)
 	size_t wb = strlen(b); 
 	char ca = 0;
 	char cb = 0;
-	char tens[1000] = {0};
-	static char sign = '+';
-	
         
 	if ( wa > wb ) width = wa;
 	else width = wb;
 
+	
+
         for(i=0; i<width; i++){
                 ca = getcharval2(a, i);
                 cb = getcharval2(b, i); 
-		// printf("%d %d\n", ca, cb);
+		// printf("%d %d\n", ca, cb);		
 		//sum = a[wa - i - 1] - b[wb - i - 1] + borrow + 96; 
                 sum = ca - cb + borrow + 96;
 		
@@ -137,21 +139,18 @@ void subtraction(char *a, char *b)
 	/*  Nothing left to borrow */
 	if ( borrow == -1)
 	{ 
+		printf("-");
+		
 		size_t z = width + 1; 
 		memset(tens, '0', z); tens[0] ='1'; tens[z] ='\0'; reversestr(result);
 		subtraction(tens, result);
+	
 		return;
 	}
-        //if (borrow == -1) 
-	//	result[i++] = '1'; /* borrow + 48 */ 
+        //if (borrow == -1) result[i++] = '1'; /* borrow + 48 */ 
+
         result[i]= 0; 
         reversestr(result);
-	/* sign bit hack ( relies on 0 places ) */
-	//if ( result[0] == '0' && width > 1 )
-//		result[0] = '+'; 
-
-
-
         printf("result = %20s\n",  result); 
 
 }
@@ -176,13 +175,18 @@ void subtract(char *x, char *y)
 	else if (y[0] == '-')
 	{ 
 		++y;
-		addition(x, y);
+		add(x, y);
 		
 	} else subtraction(x,y);
 }
 
 void add(char *x, char *y)
 { 
+	if (x[0] == '-' && y[0] == '+' )
+	{
+		add(y, x);
+		return;
+	}
 	if ( x[0] == '+')
 		++x;
 	if ( x[0] == '-' )
@@ -197,8 +201,9 @@ void add(char *x, char *y)
 	else if (y[0] == '-')
 	{ 
 		++y;
-		subtraction(x, y);
-	}else addition(x, y);
+		subtract(x, y); 
+	}
+	else addition(x, y);
 }
 
 int main(int argc, char *argv[])
@@ -211,10 +216,10 @@ int main(int argc, char *argv[])
         } 
 	printf("\n\n");
         printf("         %20s\n", argv[1]);
-        printf("       + %20s\n", argv[2]);
+        printf(" + and - %20s\n", argv[2]);
 	printf("         %20s\n", "-------------------"); 
 	add(argv[1], argv[2]);
-	printf ("answer = %20ld (+) \n", strtol(argv[1], 0, 10) + strtol(argv[2], 0, 10));
+	printf ("answer = %20ld (addition) \n", strtol(argv[1], 0, 10) + strtol(argv[2], 0, 10));
 	subtract(argv[1], argv[2]);
-	printf ("answer = %20ld (-) \n", strtol(argv[1], 0, 10) - strtol(argv[2], 0, 10));
+	printf ("answer = %20ld (subtraction) \n", strtol(argv[1], 0, 10) - strtol(argv[2], 0, 10));
 }
