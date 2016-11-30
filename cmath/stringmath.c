@@ -8,6 +8,17 @@ void subtraction(char *, char *);
 void add(char *, char *);
 void addition(char *, char *);
 
+char sign = '+';
+
+void flip_bit(char x)
+{
+	if (sign =='-')
+		sign = '+';
+	else if (sign == '+')
+		sign = '-';
+
+}
+
 size_t reversestr(char *x)
 { 
         size_t i = 0;
@@ -88,15 +99,9 @@ void addition(char *a, char *b)
         if (carry) 
 		result[i++] = '1'; /* carry + 48 */
 
-        result[i]= 0;
-
-        reversestr(result);
-
-	
-
-
-
-        printf("result = %20s\n", result);
+        result[i]= 0; 
+        reversestr(result); 
+        printf("result = %c%s\n",sign,   result); 
 	
 	free(result);
 
@@ -105,7 +110,10 @@ void addition(char *a, char *b)
 void subtraction(char *a, char *b)
 {
 	
-        char result[1000] = { 0 };
+        //char result[1000] = { '0' };
+	char *result = malloc(1000);
+	
+	//static char result[1000] = { 0 };
 	char tens[1000] = { 0 };
 	size_t i = 0;
 	size_t width = 0;
@@ -115,6 +123,7 @@ void subtraction(char *a, char *b)
 	size_t wb = strlen(b); 
 	char ca = 0;
 	char cb = 0;
+	
         
 	if ( wa > wb ) width = wa;
 	else width = wb;
@@ -138,24 +147,33 @@ void subtraction(char *a, char *b)
         }
 	/*  Nothing left to borrow */
 	if ( borrow == -1)
-	{ 
-		printf("-");
+	{
+		//printf("-");
 		
-		size_t z = width + 1; 
-		memset(tens, '0', z); tens[0] ='1'; tens[z] ='\0'; reversestr(result);
+		size_t z = width + 1;
+		memset(tens, '0', z);
+		tens[0] ='1';
+		tens[z] ='\0';
+		reversestr(result);
 		subtraction(tens, result);
-	
 		return;
 	}
         //if (borrow == -1) result[i++] = '1'; /* borrow + 48 */ 
-
-        result[i]= 0; 
+	//if (result[0] == '0') 
+        //result[i]= 0; 
+	// result[0]= 0; 
         reversestr(result);
-        printf("result = %20s\n",  result); 
+
+
+	if ( result[0] == '0' )
+	{
+		//sign -= 2;
+		flip_bit(sign);
+		++result;
+	}
+        printf("result = %c%s\n",sign,   result); 
 
 }
-
-
 
 
 void subtract(char *x, char *y)
@@ -166,6 +184,7 @@ void subtract(char *x, char *y)
 	if ( x[0] == '-' )
 	{
 		++x;
+		flip_bit(sign);
 		add(x, y);
 	}else if (y[0] == '+')
 	{
@@ -175,6 +194,7 @@ void subtract(char *x, char *y)
 	else if (y[0] == '-')
 	{ 
 		++y;
+		flip_bit(sign);
 		add(x, y);
 		
 	} else subtraction(x,y);
@@ -182,8 +202,9 @@ void subtract(char *x, char *y)
 
 void add(char *x, char *y)
 { 
-	if (x[0] == '-' && y[0] == '+' )
+	if (x[0] == '-' && y[0] != '-' )
 	{
+		flip_bit(sign);
 		add(y, x);
 		return;
 	}
@@ -192,6 +213,7 @@ void add(char *x, char *y)
 	if ( x[0] == '-' )
 	{
 		++x;
+		flip_bit(sign);
 		subtract(x, y);
 	}else if (y[0] == '+')
 	{
