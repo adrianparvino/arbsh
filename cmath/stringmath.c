@@ -3,6 +3,10 @@
 #include <string.h>
 #include <unistd.h>
 
+void subtract(char *, char *);
+void subtraction(char *, char *);
+void add(char *, char *);
+void addition(char *, char *);
 
 size_t reversestr(char *x)
 { 
@@ -37,7 +41,7 @@ int getcharval(const char *s, size_t idx)
 }
 
 
-void add(char *a, char *b)
+void addition(char *a, char *b)
 {
         char *result;
 	size_t i = 0;
@@ -86,67 +90,115 @@ void add(char *a, char *b)
         result[i]= 0;
 
         reversestr(result);
+
+	
+
+
+
         printf("result = %20s\n", result);
+	
 	free(result);
 
 }
-void subtract(char *a, char *b)
+
+void subtraction(char *a, char *b)
 {
         char result[1000] = { 0 };
 	size_t i = 0;
 	size_t width = 0;
 	int sum = 0;
-	int carry = 0;
+	int borrow = 0;
 	size_t wa = strlen(a); 
 	size_t wb = strlen(b); 
 	char ca = 0;
 	char cb = 0;
-	char *tens;
+	char tens[1000] = {0};
 	static char sign = '+';
 	
-        //width = wa > wb ? wa : wb;
-	if ( wa > wb )
-		width = wa;
-	else
-		width = wb;
+        
+	if ( wa > wb ) width = wa;
+	else width = wb;
 
         for(i=0; i<width; i++){
                 ca = getcharval2(a, i);
                 cb = getcharval2(b, i); 
 		// printf("%d %d\n", ca, cb);
-		//sum = a[wa - i - 1] - b[wb - i - 1] + carry + 96; 
-                sum = ca - cb + carry + 96;
+		//sum = a[wa - i - 1] - b[wb - i - 1] + borrow + 96; 
+                sum = ca - cb + borrow + 96;
 		
-                carry = 0;
+                borrow = 0;
                 if(sum < 96){
-                        carry = -1;
+                        borrow = -1;
                         sum +=10;
 
                 }
                 result[i] = sum - 48;
         }
-	if ( carry == -1)
-	{
-		sign ='-';
-		size_t z = width + 1;
-		tens = malloc(z);
-		memset(tens, '0', z);
-		tens[0] ='1';
-		tens[z] ='\0';
-		reversestr(result);
-		subtract(tens, result);
+	/*  Nothing left to borrow */
+	if ( borrow == -1)
+	{ 
+		size_t z = width + 1; 
+		memset(tens, '0', z); tens[0] ='1'; tens[z] ='\0'; reversestr(result);
+		subtraction(tens, result);
 		return;
 	}
-        //if (carry == -1) 
-	//	result[i++] = '1'; /* carry + 48 */
-
-        result[i]= 0;
-
+        //if (borrow == -1) 
+	//	result[i++] = '1'; /* borrow + 48 */ 
+        result[i]= 0; 
         reversestr(result);
+	/* sign bit hack ( relies on 0 places ) */
+	//if ( result[0] == '0' && width > 1 )
+//		result[0] = '+'; 
 
-        printf("result = %c%19s\n", sign, result);
 
 
+        printf("result = %20s\n",  result); 
+
+}
+
+
+
+
+void subtract(char *x, char *y)
+{ 
+	/* sign bits have a lot of possibilities and rules, this is incomplete */
+	if (x[0] == '+')
+		++x;
+	if ( x[0] == '-' )
+	{
+		++x;
+		add(x, y);
+	}else if (y[0] == '+')
+	{
+		++y;
+		subtraction(x, y);
+	}
+	else if (y[0] == '-')
+	{ 
+		++y;
+		addition(x, y);
+		
+	} else subtraction(x,y);
+}
+
+void add(char *x, char *y)
+{ 
+	if ( x[0] == '+')
+		++x;
+	if ( x[0] == '-' )
+	{
+		++x;
+		subtract(x, y);
+	}else if (y[0] == '+')
+	{
+		++y;
+		addition(x, y);
+	}
+	else if (y[0] == '-')
+	{ 
+		++y;
+		subtraction(x, y);
+	}else addition(x, y);
 }
 
 int main(int argc, char *argv[])
