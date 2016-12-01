@@ -1,4 +1,4 @@
-
+﻿
 BUILDING:
 ---------
 	Build a toolchain:
@@ -60,7 +60,7 @@ DESCRIPTION:
 
 
 The toolchain build system supports multiple C library vendors.
-At this time they are: musl, uClibc and glibc, the effectveness
+At this time they are: musl, uClibc and glibc, the effectiveness
 of which in that order. The default libc is musl. To set the
 desired libc override the variable OM_LIBC as follows:
 
@@ -79,7 +79,7 @@ desired libc override the variable OM_LIBC as follows:
 	... or open the single Makefile and set it as desired.
 
 The default is to cross build for i686, this is modified by setting
-the primary tuplet prefix. To do this, open the Makefile and modify
+the primary tuple prefix. To do this, open the Makefile and modify
 the following four lines:
 
 	OM_LIBC = musl
