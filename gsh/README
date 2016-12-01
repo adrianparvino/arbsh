@@ -1,6 +1,6 @@
-
+﻿
 		The Graff shell implements a small subset of POSIX shell options 
-	with the aspiration to add more specification conformant functionalities 
+	with the aspiration to add more specification conforming functionalities 
 	at a later date.
 
 

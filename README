@@ -1,4 +1,4 @@
-
+﻿
 	Grafland is a collection of unique userland tools and 
 	toolchains written natively in C, POSIX sh and makefile.
 
@@ -54,7 +54,7 @@ HIER:
 		is supplied with a unique ircline() funtion (native).
 
 	cmath/
-		Trancendental mathematics functions written in C (native).
+		Transcendental mathematics functions written in C (native).
 	docs/
 		Whitepages I have written to document various OS and books 
 		(native).
