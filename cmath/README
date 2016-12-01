@@ -1,30 +1,30 @@
-cmath
+﻿cmath
 
 
 	Contents:
 	I. Arbitrary precision string calculator
-		1. All of these functions go to infinite precision (bounded
+		1. All of these functions go to infinite precision (bound only
 		   by memory)
 		2. Functions
 			a. add
 			b, subtract
 			c. multiply 
 
-	II. Transendental functions inplemented using their taylor series
+	II. Transcendental functions implemented using their Taylor series
 		1. Most of functions work to within 10 digits of precision
 		   on either side of the mantissa.
-		2. Well ranged algorithms with argument reduction
+		2. Well ranged algorithms with argument reduction.
 		3. Varying in performance, slow with arguments nearing '1',
-		4. Funcions
-			a, Most of the normative case trancendental functions
+		4. Functions
+			a, Most of the normative case transcendental functions
 			   (pow, exp, cos, tan and etc ..  ) 
-			b. bessel functions (bernoulli numbers) 
+			b. Bessel functions (Bernoulli numbers) 
 
-	III. Trancendental functions using continued fraction expansions
+	III. Transcendental functions using continued fraction expansions
 		1. Extremely fast.
 			a. Functions are completely resolved within 3 iterations
 		2. Functions
-			a. Trancendental sin, cos, tan and exp
+			a. Transcendental sin, cos, tan and exp
 
 	IIII. Tests for various functions or programs
 		1. Tests
@@ -37,7 +37,7 @@ cmath
 			a. multiplication.c
 				-> Multiplication implemented as a function of 
 				   addition.
-				-> Accepts fractional arguments by decomppsing
+				-> Accepts fractional arguments by decomposing
 				   floats using brute force.
 				-> Slow.
 			b. astronomy_calculator.c
@@ -48,10 +48,10 @@ cmath
 	    All math routines are written in C and can operate without 
 	assistance from outside math.h libraries. They accomplish this by 
 	inter-relying on each other, for example many other transcendental 
-	functions call pow() accomplish thier ends.
+	functions call pow() or exp() to accomplish their ends.
 	
 	    The majority of the functions in this directory are implemented 
-	using their respective taylor series.
+	using their respective Taylor series.
 
 
 	Testing: 
@@ -67,10 +67,10 @@ cmath
 		cc continued_fraction.c -lm
 		./continued_fraction
 
-	To test the taylor series based math.h style  functions, build and 
+	To test the Taylor series based math.h style  functions, build and 
 	run "testmath.c".  This program requires 2 arguments. If you are 
 	testing a function which only accepts one argument then just provide 
-	an irrelevant garbage value for the second argument.
+	an irrelevant value for the second argument.
 	
 		make
 		./testmath [arg] [arg]
