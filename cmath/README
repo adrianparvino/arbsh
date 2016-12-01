@@ -3,7 +3,8 @@ cmath
 
 	Contents:
 	I. Arbitrary precision string calculator
-		1. All of these functions go to infinite digits
+		1. All of these functions go to infinite precision (bounded
+		   by memory)
 		2. Functions
 			a. add
 			b, subtract
@@ -14,10 +15,16 @@ cmath
 		   on either side of the mantissa.
 		2. Well ranged algorithms with argument reduction
 		3. Varying in performance, slow with arguments nearing '1',
+		4. Funcions
+			a, Most of the normative case trancendental functions
+			   (pow, exp, cos, tan and etc ..  ) 
+			b. bessel functions (bernoulli numbers) 
 
 	III. Trancendental functions using continued fraction expansions
 		1. Extremely fast.
 			a. Functions are completely resolved within 3 iterations
+		2. Functions
+			a. Trancendental sin, cos, tan and exp
 
 	IIII. Tests for various functions or programs
 		1. Tests
@@ -34,6 +41,7 @@ cmath
 				   floats using brute force.
 				-> Slow.
 			b. astronomy_calculator.c
+				-> compare basic log10(d) = (((m - M) + 5) / 5) 
 
 
 	Description: 

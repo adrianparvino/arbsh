@@ -14,9 +14,10 @@ void subtract(char *, char *);
 void subtraction(char *, char *);
 char *multiply(const char *, const char *, char *);
 
+
 /* globals */
-char *res;
 char sign = '+';
+
 
 /* functions */
 int main(int argc, char *argv[])
@@ -49,8 +50,6 @@ int main(int argc, char *argv[])
 	
 	c = multiply(a, b, c);
 	printf("result = %20s\n", c);
-	//multiply(a, b);
-	//printf("result = %20s\n", res);
 	printf("answer = %20ld (multiply) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
 	
 } 
@@ -63,6 +62,7 @@ void flip_sign(void)
 	else if (sign == '+')
 		sign = '-'; 
 }
+
 
 size_t reversestr(char *x)
 { 
@@ -79,6 +79,8 @@ size_t reversestr(char *x)
         }
         return lim;
 }
+
+
 /* slow but could easily be made faster by passing in known string lengths */
 int getcharval2(const char *s, size_t idx)
 {
@@ -87,6 +89,7 @@ int getcharval2(const char *s, size_t idx)
         	return s[len - idx - 1];
         return 48;
 }
+
 
 int getcharval(const char *s, size_t idx)
 { 
@@ -150,19 +153,17 @@ void addition(char *a, char *b)
 
 }
 
+
 void subtraction(char *a, char *b)
 {
 
-	char *result;
+	char *c;
 	size_t i = 0;
 	size_t width = 0;
 	int sum = 0;
 	int borrow = 0;
 	size_t wa = strlen(a); 
-	size_t wb = strlen(b); 
-	char ca = 0;
-	char cb = 0;
-	
+	size_t wb = strlen(b);
         char tens[1000] = { 0 };
         
 	/* greatest width */
@@ -170,26 +171,24 @@ void subtraction(char *a, char *b)
 	else width = wb;
 
 	/* for arbitrary precision it makes sense to allocate for math libs */
-	if (!(result = malloc (width + 1)))
+	if (!(c = malloc (width + 1)))
 	{
 		fprintf(stderr, "malloc failed\n"); return;
 	} 
 	
-		result[0] = sign;
-		++result;
+	c[0] = sign;
+	++c;
 
-        for(i=0; i<width; i++){
-                ca = getcharval2(a, i);
-                cb = getcharval2(b, i);
+        for(i=0; i<width; i++){ 
 		//sum = a[wa - i - 1] - b[wb - i - 1] + borrow + 96; 
-                sum = ca - cb + borrow + 96;
+                sum = getcharval2(a, i) - getcharval2(a, i) + borrow + 96;
 		
                 borrow = 0;
                 if(sum < 96){
                         borrow = -1;
                         sum +=10;
                 }
-                result[i] = sum - 48;
+                c[i] = sum - 48;
         }
 	/*  Nothing left to borrow */
 	if ( borrow == -1)
@@ -200,29 +199,20 @@ void subtraction(char *a, char *b)
 		memset(tens, '0', z);
 		tens[0] ='1';
 		tens[z] ='\0';
-		reversestr(result);
-		subtraction(tens, result);
+		reversestr(c);
+		subtraction(tens, c);
 		return;
-	}
-        //if (borrow == -1) result[i++] = '1'; /* borrow + 48 */ 
-	//if (result[0] == '0') 
-        result[i]= 0; 
-	// result[0]= 0; 
-        reversestr(result);
+	} 
+        c[i]= 0; 
+        reversestr(c); 
+	if ( c[0] == '0' )
+		++c;
 
-
-	if ( result[0] == '0' )
-	{
-		//sign -= 2;
-		//flip_sign();
-		++result;
-	}
+	/* add the sign back in ... */
+	--c;
+	c[0] = sign;
 	
-		
-	--result;
-	result[0] = sign;
-	//--result;
-        printf("result = %20s\n", result); 
+        printf("result = %20s\n", c); 
 
 }
 
@@ -251,6 +241,7 @@ void subtract(char *x, char *y)
 	} else subtraction(x,y);
 }
 
+
 void add(char *x, char *y)
 { 
 	if ( x[0] == '+')
@@ -274,16 +265,18 @@ void add(char *x, char *y)
 	
 }
 
+
 char *multiply(const char *a, const char *b, char *c)
 {
 	int i = 0;
 	int j = 0;
-	int k = 0;
-	int n = 0;
+	size_t k = 0;
+	int sum = 0;
 	int carry = 0;
 	int la = 0;
 	int lb = 0;
 
+	/* if a or b has a positive sign then dispose of it */
 	if(a[0] == '+')
 	{
 		++a;
@@ -320,15 +313,15 @@ char *multiply(const char *a, const char *b, char *c)
 	c[la + lb] = '\0';
  
 
-	for (i = la - 1; i >= 0; i--)
-	{
-		for (j = lb - 1, k = i + j + 1, carry = 0; j >= 0; j--, k--)
+	for (i = la - 1; i >= 0; i--) 
+	{ 
+		for (j = lb - 1, k = i + j + 1, carry = 0; j >= 0; j--, k--) 
 		{ 
-			n = (a[i]-'0') * (b[j]-'0') + (c[k]-'0') + carry;
-			carry = n / 10;
-			c[k] = (n % 10) + '0';
+			sum = (a[i]-'0') * (b[j]-'0') + (c[k]-'0') + carry;
+			carry = sum / 10;
+			c[k] = (sum % 10) + '0'; 
 		}
-		c[k] += carry;
+		c[k] += carry; 
 	}
 
 	if (*c == '0') 
