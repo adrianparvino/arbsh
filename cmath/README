@@ -11,10 +11,10 @@
 			c. multiply 
 
 	II. Transcendental functions implemented using their Taylor series
-		1. Most of functions work to within 10 digits of precision
+		1. Most functions work to within 10 digits of precision
 		   on either side of the mantissa.
 		2. Well ranged algorithms with argument reduction.
-		3. Varying in performance, slow with arguments nearing '1',
+		3. Varying in performance, slow with arguments nearing 1,
 		4. Functions
 			a, Most of the normative case transcendental functions
 			   (pow, exp, cos, tan and etc ..  ) 

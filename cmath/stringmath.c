@@ -5,13 +5,13 @@
 
 
 /* function declarations */
-void add(char *, char *);
-void addition(char *, char *);
+char * add(char *, char *, char *);
+char * addition(char *, char *, char *);
 int getcharval2(const char *, size_t);
 void flip_sign(void);
 size_t reversestr(char *);
-void subtract(char *, char *);
-void subtraction(char *, char *);
+char * subtract(char *, char *, char *);
+char * subtraction(char *, char *, char *);
 char *multiply(const char *, const char *, char *);
 
 
@@ -40,11 +40,11 @@ int main(int argc, char *argv[])
 	printf("         %20s\n", "-------------------"); 
 
 
-	add(a, b);
+	c = add(a, b, c);
 	printf("answer = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10));
 
 
-	subtract(a, b);
+	c = subtract(a, b, c);
 	printf("answer = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
 
 	
@@ -100,9 +100,9 @@ int getcharval(const char *s, size_t idx)
 }
 
 
-void addition(char *a, char *b)
+char * addition(char *a, char *b, char *c)
 {
-        char *result;
+        
 	size_t i = 0;
 	size_t width = 0;
 	size_t sum = 0;
@@ -117,13 +117,13 @@ void addition(char *a, char *b)
 	else width = wb;
 
 	/* for arbitrary precision it makes sense to allocate for math libs */
-	if (!(result = malloc (width)))
+	if (!(c = malloc (width)))
 	{
-		fprintf(stderr, "malloc failed\n"); return;
+		fprintf(stderr, "malloc failed\n"); return c;
 	}
 	
-	result[0] = sign;
-	++result;
+	c[0] = sign;
+	++c;
 	
 
         for(i=0; i<width; i++){
@@ -137,27 +137,27 @@ void addition(char *a, char *b)
                         carry = 1;
                         sum -= 10;
                 }
-                result[i] = sum + 48;
+                c[i] = sum + 48;
         }
 
         if (carry) 
-		result[i++] = '1'; /* carry + 48 */
+		c[i++] = '1'; /* carry + 48 */
 
-        result[i]= 0; 
-        reversestr(result);
-	--result;
-	result[0] = sign;
-        printf("result = %20s\n", result); 
+        c[i]= 0; 
+        reversestr(c);
+	--c;
+	c[0] = sign;
+        printf("result = %20s\n", c); 
 	
-	free(result);
+	return c;
 
 }
 
 
-void subtraction(char *a, char *b)
+char * subtraction(char *a, char *b, char *c)
 {
 
-	char *c;
+
 	size_t i = 0;
 	size_t width = 0;
 	int sum = 0;
@@ -173,7 +173,7 @@ void subtraction(char *a, char *b)
 	/* for arbitrary precision it makes sense to allocate for math libs */
 	if (!(c = malloc (width + 1)))
 	{
-		fprintf(stderr, "malloc failed\n"); return;
+		fprintf(stderr, "malloc failed\n"); return c;
 	} 
 	
 	c[0] = sign;
@@ -200,8 +200,8 @@ void subtraction(char *a, char *b)
 		tens[0] ='1';
 		tens[z] ='\0';
 		reversestr(c);
-		subtraction(tens, c);
-		return;
+		c = subtraction(tens, c, c);
+		return c;
 	} 
         c[i]= 0; 
         reversestr(c); 
@@ -214,10 +214,11 @@ void subtraction(char *a, char *b)
 	
         printf("result = %20s\n", c); 
 
+	return c;
 }
 
 
-void subtract(char *x, char *y)
+char * subtract(char *x, char *y, char *c)
 { 
 	/* sign bits have a lot of possibilities and rules, this is incomplete */ 
 	if (x[0] == '+')
@@ -226,23 +227,25 @@ void subtract(char *x, char *y)
 	{
 		++x;
 		flip_sign();
-		add(x, y);
+		c = add(x, y, c);
 	}else if (y[0] == '+')
 	{
 		++y;
-		subtraction(x, y);
+		c = subtraction(x, y, c);
 	}
 	else if (y[0] == '-')
 	{ 
 		++y;
 		flip_sign();
-		add(x, y);
+		c = add(x, y, c);
 		
-	} else subtraction(x,y);
+	} else c = subtraction(x,y,c);
+
+	return c;
 }
 
 
-void add(char *x, char *y)
+char * add(char *x, char *y, char *c)
 { 
 	if ( x[0] == '+')
 		++x;
@@ -250,19 +253,20 @@ void add(char *x, char *y)
 	{
 		++x;
 		flip_sign();
-		subtract(x, y);
+		c = subtract(x, y, c);
 	}else if (y[0] == '+')
 	{
 		++y;
-		addition(x, y);
+		c = addition(x, y, c);
 	}
 	else if (y[0] == '-')
 	{ 
 		++y;
-		subtract(x, y); 
+		c = subtract(x, y, c); 
 	}
-	else addition(x, y);
-	
+	else c = addition(x, y, c);
+
+	return c; 
 }
 
 
@@ -289,7 +293,7 @@ char *multiply(const char *a, const char *b, char *c)
 		multiply(a, b, c);
 		return c;
 	}
-	/* either is zero, return "0" */
+	/* either is zero, return c "0" */
 	if (!strcmp(a, "0") || !strcmp(b, "0")) {
 		c[0] = '0'; c[1] = '\0';
 		return c;
