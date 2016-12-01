@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
+
 /* function declarations */
 void add(char *, char *);
 void addition(char *, char *);
@@ -11,8 +12,7 @@ void flip_sign(void);
 size_t reversestr(char *);
 void subtract(char *, char *);
 void subtraction(char *, char *);
-void multiplication(char *, char *);
-char *multiplication2(const char *, const char *, char *);
+char *multiply(const char *, const char *, char *);
 
 /* globals */
 char *res;
@@ -30,7 +30,8 @@ int main(int argc, char *argv[])
 	char *a = argv[1];
 	char *b = argv[2];
 	
-	char *c = malloc(10000);
+	char *c;
+	c = malloc(strlen(a) + strlen(b + 256));
 
 	printf("\n\n");
         printf("         %20s\n", a);
@@ -46,11 +47,11 @@ int main(int argc, char *argv[])
 	printf("answer = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
 
 	
-	c = multiplication2(a, b, c);
+	c = multiply(a, b, c);
 	printf("result = %20s\n", c);
-	//multiplication(a, b);
+	//multiply(a, b);
 	//printf("result = %20s\n", res);
-	printf("answer = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
+	printf("answer = %20ld (multiply) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
 	
 } 
 
@@ -273,76 +274,7 @@ void add(char *x, char *y)
 	
 }
 
-void multiplication(char *a, char *b)
-{
-	int i = 0;
-	int j = 0;
-	int k = 0;
-	int n = 0;
-	int carry = 0;
-	int la = 0;
-	int lb = 0;
-
-	char *c = res;
-
-	if(a[0] == '+')
-	{
-		++a;
-		multiplication(a, b);
-		return;
-	}
-	if(b[0] == '+')
-	{
-		++b;
-		multiplication(a, b);
-		return;
-	}
-	/* either is zero, return "0" */
-	if (!strcmp(a, "0") || !strcmp(b, "0")) {
-		c[0] = '0', c[1] = '\0';
-		return;
-	}
- 
-	/* see if either a or b is negative */
-	if (a[0] == '-') { i = 1; k = !k; }
-	if (b[0] == '-') { j = 1; k = !k; }
- 
-	/* if yes, prepend minus sign if needed and skip the sign */
-	if (i || j) {
-		if (k) c[0] = '-';
-		//c = c + k;
-		res = res + k;
-		multiplication(a+i, b+j);
-		return;
-	}
- 
-	la = strlen(a);
-	lb = strlen(b);
-	
-	memset(c, '0', la + lb);
-	
-	c[la + lb] = '\0';
- 
-#	define I(a) (a - '0')
-	for (i = la - 1; i >= 0; i--) {
-		for (j = lb - 1, k = i + j + 1, carry = 0; j >= 0; j--, k--) {
-			/* summation of acquired terms is done as the multiplication builds places */
-			n = I(a[i]) * I(b[j]) + I(c[k]) + carry;
-			carry = n / 10;
-			c[k] = (n % 10) + '0';
-		}
-		c[k] += carry;
-	}
-#	undef I
-
-	//if ( c[0] == '0')
-	//	++res;
- 
-	return;
-}
-
-
-char *multiplication2(const char *a, const char *b, char *c)
+char *multiply(const char *a, const char *b, char *c)
 {
 	int i = 0;
 	int j = 0;
@@ -355,18 +287,18 @@ char *multiplication2(const char *a, const char *b, char *c)
 	if(a[0] == '+')
 	{
 		++a;
-		multiplication2(a, b, c);
+		multiply(a, b, c);
 		return c;
 	}
 	if(b[0] == '+')
 	{
 		++b;
-		multiplication2(a, b, c);
+		multiply(a, b, c);
 		return c;
 	}
 	/* either is zero, return "0" */
 	if (!strcmp(a, "0") || !strcmp(b, "0")) {
-		c[0] = '0', c[1] = '\0';
+		c[0] = '0'; c[1] = '\0';
 		return c;
 	}
  
@@ -377,30 +309,30 @@ char *multiplication2(const char *a, const char *b, char *c)
 	/* if yes, prepend minus sign if needed and skip the sign */
 	if (i || j) {
 		if (k) c[0] = '-';
-		multiplication2(a + i, b + j, c + k);
+			multiply(a + i, b + j, c + k);
 		return c;
 	}
  
 	la = strlen(a);
 	lb = strlen(b);
+	
 	memset(c, '0', la + lb);
 	c[la + lb] = '\0';
  
-#	define I(a) (a - '0')
-	for (i = la - 1; i >= 0; i--) {
-		for (j = lb - 1, k = i + j + 1, carry = 0; j >= 0; j--, k--) {
-			n = I(a[i]) * I(b[j]) + I(c[k]) + carry;
+
+	for (i = la - 1; i >= 0; i--)
+	{
+		for (j = lb - 1, k = i + j + 1, carry = 0; j >= 0; j--, k--)
+		{ 
+			n = (a[i]-'0') * (b[j]-'0') + (c[k]-'0') + carry;
 			carry = n / 10;
 			c[k] = (n % 10) + '0';
 		}
 		c[k] += carry;
 	}
-#	undef I
 
 	if (*c == '0') 
 		++c;
-	
- 
 	return c;
 }
 
