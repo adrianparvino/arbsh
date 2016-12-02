@@ -4,36 +4,36 @@
 #include <unistd.h>
 
 
-
 /* function declarations */
-char * add(char *, char *, char *);
-char * addition(char *, char *, char *);
-int getcharval2(const char *, size_t);
+char *add(char *, char *, char *);
+char *addition(char *, char *, char *);
+int getcharval(const char *, size_t);
 void flip_sign(void);
 size_t reversestr(char *);
-char * subtract(char *, char *, char *);
-char * subtraction(char *, char *, char *);
+char *subtract(char *, char *, char *);
+char *subtraction(char *, char *, char *);
 char *multiply(const char *, const char *, char *);
+
+char *strallocate(size_t);
+
+void die(char *);
 
 
 /* globals */
 char sign = '+';
 
-
 /* functions */
 int main(int argc, char *argv[])
 {
 
-        if ( argc != 3)
-        {
-                fprintf(stderr, "Needs two args\n");
-                return 1;
-        } 
+        if ( argc != 3) 
+                die("Needs two args"); 
+       
 	char *a = argv[1];
 	char *b = argv[2];
-	
 	char *c;
-	c = malloc(strlen(a) + strlen(b + 256));
+
+	c = strallocate(strlen(a) + strlen(b + 256));
 
 	printf("\n\n");
         printf("         %20s\n", a);
@@ -41,13 +41,15 @@ int main(int argc, char *argv[])
 	printf("         %20s\n", "-------------------"); 
 
 
+
 	c = add(a, b, c);
+	printf("result = %20s\n", c);
 	printf("answer = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10));
 
-
 	c = subtract(a, b, c);
+	printf("result = %20s\n", c);
 	printf("answer = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
-
+	
 	
 	c = multiply(a, b, c);
 	printf("result = %20s\n", c);
@@ -67,6 +69,7 @@ void flip_sign(void)
 
 size_t reversestr(char *x)
 { 
+	/* reverse a string and return its length */
         size_t i = 0;
         char swap = 0;
         size_t lim = strlen(x);
@@ -83,15 +86,6 @@ size_t reversestr(char *x)
 
 
 /* slow but could easily be made faster by passing in known string lengths */
-int getcharval2(const char *s, size_t idx)
-{
-	size_t len = strlen(s);
-        if (idx < len)
-        	return s[len - idx - 1];
-        return 48;
-}
-
-
 int getcharval(const char *s, size_t idx)
 { 
 	size_t len = strlen(s);
@@ -101,38 +95,24 @@ int getcharval(const char *s, size_t idx)
 }
 
 
-char * addition(char *a, char *b, char *c)
+char *addition(char *a, char *b, char *c)
 {
-        
 	size_t i = 0;
 	size_t width = 0;
-	size_t sum = 0;
-	size_t carry = 0;
+	int sum = 0;
+	int carry = 0;
 	size_t wa = strlen(a); 
-	size_t wb = strlen(b); 
-	char ca = 0;
-	char cb = 0; 
+	size_t wb = strlen(b);
         
 	/* greatest width */
 	if ( wa > wb ) width = wa;
 	else width = wb;
-
-	/* for arbitrary precision it makes sense to allocate for math libs */
-	if (!(c = malloc (width)))
-	{
-		fprintf(stderr, "malloc failed\n"); return c;
-	}
-	
-	c[0] = sign;
-	++c;
-	
-
-        for(i=0; i<width; i++){
-                ca = getcharval(a, i);
-                cb = getcharval(b, i);
+	/* roll off the sign bit */
+	*c++ = sign;
+	/* add */
+        for(i=0; i<width; i++){ 
 		//sum = a[wa - i - 1] + b[wb - i - 1] + carry - 48 - 48; 
-                sum = ca + cb + carry;
-		
+		sum = getcharval(a, i) + getcharval(b, i) + carry;
                 carry = 0;
                 if(sum > 9){
                         carry = 1;
@@ -140,139 +120,71 @@ char * addition(char *a, char *b, char *c)
                 }
                 c[i] = sum + 48;
         }
-
         if (carry) 
-		c[i++] = '1'; /* carry + 48 */
-
+		c[i++] = '1';
         c[i]= 0; 
         reversestr(c);
-	--c;
-	c[0] = sign;
-        printf("result = %20s\n", c); 
-	
-	return c;
-
+	/* add the sign back in */
+	*--c = sign;
+	return c; 
 }
 
 
-char * subtraction(char *a, char *b, char *c)
-{
-
-
+char *subtraction(char *a, char *b, char *c)
+{ 
 	size_t i = 0;
 	size_t width = 0;
 	int sum = 0;
 	int borrow = 0;
 	size_t wa = strlen(a); 
 	size_t wb = strlen(b);
-        char tens[1000] = { 0 };
+	char *lostmem;
+	char *tens;
+	
         
 	/* greatest width */
 	if ( wa > wb ) width = wa;
-	else width = wb;
-
-	/* for arbitrary precision it makes sense to allocate for math libs */
-	if (!(c = malloc (width + 1)))
-	{
-		fprintf(stderr, "malloc failed\n"); return c;
-	} 
-	
-	c[0] = sign;
-	++c;
-
-        for(i=0; i<width; i++){ 
-		//sum = a[wa - i - 1] - b[wb - i - 1] + borrow + 96; 
-                sum = getcharval2(a, i) - getcharval2(a, i) + borrow + 96;
-		
+	else width = wb; 
+	/* roll off the sign bit */
+	*c++ = sign;
+	/* subtract */
+        for(i=0; i<width; i++)
+	{ 
+		sum = getcharval(a, i) - getcharval(b, i) + borrow;
                 borrow = 0;
-                if(sum < 96){
+		if(sum < 0)
+		{
                         borrow = -1;
                         sum +=10;
                 }
-                c[i] = sum - 48;
-        }
+		c[i] = sum + 48;
+        } 
+        c[i] = 0;
+        reversestr(c);
 	/*  Nothing left to borrow */
 	if ( borrow == -1)
 	{
-		//printf("-");
+		lostmem = strallocate(width + 2);
+		tens = strallocate(width + 2);
 		flip_sign();
-		size_t z = width + 1;
-		memset(tens, '0', z);
+		memset(tens, '0', width + 1);
 		tens[0] ='1';
-		tens[z] ='\0';
-		reversestr(c);
-		c = subtraction(tens, c, c);
-		return c;
-	} 
-        c[i]= 0; 
-        reversestr(c); 
+		tens[width + 1] ='\0';
+		/* free c and return lostmem ? */
+		return c = subtraction(tens, c, lostmem);
+	}
 	if ( c[0] == '0' )
 		++c;
-
 	/* add the sign back in ... */
-	--c;
-	c[0] = sign;
-	
-        printf("result = %20s\n", c); 
-
+	*--c = sign;
 	return c;
 }
 
-
-char * subtract(char *x, char *y, char *c)
-{ 
-	/* sign bits have a lot of possibilities and rules, this is incomplete */ 
-	if (x[0] == '+')
-		++x;
-	if ( x[0] == '-' )
-	{
-		++x;
-		flip_sign();
-		c = add(x, y, c);
-	}else if (y[0] == '+')
-	{
-		++y;
-		c = subtraction(x, y, c);
-	}
-	else if (y[0] == '-')
-	{ 
-		++y;
-		flip_sign();
-		c = add(x, y, c);
-		
-	} else c = subtraction(x,y,c);
-
-	return c;
-}
-
-
-char * add(char *x, char *y, char *c)
-{ 
-	if ( x[0] == '+')
-		++x;
-	if ( x[0] == '-' )
-	{
-		++x;
-		flip_sign();
-		c = subtract(x, y, c);
-	}else if (y[0] == '+')
-	{
-		++y;
-		c = addition(x, y, c);
-	}
-	else if (y[0] == '-')
-	{ 
-		++y;
-		c = subtract(x, y, c); 
-	}
-	else c = addition(x, y, c);
-
-	return c; 
-}
 
 
 char *multiply(const char *a, const char *b, char *c)
 {
+
 	int i = 0;
 	int j = 0;
 	size_t k = 0;
@@ -282,18 +194,11 @@ char *multiply(const char *a, const char *b, char *c)
 	int lb = 0;
 
 	/* if a or b has a positive sign then dispose of it */
-	if(a[0] == '+')
-	{
-		++a;
-		multiply(a, b, c);
-		return c;
-	}
-	if(b[0] == '+')
-	{
-		++b;
-		multiply(a, b, c);
-		return c;
-	}
+	if(a[0] == '+') 
+		return multiply(++a, b, c);
+	if(b[0] == '+') 
+		return multiply(a, ++b, c);
+		
 	/* either is zero, return c "0" */
 	if (!strcmp(a, "0") || !strcmp(b, "0")) {
 		c[0] = '0'; c[1] = '\0';
@@ -316,7 +221,7 @@ char *multiply(const char *a, const char *b, char *c)
 	
 	memset(c, '0', la + lb);
 	c[la + lb] = '\0';
- 
+
 
 	for (i = la - 1; i >= 0; i--) 
 	{ 
@@ -334,3 +239,66 @@ char *multiply(const char *a, const char *b, char *c)
 	return c;
 }
 
+
+
+/* wrappers to redirect identities and roll of sign bits */
+
+char * subtract(char *x, char *y, char *c)
+{ 
+	/* sign bits have a lot of possibilities and rules, this is incomplete */ 
+	if (x[0] == '+')
+		++x;
+	if ( x[0] == '-' )
+	{ 
+		flip_sign();
+		c = add(++x, y, c);
+	}else if (y[0] == '+')
+	{ 
+		c = subtraction(x, ++y, c);
+	}
+	else if (y[0] == '-')
+	{ 
+		flip_sign();
+		c = add(x, ++y, c); 
+		 //c = subtraction(x,++y,c);
+	} else return c = subtraction(x,y,c);
+
+	return c;
+}
+
+
+char * add(char *x, char *y, char *c)
+{ 
+	if ( x[0] == '+')
+		++x;
+	if ( x[0] == '-' )
+	{ 
+		flip_sign();
+		c = subtract(++x, y, c);
+	}else if (y[0] == '+') 
+		c = addition(x, ++y, c); 
+	else if (y[0] == '-') 
+	{
+		//flip_sign();
+		c = subtract(x, ++y, c); 
+	}
+	else addition(x, y, c);
+
+	return c; 
+}
+
+
+char *strallocate(size_t len)
+{
+	char *ret;
+	if(!(ret = malloc(len)))
+		die("malloc failed\n"); 
+	return ret;
+}
+
+
+void die(char *message)
+{
+	fprintf(stderr, "%s", message);
+	exit(1);
+}
