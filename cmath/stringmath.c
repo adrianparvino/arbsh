@@ -3,23 +3,20 @@
 #include <string.h>
 #include <unistd.h>
 
-
 /* function declarations */
 char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
-int getcharval(const char *, size_t);
+void die(char *); 
 void flip_sign(void);
+int getcharval(const char *, size_t);
+char *multiply(const char *, const char *, char *); 
 size_t reversestr(char *);
-char *subtract(char *, char *, char *);
+void *strallocate(size_t);
+char *subtract(char *, char *, char *); 
 char *subtraction(char *, char *, char *);
-char *multiply(const char *, const char *, char *);
-
-char *strallocate(size_t);
-
-void die(char *);
-
 
 /* globals */
+static char *mirror;
 char sign = '+';
 
 /* functions */
@@ -28,33 +25,47 @@ int main(int argc, char *argv[])
 
         if ( argc != 3) 
                 die("Needs two args"); 
-       
+	/* lots of magic with pointers to avoid using memmove */
 	char *a = argv[1];
 	char *b = argv[2];
-	char *c;
-
-	c = strallocate(strlen(a) + strlen(b + 256));
+	size_t len = (strlen(a) + strlen(b) + 1);
+	char *d = strallocate(len);
+	char *i = strallocate(len);
+	char *j = strallocate(len);
+	char *z = mirror;
+	char *y = d;
+	mirror = strallocate(len);
+	i = strdup(a);
+	j = strdup(b);
+	/*  */
 
 	printf("\n\n");
         printf("         %20s\n", a);
-        printf(" + and - %20s\n", b);
-	printf("         %20s\n", "-------------------"); 
+        printf("  +,-,*  %20s\n", b);
+	printf("         %20s\n", "-------------------");
 
+	/* test functions against strtol ( only checks first 19 digits ) */
+	memset(d, 0, len);
+	d = add(i, j, d);
+	printf("result(add) = %20s\n", d); 
+	printf("answer      = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10));
 
+	memset(d, 0, len);
+	d = subtract(i, j, d);
+	printf("result(sub) = %20s\n", d);
+	printf("answer      = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
 
-	c = add(a, b, c);
-	printf("result = %20s\n", c);
-	printf("answer = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10));
+	memset(d, 0, len);
+	d = multiply(i, j, d);
+	printf("result(mul) = %20s\n", d);
+	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
 
-	c = subtract(a, b, c);
-	printf("result = %20s\n", c);
-	printf("answer = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
-	
-	
-	c = multiply(a, b, c);
-	printf("result = %20s\n", c);
-	printf("answer = %20ld (multiply) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
-	
+	/* */
+	//free(i);
+	//free(j);
+	free(d = y);
+	free(mirror = z);
+	/* */
 } 
 
 
@@ -110,8 +121,8 @@ char *addition(char *a, char *b, char *c)
 	/* roll off the sign bit */
 	*c++ = sign;
 	/* add */
-        for(i=0; i<width; i++){ 
-		//sum = a[wa - i - 1] + b[wb - i - 1] + carry - 48 - 48; 
+        for(i=0; i<width; i++)
+	{ 
 		sum = getcharval(a, i) + getcharval(b, i) + carry;
                 carry = 0;
                 if(sum > 9){
@@ -120,12 +131,18 @@ char *addition(char *a, char *b, char *c)
                 }
                 c[i] = sum + 48;
         }
+	/* Perform the final carry */
         if (carry) 
 		c[i++] = '1';
+	/* '\0' cap */
         c[i]= 0; 
+	/* reverse result */
         reversestr(c);
 	/* add the sign back in */
 	*--c = sign;
+	/* restore the sign bit for the next caller */
+	sign = '+';
+	/* pass the pointer back to the caller */
 	return c; 
 }
 
@@ -135,52 +152,60 @@ char *subtraction(char *a, char *b, char *c)
 	size_t i = 0;
 	size_t width = 0;
 	int sum = 0;
+	int mir = 0;
 	int borrow = 0;
+	int carry = -1;
 	size_t wa = strlen(a); 
 	size_t wb = strlen(b);
-	char *lostmem;
-	char *tens;
-	
-        
+
 	/* greatest width */
 	if ( wa > wb ) width = wa;
-	else width = wb; 
+	else width = wb;
+
 	/* roll off the sign bit */
-	*c++ = sign;
+	*c++ = sign; 
+
 	/* subtract */
         for(i=0; i<width; i++)
 	{ 
-		sum = getcharval(a, i) - getcharval(b, i) + borrow;
+		/* adding addition in here would save code but waste memory */
+		sum = getcharval(a, i) - getcharval(b, i) + borrow; 
+		mir = getcharval(a, i) - getcharval(b, i) + carry;
+	
                 borrow = 0;
 		if(sum < 0)
 		{
                         borrow = -1;
-                        sum +=10;
+                        sum +=10; 
                 }
+		carry = 0;
+		if(mir < 0 )
+		{
+                        carry = -1;
+                        mir +=10; 
+                } 
 		c[i] = sum + 48;
-        } 
-        c[i] = 0;
-        reversestr(c);
-	/*  Nothing left to borrow */
-	if ( borrow == -1)
+		mirror[i] = '9' - mir;
+        }
+
+	/* '\0' cap */
+        a[i] = mirror[i] = 0;
+	
+	if ( borrow == -1) // then use the symmetrical mirror 
 	{
-		lostmem = strallocate(width + 2);
-		tens = strallocate(width + 2);
+		c = mirror;
 		flip_sign();
-		memset(tens, '0', width + 1);
-		tens[0] ='1';
-		tens[width + 1] ='\0';
-		/* free c and return lostmem ? */
-		return c = subtraction(tens, c, lostmem);
 	}
-	if ( c[0] == '0' )
-		++c;
+
+	/* reverse result */
+        reversestr(c);
 	/* add the sign back in ... */
 	*--c = sign;
+	/* restore the sign bit for the next caller */
+	sign = '+';
+	/* pass the pointer back to the caller */
 	return c;
 }
-
-
 
 char *multiply(const char *a, const char *b, char *c)
 {
@@ -220,8 +245,7 @@ char *multiply(const char *a, const char *b, char *c)
 	lb = strlen(b);
 	
 	memset(c, '0', la + lb);
-	c[la + lb] = '\0';
-
+	c[la + lb] = '\0'; 
 
 	for (i = la - 1; i >= 0; i--) 
 	{ 
@@ -240,57 +264,63 @@ char *multiply(const char *a, const char *b, char *c)
 }
 
 
-
-/* wrappers to redirect identities and roll of sign bits */
+/*
+	Wrappers to redirect identities and roll off sign bits.
+*/
 
 char * subtract(char *x, char *y, char *c)
-{ 
-	/* sign bits have a lot of possibilities and rules, this is incomplete */ 
+{
 	if (x[0] == '+')
-		++x;
-	if ( x[0] == '-' )
+		++x; 
+	if (y[0] == '+')
+		++y;
+	if ( x[0] == '-' && y[0] == '-' )
 	{ 
-		flip_sign();
-		c = add(++x, y, c);
-	}else if (y[0] == '+')
+		return c = subtraction(x + 1, y + 1, c);
+	} 
+	else if (x[0] == '-')
 	{ 
-		c = subtraction(x, ++y, c);
+		flip_sign(); 
+		return c = addition(x + 1,y,c);
 	}
 	else if (y[0] == '-')
 	{ 
-		flip_sign();
-		c = add(x, ++y, c); 
-		 //c = subtraction(x,++y,c);
-	} else return c = subtraction(x,y,c);
-
+		return c = addition(x,y +1,c); 
+	} else c = subtraction(x,y,c);
+	
 	return c;
 }
 
 
 char * add(char *x, char *y, char *c)
-{ 
-	if ( x[0] == '+')
-		++x;
-	if ( x[0] == '-' )
+{
+	if (x[0] == '+')
+		++x; 
+	if (y[0] == '+')
+		++y;
+
+	if ( x[0] == '-' && y[0] == '-' )
+	{
+		return c = subtraction(x + 1, y + 1, c);
+	} 
+	else if (x[0] == '-')
 	{ 
 		flip_sign();
-		c = subtract(++x, y, c);
-	}else if (y[0] == '+') 
-		c = addition(x, ++y, c); 
-	else if (y[0] == '-') 
-	{
-		//flip_sign();
-		c = subtract(x, ++y, c); 
+		return c = subtraction(x + 1,y,c);
 	}
-	else addition(x, y, c);
-
+	else if (y[0] == '-')
+	{
+		return c = subtraction(x,y + 1,c);
+	} else c = addition(x,y,c);
 	return c; 
 }
 
-
-char *strallocate(size_t len)
+/*
+	Manage memory and errors.
+*/
+void *strallocate(size_t len)
 {
-	char *ret;
+	void *ret;
 	if(!(ret = malloc(len)))
 		die("malloc failed\n"); 
 	return ret;
@@ -302,3 +332,4 @@ void die(char *message)
 	fprintf(stderr, "%s", message);
 	exit(1);
 }
+
