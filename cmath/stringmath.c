@@ -7,7 +7,6 @@
 char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
 void die(char *);
-void flip_sign(void);
 int getcharval(char *, size_t);
 char *multiply(char *, char *, char *);
 char *multiply2(const char *, const char *, char *);
@@ -22,7 +21,6 @@ void setsign(char *);
 
 /* globals */
 static char *mirror;
-char sign = '+';
 
 /* functions */
 int main(int argc, char *argv[])
@@ -50,11 +48,16 @@ int main(int argc, char *argv[])
 
 	/* test functions against strtol ( only checks first 19 digits ) */
 	memset(d, 0, len);
+	setsign(d);
 	d = add(a, b, d);
 	printf("result(add) = %20s\n", d); 
 	printf("answer      = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10));
 
 	memset(d, 0, len);
+	memset(mirror, 0, len);
+	
+	setsign(d);
+	setsign(mirror);
 	d = subtract(a, b, d);
 	printf("result(sub) = %20s\n", d);
 	printf("answer      = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
@@ -74,13 +77,14 @@ int main(int argc, char *argv[])
 	/* */
 } 
 
-
-void flip_sign(void)
+void setsign(char *s)
 {
-	if (sign =='-')
-		sign = '+';
-	else if (sign == '+')
-		sign = '-'; 
+	if (s[0] == '+')
+		s[0] = '-';
+	else if (s[0] == '-')
+		s[0] = '+';
+	else
+		s[0] = '+';
 }
 
 
@@ -119,11 +123,14 @@ char *addition(char *a, char *b, char *c)
 	int sum = 0;
 	int carry = 0;
 	size_t wa = strlen(a); 
-	size_t wb = strlen(b);
+	size_t wb = strlen(b); 
 
 	if ( wa > wb ) width = wa;
 	else width = wb;
-	*c++ = sign;
+
+	//setsign(c++);
+	c++;
+
         for(i=0; i<width; i++)
 	{
 		sum = getcharval(a, i) + getcharval(b, i) + carry;
@@ -138,8 +145,7 @@ char *addition(char *a, char *b, char *c)
 		c[i++] = '1';
         c[i] = '\0';
         reversestr(c);
-	*--c = sign;
-	sign = '+';
+	--c; 
 	return c;
 }
 
@@ -160,9 +166,8 @@ char *subtraction(char *a, char *b, char *c)
 	if ( wa > wb ) width = wa;
 	else width = wb;
 
-	/* roll off the sign bit */
-	*c++ = sign; 
-	*mirror++ = sign;
+	c++;
+	mirror++;
 
 	/* subtract */
         for(i=0; i<width; i++)
@@ -190,18 +195,15 @@ char *subtraction(char *a, char *b, char *c)
 	/* '\0' cap */
         c[i] = mirror[i] = '\0';
 	
-	if ( borrow == -1) // then use the symmetrical mirror 
+	if ( borrow == -1) /// then use the symmetrical mirror 
 	{
 		c = mirror;
-		flip_sign();
+		setsign(c - 1);
 	}
 
 	/* reverse result */
-        reversestr(c);
-	/* add the sign back in ... */
-	*--c = sign;
-	/* restore the sign bit for the next caller */
-	sign = '+';
+        reversestr(c); 
+	--c;
 	/* pass the pointer back to the caller */
 	return c;
 }
@@ -276,8 +278,8 @@ char * subtract(char *x, char *y, char *c)
 		return c = subtraction(x + 1, y + 1, c);
 	} 
 	else if (x[0] == '-')
-	{ 
-		flip_sign(); 
+	{
+		setsign(c);
 		return c = addition(x + 1,y,c);
 	}
 	else if (y[0] == '-')
@@ -302,7 +304,7 @@ char * add(char *x, char *y, char *c)
 	} 
 	else if (x[0] == '-')
 	{ 
-		flip_sign();
+		setsign(c);
 		return c = subtraction(x + 1,y,c);
 	}
 	else if (y[0] == '-')
@@ -329,45 +331,3 @@ void die(char *message)
 	fprintf(stderr, "%s", message);
 	exit(1);
 }
-
-
-char *division(char *a, char *b, char *c)
-{
-	int i = 0;
-	int j = 0;
-	size_t k = 0;
-	int sum = 0;
-	int carry = 0;
-	int la = strlen(a);
-	int lb = strlen(b);
-	
-	memset(c, '0', la + lb);
-	c[la + lb] = '\0'; 
-
-	for (i = 0; i <= la; i++) 
-	{ 
-		carry = 0;
-		for (j = 0 , k = i; j <= lb; j++, k++) 
-		{ 
-			sum = (a[i]-'0') / (b[j]-'0') + (c[k]-'0') + carry;
-			carry = sum * 10;
-			c[k] = (sum % 10) + '0'; 
-		}
-		c[k] -= carry; 
-	}
-
-	if (*c == '0') 
-		++c;
-	return c;
-}
-
-void setsign(char *s)
-{
-	if (s[0] == '+')
-		s[0] = '-';
-	else if (s[0] == '-')
-		s[0] = '+';
-	else
-		s[0] = '+';
-}
-
