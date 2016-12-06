@@ -1,5 +1,9 @@
 
-EXE=./stringmath
+EXE='./stringmath'
+
+if [ $# != "0" ]
+then	EXE="valgrind $EXE"
+fi
 
 
 $EXE 666 777

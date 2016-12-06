@@ -34,14 +34,14 @@ int main(int argc, char *argv[])
 	char *b = argv[2];
 	size_t len = (strlen(a) + strlen(b) + 100);
 	char *d = malloc(len);
-	char *i = malloc(len);
-	char *j = malloc(len);
 	char *z;
 	char *y = d;
 	mirror = malloc(len);
 	z = mirror;
-	strcpy(i, a);
-	strcpy(j, b);
+
+
+
+
 	/*  */
 
 	printf("\n\n");
@@ -51,27 +51,25 @@ int main(int argc, char *argv[])
 
 	/* test functions against strtol ( only checks first 19 digits ) */
 	memset(d, 0, len);
-	d = add(i, j, d);
+	d = add(a, b, d);
 	printf("result(add) = %20s\n", d); 
 	printf("answer      = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10));
 
 	memset(d, 0, len);
-	d = subtract(i, j, d);
+	d = subtract(a, b, d);
 	printf("result(sub) = %20s\n", d);
 	printf("answer      = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
 
-	//memset(d, 0, len);
-	//d = multiply(i, j, d);
-	//printf("result(mul) = %20s\n", d);
-	//printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
+	memset(d, 0, len);
+	d = multiply(a, b, d);
+	printf("result(mul) = %20s\n", d);
+	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
 
 	//memset(d, 0, len);
 	//d = division(i, j, d);
 	//printf("result(div) = %20s\n", d);
 	//printf("answer      = %20lf (division) \n", strtod(a, 0) / strtod(b, 0));
 	/* */
-	free(i);
-	free(j);
 	free(d = y);
 	free(mirror = z);
 	/* */
@@ -180,6 +178,7 @@ char *subtraction(char *a, char *b, char *c)
 
 	/* roll off the sign bit */
 	*c++ = sign; 
+	*mirror++ = sign;
 	
 
 
@@ -214,7 +213,7 @@ char *subtraction(char *a, char *b, char *c)
 		//c = mirror;
 		flip_sign();
 		reversestr(mirror);
-		*--c = sign;
+		*--mirror = sign;
 		sign = '+';
 		return mirror;
 	}
