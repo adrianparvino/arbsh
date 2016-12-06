@@ -227,21 +227,16 @@ char *multiply(char *a, char *b, char *c)
 	}
 
 	/* see if either a or b is negative */ 
+	*c = '+';
 	if (*a == '-' && ++a)
-		i = 1;
+		*c = '-';
 	else if (*a == '+')
 		++a;
 	if (*b == '-' && ++b) 
-		j = 1;
+		*c = '-';
 	else if (*b == '+' )
 		++b;
-	if (i || j) 
-		*c++ = '-';
-	else
-		*c++ = '+';
-	
-	
-	
+	++c; 
  
 	la = strlen(a);
 	lb = strlen(b);
