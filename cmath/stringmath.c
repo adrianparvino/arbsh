@@ -8,12 +8,16 @@ char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
 void die(char *); 
 void flip_sign(void);
-int getcharval(const char *, size_t);
+int getcharval(char *, size_t);
 char *multiply(const char *, const char *, char *); 
 size_t reversestr(char *);
 void *strallocate(size_t);
 char *subtract(char *, char *, char *); 
 char *subtraction(char *, char *, char *);
+
+
+char *division(char *, char *, char *);
+
 
 /* globals */
 static char *mirror;
@@ -28,15 +32,16 @@ int main(int argc, char *argv[])
 	/* lots of magic with pointers to avoid using memmove */
 	char *a = argv[1];
 	char *b = argv[2];
-	size_t len = (strlen(a) + strlen(b) + 1);
-	char *d = strallocate(len);
-	char *i = strallocate(len);
-	char *j = strallocate(len);
-	char *z = mirror;
+	size_t len = (strlen(a) + strlen(b) + 100);
+	char *d = malloc(len);
+	char *i = malloc(len);
+	char *j = malloc(len);
+	char *z;
 	char *y = d;
-	mirror = strallocate(len);
-	i = strdup(a);
-	j = strdup(b);
+	mirror = malloc(len);
+	z = mirror;
+	strcpy(i, a);
+	strcpy(j, b);
 	/*  */
 
 	printf("\n\n");
@@ -55,14 +60,18 @@ int main(int argc, char *argv[])
 	printf("result(sub) = %20s\n", d);
 	printf("answer      = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
 
-	memset(d, 0, len);
-	d = multiply(i, j, d);
-	printf("result(mul) = %20s\n", d);
-	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
+	//memset(d, 0, len);
+	//d = multiply(i, j, d);
+	//printf("result(mul) = %20s\n", d);
+	//printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
 
+	//memset(d, 0, len);
+	//d = division(i, j, d);
+	//printf("result(div) = %20s\n", d);
+	//printf("answer      = %20lf (division) \n", strtod(a, 0) / strtod(b, 0));
 	/* */
-	//free(i);
-	//free(j);
+	free(i);
+	free(j);
 	free(d = y);
 	free(mirror = z);
 	/* */
@@ -97,10 +106,11 @@ size_t reversestr(char *x)
 
 
 /* slow but could easily be made faster by passing in known string lengths */
-int getcharval(const char *s, size_t idx)
+int getcharval(char *s, size_t idx)
 { 
 	size_t len = strlen(s);
         if (idx < len)
+		//return s[len - idx ] - 48;
         	return s[len - idx - 1] - 48;
         return 0;
 }
@@ -120,6 +130,7 @@ char *addition(char *a, char *b, char *c)
 	else width = wb;
 	/* roll off the sign bit */
 	*c++ = sign;
+	
 	/* add */
         for(i=0; i<width; i++)
 	{ 
@@ -139,7 +150,11 @@ char *addition(char *a, char *b, char *c)
 	/* reverse result */
         reversestr(c);
 	/* add the sign back in */
+	
 	*--c = sign;
+	
+	
+	
 	/* restore the sign bit for the next caller */
 	sign = '+';
 	/* pass the pointer back to the caller */
@@ -157,6 +172,7 @@ char *subtraction(char *a, char *b, char *c)
 	int carry = -1;
 	size_t wa = strlen(a); 
 	size_t wb = strlen(b);
+	
 
 	/* greatest width */
 	if ( wa > wb ) width = wa;
@@ -164,6 +180,8 @@ char *subtraction(char *a, char *b, char *c)
 
 	/* roll off the sign bit */
 	*c++ = sign; 
+	
+
 
 	/* subtract */
         for(i=0; i<width; i++)
@@ -189,23 +207,31 @@ char *subtraction(char *a, char *b, char *c)
         }
 
 	/* '\0' cap */
-        a[i] = mirror[i] = 0;
+        c[i] = mirror[i] = 0;
 	
 	if ( borrow == -1) // then use the symmetrical mirror 
 	{
-		c = mirror;
+		//c = mirror;
 		flip_sign();
+		reversestr(mirror);
+		*--c = sign;
+		sign = '+';
+		return mirror;
 	}
 
 	/* reverse result */
         reversestr(c);
 	/* add the sign back in ... */
 	*--c = sign;
+	
+	
+	
 	/* restore the sign bit for the next caller */
 	sign = '+';
 	/* pass the pointer back to the caller */
 	return c;
 }
+
 
 char *multiply(const char *a, const char *b, char *c)
 {
@@ -262,7 +288,6 @@ char *multiply(const char *a, const char *b, char *c)
 		++c;
 	return c;
 }
-
 
 /*
 	Wrappers to redirect identities and roll off sign bits.
@@ -331,5 +356,36 @@ void die(char *message)
 {
 	fprintf(stderr, "%s", message);
 	exit(1);
+}
+
+
+char *division(char *a, char *b, char *c)
+{
+	int i = 0;
+	int j = 0;
+	size_t k = 0;
+	int sum = 0;
+	int carry = 0;
+	int la = strlen(a);
+	int lb = strlen(b);
+	
+	memset(c, '0', la + lb);
+	c[la + lb] = '\0'; 
+
+	for (i = 0; i <= la; i++) 
+	{ 
+		carry = 0;
+		for (j = 0 , k = i; j <= lb; j++, k++) 
+		{ 
+			sum = (a[i]-'0') / (b[j]-'0') + (c[k]-'0') + carry;
+			carry = sum * 10;
+			c[k] = (sum % 10) + '0'; 
+		}
+		c[k] -= carry; 
+	}
+
+	if (*c == '0') 
+		++c;
+	return c;
 }
 
