@@ -6,17 +6,18 @@
 /* function declarations */
 char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
-void die(char *); 
+void die(char *);
 void flip_sign(void);
 int getcharval(char *, size_t);
-char *multiply(const char *, const char *, char *); 
+char *multiply(char *, char *, char *);
+char *multiply2(const char *, const char *, char *);
 size_t reversestr(char *);
 void *strallocate(size_t);
-char *subtract(char *, char *, char *); 
+char *subtract(char *, char *, char *);
 char *subtraction(char *, char *, char *);
-
-
 char *division(char *, char *, char *);
+
+void setsign(char *);
 
 
 /* globals */
@@ -28,11 +29,11 @@ int main(int argc, char *argv[])
 {
 
         if ( argc != 3) 
-                die("Needs two args"); 
+                die("Please provide two numbers"); 
 	/* lots of magic with pointers to avoid using memmove */
 	char *a = argv[1];
 	char *b = argv[2];
-	size_t len = (strlen(a) + strlen(b) + 1);
+	size_t len = (strlen(a) + strlen(b) + 2);
 	char *d;
 	char *z;
 	char *y;
@@ -40,6 +41,7 @@ int main(int argc, char *argv[])
 	y = d = strallocate(len);
 	z = mirror = strallocate(len);
 	/*  */
+	
 
 	printf("\n\n");
         printf("         %20s\n", a);
@@ -105,7 +107,6 @@ int getcharval(char *s, size_t idx)
 { 
 	size_t len = strlen(s);
         if (idx < len)
-		//return s[len - idx ] - 48;
         	return s[len - idx - 1] - 48;
         return 0;
 }
@@ -119,16 +120,12 @@ char *addition(char *a, char *b, char *c)
 	int carry = 0;
 	size_t wa = strlen(a); 
 	size_t wb = strlen(b);
-        
-	/* greatest width */
+
 	if ( wa > wb ) width = wa;
 	else width = wb;
-	/* roll off the sign bit */
 	*c++ = sign;
-	
-	/* add */
         for(i=0; i<width; i++)
-	{ 
+	{
 		sum = getcharval(a, i) + getcharval(b, i) + carry;
                 carry = 0;
                 if(sum > 9){
@@ -137,19 +134,13 @@ char *addition(char *a, char *b, char *c)
                 }
                 c[i] = sum + 48;
         }
-	/* Perform the final carry */
-        if (carry) 
+        if (carry)
 		c[i++] = '1';
-	/* '\0' cap */
-        c[i]= 0; 
-	/* reverse result */
+        c[i] = '\0';
         reversestr(c);
-	/* add the sign back in */ 
-	*--c = sign; 
-	/* restore the sign bit for the next caller */
+	*--c = sign;
 	sign = '+';
-	/* pass the pointer back to the caller */
-	return c; 
+	return c;
 }
 
 
@@ -216,9 +207,8 @@ char *subtraction(char *a, char *b, char *c)
 }
 
 
-char *multiply(const char *a, const char *b, char *c)
+char *multiply(char *a, char *b, char *c)
 {
-
 	int i = 0;
 	int j = 0;
 	size_t k = 0;
@@ -227,28 +217,31 @@ char *multiply(const char *a, const char *b, char *c)
 	int la = 0;
 	int lb = 0;
 
-	/* if a or b has a positive sign then dispose of it */
-	if(a[0] == '+') 
-		return multiply(++a, b, c);
-	if(b[0] == '+') 
-		return multiply(a, ++b, c);
 		
 	/* either is zero, return c "0" */
-	if (!strcmp(a, "0") || !strcmp(b, "0")) {
-		c[0] = '0'; c[1] = '\0';
+	if (!strcmp(a, "0") || !strcmp(b, "0"))
+	{
+		c[0] = '0';
+		c[1] = '\0';
 		return c;
 	}
- 
-	/* see if either a or b is negative */
-	if (a[0] == '-') { i = 1; k = !k; }
-	if (b[0] == '-') { j = 1; k = !k; }
- 
-	/* if yes, prepend minus sign if needed and skip the sign */
-	if (i || j) {
-		if (k) c[0] = '-';
-			multiply(a + i, b + j, c + k);
-		return c;
-	}
+
+	/* see if either a or b is negative */ 
+	if (*a == '-' && ++a)
+		i = 1;
+	else if (*a == '+')
+		++a;
+	if (*b == '-' && ++b) 
+		j = 1;
+	else if (*b == '+' )
+		++b;
+	if (i || j) 
+		*c++ = '-';
+	else
+		*c++ = '+';
+	
+	
+	
  
 	la = strlen(a);
 	lb = strlen(b);
@@ -256,10 +249,10 @@ char *multiply(const char *a, const char *b, char *c)
 	memset(c, '0', la + lb);
 	c[la + lb] = '\0'; 
 
-	for (i = la - 1; i >= 0; i--) 
-	{ 
+	for (i = la - 1; i >= 0; i--)
+	{
 		for (j = lb - 1, k = i + j + 1, carry = 0; j >= 0; j--, k--) 
-		{ 
+		{
 			sum = (a[i]-'0') * (b[j]-'0') + (c[k]-'0') + carry;
 			carry = sum / 10;
 			c[k] = (sum % 10) + '0'; 
@@ -267,8 +260,9 @@ char *multiply(const char *a, const char *b, char *c)
 		c[k] += carry; 
 	}
 
-	if (*c == '0') 
-		++c;
+	//if (*c == '0') 
+	//	++c;
+	--c;
 	return c;
 }
 
@@ -370,5 +364,15 @@ char *division(char *a, char *b, char *c)
 	if (*c == '0') 
 		++c;
 	return c;
+}
+
+void setsign(char *s)
+{
+	if (s[0] == '+')
+		s[0] = '-';
+	else if (s[0] == '-')
+		s[0] = '+';
+	else
+		s[0] = '+';
 }
 
