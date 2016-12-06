@@ -32,16 +32,13 @@ int main(int argc, char *argv[])
 	/* lots of magic with pointers to avoid using memmove */
 	char *a = argv[1];
 	char *b = argv[2];
-	size_t len = (strlen(a) + strlen(b) + 100);
-	char *d = malloc(len);
+	size_t len = (strlen(a) + strlen(b) + 1);
+	char *d;
 	char *z;
-	char *y = d;
-	mirror = malloc(len);
-	z = mirror;
+	char *y;
 
-
-
-
+	y = d = strallocate(len);
+	z = mirror = strallocate(len);
 	/*  */
 
 	printf("\n\n");
@@ -147,12 +144,8 @@ char *addition(char *a, char *b, char *c)
         c[i]= 0; 
 	/* reverse result */
         reversestr(c);
-	/* add the sign back in */
-	
-	*--c = sign;
-	
-	
-	
+	/* add the sign back in */ 
+	*--c = sign; 
 	/* restore the sign bit for the next caller */
 	sign = '+';
 	/* pass the pointer back to the caller */
@@ -179,8 +172,6 @@ char *subtraction(char *a, char *b, char *c)
 	/* roll off the sign bit */
 	*c++ = sign; 
 	*mirror++ = sign;
-	
-
 
 	/* subtract */
         for(i=0; i<width; i++)
@@ -206,25 +197,18 @@ char *subtraction(char *a, char *b, char *c)
         }
 
 	/* '\0' cap */
-        c[i] = mirror[i] = 0;
+        c[i] = mirror[i] = '\0';
 	
 	if ( borrow == -1) // then use the symmetrical mirror 
 	{
-		//c = mirror;
+		c = mirror;
 		flip_sign();
-		reversestr(mirror);
-		*--mirror = sign;
-		sign = '+';
-		return mirror;
 	}
 
 	/* reverse result */
         reversestr(c);
 	/* add the sign back in ... */
 	*--c = sign;
-	
-	
-	
 	/* restore the sign bit for the next caller */
 	sign = '+';
 	/* pass the pointer back to the caller */
