@@ -66,11 +66,6 @@ int main(int argc, char *argv[])
 	printf("result(mul) = %20s\n", d);
 	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
 
-	//memset(d, 0, len);
-	//d[0] = 0;
-	//d = division(i, j, d);
-	//printf("result(div) = %20s\n", d);
-	//printf("answer      = %20lf (division) \n", strtod(a, 0) / strtod(b, 0));
 	/* */
 	free(d = y);
 	free(mirror = z);
@@ -128,8 +123,7 @@ char *addition(char *a, char *b, char *c)
 	if ( wa > wb ) width = wa;
 	else width = wb;
 
-	setsign(c++);
-	//c++;
+	setsign(c++); 
 
         for( i=0; i < width ; i++)
 	{
@@ -164,11 +158,9 @@ char *subtraction(char *a, char *b, char *c)
 	if ( wa > wb ) width = wa;
 	else width = wb; 
 	
-	setsign(c++);
-	//c++;
+	setsign(c++); 
 	*mirror = '\0';
-	setsign(mirror++);
-	//mirror++;
+	setsign(mirror++); 
 
 	/* subtract */
         for( i=0; i < width ; i++)
@@ -191,24 +183,14 @@ char *subtraction(char *a, char *b, char *c)
                 } 
 		c[i] = sum + 48;
 		mirror[i] = '9' - mir;
-		//printf("c      =    %s ....   \n", c);
-		//printf("mirror =    %s ....   \n", mirror);
-		
-		//printf("c      =    %s ....   \n", c -1 );
-		//printf("mirror =    %s ....   \n", mirror - 1);
         }
-	/* '\0' cap */
-        c[i] = mirror[i] = '\0';
-	//printf("carry  = %d\n", carry);
-	//printf("borrow = %d\n", borrow);
+	
+        c[i] = mirror[i] = '\0'; 
 	if (borrow == -1) /// then use the symmetrical mirror 
-	{
-		//setsign(mirror - 1);
-		c = mirror;
-		//printf("was here\n");
+	{ 
+		c = mirror; 
 		if (!(*(a-1) == '-' && *(b-1) == '-'))
-		setsign(c - 1);
-		
+			setsign(c - 1); 
 	}
 	/* reverse result */
         reversestr(c--);
@@ -273,10 +255,7 @@ char *multiply(char *a, char *b, char *c)
 */
 
 char * subtract(char *x, char *y, char *c)
-{
-
-	
-	//printf("subtract 0\n");
+{ 
 	if (x[0] == '+')
 		++x; 
 	if (y[0] == '+')
@@ -285,15 +264,11 @@ char * subtract(char *x, char *y, char *c)
 	{
 		setsign(c);
 		*mirror = '\0';
-		setsign(mirror);
-		//setsign(mirror);
-		//setsign(c);
-		//printf("subtract 1\n");
+		setsign(mirror); 
 		return c = subtraction(x + 1, y + 1, c);
 	} 
 	else if (x[0] == '-')
-	{
-		//printf("subtract 2\n");
+	{ 
 		setsign(c);
 		*mirror = '\0';
 		setsign(mirror);
@@ -301,23 +276,16 @@ char * subtract(char *x, char *y, char *c)
 	}
 	else if (y[0] == '-')
 	{ 
-		//printf("subtract 3\n");
 		return c = addition(x, y + 1, c); 
-	} else {
-		
-		c = subtraction(x, y, c);
-	
-	}
-	
-	//printf("subtract 4\n");
+	} else { 
+		c = subtraction(x, y, c); 
+	} 
 	return c;
 }
 
 
 char * add(char *x, char *y, char *c)
-{
-
-	printf("add 0\n");
+{ 
 	if (x[0] == '+')
 		++x; 
 	if (y[0] == '+')
@@ -325,25 +293,20 @@ char * add(char *x, char *y, char *c)
 
 	if ( x[0] == '-' && y[0] == '-' )
 	{
-		//printf("add 1\n");
 		setsign(c);
-		return c = addition(x + 1, y + 1, c);
-		//return c = subtraction(x + 1, y + 1, c);
-	} 
+		return c = addition(x + 1, y + 1, c); 
+	}
 	else if (x[0] == '-')
-	{ 
-		//printf("add 2\n");
+	{
 		setsign(c);
-		setsign(c);
-		//setsign(mirror);
+		setsign(c); 
 		return c = subtraction(y, x + 1, c);
 	}
 	else if (y[0] == '-')
 	{
-		//printf("add 3\n");
 		return c = subtraction(x, y + 1, c);
 	} else c = addition(x, y, c);
-	//printf("add 4\n");
+	
 	return c; 
 }
 
