@@ -14,12 +14,10 @@ size_t reversestr(char *);
 void setsign(char *);
 void *strallocate(size_t);
 char *subtract(char *, char *, char *);
-char *subtraction(char *, char *, char *);
-char *division(char *, char *, char *);
+char *subtraction(char *, char *, char *); 
 
 /* globals */
-static char *mirror;
-
+static char *mirror; 
 
 /* functions */
 int main(int argc, char *argv[])
@@ -27,7 +25,7 @@ int main(int argc, char *argv[])
 
         if ( argc != 3) 
                 die("Please provide two numbers"); 
-	/* lots of magic with pointers to avoid using memmove */
+
 	char *a = argv[1];
 	char *b = argv[2];
 	size_t len = (strlen(a) + strlen(b) + 10);
@@ -35,41 +33,31 @@ int main(int argc, char *argv[])
 	char *z;
 	char *y;
 
-	d = strallocate(len);
-	mirror = strallocate(len);
-	z = mirror;
-	y = d;
-	/*  */
-	
+	y = d = strallocate(len);
+	z = mirror = strallocate(len);
 
 	printf("\n\n");
         printf("         %20s\n", a);
         printf("  +,-,*  %20s\n", b);
 	printf("         %20s\n", "-------------------");
 
-	/* test functions against strtol ( only checks first 19 digits ) */
-	//memset(d, 0, len);
 	d[0] = 0;
 	d = add(a, b, d);
 	printf("result(add) = %20s\n", d); 
-	printf("answer      = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10));
+	printf("answer      = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10)); 
 
-	//memset(d, 0, len);
 	d[0] = 0;
 	d = subtract(a, b, d);
 	printf("result(sub) = %20s\n", d);
-	printf("answer      = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10));
+	printf("answer      = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10)); 
 
-	//memset(d, 0, len);
 	d[0] = 0;
 	d = multiply(a, b, d);
 	printf("result(mul) = %20s\n", d);
-	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
+	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10)); 
 
-	/* */
 	free(d = y);
-	free(mirror = z);
-	/* */
+	free(mirror = z); 
 } 
 
 void setsign(char *s)
@@ -80,12 +68,10 @@ void setsign(char *s)
 		s[0] = '+';
 	else 
 		s[0] = '+';
-}
-
+} 
 
 size_t reversestr(char *x)
-{ 
-	/* reverse a string and return its length */
+{
         size_t i = 0;
         char swap = 0;
         size_t lim = strlen(x);
@@ -98,18 +84,15 @@ size_t reversestr(char *x)
                 x[lim - i - 1] = swap;
         }
         return lim;
-}
+} 
 
-
-/* slow but could easily be made faster by passing in known string lengths */
 int getcharval(char *s, size_t idx)
 { 
 	size_t len = strlen(s);
         if (idx < len)
         	return s[len - idx - 1] - 48;
         return 0;
-}
-
+} 
 
 char *addition(char *a, char *b, char *c)
 {
@@ -140,8 +123,7 @@ char *addition(char *a, char *b, char *c)
         c[i] = '\0';
         reversestr(c--);
 	return c;
-}
-
+} 
 
 char *subtraction(char *a, char *b, char *c)
 { 
@@ -154,18 +136,15 @@ char *subtraction(char *a, char *b, char *c)
 	size_t wa = strlen(a); 
 	size_t wb = strlen(b); 
 
-	/* greatest width */
 	if ( wa > wb ) width = wa;
 	else width = wb; 
 	
-	setsign(c++); 
+	setsign(c++);
 	*mirror = '\0';
-	setsign(mirror++); 
+	setsign(mirror++);
 
-	/* subtract */
         for( i=0; i < width ; i++)
-	{ 
-		/* adding addition in here would save code but waste memory */
+	{
 		sum = getcharval(a, i) - getcharval(b, i) + borrow; 
 		mir = getcharval(a, i) - getcharval(b, i) + carry;
 	
@@ -192,12 +171,9 @@ char *subtraction(char *a, char *b, char *c)
 		if (!(*(a-1) == '-' && *(b-1) == '-'))
 			setsign(c - 1); 
 	}
-	/* reverse result */
         reversestr(c--);
-	/* pass the pointer back to the caller */
 	return c;
-}
-
+} 
 
 char *multiply(char *a, char *b, char *c)
 {
@@ -252,8 +228,7 @@ char *multiply(char *a, char *b, char *c)
 
 /*
 	Wrappers to redirect identities and roll off sign bits.
-*/
-
+*/ 
 char * subtract(char *x, char *y, char *c)
 { 
 	if (x[0] == '+')
@@ -281,8 +256,7 @@ char * subtract(char *x, char *y, char *c)
 		c = subtraction(x, y, c); 
 	} 
 	return c;
-}
-
+} 
 
 char * add(char *x, char *y, char *c)
 { 
@@ -319,8 +293,7 @@ void *strallocate(size_t len)
 	if(!(ret = malloc(len)))
 		die("malloc failed\n"); 
 	return ret;
-}
-
+} 
 
 void die(char *message)
 {
