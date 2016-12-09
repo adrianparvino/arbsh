@@ -16,6 +16,12 @@ void *strallocate(size_t);
 char *subtract(char *, char *, char *);
 char *subtraction(char *, char *, char *); 
 
+
+char *division(char *, char *, char *); 
+
+void print_real(char *);
+
+
 /* globals */
 static char *mirror; 
 
@@ -54,10 +60,16 @@ int main(int argc, char *argv[])
 	d[0] = 0;
 	d = multiply(a, b, d);
 	printf("result(mul) = %20s\n", d);
-	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10)); 
+	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
+	
 
-	free(d = y);
-	free(mirror = z); 
+	//d[0] = 0;
+	//d = division(a, b, d);
+	//printf("result(div) = %20s\n", d);
+	//printf("answer      = %20lf (division) \n", strtod(a, 0) / strtod(b, 0));
+
+	//free(d = y);
+	//free(mirror = z); 
 } 
 
 void setsign(char *s)
@@ -134,10 +146,10 @@ char *subtraction(char *a, char *b, char *c)
 	int borrow = 0;
 	int carry = -1;
 	size_t wa = strlen(a); 
-	size_t wb = strlen(b); 
+	size_t wb = strlen(b);
 
 	if ( wa > wb ) width = wa;
-	else width = wb; 
+	else width = wb;
 	
 	setsign(c++);
 	*mirror = '\0';
@@ -147,14 +159,12 @@ char *subtraction(char *a, char *b, char *c)
 	{
 		sum = getcharval(a, i) - getcharval(b, i) + borrow; 
 		mir = getcharval(a, i) - getcharval(b, i) + carry;
-	
-                borrow = 0;
+                carry = borrow = 0;
 		if(sum < 0)
 		{
                         borrow = -1;
                         sum += 10; 
                 }
-		carry = 0;
 		if(mir < 0)
 		{
                         carry = -1;
@@ -166,7 +176,7 @@ char *subtraction(char *a, char *b, char *c)
 	
         c[i] = mirror[i] = '\0'; 
 	if (borrow == -1) /// then use the symmetrical mirror 
-	{ 
+	{
 		c = mirror; 
 		if (!(*(a-1) == '-' && *(b-1) == '-'))
 			setsign(c - 1); 
@@ -299,4 +309,109 @@ void die(char *message)
 {
 	fprintf(stderr, "%s", message);
 	exit(1);
+}
+
+
+char *division(char *a, char *b, char *c)
+{
+	// divisor digit
+	size_t i = 0;
+	// denominator position or offest
+	size_t j = 0;
+	// result digits
+	size_t k = 0;
+	// position of transforming mirror
+	size_t z = 0;
+
+	int sum = 0;
+	int carry = 0;
+	int borrow = 0;
+	int la = 0;
+	int lb = 0;
+	// total number of digits in the denominator
+	size_t denom = 0;
+	// total number of digits in the divisor
+	size_t divisors = 0;
+
+	// carry values over and adding them to the next position in order to produce
+	// a result which is ranged from between 0-9
+
+	// the mirror starts its life as a copy of the denominator
+ 
+	divisors = strlen(b);
+	denom = strlen(a);
+	
+	memset(c, 48, divisors + denom);
+
+	c[divisors + denom] = '\0';
+	printf("result1 %s\n", c); 
+	
+	int num1 = 0;
+	int num2 = 0;
+	strcpy(mirror, a);
+	
+	printf("%s\n", mirror);
+	//start:
+	for ( i = 0; z < denom ; ++i)
+	{
+		for (i =0,j=z; i < divisors ; j++,i++) 
+		{
+			num1 = (mirror[j]-'0');
+			num2 = (b[i]-'0');
+			
+			sum = num1 - num2 + carry;
+			carry = 0;
+			if ( sum < 0 )
+			{
+				if ( j != z && mirror[j -1] > 0 )
+				{
+				
+					mirror[j - 1] -= 1; // if it can afford it!!
+					sum += 10;
+					printf("had something\n");
+				}else  { 
+				
+					
+					printf("we have nothing, move and carry \n");
+					
+					//mirror[j + 1] += ( mirror[j] * 10 );
+					//mirror[j] = '0';
+					++z;
+					printf("%s\n", mirror);
+					break;
+				}
+			} 
+		
+			//sum = (a[i]-'0') / (b[j]-'0') - (c[k]-'0')+ carry; 
+			
+			mirror[j] = sum + '0'; 
+			//mirror[j + 1] = '\0';
+			printf("%s\n", mirror)	;	
+			print_real(mirror);
+		} 
+		
+		c[z] += 1;
+		printf("result2 %s\n", c); 
+		print_real(mirror);
+		printf("mirror end %s\n", mirror); 
+	
+	}
+c[z] = '\0';
+	printf("result2 %s\n", c); 
+	return c;
+}
+
+void print_real(char *s)
+{
+	size_t i = 0;
+	printf("------------------------\n");
+	printf("real: ");
+	
+	while (s[i] != '\0')
+	{
+		printf("|%d", s[i] - '0');
+		++i;
+	}
+	printf("|\n");
+	printf("------------------------\n");
 }
