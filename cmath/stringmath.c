@@ -24,6 +24,7 @@ void print_real(char *);
 
 /* globals */
 static char *mirror; 
+static char *tempmir;
 
 /* functions */
 int main(int argc, char *argv[])
@@ -41,6 +42,7 @@ int main(int argc, char *argv[])
 
 	y = d = strallocate(len);
 	z = mirror = strallocate(len);
+	tempmir = strallocate(len);
 
 	printf("\n\n");
         printf("         %20s\n", a);
@@ -61,7 +63,7 @@ int main(int argc, char *argv[])
 	d = multiply(a, b, d);
 	printf("result(mul) = %20s\n", d);
 	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
-	
+
 
 	//d[0] = 0;
 	//d = division(a, b, d);
@@ -350,10 +352,14 @@ char *division(char *a, char *b, char *c)
 	int num2 = 0;
 	strcpy(mirror, a);
 	
+	
+	
 	printf("%s\n", mirror);
-	//start:
+
 	for ( i = 0; z < denom ; ++i)
 	{
+
+
 		for (i =0,j=z; i < divisors ; j++,i++) 
 		{
 			num1 = (mirror[j]-'0');
@@ -362,42 +368,41 @@ char *division(char *a, char *b, char *c)
 			sum = num1 - num2 + carry;
 			carry = 0;
 			if ( sum < 0 )
-			{
-				if ( j != z && mirror[j -1] > 0 )
-				{
-				
-					mirror[j - 1] -= 1; // if it can afford it!!
-					sum += 10;
-					printf("had something\n");
-				}else  { 
-				
-					
-					printf("we have nothing, move and carry \n");
-					
-					//mirror[j + 1] += ( mirror[j] * 10 );
-					//mirror[j] = '0';
+			{ 
+				if ( j == z) // then BAD we have a negative first position
+				{ // and we need to carry the last value to the next transaction, and HARD REVAL
+					mirror[j + 1] += (mirror[j] * 10);
+					mirror[j] = '0';
+					printf("BAD\n");
 					++z;
-					printf("%s\n", mirror);
-					break;
 				}
+				else // we have a negative non-first position and need to REVAL by borrowing.
+				{
+					mirror[j-1] -= 1;
+					mirror[j] += 10;
+					printf("REVAL\n");
+				}
+				// either way we have to get out of here and not record the result
+				break;
 			} 
 		
 			//sum = (a[i]-'0') / (b[j]-'0') - (c[k]-'0')+ carry; 
 			
 			mirror[j] = sum + '0'; 
-			//mirror[j + 1] = '\0';
+		
 			printf("%s\n", mirror)	;	
 			print_real(mirror);
+			// strcpy(tempmir, a);
 		} 
 		
 		c[z] += 1;
-		printf("result2 %s\n", c); 
+		printf("result %s\n", c); 
 		print_real(mirror);
 		printf("mirror end %s\n", mirror); 
 	
 	}
-c[z] = '\0';
-	printf("result2 %s\n", c); 
+	c[z] = '\0';
+	printf("result %s\n", c); 
 	return c;
 }
 
