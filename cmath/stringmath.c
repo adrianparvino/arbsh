@@ -340,42 +340,44 @@ char *division(char *a, char *b, char *c)
 	// a result which is ranged from between 0-9
 
 	// the mirror starts its life as a copy of the denominator
- 
+
 	divisors = strlen(b);
 	denom = strlen(a);
-	
+
 	memset(c, 48, divisors + denom);
 
 	c[divisors + denom] = '\0';
 	printf("result1 %s\n", c); 
-	
+
 	int num1 = 0;
 	int num2 = 0;
 	strcpy(mirror, a);
-	
+
 	printf("%s\n", mirror);
 
 	int norecord = 0;
 
+	// concentrate on getting the division charts to display correctly
+	// then find the pattern and add the tracking array as c[]
+
 	for ( i = 0; z < denom ; ++i)
 	{
-
 		norecord = 0;
 		strcpy(tempmir, mirror);
 		for (i =0,j=z; i < divisors ; j++,i++) 
 		{
 			num1 = (tempmir[j]-'0');
 			num2 = (b[i]-'0');
-			
+
 			sum = num1 - num2 + carry;
 			carry = 0;
 			if ( sum < 0 )
 			{ 
-				if ( j == z) // then BAD we have a negative first position
+				if ( j == z ) // then BAD we have a negative first position
 				{ // and we need to carry the last value to the next transaction, and HARD REVAL
-					if ( j > 0) 
+				  // sadly. no one knows what a HARD REVAL is, so that's a problem
+					if ( j > 0 ) 
 					{
-					
 						mirror[j + 1] += (mirror[j] * 10);
 						mirror[j] -= 1;
 						//mirror[j] = '0';
@@ -384,7 +386,7 @@ char *division(char *a, char *b, char *c)
 					++z;
 				}
 				else // we have a negative non-first position and need to REVAL by borrowing.
-				{
+				{   
 					mirror[j-1] -= 1;
 					mirror[j] += 10;
 					printf("REVAL\n");
@@ -394,28 +396,28 @@ char *division(char *a, char *b, char *c)
 				break;
 			}
 			//sum = (a[i]-'0') / (b[j]-'0') - (c[k]-'0')+ carry; 
-			
+
 			tempmir[j] = sum + '0';
-		
+
 			printf("%s\n", tempmir);
 			printf("tempmir:\n");
 			print_real(tempmir);
 			// strcpy(tempmir, a);
-		} 
+		}
 		
 		if ( norecord == 0 )
 			strcpy(mirror, tempmir);
-		if ( norecord == 0 ) 
-			c[z] += 1 ;
+		if ( norecord == 0 )
+			c[z] += 1;
 	
-		printf("result %s\n", c); 
+		printf("result %s\n", c);
 		printf("real mirror:\n");
 		print_real(mirror);
-		printf("mirror end %s\n", mirror); 
+		printf("mirror end %s\n", mirror);
 	
 	}
 	c[z] = '\0';
-	printf("result %s\n", c); 
+	printf("result %s\n", c);
 	return c;
 }
 
