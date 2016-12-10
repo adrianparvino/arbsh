@@ -7,19 +7,17 @@
 char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
 void die(char *);
+char *division(char *, char *, char *);
 int getcharval(char *, size_t);
 char *multiply(char *, char *, char *);
 char *multiply2(const char *, const char *, char *);
+void print_real(char *);
 size_t reversestr(char *);
 void setsign(char *);
 void *strallocate(size_t);
 char *subtract(char *, char *, char *);
-char *subtraction(char *, char *, char *); 
+char *subtraction(char *, char *, char *);
 
-
-char *division(char *, char *, char *); 
-
-void print_real(char *);
 
 
 /* globals */
@@ -100,6 +98,21 @@ size_t reversestr(char *x)
         }
         return lim;
 } 
+
+void print_real(char *s)
+{
+	size_t i = 0;
+	printf("------------------------\n");
+	printf("real: ");
+	
+	while (s[i] != '\0')
+	{
+		printf("|%d", s[i] - '0');
+		++i;
+	}
+	printf("|\n");
+	printf("------------------------\n");
+}
 
 int getcharval(char *s, size_t idx)
 { 
@@ -316,104 +329,84 @@ void die(char *message)
 
 
 char *division(char *a, char *b, char *c)
-{
-	// divisor digit
-	size_t i = 0;
-	// denominator position or offest
-	size_t j = 0;
-	// result digits
-	size_t k = 0;
-	// position of transforming mirror
-	size_t z = 0;
-
-	int sum = 0;
-	int carry = 0;
-	int borrow = 0;
-	int la = 0;
-	int lb = 0;
+{ 
+	size_t i = 0; 
+	size_t j = 0; 
+	size_t z = 0; 
+	int sum = 0; 
+	int norecord = 0;
+	
 	// total number of digits in the denominator
 	size_t denom = 0;
 	// total number of digits in the divisor
 	size_t divisors = 0;
 
 	// carry values over and adding them to the next position in order to produce
-	// a result which is ranged from between 0-9
-
-	// the mirror starts its life as a copy of the denominator
-
+	// a result which is ranged from between 0-9 
 	divisors = strlen(b);
-	denom = strlen(a);
-
-	memset(c, 48, divisors + denom);
-
+	denom = strlen(a); 
+	memset(c, '_', divisors + denom); 
 	c[divisors + denom] = '\0';
 	printf("result1 %s\n", c); 
-
-	int num1 = 0;
-	int num2 = 0;
 	strcpy(mirror, a);
-
 	printf("%s\n", mirror);
 
-	int norecord = 0;
 
 	// concentrate on getting the division charts to display correctly
 	// then find the pattern and add the tracking array as c[]
-
+	// the mirror starts its life as a copy of the denominator
+	//strcpy(tempmir, mirror);
 	for ( i = 0; z < denom ; ++i)
 	{
 		norecord = 0;
 		strcpy(tempmir, mirror);
 		for (i =0,j=z; i < divisors ; j++,i++) 
 		{
-			num1 = (tempmir[j]-'0');
-			num2 = (b[i]-'0');
-
-			sum = num1 - num2 + carry;
-			carry = 0;
+			sum = (mirror[j]-'0') - (b[i]-'0'); 
 			if ( sum < 0 )
 			{ 
 				if ( j == z ) // then BAD we have a negative first position
-				{ // and we need to carry the last value to the next transaction, and HARD REVAL
-				  // sadly. no one knows what a HARD REVAL is, so that's a problem
-					if ( j > 0 ) 
-					{
-						mirror[j + 1] += (mirror[j] * 10);
-						mirror[j] -= 1;
-						//mirror[j] = '0';
-					}
+				{ // and we need to carry the last value to the next transaction, and HARD REVAL 
+					printf("CARRY %d\n", (mirror[j] - '0') * 10);
+					mirror[j + 1] += ((mirror[j] - '0') * 10); // FULL DIGIT CARRY (10 TO 90)
+					mirror[j] = '0'; // REMOVE ALL
+					print_real(tempmir);
 					printf("BAD\n");
-					++z;
+					
+					++z; // only HARD REVALS can change the place value
 				}
 				else // we have a negative non-first position and need to REVAL by borrowing.
 				{   
-					mirror[j-1] -= 1;
-					mirror[j] += 10;
+					// WAT !!
+					// PARTIAL CARRY REVAL!!
+					mirror[j-1] -= 1; //REMOVE ONE
+					mirror[j] += 10;  //SINGLE TENS BORROW (ALWAYS TEN)
 					printf("REVAL\n");
 				}
-				// either way we have to get out of here and not record the result
-				norecord = 1;
+				// either way we have to get out of here and not record the result 
+				norecord = 1; // NO RECORD
 				break;
 			}
-			//sum = (a[i]-'0') / (b[j]-'0') - (c[k]-'0')+ carry; 
-
-			tempmir[j] = sum + '0';
-
+			// else was GOOD
+			tempmir[j] = sum + '0'; 
 			printf("%s\n", tempmir);
 			printf("tempmir:\n");
 			print_real(tempmir);
-			// strcpy(tempmir, a);
 		}
 		
-		if ( norecord == 0 )
+		if ( norecord == 0 ) // any answer path that is not a REVAL is GOOD for incorporating into the mirror
 			strcpy(mirror, tempmir);
-		if ( norecord == 0 )
+		if ( norecord == 0 ) // any path that is not a REVAL is GOOD for enumerating the answer
+		{
+			if (c[z] == '_')
+				c[z] = 48;
 			c[z] += 1;
+		}
 	
 		printf("result %s\n", c);
 		printf("real mirror:\n");
 		print_real(mirror);
-		printf("mirror end %s\n", mirror);
+		printf("mirror END %s\n", mirror);
 	
 	}
 	c[z] = '\0';
@@ -421,17 +414,3 @@ char *division(char *a, char *b, char *c)
 	return c;
 }
 
-void print_real(char *s)
-{
-	size_t i = 0;
-	printf("------------------------\n");
-	printf("real: ");
-	
-	while (s[i] != '\0')
-	{
-		printf("|%d", s[i] - '0');
-		++i;
-	}
-	printf("|\n");
-	printf("------------------------\n");
-}
