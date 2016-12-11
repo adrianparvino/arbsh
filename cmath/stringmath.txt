@@ -1,6 +1,6 @@
-
+﻿
 NAME
-	add, subtract, multiply - APA arbitrary precision arithmetic
+	add, subtract, multiply, divide - APA arbitrary precision arithmetic
 
 SYNOPSIS
 	#include "stringmath.c"
@@ -8,20 +8,22 @@ SYNOPSIS
 	char *add(char *x, char *y, char *result);
 	char *subtract(char *x, char *y, char *result);
 	char *multiply(const char *x, const char *y, char *result);
+	char *divide(char *x, char *y, char *result);
+
 
 DESCRIPTION
 	Arbitrary precision mathematics functions. The caller is responsible
 	for allocating sufficient memory. This creates some issues which will
 	be fixed in a future update.
 
-	APA (aribitrary precision arithmetic) uses arrays of characters to store
+	APA (arbitrary precision arithmetic) uses arrays of characters to store
 	its signed values (internally called a bigstrint). These arrays are 
 	identical to C strings except that the first indice stores a sign
-	byte (sign bit). Because of this, most operations increment a bigstrint
-	before using it so as to operate on the first real value as indice zero.
-	Bigsrints are always returned with either a positive or negative sign.
-	For example positive "123" would be returned as "+123" and negative 465
-	would be returned as -465.
+	byte (sign bit). Because of this, most operations increment a pointer to
+	a bigstrint before using it so as to operate on the first real value as
+	indice zero.  Bigsrints are always returned with either a positive or 
+	negative sign.  For example positive "123" would be returned as "+123" 
+	and negative "465" would be returned as "-465".
 	
 	Anatomy of a "bigstrint":
 
@@ -31,7 +33,20 @@ DESCRIPTION
 		|--> sign byte           | 
 					 |---> nul cap
 
+BUGS
+	Division is in its experimental stages and is quite buggy.
+	
 
+ALGORITHMS
+
+	Addition:
+		Pencil and paper (schoolbook)
+	Subtraction:
+		Pencil and paper (schoolbook)
+	Multiplication:
+		Pencil and paper with modifications (modified schoolbook)
+	Division:
+		Pencil and paper with modifications (modified schoolbook)
 
 
 
