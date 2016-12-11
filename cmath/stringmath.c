@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
+
 /* function declarations */
 char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
@@ -19,20 +20,34 @@ char *subtract(char *, char *, char *);
 char *subtraction(char *, char *, char *);
 
 
-
 /* globals */
 static char *mirror; 
 static char *tempmir;
+int verbosity = 0;
 
 /* functions */
 int main(int argc, char *argv[])
 {
 
-        if ( argc != 3) 
-                die("Please provide two numbers"); 
+	int o = 0;
+	while ((o = getopt (argc, argv, "v")) != -1)
+                switch (o) { 
+			case 'v': 
+				verbosity = 1;
+                                break; 
+                        default: 
+				break;
+                }
 
-	char *a = argv[1];
-	char *b = argv[2];
+        argv += optind;
+        argc -= optind;
+
+	
+       if ( argc < 2) 
+                die("Please provide two numbers\n"); 
+
+	char *a = argv[0];
+	char *b = argv[1];
 	size_t len = (strlen(a) + strlen(b) + 10);
 	char *d;
 	char *z;
@@ -103,6 +118,8 @@ size_t reversestr(char *x)
 
 void print_real(char *s, char *realname)
 {
+	if ( verbosity == 0 )
+		return;
 	size_t i = 0;
 	printf("------------------------\n");
 	printf("name:      %s\n", realname);
@@ -344,13 +361,10 @@ char *division(char *a, char *b, char *c)
 	divisors = strlen(b);	// cardinality of the divisor
 	denom = strlen(a);	// cardinality of the denominator
 	memset(c, '_', divisors + denom);	// use Mayan zero shells to hold place values (for now)
-	c[divisors + denom] = '\0';	// ascii NUL cap the answer
-
-	
+	c[divisors + denom] = '\0';	// ascii NUL cap the answer 
 	
 	memset(mirror, 0, divisors + denom); // the mirror starts its life as a copy of the denominator
 	strcpy(mirror, a);// otherwise the caller's denominator would be destroyed 
-	
 	memset(tempmir, 0, divisors + denom);// but the mirror can't be modified with bad values
 	strcpy(tempmir, mirror); // so we have a temporary copy of it too
 
@@ -371,7 +385,7 @@ char *division(char *a, char *b, char *c)
 				{	// and we need to carry the last value to the next transaction, a HARD REVAL 
 					mirror[j + 1] += ((mirror[j] - '0') * 10); // FULL DIGIT CARRY (10 TO 90) 
 					mirror[j] = '0'; // REMOVE ALL
-					//print_real(tempmir, "tempmir top BAD"); // VERBOSITY
+					print_real(tempmir, "tempmir top BAD"); // VERBOSITY
 					++z; // only HARD REVALS can change the place value
 				}
 				// SOFT REVAL ( borrow 10 )
@@ -386,7 +400,7 @@ char *division(char *a, char *b, char *c)
 			}
 			// else was GOOD
 			tempmir[j] = sum + '0';
-			//print_real(tempmir, "tempmir bottom GOOD"); // VERBOSITY
+			print_real(tempmir, "tempmir bottom GOOD"); // VERBOSITY
 		} // if we leave the loop on our own, then RECORD it
 		
 		if ( norecord == 0 ) 
@@ -396,10 +410,10 @@ char *division(char *a, char *b, char *c)
 				c[z] = 48; // change the mayan shell to a zero 
 			c[z] += 1; // any path that is not a REVAL is GOOD for enumerating the answer
 		} 
-		//print_real(tempmir, "REAL mirror"); // VERBOSITY
+		print_real(tempmir, "REAL mirror"); // VERBOSITY
 	}
 	c[z] = '\0';
-	printf("result FAR BOTTOM:  %s\n\n\n", c);
+	print_real(c, "FAR BOTTOM  REAL STRING");
 	return c;
 }
 
