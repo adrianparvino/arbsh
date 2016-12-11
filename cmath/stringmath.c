@@ -5,7 +5,7 @@
 
 /*
 	2016 CM Graff "stringmath.c"
-	See stringmath.txt for documentation.  
+	See stringmath.txt for documentation.
 */
 
 /* function declarations */
@@ -24,8 +24,8 @@ char *subtraction(char *, char *, char *);
 
 
 /* globals */
-static char *mirror; 
-static char *tempmir;
+static char *mirror;
+static char *tmpmir;
 int verbosity = 0;
 
 
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 
 	y = d = strallocate(len);
 	z = mirror = strallocate(len);
-	tempmir = strallocate(len);
+	tmpmir = strallocate(len);
 
 	printf("\n\n");
         printf("         %20s\n", a);
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 
 	free(d = y);
 	free(mirror = z);
-	free(tempmir);
+	free(tmpmir);
 } 
 
 void setsign(char *s)
@@ -353,69 +353,55 @@ void die(char *message)
 
 char *division(char *a, char *b, char *c)
 { 
-	size_t i = 0;		// Increment over the divisors.
+	size_t i = 0;		// Increment over the divisor.
 	size_t j = 0;		// Increment over the denominator.
 	size_t z = 0;		// Increment through the answer.
-	int sum = 0;		// Temporary sum to be evaluated, saves some evaluations.
-	int norecord = 0;	// Boolean to control whether or not the answer is recorded.
-	size_t denom = 0;	// Total number of digits in the denominator.
-	size_t divisors = 0;	// Total number of digits in the divisor.
-	divisors = strlen(b);	// Cardinality of the divisor.
-	denom = strlen(a);	// Cardinality of the denominator.
-	memset(c, '_', divisors + denom);	// Use Mayan zero shells to hold place values (for now).
-	c[divisors + denom] = '\0';		// ASCII NUL cap the answer.
-	
-	memset(mirror, 0, divisors + denom);	// The mirror starts its life as a copy of the denominator,
+	int sum = 0;		// Temporary sum of two digits
+	int rec = 0;		// Boolean to control whether or not the mirror is recorded.
+	size_t denom = strlen(a);	// Cardinality of the denominator.
+	size_t divis = strlen(b);	// Cardinality of the divisor. 
+	memset(c, '0', divis + denom);	// Set the result places all to an ASCII zero character
+	c[divis + denom] = '\0';		// ASCII NUL cap the result.
+	memset(mirror, '\0', divis + denom);	// The mirror starts its life as a copy of the denominator,
 	strcpy(mirror, a);			// otherwise the caller's denominator would be destroyed.
-	memset(tempmir, 0, divisors + denom);	// But the mirror can't be modified with bad values,
-	strcpy(tempmir, mirror);		// so we have a temporary copy of it too.
-
-	// It's likely this could be reduced to one strcpy and some pointer swapping, but
-	// for now we go ahead and strcpy each time there's a good value in the main loop
+	memset(tmpmir, '\0', divis + denom);	// But the mirror can't be modified with bad values,
+	strcpy(tmpmir, mirror);			// so we have a temporary copy of it too.
 	
-	for ( i = 0; z < denom ; ++i) // this works ok for some values but should be replaced by a BREAK
+	for ( ; z < denom ; ) // LOOP OVER DENOMINATOR
 	{
-		norecord = 0; // reset record
-		strcpy(tempmir, mirror); // replace this with a pointer swap
-		for (i =0,j=z; i < divisors ; j++,i++) // LOOP OVER DIVISORS
+		strcpy(tmpmir, mirror); 	// RESET TMPMIR
+		for (rec = 0, i = 0, j = z; i < divis ; j++ ,i++) 	// LOOP OVER DIVISORS
 		{
-			sum = (mirror[j]-'0') - (b[i]-'0'); // the actual work, everything else is carrying
-			if ( sum < 0 ) // REVAL
-			{	// HARD REVAL ( shift all ) // BAD
-				if ( j == z ) // then REAL BAD we have a negative first position
-				{	// and we need to carry the last value to the next transaction, a HARD REVAL 
-					mirror[j + 1] += ((mirror[j] - '0') * 10); // FULL DIGIT CARRY (10 TO 90) 
-					mirror[j] = '0'; // REMOVE ALL
-					print_real(tempmir, "tempmir top HARD REVAL"); // VERBOSITY
-					if ( c[z] == '_' ) 
-						c[z] = '0';
-					++z; // only HARD REVALS can change the place value
+			sum = (mirror[j]-'0') - (b[i]-'0');
+			if ( sum < 0 ) 	// REVAL
+			{			// HARD REVAL  (borrow all)  B R
+				if ( j == z )	// then we have a negative first position and need to carry 
+				{		//the last value to the next transaction
+					mirror[j + 1] += ((mirror[j] - '0') * 10); // FULL DIGIT CARRY (10 TO 90)
+					mirror[j] = '0';	// REMOVE ALL
+					print_real(tmpmir, "tmpmir inner loop top HARD REVAL");
+					++z;		// only HARD REVALS can change place
 				}
-				// SOFT REVAL ( borrow 10 )
-				else // we have a negative non-first position and need to SOFT REVAL by borrowing.
-				{    
-					
-					mirror[j - 1] -= 1; // REMOVE ONE 
-					mirror[j] += 10;  // SINGLE TENS BORROW (ALWAYS TEN) 
-					print_real(tempmir, "tempmir top SOFT REVAL"); // VERBOSITY
+			 else 
+				{ 	// SOFT REVAL ( borrow 10 )  R
+						// we have a negative non-first position and need to SOFT REVAL by borrowing.
+					mirror[j - 1] -= 1;	// REMOVE ONE
+					mirror[j] += 10;	// SINGLE TENS BORROW (ALWAYS TEN)
+					print_real(tmpmir, "tmpmir inner loop top SOFT REVAL");
 				}
-				// either way we have to get out of here and not record the result 
-				norecord = 1; // NO RECORD
+				rec = 1; // NO RECORD
 				break;
 			}
-			// else was GOOD
-			tempmir[j] = sum + '0';
-			print_real(tempmir, "tempmir bottom GOOD"); // VERBOSITY
-		} // if we leave the loop on our own, then RECORD it
-		if ( norecord == 0 ) 
+			tmpmir[j] = sum + '0';
+			print_real(tmpmir, "tmpmir inner loop bottom GOOD");
+		}
+		if ( rec == 0 )
 		{
-			print_real(tempmir, "tempmir COPY CANDIDATE  RECORD"); // VERBOSITY
-			strcpy(mirror, tempmir);  // any answer path that is not a REVAL is GOOD for incorporating into the mirror 
-			if (c[z] == '_')
-				c[z] = 48; // change the mayan shell to a zero 
+			print_real(tmpmir, "tmpmir COPY CANDIDATE  RECORDED");
+			strcpy(mirror, tmpmir);  // any answer path that is not a REVAL is GOOD for incorporating into the mirror
 			c[z] += 1; // any path that is not a REVAL is GOOD for enumerating the answer
-		} 
-		print_real(mirror, "REAL mirror"); // VERBOSITY
+		}
+		print_real(mirror, "REAL mirror bottom of outer loop");
 	}
 	c[z] = '\0';
 	print_real(c, "FAR BOTTOM  REAL STRING");
