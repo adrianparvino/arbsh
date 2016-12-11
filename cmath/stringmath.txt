@@ -40,13 +40,19 @@ BUGS
 ALGORITHMS
 
 	Addition:
-		Pencil and paper (schoolbook)
+		1. Pencil and paper (schoolbook)
 	Subtraction:
-		Pencil and paper (schoolbook)
+		1. Pencil and paper (schoolbook)
 	Multiplication:
-		Pencil and paper with modifications (modified schoolbook)
+		1. Pencil and paper with modifications (modified schoolbook)
+		TODO:
+			successive addition
 	Division:
-		Pencil and paper with modifications (modified schoolbook)
+		1. Pencil and paper with modifications (modified schoolbook)
+		TODO:
+			successive subtraction
+			Newtonian division
+			Taylor series division
 
 
 

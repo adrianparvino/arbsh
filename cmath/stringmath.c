@@ -3,6 +3,10 @@
 #include <string.h>
 #include <unistd.h>
 
+/*
+	2016 CM Graff "stringmath.c"
+	See stringmath.txt for documentation.  
+*/
 
 /* function declarations */
 char *add(char *, char *, char *);
@@ -11,7 +15,6 @@ void die(char *);
 char *division(char *, char *, char *);
 int getcharval(char *, size_t);
 char *multiply(char *, char *, char *);
-char *multiply2(const char *, const char *, char *);
 void print_real(char *, char *);
 size_t reversestr(char *);
 void setsign(char *);
@@ -25,10 +28,10 @@ static char *mirror;
 static char *tempmir;
 int verbosity = 0;
 
+
 /* functions */
 int main(int argc, char *argv[])
 {
-
 	int o = 0;
 	while ((o = getopt (argc, argv, "v")) != -1)
                 switch (o) { 
@@ -43,8 +46,8 @@ int main(int argc, char *argv[])
         argc -= optind;
 
 	
-       if ( argc < 2) 
-                die("Please provide two numbers\n"); 
+	if ( argc < 2) 
+		die("Please provide two numbers\n"); 
 
 	char *a = argv[0];
 	char *b = argv[1];
@@ -57,13 +60,13 @@ int main(int argc, char *argv[])
 	z = mirror = strallocate(len);
 	tempmir = strallocate(len);
 
-	//printf("\n\n");
-        //printf("         %20s\n", a);
-        //printf("  +,-,*  %20s\n", b);
-	//printf("         %20s\n", "-------------------");
+	printf("\n\n");
+        printf("         %20s\n", a);
+        printf("+,-,*,/  %20s\n", b);
+	printf("         %20s\n", "-------------------");
 
 
-/*
+
 	d[0] = 0;
 	d = add(a, b, d);
 	printf("result(add) = %20s\n", d); 
@@ -78,7 +81,6 @@ int main(int argc, char *argv[])
 	d = multiply(a, b, d);
 	printf("result(mul) = %20s\n", d);
 	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
-	*/
 
 	d[0] = 0;
 	d = division(a, b, d);
@@ -351,48 +353,51 @@ void die(char *message)
 
 char *division(char *a, char *b, char *c)
 { 
-	size_t i = 0;		// increment over the divisors
-	size_t j = 0;		// increment over the denominator
-	size_t z = 0;		// increment through the answer
-	int sum = 0;		// temporary sum to be evaulated, saves some evaluations
-	int norecord = 0;	// boolean to control whether or not the answer is recorded
-	size_t denom = 0;	// total number of digits in the denominator
-	size_t divisors = 0;	// total number of digits in the divisor
-	divisors = strlen(b);	// cardinality of the divisor
-	denom = strlen(a);	// cardinality of the denominator
-	memset(c, '_', divisors + denom);	// use Mayan zero shells to hold place values (for now)
-	c[divisors + denom] = '\0';	// ascii NUL cap the answer 
+	size_t i = 0;		// Increment over the divisors.
+	size_t j = 0;		// Increment over the denominator.
+	size_t z = 0;		// Increment through the answer.
+	int sum = 0;		// Temporary sum to be evaluated, saves some evaluations.
+	int norecord = 0;	// Boolean to control whether or not the answer is recorded.
+	size_t denom = 0;	// Total number of digits in the denominator.
+	size_t divisors = 0;	// Total number of digits in the divisor.
+	divisors = strlen(b);	// Cardinality of the divisor.
+	denom = strlen(a);	// Cardinality of the denominator.
+	memset(c, '_', divisors + denom);	// Use Mayan zero shells to hold place values (for now).
+	c[divisors + denom] = '\0';		// ASCII NUL cap the answer.
 	
-	memset(mirror, 0, divisors + denom); // the mirror starts its life as a copy of the denominator
-	strcpy(mirror, a);// otherwise the caller's denominator would be destroyed 
-	memset(tempmir, 0, divisors + denom);// but the mirror can't be modified with bad values
-	strcpy(tempmir, mirror); // so we have a temporary copy of it too
+	memset(mirror, 0, divisors + denom);	// The mirror starts its life as a copy of the denominator,
+	strcpy(mirror, a);			// otherwise the caller's denominator would be destroyed.
+	memset(tempmir, 0, divisors + denom);	// But the mirror can't be modified with bad values,
+	strcpy(tempmir, mirror);		// so we have a temporary copy of it too.
 
-	// it's likely this could be reduced to one strcpy and some pointer swapping
-	// for now we go ahead and strcpy each time we have a good value in the main loop
+	// It's likely this could be reduced to one strcpy and some pointer swapping, but
+	// for now we go ahead and strcpy each time there's a good value in the main loop
 	
-	for ( i = 0; z < denom ; ++i)
+	for ( i = 0; z < denom ; ++i) // this works ok for some values but should be replaced by a BREAK
 	{
 		norecord = 0; // reset record
 		strcpy(tempmir, mirror); // replace this with a pointer swap
 		for (i =0,j=z; i < divisors ; j++,i++) // LOOP OVER DIVISORS
 		{
 			sum = (mirror[j]-'0') - (b[i]-'0'); // the actual work, everything else is carrying
-			
 			if ( sum < 0 ) // REVAL
 			{	// HARD REVAL ( shift all ) // BAD
 				if ( j == z ) // then REAL BAD we have a negative first position
 				{	// and we need to carry the last value to the next transaction, a HARD REVAL 
 					mirror[j + 1] += ((mirror[j] - '0') * 10); // FULL DIGIT CARRY (10 TO 90) 
 					mirror[j] = '0'; // REMOVE ALL
-					print_real(tempmir, "tempmir top BAD"); // VERBOSITY
+					print_real(tempmir, "tempmir top HARD REVAL"); // VERBOSITY
+					if ( c[z] == '_' ) 
+						c[z] = '0';
 					++z; // only HARD REVALS can change the place value
 				}
 				// SOFT REVAL ( borrow 10 )
 				else // we have a negative non-first position and need to SOFT REVAL by borrowing.
 				{    
+					
 					mirror[j - 1] -= 1; // REMOVE ONE 
 					mirror[j] += 10;  // SINGLE TENS BORROW (ALWAYS TEN) 
+					print_real(tempmir, "tempmir top SOFT REVAL"); // VERBOSITY
 				}
 				// either way we have to get out of here and not record the result 
 				norecord = 1; // NO RECORD
@@ -402,15 +407,15 @@ char *division(char *a, char *b, char *c)
 			tempmir[j] = sum + '0';
 			print_real(tempmir, "tempmir bottom GOOD"); // VERBOSITY
 		} // if we leave the loop on our own, then RECORD it
-		
 		if ( norecord == 0 ) 
 		{
+			print_real(tempmir, "tempmir COPY CANDIDATE  RECORD"); // VERBOSITY
 			strcpy(mirror, tempmir);  // any answer path that is not a REVAL is GOOD for incorporating into the mirror 
 			if (c[z] == '_')
 				c[z] = 48; // change the mayan shell to a zero 
 			c[z] += 1; // any path that is not a REVAL is GOOD for enumerating the answer
 		} 
-		print_real(tempmir, "REAL mirror"); // VERBOSITY
+		print_real(mirror, "REAL mirror"); // VERBOSITY
 	}
 	c[z] = '\0';
 	print_real(c, "FAR BOTTOM  REAL STRING");
