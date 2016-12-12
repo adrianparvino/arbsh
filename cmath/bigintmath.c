@@ -27,8 +27,12 @@ int *mirror;
 /*
 	Anatomy of a big int (proposed, not fully implemented)
 
-	Index number 	0    1    2    3    4    5    6      ...
-			[-/+][0-9][0-9][0-9][0-9][0-9][terminator]  ...
+	Index number 	0    1    2    3    4    5    6    7        ...
+			[-/+][0-9][0-9][0-9][0-9][0-9][0-9][-4242]  ...
+			|              |                   |
+			|--> Sign      |                   |
+                                       |-->  ints          |
+                                                           |--> Termimator cap (an unuseful value)
 */
 
 /* Functions */
