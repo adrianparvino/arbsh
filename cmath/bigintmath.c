@@ -108,27 +108,27 @@ int main(int argc, char **argv)
 
 void addition(int *answer, int *increm) 
 {
-	/* TODO: add test for additional '1' place */
+	/* TODO: add swap to mirror if carry */
 	/* TODO: replace int with size_t */
 	int i;
-	int carry = 0;
+	int needsmag = 0;
 	for (i = cardinal - 1; i>=0 ; i--)
 	{
 		answer[i] += increm[i];
-		carry = 0;
+		needsmag = 0;
 		if (answer[i] >= base)
 		{
-			carry = 1;
+			needsmag = 1;
 			answer[i] -= base;
 			answer[i - 1]++;
 		}
 	}
-	// this works but needs some precision fudging 
-	//if ( carry == 1 )
-	//{
-	//	copyarray(answer, answer + 1);
-	//	answer[0] = 1;
-	//}
+	if ( needsmag == 1 )
+	{ 
+		mirror[0] = 1;
+		copyarray(mirror + 1, answer);
+		printarray(mirror, cardinal + 1); 
+	}
 }
 
 void copyarray(int *answer, int *from)
@@ -167,7 +167,7 @@ int iszero(int *answer)
 
 void multiply(int *answer, int factor)
 {
-	/* TODO: Add support for multiple doigit factors */
+	/* TODO: Add support for multiple digit factors */
 	/* TODO: Change incrementor to a size_t */
 	int i, carry = 0;
 	for ( i = cardinal - 1; i >= 0 ; i--)
