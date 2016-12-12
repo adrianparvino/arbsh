@@ -1,0 +1,30 @@
+﻿
+NAME
+
+	addition, subtract, divide, multiply, iszero,
+	copyarray, printarray - arbitrary precision big integer math
+
+SYNOPSIS
+
+	
+	void addition(int *array1, int *array2);
+	void copyarray(int *to, int *from);
+	void divide(int *array, int denominator);
+	int iszero(int *array);
+	void multiply(int *array, int factor);
+	void printarray(int *array, size_t len);
+	void setarray(int *array, int rootcap);
+	int *str2ints(char *argv1, int *array1);
+	void subtract(int *array1, int *array2);
+
+
+
+
+
+
+
+
+
+
+
+
