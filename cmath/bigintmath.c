@@ -4,7 +4,7 @@
 #include <unistd.h>
 
 /* Function protoypes */
-void addition(int *, int *);	/* Add two integer arrays */
+void addition(int *, int *);	/* Add integer arrays together */
 void copyarray(int *, int *);	/* Copy an array of ints to another array of ints */
 void die(char *);		/* Kill and error message function */
 void divide(int *, int);	/* Divide an integer array by a digit */
@@ -13,8 +13,9 @@ void multiply(int *, int);	/* Multiply an integer array by a digit */
 void printarray(int *, size_t len);	/* Print an array of integers */
 void setarray(int *, int);	/* Set an array of ints to all zeros or a magnitude thereof */
 int *str2ints(char *, int *);	/* Convert a string into an integer array */
-void subtract(int *, int *);	/* Subtract two integer arrays */
+void subtract(int *, int *);	/* Subtract an integer array from another */
 void verbosity(int *, char *);  /* Verbosity function */
+void *strallocate(size_t);	/* Memory allocater with error */
 
 /* Globals */
 size_t cardinal;		/* All array functions must have the same cardinality (length) */
@@ -25,6 +26,10 @@ int verbose = 0;		/* Verbosity boolean */
 int *mirror;
 
 /*
+	NOTE: You probably want the other file "stringmath.c", this one
+	      is an improvement based version which is slowly playing
+	      catch-up.
+
 	Anatomy of a big int (proposed, not fully implemented)
 
 	Index number 	0    1    2    3    4    5    6    7        ...
@@ -32,7 +37,9 @@ int *mirror;
 			|              |                   |
 			|--> Sign      |                   |
                                        |-->  ints          |
-                                                           |--> Termimator cap (an unuseful value)
+                                                           |--> Terminator cap
+
+
 */
 
 /* Functions */
@@ -162,6 +169,8 @@ void divide(int *answer, int denom)
 
 int iszero(int *answer)
 {
+	/* TODO: write a similiar routine which checks if a number has neg vals */
+	/* if it does have neg vals, then use a seed denominator to readjust it */
 	size_t i = 0;
 	for ( i = 0; i < cardinal; i++)
 		if ( answer[i] )
@@ -173,7 +182,8 @@ void multiply(int *answer, int factor)
 {
 	/* TODO: Add support for multiple digit factors */
 	/* TODO: Change incrementor to a size_t */
-	int i, carry = 0;
+	int i;
+	int carry = 0;
 	for ( i = cardinal - 1; i >= 0 ; i--)
 	{
 		answer[i] *= factor;
@@ -205,11 +215,12 @@ void setarray(int *answer, int rootcap)
 
 int *str2ints(char *a, int *b)
 {
-	/* TODO: Move memory management to another function */
+	/* TODO: Move strallocate out of this function */
 	size_t i = 0;
 	size_t tot = 0;
 	size_t len = strlen(a);
-	b = malloc(len * sizeof(int));
+	
+	b = strallocate(len * sizeof(int));
 	
 	while ( a[i] != '\0' )
 	{
@@ -261,3 +272,13 @@ void verbosity(int *array, char *message)
 	printarray(array, cardinal);
 	printf("END verbosity:\n");
 }
+
+
+void *strallocate(size_t len)
+{
+	/* TODO: Incorporate perror */
+	void *ret;
+	if(!(ret = malloc(len)))
+		die("malloc failed\n"); 
+	return ret;
+} 

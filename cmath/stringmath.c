@@ -360,7 +360,8 @@ char *division(char *a, char *b, char *c)
 	int rec = 0;		// Boolean to control whether or not the mirror is recorded.
 	size_t denom = strlen(a);	// Cardinality of the denominator.
 	size_t divis = strlen(b);	// Cardinality of the divisor. 
-	memset(c, '0', divis + denom);	// Set the result places all to an ASCII zero character
+
+	memset(c, '0', divis + denom);		// Set the result places all to an ASCII zero character
 	c[divis + denom] = '\0';		// ASCII NUL cap the result.
 	memset(mirror, '\0', divis + denom);	// The mirror starts its life as a copy of the denominator,
 	strcpy(mirror, a);			// otherwise the caller's denominator would be destroyed.
@@ -369,8 +370,8 @@ char *division(char *a, char *b, char *c)
 	
 	for ( ; z < denom ; ) // LOOP OVER DENOMINATOR
 	{
-		strcpy(tmpmir, mirror); 	// RESET TMPMIR
-		for (rec = 0, i = 0, j = z; i < divis ; j++ ,i++) 	// LOOP OVER DIVISORS
+		strcpy(tmpmir, mirror); // RESET TMPMIR
+		for (rec = 0, i = 0, j = z; i < divis ; j++ ,i++) // LOOP OVER DIVISORS
 		{
 			sum = (mirror[j]-'0') - (b[i]-'0');
 			if ( sum < 0 ) 	// REVAL
@@ -382,9 +383,9 @@ char *division(char *a, char *b, char *c)
 					print_real(tmpmir, "tmpmir inner loop top HARD REVAL");
 					++z;		// only HARD REVALS can change place
 				}
-			 else 
+			 	else 
 				{ 	// SOFT REVAL ( borrow 10 )  R
-						// we have a negative non-first position and need to SOFT REVAL by borrowing.
+					// we have a negative non-first position and need to SOFT REVAL by borrowing.
 					mirror[j - 1] -= 1;	// REMOVE ONE
 					mirror[j] += 10;	// SINGLE TENS BORROW (ALWAYS TEN)
 					print_real(tmpmir, "tmpmir inner loop top SOFT REVAL");
@@ -398,10 +399,11 @@ char *division(char *a, char *b, char *c)
 		if ( rec == 0 )
 		{
 			print_real(tmpmir, "tmpmir COPY CANDIDATE  RECORDED");
-			strcpy(mirror, tmpmir);  // any answer path that is not a REVAL is GOOD for incorporating into the mirror
-			c[z] += 1; // any path that is not a REVAL is GOOD for enumerating the answer
+			strcpy(mirror, tmpmir);  // COPY TMPMIR UP TO MIRROR
+			c[z] += 1; // ENUMERATE THE RESULT
 		}
 		print_real(mirror, "REAL mirror bottom of outer loop");
+		print_real(c, "FAR BOTTOM  REAL STRING");
 	}
 	c[z] = '\0';
 	print_real(c, "FAR BOTTOM  REAL STRING");
