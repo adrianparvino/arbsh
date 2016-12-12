@@ -11,16 +11,25 @@ void divide(int *, int);	/* Divide an integer array by a digit */
 int iszero(int *);		/* Returns true if an entire array is zero */
 void multiply(int *, int);	/* Multiply an integer array by a digit */
 void printarray(int *, size_t len);	/* Print an array of integers */
-void setarray(int *, int);		/* Set an array of ints to all zeros or a magnitude thereof */
+void setarray(int *, int);	/* Set an array of ints to all zeros or a magnitude thereof */
 int *str2ints(char *, int *);	/* Convert a string into an integer array */
 void subtract(int *, int *);	/* Subtract two integer arrays */
+void verbosity(int *, char *);  /* Verbosity function */
 
 /* Globals */
 size_t cardinal;		/* All array functions must have the same cardinality (length) */
 int *bigint1;			/* Copy of argument 1 */
 int *bigint2;			/* Copy of argument 2 */
 int base = 10;			/* Default to base 10 */
-int verbosity = 0;		/* Verbosity boolean */
+int verbose = 0;		/* Verbosity boolean */
+int *mirror;
+
+/*
+	Anatomy of a big int (proposed, not fully implemented)
+
+	Index number 	0    1    2    3    4    5    6      ...
+			[-/+][0-9][0-9][0-9][0-9][0-9][terminator]  ...
+*/
 
 /* Functions */
 int main(int argc, char **argv)
@@ -32,8 +41,8 @@ int main(int argc, char **argv)
 
 	while ((o = getopt (argc, argv, "vb:d:")) != -1)
 		switch (o) { 
-			case 'v': /* Set verbosity (not yet implemented) */
-				verbosity = 1;
+			case 'v': /* Set verbose (not yet implemented) */
+				verbose = 1;
 				break;
 			case 'b': /* Override base */
 				base = strtoul(optarg, 0, 10);
@@ -48,10 +57,12 @@ int main(int argc, char **argv)
 
 	argv += optind;
 	argc -= optind;
-	
+
 
 	if ( argc < 2 )
 		die("Needs 2 args\n");
+
+	mirror = malloc(1000 * sizeof(int));
 
 	/* arb addition */
 	hold = str2ints(argv[0], bigint1);
@@ -65,7 +76,7 @@ int main(int argc, char **argv)
 	subtract(hold, hold2);
 	printarray(hold, cardinal);
 	
-	/* arb setarray ,arb iszero, arb copyarray */
+	/* arb setarray, arb iszero, arb copyarray */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	setarray(hold, 0);
@@ -100,15 +111,24 @@ void addition(int *answer, int *increm)
 	/* TODO: add test for additional '1' place */
 	/* TODO: replace int with size_t */
 	int i;
+	int carry = 0;
 	for (i = cardinal - 1; i>=0 ; i--)
 	{
 		answer[i] += increm[i];
+		carry = 0;
 		if (answer[i] >= base)
 		{
+			carry = 1;
 			answer[i] -= base;
 			answer[i - 1]++;
 		}
 	}
+	// this works but needs some precision fudging 
+	//if ( carry == 1 )
+	//{
+	//	copyarray(answer, answer + 1);
+	//	answer[0] = 1;
+	//}
 }
 
 void copyarray(int *answer, int *from)
@@ -147,6 +167,8 @@ int iszero(int *answer)
 
 void multiply(int *answer, int factor)
 {
+	/* TODO: Add support for multiple doigit factors */
+	/* TODO: Change incrementor to a size_t */
 	int i, carry = 0;
 	for ( i = cardinal - 1; i >= 0 ; i--)
 	{
@@ -169,6 +191,8 @@ void printarray(int *a, size_t len)
 void setarray(int *answer, int rootcap)
 {
 	/* TODO: add an end cap value */
+	/* TODO: Formalize as a bigint creation / initialization function */
+
 	size_t i = 0;
 	for( i = 0; i < cardinal; i++)
 		answer[i] = 0;
@@ -182,6 +206,7 @@ int *str2ints(char *a, int *b)
 	size_t tot = 0;
 	size_t len = strlen(a);
 	b = malloc(len * sizeof(int));
+	
 	while ( a[i] != '\0' )
 	{
 		b[i] = a[i] - '0';
@@ -195,17 +220,40 @@ int *str2ints(char *a, int *b)
 
 void subtract(int *answer, int *decrem)
 {
-	/* TODO: add a symmetrical mirror for negative results */
 	/* TODO: replace int with size_t */
 	int i;
+	int isneg = 0;
+	
+	copyarray(mirror, answer);
 	for ( i = cardinal - 1; i >= 0 ; i--){
 		answer[i] -= decrem[i];
-
+		mirror[i] -= decrem[i];
+		isneg = 0;
 		if ( answer[i] < 0 )
 		{
 			answer[i] += base;
 			answer[i - 1]--;
+			isneg = 1;
 		}
+		if ( mirror[i] < 0 )
+		{
+			mirror[i] += base ;
+			mirror[i] = base - mirror[i];
+		}
+	}
+	if ( isneg == 1 )
+	{
+		verbosity(mirror, "was negative");
+		copyarray(answer, mirror); // This could be replaced by a pointer swap
 	}
 }
 
+void verbosity(int *array, char *message)
+{
+	if ( verbose == 0 )
+		return;
+	printf("Verbosity message: %s\n", message);
+	
+	printarray(array, cardinal);
+	printf("END verbosity:\n");
+}
