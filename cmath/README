@@ -2,13 +2,15 @@
 
 
 	Contents:
-	I. Arbitrary precision string calculator
+	I. Arbitrary precision arithmetic (APA)
 		1. All of these functions go to infinite precision (bound only
 		   by memory)
 		2. Functions
 			a. add
 			b, subtract
 			c. multiply 
+			d. divide
+		3. See stringmath.txt for more info
 
 	II. Transcendental functions implemented using their Taylor series
 		1. Most functions work to within 10 digits of precision
