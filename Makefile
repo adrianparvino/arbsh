@@ -37,6 +37,7 @@ install:
 	-$(MAKE) -C shbin install 
 	-$(MAKE) -C editor install
 	-$(MAKE) -C sysmon install
+	-$(MAKE) -C cmath install
 	# Install toolchain last if it exists
 	-$(MAKE) -C toolchain install
 
