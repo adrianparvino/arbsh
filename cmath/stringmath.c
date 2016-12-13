@@ -8,6 +8,22 @@
 	See stringmath.txt for documentation.
 */
 
+
+/* TODO: Finish division, iszero, and compare so that sqrt, hypot and exploding
+	 term taylor series cos, cosh and tan can be implemented */
+
+/* TODO: Theoretically the short_division and short_multiplication functions
+	 may be enough to implement some transcendentals to arb prec */
+
+/* TODO: Add abstractions to handle floating points, hypothetically by turning 
+	 them into whole numbers, and then feeding them back into the existing 
+	 math routing to finish the calculations */
+
+/* TODO: Pretty much everything depends on pow(). research how useful a niave
+	 non-fractional pow might be in implementing some algorithms like Taylor
+	 series atan
+*/
+
 /* function declarations */
 char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
@@ -22,12 +38,10 @@ void *strallocate(size_t);
 char *subtract(char *, char *, char *);
 char *subtraction(char *, char *, char *);
 
-
 /* globals */
 static char *mirror;
 static char *tmpmir;
 int verbosity = 0;
-
 
 /* functions */
 int main(int argc, char *argv[])

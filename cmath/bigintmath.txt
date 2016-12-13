@@ -9,9 +9,9 @@ SYNOPSIS
 	
 	void addition(int *array1, int *array2);
 	void copyarray(int *to, int *from);
-	void divide(int *array, int denominator);
+	void short_divide(int *array, int denominator);
 	int iszero(int *array);
-	void multiply(int *array, int factor);
+	void short_multiply(int *array, int factor);
 	void printarray(int *array, size_t len);
 	void setarray(int *array, int rootcap);
 	int *str2ints(char *argv1, int *array1);
@@ -19,7 +19,42 @@ SYNOPSIS
 
 
 
+	Short_divide and short_multiply use the principle that the denominator
+	or factor can still be applied to an arbitrary length string of digits
+	as a singular integer by using a very simple short multiplication or 
+	short division algorithm with factors and denominators up to about 
+	=INT_MAX/2.
 
+	So for example: 
+		XXXXXXXXXXXX... * Y
+		Is valid where X is an array digit member and Y is an integer
+		which is less than INT_MAX / 2.
+
+	These functions are psuedo arbitrary precision because one input can
+	be arbitrarily long, but the second input has a finite value. However
+	this finite value can be made rather large, and applied against the 
+	arbitrary length array infinitely.  For true arbtrary precision (an 
+	array *,/ an array) see the divide() and multiply() functions.
+
+
+
+
+/*
+	NOTE: You probably want the other file "stringmath.c", this one
+	      is an improvement based version which is slowly playing
+	      catch-up.
+
+	Anatomy of a big int (proposed, not fully implemented)
+
+	Index number 	0    1    2    3    4    5    6    7        ...
+			[-/+][0-9][0-9][0-9][0-9][0-9][0-9][-4242]  ...
+			|              |                   |
+			|--> Sign      |                   |
+                                       |-->  ints          |
+                                                           |--> Terminator cap
+
+
+*/
 
 
 
