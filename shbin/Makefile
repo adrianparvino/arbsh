@@ -2,7 +2,7 @@
 
 PREFIX=/shbin/
 
-LIST = crosstoolchain dog duwrap grop headsh remaster which ldd_wrapper ls
+LIST = crosstoolchain dog duwrap grop headsh remaster which ldd_wrapper ls remove_executable
 
 
 all: $(LIST)
