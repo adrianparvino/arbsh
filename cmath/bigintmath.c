@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <limits.h>
 
 /* Function protoypes */
 void addition(int *, int *);	/* Add integer arrays together */
 void copyarray(int *, int *);	/* Copy an array of ints to another array of ints */
 void die(char *);		/* Kill and error message function */
-void divide(int *, int);	/* Divide an integer array by a digit */
+void short_divide(int *, int);	/* Divide an integer array by an integer */
 int iszero(int *);		/* Returns true if an entire array is zero */
-void multiply(int *, int);	/* Multiply an integer array by a digit */
+void short_multiply(int *, int);	/* Multiply an integer array by an integer */
 void printarray(int *, size_t len);	/* Print an array of integers */
 void setarray(int *, int);	/* Set an array of ints to all zeros or a magnitude thereof */
 int *str2ints(char *, int *);	/* Convert a string into an integer array */
@@ -18,29 +19,12 @@ void verbosity(int *, char *);  /* Verbosity function */
 void *strallocate(size_t);	/* Memory allocater with error */
 
 /* Globals */
-size_t cardinal;		/* All array functions must have the same cardinality (length) */
+size_t cardinal;		/* All array functions must have the same length (cardinality) */
 int *bigint1;			/* Copy of argument 1 */
 int *bigint2;			/* Copy of argument 2 */
 int base = 10;			/* Default to base 10 */
 int verbose = 0;		/* Verbosity boolean */
 int *mirror;
-
-/*
-	NOTE: You probably want the other file "stringmath.c", this one
-	      is an improvement based version which is slowly playing
-	      catch-up.
-
-	Anatomy of a big int (proposed, not fully implemented)
-
-	Index number 	0    1    2    3    4    5    6    7        ...
-			[-/+][0-9][0-9][0-9][0-9][0-9][0-9][-4242]  ...
-			|              |                   |
-			|--> Sign      |                   |
-                                       |-->  ints          |
-                                                           |--> Terminator cap
-
-
-*/
 
 /* Functions */
 int main(int argc, char **argv)
@@ -59,7 +43,7 @@ int main(int argc, char **argv)
 				base = strtoul(optarg, 0, 10);
 				break; 
 			
-			case 'd': /* Set the division and multiplication test digit */
+			case 'd': /* Set the short_divide and short_multiply test integer  */
 				d = strtoul(optarg, 0, 10);
 				break; 
 			default: 
@@ -73,7 +57,7 @@ int main(int argc, char **argv)
 	if ( argc < 2 )
 		die("Needs 2 args\n");
 
-	mirror = malloc(1000 * sizeof(int));
+	mirror = strallocate(1000 * sizeof(int));
 
 	/* arb addition */
 	hold = str2ints(argv[0], bigint1);
@@ -105,13 +89,13 @@ int main(int argc, char **argv)
 	/* single digit arb multiplication */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	multiply(hold, d);
+	short_multiply(hold, d);
 	printarray(hold, cardinal);
 	
-	/* single digit arb division */
+	/* single digit arb short_short_divide */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	divide(hold, d);
+	short_divide(hold, d);
 	printarray(hold, cardinal);
 
 	return 0;
@@ -155,7 +139,7 @@ void die(char *message)
 	exit(1);
 }
 
-void divide(int *answer, int denom)
+void short_divide(int *answer, int denom)
 {
 	int carry = 0;
 	size_t i = 0;
@@ -178,8 +162,12 @@ int iszero(int *answer)
 	return 0;
 }
 
-void multiply(int *answer, int factor)
+void short_multiply(int *answer, int factor)
 {
+	/* ~= infinity * ( INT_MAX / 2 ) */
+	if ( factor > INT_MAX / 2 )
+		die("factor too big\n");
+
 	/* TODO: Add support for multiple digit factors */
 	/* TODO: Change incrementor to a size_t */
 	int i;
@@ -265,6 +253,7 @@ void subtract(int *answer, int *decrem)
 
 void verbosity(int *array, char *message)
 {
+	/* support message types from stringmath.txt too */
 	if ( verbose == 0 )
 		return;
 	printf("Verbosity message: %s\n", message);
@@ -273,7 +262,6 @@ void verbosity(int *array, char *message)
 	printf("END verbosity:\n");
 }
 
-
 void *strallocate(size_t len)
 {
 	/* TODO: Incorporate perror */
@@ -281,4 +269,6 @@ void *strallocate(size_t len)
 	if(!(ret = malloc(len)))
 		die("malloc failed\n"); 
 	return ret;
-} 
+}
+
+
