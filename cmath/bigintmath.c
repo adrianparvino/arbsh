@@ -7,7 +7,7 @@
 /* Function protoypes */
 void addition(int *, int *);	/* Add integer arrays together */
 void copyarray(int *, int *);	/* Copy an array of ints to another array of ints */
-void die(char *);		/* Kill and error message function */
+void die(char *);		/* Kill and error message */
 void short_divide(int *, int);	/* Divide an integer array by an integer */
 int iszero(int *);		/* Returns true if an entire array is zero */
 void short_multiply(int *, int);	/* Multiply an integer array by an integer */
@@ -24,6 +24,8 @@ void *strallocate(size_t);	/* Memory allocater with error */
 
 /* Globals */
 size_t cardinal;		/* All array functions must have the same length (cardinality) */
+size_t carda;
+size_t cardb;
 int *bigint1;			/* Copy of argument 1 */
 int *bigint2;			/* Copy of argument 2 */
 int base = 10;			/* Default to base 10 */
@@ -69,17 +71,20 @@ int main(int argc, char **argv)
 
 
 	/* arb divide */
+	
+	carda = strlen(argv[0]);
+	cardb = strlen(argv[1]);
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	divide(hold, hold2, result);
-	printarray(hold, cardinal);
+	//printarray(hold, cardinal);
 
 	/* arb multiply */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	multiply(hold, hold2, result);
-	printarray(hold, cardinal);
-
+	//printarray(hold, cardinal);
+	return 0 ;
 	/* arb addition */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
@@ -304,23 +309,23 @@ int *multiply(int *a, int *b, int *c)
 	int lb = 0;
 	/* either is zero, return c "0" ... */
  
-	la = cardinal;
-	lb = cardinal;
-	setarray(c, 0);
+	la = carda;
+	lb = cardb;
+	memset(c, 0, 100);
 
 	for ( i = la - 1; i >= 0 ; i--)
 	{
 		for ( j = lb - 1, k = i + j + 1, carry = 0; j >= 0 ; j--, k--) 
 		{
 			sum = (a[i]) * (b[j]) + (c[k]) + carry;
-			carry = sum / 10;
-			c[k] = (sum % 10); 
+			carry = sum / base;
+			c[k] = (sum % base); 
 		}
 		c[k] += carry; 
 	}
+	
+	printarray(c, carda + cardb);
 
-	--c;
-	printarray(c, cardinal * 2);
 	return c;
 }
 
@@ -333,8 +338,9 @@ int *divide(int *a, int *b, int *c)
 	size_t z = 0;
 	int sum = 0;	
 	int rec = 0; 
-	size_t denom = cardinal;
-	size_t divis = cardinal;
+	size_t denom = carda;
+	size_t divis = cardb;
+	size_t real = denom;
 	setarray(c, 0);
 
 	setarray(mirror, 0);
@@ -344,22 +350,22 @@ int *divide(int *a, int *b, int *c)
 
 	for ( ; z < denom ; )
 	{
-		copyarray(tmpmir, mirror); 
+		copyarray(tmpmir, mirror);
 		for (rec = 0, i = 0, j = z; i < divis ; j++ ,i++) 
 		{
 			sum = (mirror[j]) - (b[i]);
-			if ( sum < 0 ) 
+			if ( sum < 0 )
 			{
 				if ( j == z )
 				{
-					mirror[j + 1] += ((mirror[j]) * 10);
-					mirror[j] = '0';
+					mirror[j + 1] += ((mirror[j]) * base);
+					mirror[j] = 0;
 					++z;
 				}
-			 	else 
-				{ 
+			 	else
+				{
 					mirror[j - 1] -= 1;
-					mirror[j] += 10;
+					mirror[j] += base;
 				}
 				rec = 1;
 				break;
@@ -371,9 +377,14 @@ int *divide(int *a, int *b, int *c)
 			copyarray(mirror, tmpmir);
 			c[z] += 1;
 		}
+		
+		if ( iszero(tmpmir) == 0)
+			break;
 	}
+
 	printarray(c, cardinal);
-	//c[z] = '\0';
+
+	
 	return c;
 }
 
