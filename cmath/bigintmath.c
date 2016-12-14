@@ -12,6 +12,10 @@ void short_divide(int *, int);	/* Divide an integer array by an integer */
 int iszero(int *);		/* Returns true if an entire array is zero */
 void short_multiply(int *, int);	/* Multiply an integer array by an integer */
 void printarray(int *, size_t len);	/* Print an array of integers */
+
+int *multiply(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */
+int *divide(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */
+
 void setarray(int *, int);	/* Set an array of ints to all zeros or a magnitude thereof */
 int *str2ints(char *, int *);	/* Convert a string into an integer array */
 void subtract(int *, int *);	/* Subtract an integer array from another */
@@ -25,6 +29,8 @@ int *bigint2;			/* Copy of argument 2 */
 int base = 10;			/* Default to base 10 */
 int verbose = 0;		/* Verbosity boolean */
 int *mirror;
+int *result;
+int *tmpmir;
 
 /* Functions */
 int main(int argc, char **argv)
@@ -58,6 +64,21 @@ int main(int argc, char **argv)
 		die("Needs 2 args\n");
 
 	mirror = strallocate(1000 * sizeof(int));
+	result = strallocate(1000 * sizeof(int));
+	tmpmir = strallocate(1000 * sizeof(int));
+
+
+	/* arb divide */
+	hold = str2ints(argv[0], bigint1);
+	hold2 = str2ints(argv[1], bigint2);
+	divide(hold, hold2, result);
+	printarray(hold, cardinal);
+
+	/* arb multiply */
+	hold = str2ints(argv[0], bigint1);
+	hold2 = str2ints(argv[1], bigint2);
+	multiply(hold, hold2, result);
+	printarray(hold, cardinal);
 
 	/* arb addition */
 	hold = str2ints(argv[0], bigint1);
@@ -271,4 +292,88 @@ void *strallocate(size_t len)
 	return ret;
 }
 
+
+int *multiply(int *a, int *b, int *c)
+{
+	int i = 0;
+	int j = 0;
+	size_t k = 0;
+	int sum = 0;
+	int carry = 0;
+	int la = 0;
+	int lb = 0;
+	/* either is zero, return c "0" ... */
+ 
+	la = cardinal;
+	lb = cardinal;
+	setarray(c, 0);
+
+	for ( i = la - 1; i >= 0 ; i--)
+	{
+		for ( j = lb - 1, k = i + j + 1, carry = 0; j >= 0 ; j--, k--) 
+		{
+			sum = (a[i]) * (b[j]) + (c[k]) + carry;
+			carry = sum / 10;
+			c[k] = (sum % 10); 
+		}
+		c[k] += carry; 
+	}
+
+	--c;
+	printarray(c, cardinal * 2);
+	return c;
+}
+
+
+
+int *divide(int *a, int *b, int *c)
+{
+	size_t i = 0;	
+	size_t j = 0;
+	size_t z = 0;
+	int sum = 0;	
+	int rec = 0; 
+	size_t denom = cardinal;
+	size_t divis = cardinal;
+	setarray(c, 0);
+
+	setarray(mirror, 0);
+	copyarray(mirror, a);
+	setarray(tmpmir, 0);
+	copyarray(tmpmir, mirror);
+
+	for ( ; z < denom ; )
+	{
+		copyarray(tmpmir, mirror); 
+		for (rec = 0, i = 0, j = z; i < divis ; j++ ,i++) 
+		{
+			sum = (mirror[j]) - (b[i]);
+			if ( sum < 0 ) 
+			{
+				if ( j == z )
+				{
+					mirror[j + 1] += ((mirror[j]) * 10);
+					mirror[j] = '0';
+					++z;
+				}
+			 	else 
+				{ 
+					mirror[j - 1] -= 1;
+					mirror[j] += 10;
+				}
+				rec = 1;
+				break;
+			}
+			tmpmir[j] = sum;
+		}
+		if ( rec == 0 )
+		{
+			copyarray(mirror, tmpmir);
+			c[z] += 1;
+		}
+	}
+	printarray(c, cardinal);
+	//c[z] = '\0';
+	return c;
+}
 
