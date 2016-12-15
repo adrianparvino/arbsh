@@ -16,6 +16,11 @@ void printarray(int *, size_t len);	/* Print an array of integers */
 int *multiply(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */
 int *divide(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */
 
+size_t arraylen(int *, int);
+int *addition_r(int *, int *, int *);
+int getcharval(int *, size_t);
+size_t reversestr(int *);
+
 void setarray(int *, int);	/* Set an array of ints to all zeros or a magnitude thereof */
 int *str2ints(char *, int *);	/* Convert a string into an integer array */
 void subtract(int *, int *);	/* Subtract an integer array from another */
@@ -68,14 +73,16 @@ int main(int argc, char **argv)
 	mirror = strallocate(1000 * sizeof(int));
 	result = strallocate(1000 * sizeof(int));
 	tmpmir = strallocate(1000 * sizeof(int));
-
-
+	bigint1  = strallocate(1000 * sizeof(int));
+	bigint2 = strallocate(1000 * sizeof(int));
 	/* arb divide */
-	
 	carda = strlen(argv[0]);
 	cardb = strlen(argv[1]);
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
+	hold[carda] = 4242;
+	hold2[cardb] = 4242;
+
 	divide(hold, hold2, result);
 	//printarray(hold, cardinal);
 
@@ -84,12 +91,22 @@ int main(int argc, char **argv)
 	hold2 = str2ints(argv[1], bigint2);
 	multiply(hold, hold2, result);
 	//printarray(hold, cardinal);
-	return 0 ;
+
+
+
+
 	/* arb addition */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	addition(hold, hold2);
+
+	hold = addition_r(hold, hold2, result);
 	printarray(hold, cardinal);
+	return 0;
+	/* arb addition */
+	//hold = str2ints(argv[0], bigint1);
+	//hold2 = str2ints(argv[1], bigint2);
+	//addition(hold, hold2);
+	//printarray(hold, cardinal);
 
 	/* arb subtract */
 	hold = str2ints(argv[0], bigint1);
@@ -234,7 +251,7 @@ int *str2ints(char *a, int *b)
 	size_t tot = 0;
 	size_t len = strlen(a);
 	
-	b = strallocate(len * sizeof(int));
+	//b = strallocate(len * sizeof(int));
 	
 	while ( a[i] != '\0' )
 	{
@@ -297,7 +314,6 @@ void *strallocate(size_t len)
 	return ret;
 }
 
-
 int *multiply(int *a, int *b, int *c)
 {
 	int i = 0;
@@ -323,13 +339,9 @@ int *multiply(int *a, int *b, int *c)
 		}
 		c[k] += carry; 
 	}
-	
-	printarray(c, carda + cardb);
-
+	printarray(c, carda + cardb); 
 	return c;
 }
-
-
 
 int *divide(int *a, int *b, int *c)
 {
@@ -340,9 +352,8 @@ int *divide(int *a, int *b, int *c)
 	int rec = 0; 
 	size_t denom = carda;
 	size_t divis = cardb;
-	size_t real = denom;
-	setarray(c, 0);
 
+	setarray(c, 0);
 	setarray(mirror, 0);
 	copyarray(mirror, a);
 	setarray(tmpmir, 0);
@@ -376,15 +387,80 @@ int *divide(int *a, int *b, int *c)
 		{
 			copyarray(mirror, tmpmir);
 			c[z] += 1;
-		}
-		
+		} 
 		if ( iszero(tmpmir) == 0)
 			break;
-	}
-
-	printarray(c, cardinal);
-
-	
+	} 
+	printarray(c, cardinal); 
 	return c;
 }
+
+size_t arraylen(int *array, int delim)
+{
+	
+	size_t len = 0;
+	
+	while( array[len] != delim) 
+		++len;
+	return len;
+}
+
+
+int *addition_r(int *a, int *b, int *c)
+{
+	size_t i = 0;
+	size_t width = 0;
+	int sum = 0;
+	int carry = 0;
+	size_t wa = carda;
+	size_t wb = cardb;
+
+	if ( wa > wb ) width = wa;
+	else width = wb;
+
+	//setsign(c++); 
+	//setsign(c); 
+
+        for( i = 0; i < width ; i++)
+	{
+		sum = getcharval(a, i) + getcharval(b, i) + carry;
+                carry = 0;
+                if(sum >= base){
+                        carry = 1;
+                        sum -= base;
+                }
+                c[i] = sum;
+        }
+        if (carry)
+		c[i++] = 1;
+        c[i] = 4242;
+        //reversestr(c--);
+	reversestr(c);
+	return c;
+} 
+
+
+int getcharval(int *s, size_t idx)
+{ 
+	size_t len = arraylen(s, 4242);
+        if (idx < len)
+        	return s[len - idx - 1];
+        return 0;
+} 
+
+size_t reversestr(int *x)
+{
+        size_t i = 0;
+        char swap = 0;
+        size_t lim = arraylen(x, 4242);
+        size_t half = lim / 2;
+
+        for ( ; i < half ; i++)
+        {
+                swap = x[i];
+                x[i] = x[lim - i - 1];
+                x[lim - i - 1] = swap;
+        }
+        return lim;
+} 
 
