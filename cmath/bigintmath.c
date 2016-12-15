@@ -18,6 +18,7 @@ int *divide(int *, int *, int *);	/* Multiply arrays of integers (long multiplic
 
 size_t arraylen(int *, int);
 int *addition_r(int *, int *, int *);
+int *subtraction_r(int *, int *, int *);
 int getcharval(int *, size_t);
 size_t reversestr(int *);
 
@@ -100,6 +101,13 @@ int main(int argc, char **argv)
 	hold2 = str2ints(argv[1], bigint2);
 
 	hold = addition_r(hold, hold2, result);
+	printarray(hold, cardinal);
+	
+	/* arb subtraction */
+	hold = str2ints(argv[0], bigint1);
+	hold2 = str2ints(argv[1], bigint2);
+
+	hold = subtraction_r(hold, hold2, result);
 	printarray(hold, cardinal);
 	return 0;
 	/* arb addition */
@@ -464,3 +472,52 @@ size_t reversestr(int *x)
         return lim;
 } 
 
+
+int *subtraction_r(int *a, int *b, int *c)
+{ 
+	size_t i = 0;
+	size_t width = 0;
+	int sum = 0;
+	int mir = 0;
+	int borrow = 0;
+	int carry = -1;
+	size_t wa = arraylen(a, 4242); 
+	size_t wb = arraylen(b, 4242);
+
+	if ( wa > wb ) width = wa;
+	else width = wb;
+	
+	//setsign(c++);
+	//*mirror = '\0';
+	//setsign(mirror++);
+
+        for( i=0; i < width ; i++)
+	{
+		sum = getcharval(a, i) - getcharval(b, i) + borrow; 
+		mir = getcharval(a, i) - getcharval(b, i) + carry;
+                carry = borrow = 0;
+		if(sum < 0)
+		{
+                        borrow = -1;
+                        sum += base; 
+                }
+		if(mir < 0)
+		{
+                        carry = -1;
+                        mir += base; 
+                } 
+		c[i] = sum;
+		mirror[i] = (base-1) - mir;
+        }
+	
+        c[i] = mirror[i] = 4242; 
+	if (borrow == -1) /// then use the symmetrical mirror 
+	{
+		c = mirror; 
+		//if (!(*(a-1) == '-' && *(b-1) == '-'))
+		//	setsign(c - 1); 
+	}
+        //reversestr(c--);
+	reversestr(c);
+	return c;
+} 
