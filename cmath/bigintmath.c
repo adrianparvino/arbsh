@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	int *hold;	/* Copy of bigint1 */
 	int *hold2;	/* Copy of bigint2 */
 	int o = 0;
-	int d = 2;
+	
 
 	while ((o = getopt (argc, argv, "vb:d:")) != -1)
 		switch (o) { 
@@ -55,10 +55,6 @@ int main(int argc, char **argv)
 				break;
 			case 'b': /* Override base */
 				base = strtoul(optarg, 0, 10);
-				break; 
-			
-			case 'd': /* Set the short_divide and short_multiply test integer  */
-				d = strtoul(optarg, 0, 10);
 				break; 
 			default: 
 				break;
@@ -109,7 +105,7 @@ int main(int argc, char **argv)
 
 	hold = subtraction_r(hold, hold2, result);
 	printarray(hold, cardinal);
-	return 0;
+	
 	/* arb addition */
 	//hold = str2ints(argv[0], bigint1);
 	//hold2 = str2ints(argv[1], bigint2);
@@ -140,13 +136,13 @@ int main(int argc, char **argv)
 	/* single digit arb multiplication */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	short_multiply(hold, d);
+	short_multiply(hold, hold2[0]);
 	printarray(hold, cardinal);
 	
 	/* single digit arb short_short_divide */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	short_divide(hold, d);
+	short_divide(hold, hold2[0]);
 	printarray(hold, cardinal);
 
 	return 0;
@@ -391,15 +387,17 @@ int *divide(int *a, int *b, int *c)
 			}
 			tmpmir[j] = sum;
 		}
+		
 		if ( rec == 0 )
 		{
 			copyarray(mirror, tmpmir);
 			c[z] += 1;
 		} 
+		
 		if ( iszero(tmpmir) == 0)
 			break;
 	} 
-	printarray(c, cardinal); 
+	printarray(c, z + 1); 
 	return c;
 }
 
@@ -444,6 +442,7 @@ int *addition_r(int *a, int *b, int *c)
         c[i] = 4242;
         //reversestr(c--);
 	reversestr(c);
+	printarray(c, i);
 	return c;
 } 
 
@@ -519,5 +518,6 @@ int *subtraction_r(int *a, int *b, int *c)
 	}
         //reversestr(c--);
 	reversestr(c);
+	printarray(c, i );
 	return c;
 } 
