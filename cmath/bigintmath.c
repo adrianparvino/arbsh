@@ -4,27 +4,31 @@
 #include <unistd.h>
 #include <limits.h>
 
+
+/* TODO: Short multiplication and division may work with floats given a few simple
+	 modifications */
+
 /* Function protoypes */
-void addition(int *, int *);	/* Add integer arrays together */
-void copyarray(int *, int *);	/* Copy an array of ints to another array of ints */
-void die(char *);		/* Kill and error message */
-void short_divide(int *, int);	/* Divide an integer array by an integer */
-int iszero(int *);		/* Returns true if an entire array is zero */
+void addition(int *, int *);		/* Add integer arrays together */
+int *addition_r(int *, int *, int *);	/* Add two arrays */
+size_t arraylen(int *, int);		/* Similiar to strlen except it searches for the specified token */
+void copyarray(int *, int *);		/* Copy an array of ints to another array of ints */ 
+void die(char *);			/* Kill and error message */
+int iszero(int *);			/* Returns true if an entire array is zero */ 
+void short_divide(int *, int);		/* Divide an integer array by an integer */
+int *divide(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */ 
 void short_multiply(int *, int);	/* Multiply an integer array by an integer */
+int *multiply(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */ 
+size_t reversestr(int *);		/* Reverse an integer array */ 
+void setarray(int *, int);		/* Set an array of ints to all zeros or a magnitude thereof */
+void subtract(int *, int *);		/* Subtract an integer array from another */
+int *subtraction_r(int *, int *, int *);/* Subtract two arrays */
+
+
+/* More (helper) function prototypes */
+int *str2ints(char *, int *);		/* Convert a string into an integer array */ 
 void printarray(int *, size_t len);	/* Print an array of integers */
-
-int *multiply(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */
-int *divide(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */
-
-size_t arraylen(int *, int);
-int *addition_r(int *, int *, int *);
-int *subtraction_r(int *, int *, int *);
-int getcharval(int *, size_t);
-size_t reversestr(int *);
-
-void setarray(int *, int);	/* Set an array of ints to all zeros or a magnitude thereof */
-int *str2ints(char *, int *);	/* Convert a string into an integer array */
-void subtract(int *, int *);	/* Subtract an integer array from another */
+int getcharval(int *, size_t);		/* Return an indice position if it exists, if not, return 0 */
 void verbosity(int *, char *);  /* Verbosity function */
 void *strallocate(size_t);	/* Memory allocater with error */
 
@@ -48,9 +52,9 @@ int main(int argc, char **argv)
 	int o = 0;
 	
 
-	while ((o = getopt (argc, argv, "vb:d:")) != -1)
+	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
-			case 'v': /* Set verbose (not yet implemented) */
+			case 'v': /* Set verbosity (not fully implemented) */
 				verbose = 1;
 				break;
 			case 'b': /* Override base */
@@ -72,6 +76,7 @@ int main(int argc, char **argv)
 	tmpmir = strallocate(1000 * sizeof(int));
 	bigint1  = strallocate(1000 * sizeof(int));
 	bigint2 = strallocate(1000 * sizeof(int));
+
 	/* arb divide */
 	carda = strlen(argv[0]);
 	cardb = strlen(argv[1]);
@@ -79,38 +84,31 @@ int main(int argc, char **argv)
 	hold2 = str2ints(argv[1], bigint2);
 	hold[carda] = 4242;
 	hold2[cardb] = 4242;
-
 	divide(hold, hold2, result);
-	//printarray(hold, cardinal);
 
 	/* arb multiply */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	multiply(hold, hold2, result);
-	//printarray(hold, cardinal);
-
-
-
 
 	/* arb addition */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-
 	hold = addition_r(hold, hold2, result);
 	printarray(hold, cardinal);
 	
 	/* arb subtraction */
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-
 	hold = subtraction_r(hold, hold2, result);
 	printarray(hold, cardinal);
 	
 	/* arb addition */
-	//hold = str2ints(argv[0], bigint1);
-	//hold2 = str2ints(argv[1], bigint2);
-	//addition(hold, hold2);
-	//printarray(hold, cardinal);
+	printf("add\n");
+	hold = str2ints(argv[0], bigint1);
+	hold2 = str2ints(argv[1], bigint2);
+	addition(hold, hold2);
+	printarray(hold, cardinal);
 
 	/* arb subtract */
 	hold = str2ints(argv[0], bigint1);
@@ -148,115 +146,24 @@ int main(int argc, char **argv)
 	return 0;
 } 
 
-void addition(int *answer, int *increm) 
-{
-	/* TODO: add swap to mirror if carry */
-	/* TODO: replace int with size_t */
-	int i;
-	int needsmag = 0;
-	for (i = cardinal - 1; i>=0 ; i--)
-	{
-		answer[i] += increm[i];
-		needsmag = 0;
-		if (answer[i] >= base)
-		{
-			needsmag = 1;
-			answer[i] -= base;
-			answer[i - 1]++;
-		}
-	}
-	if ( needsmag == 1 )
-	{ 
-		mirror[0] = 1;
-		copyarray(mirror + 1, answer);
-		printarray(mirror, cardinal + 1); 
-	}
-}
-
-void copyarray(int *answer, int *from)
-{
-	size_t i = 0;
-	for( i = 0; i < cardinal; i++)
-		answer[i] = from[i];
-}
-
 void die(char *message)
 {
 	fprintf(stderr, "%s", message);
 	exit(1);
-}
-
-void short_divide(int *answer, int denom)
-{
-	int carry = 0;
-	size_t i = 0;
-	for( i = 0; i < cardinal; i++)
-	{
-		answer[i] += carry * base;
-		carry = answer[i] % denom;
-		answer[i] /= denom;
-	}
-}
-
-int iszero(int *answer)
-{
-	/* TODO: write a similiar routine which checks if a number has neg vals */
-	/* if it does have neg vals, then use a seed denominator to readjust it */
-	size_t i = 0;
-	for ( i = 0; i < cardinal; i++)
-		if ( answer[i] )
-			return 1;
-	return 0;
-}
-
-void short_multiply(int *answer, int factor)
-{
-	/* ~= infinity * ( INT_MAX / 2 ) */
-	if ( factor > INT_MAX / 2 )
-		die("factor too big\n");
-
-	/* TODO: Add support for multiple digit factors */
-	/* TODO: Change incrementor to a size_t */
-	int i;
-	int carry = 0;
-	for ( i = cardinal - 1; i >= 0 ; i--)
-	{
-		answer[i] *= factor;
-		answer[i] += carry;
-		carry = answer[i] / base;
-		answer[i] %= base;
-	}
-}
+} 
 
 void printarray(int *a, size_t len)
 {
-	/* TODO: Use only 1 write (concatenate '\n') */
 	size_t i = 0;
 	for ( i = 0; i < len ; )
 		printf("%d ", a[i++]);
 	printf("\n");
-}
-
-void setarray(int *answer, int rootcap)
-{
-	/* TODO: add an end cap value */
-	/* TODO: Formalize as a bigint creation / initialization function */
-
-	size_t i = 0;
-	for( i = 0; i < cardinal; i++)
-		answer[i] = 0;
-	answer[0] = rootcap;
 } 
 
 int *str2ints(char *a, int *b)
 {
-	/* TODO: Move strallocate out of this function */
 	size_t i = 0;
 	size_t tot = 0;
-	size_t len = strlen(a);
-	
-	//b = strallocate(len * sizeof(int));
-	
 	while ( a[i] != '\0' )
 	{
 		b[i] = a[i] - '0';
@@ -268,39 +175,8 @@ int *str2ints(char *a, int *b)
 	return b;
 }
 
-void subtract(int *answer, int *decrem)
-{
-	/* TODO: replace int with size_t */
-	int i;
-	int isneg = 0;
-	
-	copyarray(mirror, answer);
-	for ( i = cardinal - 1; i >= 0 ; i--){
-		answer[i] -= decrem[i];
-		mirror[i] -= decrem[i];
-		isneg = 0;
-		if ( answer[i] < 0 )
-		{
-			answer[i] += base;
-			answer[i - 1]--;
-			isneg = 1;
-		}
-		if ( mirror[i] < 0 )
-		{
-			mirror[i] += base ;
-			mirror[i] = base - mirror[i];
-		}
-	}
-	if ( isneg == 1 )
-	{
-		verbosity(mirror, "was negative");
-		copyarray(answer, mirror); // This could be replaced by a pointer swap
-	}
-}
-
 void verbosity(int *array, char *message)
 {
-	/* support message types from stringmath.txt too */
 	if ( verbose == 0 )
 		return;
 	printf("Verbosity message: %s\n", message);
@@ -311,11 +187,79 @@ void verbosity(int *array, char *message)
 
 void *strallocate(size_t len)
 {
-	/* TODO: Incorporate perror */
 	void *ret;
 	if(!(ret = malloc(len)))
 		die("malloc failed\n"); 
 	return ret;
+}
+
+int getcharval(int *s, size_t idx)
+{ 
+	size_t len = arraylen(s, 4242);
+        if (idx < len)
+        	return s[len - idx - 1];
+        return 0;
+} 
+
+size_t reversestr(int *x)
+{
+        size_t i = 0;
+        char swap = 0;
+        size_t lim = arraylen(x, 4242);
+        size_t half = lim / 2;
+
+        for ( ; i < half ; i++)
+        {
+                swap = x[i];
+                x[i] = x[lim - i - 1];
+                x[lim - i - 1] = swap;
+        }
+        return lim;
+}
+
+void copyarray(int *answer, int *from)
+{
+	size_t i = 0;
+	for( i = 0; i < cardinal; i++)
+		answer[i] = from[i];
+}
+
+size_t arraylen(int *array, int delim)
+{ 
+	size_t len = 0; 
+	while( array[len] != delim) 
+		++len;
+	return len;
+}
+
+int iszero(int *answer)
+{
+	size_t i = 0;
+	for ( i = 0; i < cardinal; i++)
+		if ( answer[i] )
+			return 1;
+	return 0;
+}
+
+void setarray(int *answer, int rootcap)
+{
+	size_t i = 0;
+	for( i = 0; i < cardinal; i++)
+		answer[i] = 0;
+	answer[0] = rootcap;
+}
+ 
+void short_multiply(int *answer, int factor)
+{
+	int i;
+	int carry = 0;
+	for ( i = cardinal - 1; i >= 0 ; i--)
+	{
+		answer[i] *= factor;
+		answer[i] += carry;
+		carry = answer[i] / base;
+		answer[i] %= base;
+	}
 }
 
 int *multiply(int *a, int *b, int *c)
@@ -345,6 +289,18 @@ int *multiply(int *a, int *b, int *c)
 	}
 	printarray(c, carda + cardb); 
 	return c;
+}
+
+void short_divide(int *answer, int denom)
+{
+	int carry = 0;
+	size_t i = 0;
+	for( i = 0; i < cardinal; i++)
+	{
+		answer[i] += carry * base;
+		carry = answer[i] % denom;
+		answer[i] /= denom;
+	}
 }
 
 int *divide(int *a, int *b, int *c)
@@ -401,17 +357,35 @@ int *divide(int *a, int *b, int *c)
 	return c;
 }
 
-size_t arraylen(int *array, int delim)
-{
+void addition(int *a, int *b) 
+{ 
+	int i;
+	int carry = 0;
+	size_t width = 0;
+	size_t wa = carda;
+	size_t wb = cardb;
 	
-	size_t len = 0;
-	
-	while( array[len] != delim) 
-		++len;
-	return len;
+	if ( wa > wb ) width = wa;
+	else width = wb;
+
+	for (i = width - 1; i>=0 ; i--)
+	{
+		a[i] += b[i] + carry;
+		carry = 0;
+		if (a[i] >= base)
+		{
+			carry = 1;
+			a[i] -= base;
+			//a[i - 1]++;
+		}
+	}
+	if ( carry == 1 )
+	{ 
+		mirror[0] = 1;
+		copyarray(mirror + 1, a);
+		printarray(mirror, cardinal + 1); 
+	}
 }
-
-
 int *addition_r(int *a, int *b, int *c)
 {
 	size_t i = 0;
@@ -423,9 +397,6 @@ int *addition_r(int *a, int *b, int *c)
 
 	if ( wa > wb ) width = wa;
 	else width = wb;
-
-	//setsign(c++); 
-	//setsign(c); 
 
         for( i = 0; i < width ; i++)
 	{
@@ -440,37 +411,48 @@ int *addition_r(int *a, int *b, int *c)
         if (carry)
 		c[i++] = 1;
         c[i] = 4242;
-        //reversestr(c--);
+       
 	reversestr(c);
 	printarray(c, i);
 	return c;
-} 
+}
 
-
-int getcharval(int *s, size_t idx)
-{ 
-	size_t len = arraylen(s, 4242);
-        if (idx < len)
-        	return s[len - idx - 1];
-        return 0;
-} 
-
-size_t reversestr(int *x)
+void subtract(int *answer, int *decrem)
 {
-        size_t i = 0;
-        char swap = 0;
-        size_t lim = arraylen(x, 4242);
-        size_t half = lim / 2;
+	int i;
+	int isneg = 0;
+	size_t width = 0;
+	
+	size_t wa = arraylen(answer, 4242); 
+	size_t wb = arraylen(decrem, 4242);
 
-        for ( ; i < half ; i++)
-        {
-                swap = x[i];
-                x[i] = x[lim - i - 1];
-                x[lim - i - 1] = swap;
-        }
-        return lim;
-} 
+	if ( wa > wb ) width = wa;
+	else width = wb;
 
+	copyarray(mirror, answer);
+	for ( i = width; i >= 0 ; i--)
+	{ 
+		answer[i] -= decrem[i];
+		mirror[i] -= decrem[i]; 
+		isneg = 0;
+		if ( answer[i] < 0 )
+		{
+			answer[i] += base;
+			answer[i - 1]--;
+			isneg = 1;
+		}
+		if ( mirror[i] < 0 )
+		{
+			mirror[i] += base ;
+			mirror[i] = base - mirror[i];
+		} 
+	}
+	if ( isneg == 1 )
+	{
+		verbosity(mirror, "was negative");
+		copyarray(answer, mirror);
+	}
+}
 
 int *subtraction_r(int *a, int *b, int *c)
 { 
@@ -485,10 +467,6 @@ int *subtraction_r(int *a, int *b, int *c)
 
 	if ( wa > wb ) width = wa;
 	else width = wb;
-	
-	//setsign(c++);
-	//*mirror = '\0';
-	//setsign(mirror++);
 
         for( i=0; i < width ; i++)
 	{
@@ -510,13 +488,9 @@ int *subtraction_r(int *a, int *b, int *c)
         }
 	
         c[i] = mirror[i] = 4242; 
-	if (borrow == -1) /// then use the symmetrical mirror 
-	{
-		c = mirror; 
-		//if (!(*(a-1) == '-' && *(b-1) == '-'))
-		//	setsign(c - 1); 
-	}
-        //reversestr(c--);
+	if (borrow == -1)
+		c = mirror;
+
 	reversestr(c);
 	printarray(c, i );
 	return c;
