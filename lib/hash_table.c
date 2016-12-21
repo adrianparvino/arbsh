@@ -1,4 +1,4 @@
-#include "lib/cutils.c"
+#include "lib/cutils.h"
 struct nlist {     /* table entry: */
         struct nlist *next;   /* next entry in chain */
         char *name;                /* defined name */
