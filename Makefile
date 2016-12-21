@@ -69,6 +69,6 @@ release:
 	-git commit -m $(RELEASE)
 	-git push origin master
 	cd $(SPWD)/.. && tar -c $(NAME) -f $(RELEASE)
-	cd $(SPWD)/.. && scp $(RELEASE) $(SSHSEVER)
+	cd $(SPWD)/.. && scp $(RELEASE) $(SSHSERVER)
 	
 
