@@ -7,21 +7,22 @@
 	It also contains a window manager, editor, system monitor
 	and other useful tools and shell scripts.
 	
+	Each subdirectory has a README which documents its usage.
 
 
 HIER:
 -----
-	cbin/
+	bin/
 		Userland applications written in C (native)
-	clib/
+	lib/
 		Standard C library components and helper libraries, (native)
 		
 		Gshline. An editline/readline like implementation. This
 		library is used to supply line editing and history to
 		the graff shell (Gsh) and grafland irc client. The latter
-		is supplied with a unique ircline() funtion (native).
+		is supplied with a unique ircline() function (native).
 
-	cmath/
+	math/
 		Arbitrary precision string and bigint / bignum functions in C.
 		Transcendental mathematics functions written in C (native).
 	docs/
@@ -31,7 +32,7 @@ HIER:
 		A native editor.
 	wm/
 		A rewrite of dwm.
-	Gsh/
+	gsh/
 		A native shell.
 	irc/
 		A native irc client and library.
@@ -41,17 +42,11 @@ HIER:
 		Userland applications and libraries written in POSIX shell 
 		(native).
 	toolchain/
-		A cross compiling toolchain and build system. Similiar to buildroot
-		but with much simpler code,
+		A cross compiling toolchain and build system. Similiar to 
+		buildroot but with much simpler code,
 			-Link grafland components up into the toolchain
-			 for compilation and installation.
+			 for cross compilation and installation.
 			-Build and maintain outside software.
-
-		ottercross/
-			The ottercross PoC toolchain (native)
-			-This small toolchain building system focuses on secure gpg
-			 checking
-			 
 
 
 
@@ -97,9 +92,6 @@ CROSS BUILDING:
 	directories to toolchain/, view the documentation
 	within toolchain/README and run the build system
 	from there.
-
-
-	Each subdirectory has a README which documents its usage.
 
 
 PORTABILITY:
