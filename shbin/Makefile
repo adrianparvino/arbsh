@@ -2,7 +2,7 @@
 
 PREFIX=/shbin/
 
-LIST = crosstoolchain dog duwrap grop headsh remaster which ldd_wrapper ls remove_executable
+LIST = crosstoolchain dog duwrap grop headsh remaster which ldd_wrapper ls remove_executable exponentation hex_to_int hex_to_ip integer_to_spoken sort 
 
 
 all: $(LIST)
