@@ -18,8 +18,8 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <stdint.h>
-#include "../clib/ansicode.h"
-#include "../clib/readline.h"
+#include "../lib/ansicode.h"
+#include "../lib/readline.h"
 
 
 /*
@@ -53,7 +53,7 @@ struct commands
 	int out;
 	/* pipes */
 	int piped;
-	/* prosesses */
+	/* processes */
 	pid_t pids;
 	int bg;
 	int err;
