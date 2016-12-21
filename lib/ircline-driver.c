@@ -8,8 +8,8 @@
 #include <limits.h>
 #include <termios.h>
 #include <sys/ioctl.h>
-#include "../clib/ansicode.h"
-#include "../clib/ircline.h"
+#include "../lib/ansicode.h"
+#include "../lib/ircline.h"
 
 
 int main(void)

@@ -1,8 +1,8 @@
 int rglob(const char *p, const char *s) 
 {
 	return
-		*p=='*'  ? rglob(p+1,s) || (*s && rglob(p,s+1)) :
-		*p=='?'  ? *s && rglob(p+1,s+1) :
+		*p=='*' ? rglob(p+1,s) || (*s && rglob(p,s+1)) :
+		*p=='?' ? *s && rglob(p+1,s+1) :
 		*s==*p++ && (!*s++ || rglob(p,s));
 }
 

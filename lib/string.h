@@ -26,7 +26,6 @@ char *gstrchr(const char *s, int c)
 	return (char *)s;
 }
 
-
 char *gstrcpy(char *s, char *t)
 { 
 	while ((*s = *t) != '\0') 
@@ -48,9 +47,6 @@ char *gstrncpy(char *dest, const char *src, size_t n)
 
 	return dest;
 }
-
-
-
 
 char *gstrtok(char *s, const char *delim)
 {
@@ -102,9 +98,7 @@ char *gstrtok(char *s, const char *delim)
                         }
                 } while (hold != 0);
         }
-}
-
-
+} 
 
 size_t mystrspn(const char *s1, const char *s2)
 {
@@ -145,33 +139,7 @@ void* gmemcpy(void* destination, const void* source, size_t num)
 		d[i] = s[i];
 	}
 	return destination;
-}
-
-//void *memcpyCustom(void *dest, const void *src, size_t n)
-//{
-//    char *dp = (char *)dest;
-//    const char *sp = (char *)src;
-//    while (n--)
-//        *dp++ = *sp++;
-//    return dest;
-//}
-
-void *gmemmove2(void *dest, const void *src, size_t n)
-{
-	unsigned char *pd = (unsigned char *)dest;
-	const unsigned char *ps = (unsigned char *)src;
-	if ( ps < pd )
-	{
-		for (pd += n, ps += n; n--;)
-			*--pd = *--ps;
-	}
-	else
-	{
-		while(n--)
-			*pd++ = *ps++;
-	}
-	return dest;
-}
+} 
 
 void *gmemmove(void *to, const void *from, size_t size)
 {
