@@ -1,0 +1,100 @@
+# Musl Otter Cross (MOC)
+# Musl based cross compiler, 2 stages, relocatable toolchain, in tree binutils.
+
+Using gcc-6.1.0, binutils-2.6 and musl-1.14 (current releases as of
+20/05/2016).
+
+Musl-otter-cross uses a "two stage" system to create a cross compiler.
+Gcc, musl and binutils are built using "read only source", (they are
+configured and built in an outside directory).
+
+The gcc build system is directory based / driven. Musl-otter-cross takes
+advantage of this in (2) ways;
+	1) The binutils build tree is linked into the gcc build tree.
+	   This is referred to as a "combined tree".
+
+	2) During the "second stage gcc build" a number of "--disable-*"
+	   options are passed to gcc which suppress rebuilding of any 
+	   binutils components.
+
+In-tree build systems;
+	Gcc contains a script called "symlink-tree" which is designed
+	to fascilitate in-tree builds. Musl-otter-cross does not yet
+	make use of this script. Running this script is not always
+	needed, but as it was included by the gcc developers for this
+	purpose, it would be best to use it.
+
+Relocatable toolchains;
+	Toolchains made with musl-otter-cross are configured with a
+	sysroot so they are relocatable.
+
+
+Musl-otter-cross utilizes the patch set from musl-cross-make. If you are 
+creating a toolchain for a distribution make sure to check that out first
+/too!;
+	https://github.com/richfelker/musl-cross-make
+
+
+The patches which musl-otter-cross strictly relies on are for configuring
+gcc to accept musl based tuples. Musl should no longer need such patches 
+after gcc version 6 (we are on 5.3 now).
+
+
+Some patches from nsz are also used, and can be found here:
+
+	 http://port70.net/~nsz/musl/
+
+
+Builds take between 10 and 20 minutes on most machines. I believe with
+proper configuration and build target staging this could be halved.
+
+
+When musl-otter-cross builds a "universe" or batch of architectures,
+source code is shared between arches so as to minimize workload and 
+disk footprint when testing multiple targets (read only source). 
+Each target is deleted after it is created and tested. These target
+builds are assessed by examining their logs. Remove the cleanall
+recipies after each 'all' recipie in the 'universe' make target if
+you would like to preserve the toolchains.
+
+
+Simple tests are performed after each target is finished building. If the 
+tests succeeded the test which was passed is recorded in the report.
+There are (4) tests:
+	1> pthreads
+		Compiles thread support.
+	2> C
+		Has access to a basic POSIX C api.
+	3> C++
+		C++ support.
+	4> fortran 
+		Fortran support.
+
+
+Tests are recorded in a report which is named "machtype-report", where 
+'machtype' is the host tuplet. The passing languages are also recorded in 
+the report.
+
+
+BUILDING:
+---------
+
+	Download grafland and chdir to musl-otter-cross:
+
+		git clone https://github.com/cmgraff/grafland/
+                cd grafland/musl-otter-cross
+
+	Build for the default architecture (i686-pc-linux-musl): 
+
+		make
+
+	Build for all architectures: 
+       
+                make universe
+
+	Build for a specific architecture:
+                
+                make TARG=aarch-pc-linux-musl
+
+
+

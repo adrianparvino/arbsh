@@ -22,9 +22,9 @@
 #include <errno.h>
 #include <stdint.h>
 
-/* local librarie */
-#include "../clib/ansicode.h"
-#include "../clib/date.h"
+/* local libraries */
+#include "../lib/ansicode.h"
+#include "../lib/date.h"
 
 /* defines */ 
 #define BUF_MAX 1024

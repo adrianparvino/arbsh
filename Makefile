@@ -11,33 +11,33 @@ WEBSITE=http://www.csit.parkland.edu/~cgraff1
 
 all:
 
-	-$(MAKE) -C cbin 
+	-$(MAKE) -C bin 
 	-$(MAKE) -C irc
 	-$(MAKE) -C gsh
 	-$(MAKE) -s -C shbin
 	-$(MAKE) -C editor
 	-$(MAKE) -C sysmon
-	-$(MAKE) -C cmath
+	-$(MAKE) -C math
 
 clean:
 
-	$(MAKE) -C cbin clean 
+	$(MAKE) -C bin clean 
 	$(MAKE) -C irc clean
 	$(MAKE) -C gsh clean
 	$(MAKE) -C shbin clean
 	$(MAKE) -C editor clean
 	$(MAKE) -C sysmon clean
-	$(MAKE) -C cmath clean
+	$(MAKE) -C math clean
 
 install:
 
-	-$(MAKE) -C cbin install 
+	-$(MAKE) -C bin install 
 	-$(MAKE) -C irc install
 	-$(MAKE) -C gsh install
 	-$(MAKE) -C shbin install 
 	-$(MAKE) -C editor install
 	-$(MAKE) -C sysmon install
-	-$(MAKE) -C cmath install
+	-$(MAKE) -C math install
 	# Install toolchain last if it exists
 	-$(MAKE) -C toolchain install
 

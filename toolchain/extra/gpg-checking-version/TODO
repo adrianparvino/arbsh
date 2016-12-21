@@ -1,0 +1,10 @@
+
+wget's should be changed to download into the current $(WORK)
+directory, check their gpg keys, and then afterwards mv them into
+$(SRC).
+
+Likewise, extraction should be moved to the first staep of each
+stage and only draw from $(SRC).
+
+These changes should allow ottercross to build without multiple
+arches concurrently.
