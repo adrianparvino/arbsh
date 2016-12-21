@@ -8,12 +8,12 @@ Automatic autobuilder script and front end for testing.
 	* Create a testing infrastructure which circumvents the need for
 	  multiple builds.
 
-Make variables should be overriddenby the environment. So perhaps
+Make variables should be overridden by the environment. So perhaps
 the normative case should look something like:
 
 OM_VAR ?= examplepack-1.0
 
-Conversely setting should be additive:
+Conversely settings should be additive:
 
 OM_SOMESETTING += -Wall -Wextra
 	
