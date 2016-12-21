@@ -6,8 +6,6 @@
 
 char *depths[100];
 
-
-
 /* overflow safe tree traversal */
 
 void printdir(char *dir, int depth)
@@ -51,7 +49,7 @@ void printdir(char *dir, int depth)
 	closedir(dp);
 }
 
-/*  Now we move onto the main function.  */
+
 
 int main(int argc, char* argv[])
 {
