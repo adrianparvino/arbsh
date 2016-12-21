@@ -1,3 +1,4 @@
+
 size_t date(char *buf, char *format, size_t max)
 {
         size_t n = 0;
