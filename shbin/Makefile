@@ -1,16 +1,24 @@
+.PHONY: uninstall
 
 
-PREFIX=/shbin/
+SRC = $(wildcard *.sh)
+BIN = $(patsubst %.sh,%,$(SRC))
 
-LIST = dog duwrap grop headsh remaster which ldd_wrapper ls remove_executable exponentation hex_to_int hex_to_ip integer_to_spoken sort 
+PREFIX ?= /bin
 
-
-all: $(LIST)
+all: $(BIN)
 
 clean:
-	$(RM) $(LIST) 
+
+	$(RM) $(BIN) uninstall
 	
 install:
 
 	@mkdir -p $(DESTDIR)/$(PREFIX)/
-	@cp -a $(LIST) $(DESTDIR)/$(PREFIX)/
+	@cp -a $(BIN) $(DESTDIR)/$(PREFIX)/
+	echo "cd $(DESTDIR)/$(PREFIX)/ && rm $(BIN)" > uninstall
+
+uninstall:
+
+	chmod +x uninstall
+	./uninstall

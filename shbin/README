@@ -1,49 +1,36 @@
+﻿
+Simple userland utilities and scripts implemented in portable shell syntax. 
+They are intended to be ran with ash, dash, bash or ksh.  
 
-Some simple userland utilities/scripts implemented in portable shell syntax. 
-They are intended to be ran with ash, dash, bash or ksh.
-
-Why?
-Though the shell is deficient for processing text files, it does moderately
-well at exploring and manipulating a filesystem directory structure. ls.sh
-demonstrates the power of the shell's file listing capabilities.
-
-To rename (make uses the shell's '>' redirector to make a copy) the .sh files and 
-make them executable, invoke make:
-
-	cd shbin
-	make
-
-
-
-	./
-		dog
-			A `cat'-like utility.
-		duwrap
-			A wrapper to make du simpler to use in scripts.
-		grop
-			A `grep'-like utility.
-		headsh
-			A `head'-like utility.
-		README
-			This file.
-		remaster
-			A sophisticated backup and remastery script for x86.
-			See remaster.README.
-		remaster.README
-		ls
-			An `ls'-like utility.
-		which
-			The `which' utility.
-
-
-	./lib/
-		exponentation  
-			For shells without exponentation
-		hex_to_int 
-		hex_to_ip  
-		integer_to_spoken
-			Convert numbers to spoken text.
-		sort
-			Insertion sort.
-
-
+	* dog.sh
+		A cat-like utility. For text only.
+	* duwrap.sh
+		A wrapper for du which makes it easier to use
+		in scripts when estimating filesystem usage.
+	* grop.sh
+		A grep-like utility which uses glob matching. For
+		text only.
+	* headsh.sh
+		A head-like utility. For text only.
+	* hex_to_int.sh
+		Convert a hexidecimal value obtained from /proc to
+		an integer.
+	* hex_to_ip.sh
+		Convert a hexidecimal value obtained from /proc to
+		an ip address.
+	* int_to_phrase.sh
+		Convert a large number to spoken English based on 
+		linguistic rules.
+	* lddwrap.sh
+		Quickly make a directory which can be chrooted into that
+		contains all of the specified program's library dependencies.
+	* list.sh
+		An `ls' like implementation for listing files and exploring
+		the file tree.
+	* powsh.sh
+		Raise a number to the n-th power, even in shells that
+		don't normally support it.
+	* remaster.sh
+		A remastery and back up tool.
+	* sortsh.sh
+		Sorting functions and array implementations in POSIX sh.
