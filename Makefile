@@ -3,9 +3,11 @@
 .PHONY: toolchain
 
 
-RELEASE=grafland-0.2g.tar.gz
-WEBSITE=http://www.csit.parkland.edu/~cgraff1
-
+RELEASE = grafland-0.3a.tar.gz
+WEBSITE = http://www.csit.parkland.edu/~cgraff1
+SPWD = $(shell pwd)
+NAME = $(shell basename $(SPWD))
+SSHSERVER = cgraff1@shaula.parkland.edu:public_html/
 
 
 
@@ -59,16 +61,14 @@ clearenvars:
 
 release:
 
-	#tar -cf $(RELEASE) $(LIST1) $(LIST2)
-
 	-echo "$(WEBSITE)/$(RELEASE)" >> README
 	-echo >> README
 	-echo "  <A HREF=\"$(WEBSITE)/$(RELEASE)\">$(WEBSITE)/$(RELEASE)</A>" >> README.html
 	-echo "  <br>" >> README.html
-	
-
 	-git add *
 	-git commit -m $(RELEASE)
 	-git push origin master
+	cd $(SPWD)/.. && tar -c $(NAME) -f $(RELEASE)
+	cd $(SPWD)/.. && scp $(RELEASE) $(SSHSEVER)
 	
 
