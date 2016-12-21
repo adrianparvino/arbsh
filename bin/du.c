@@ -1,5 +1,3 @@
-#include "lib/cutils.c" 
-#include "lib/inode_hash.c"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,6 +9,10 @@
 #include <sys/types.h>
 
 #include <limits.h>
+
+
+#include "../lib/cutils.c" 
+#include "../lib/inode_hash.c"
 
 /* Copyright 2015, C. Graff  "du" */ 
 

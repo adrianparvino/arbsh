@@ -1,6 +1,6 @@
 #include <time.h>
 
-#include "../clib/stdlib.h"
+#include "../lib/stdlib.h"
 
 /*
 	Copyright, C. Graff, `sleep'

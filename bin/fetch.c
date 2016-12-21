@@ -15,7 +15,7 @@
 //#include <linux/limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "lib/cutils.c" 
+#include "../lib/cutils.c" 
 
 /* 
 	Copyright 2015, C. Graff  "fetch"
