@@ -1,4 +1,4 @@
-
+﻿
 NAME
 	ansihexen, ansigetch, ansiinit, ansicreate, ansiwaddch, ansiredraw
 
@@ -27,7 +27,7 @@ DESCRIPTION
 		ansigetch() is a very heavy getchar-like function which stores,
 		changes and then returns the terminal settings to normal. Some
 		programmers may choose to use a simple call to read() for this
-		purpose instead. Ansigetch() returns immediatly upon recieving 
+		purpose instead. Ansigetch() returns immediately upon receiving 
 		any character.
 
 		ansigetch() returns -1 upon error. Otherwise it returns the 
