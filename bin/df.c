@@ -5,7 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <libgen.h> 
-#include "../lib/cutils.c"
+#include "../lib/cutils.h"
 /* Copyright 2015, C. Graff  "df" */
 
 void df_human(unsigned long long);
