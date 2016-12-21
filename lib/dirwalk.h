@@ -1,27 +1,3 @@
-#include <stdio.h>
-#include <dirent.h> 
-#include <fnmatch.h>
-#include <string.h>
-#include <getopt.h>
-#include <stdlib.h> 
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h> 
-
-#include <pwd.h>
-#include <grp.h>
-
-
-int find_pattern(char *, size_t, size_t);
-
-int main(int argc, char *argv[])
-{ 
-	
-	find_pattern(argv[1], strlen(argv[1]), 0);
-
-	return 0;
-} 
 int find_pattern(char *path, size_t tot, size_t last)
 { 
 	DIR *dir;
