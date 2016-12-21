@@ -7,7 +7,7 @@ RELEASE = grafland-0.3a.tar.gz
 WEBSITE = http://www.csit.parkland.edu/~cgraff1
 SPWD = $(shell pwd)
 NAME = $(shell basename $(SPWD))
-SSHSERVER = cgraff1@shaula.parkland.edu:public_html/
+SSHSERVER = cgraff1@shaula.csit..parkland.edu:public_html/
 
 
 
