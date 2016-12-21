@@ -7,8 +7,8 @@
 #include <regex.h> 
 #include <ctype.h>
 #include <limits.h>
-#include "../clib/string.h"
-#include "../clib/unistd.h"
+#include "../lib/string.h"
+#include "../lib/unistd.h"
 
 
 

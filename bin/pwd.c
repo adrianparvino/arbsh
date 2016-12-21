@@ -1,6 +1,6 @@
 #include <unistd.h>
-#include "../clib/limits.h"
-#include "../clib/string.h"
+#include "../lib/limits.h"
+#include "../lib/string.h"
 
 /* 
         Copyright 2015, C. Graff  `pwd`
