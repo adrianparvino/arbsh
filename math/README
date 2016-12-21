@@ -1,0 +1,89 @@
+﻿cmath
+
+
+	Contents:
+	I. Arbitrary precision arithmetic (APA)
+		1. All of these functions go to infinite precision (bound only
+		   by memory)
+		2. Functions
+			a. add
+			b, subtract
+			c. multiply 
+			d. divide
+		3. See stringmath.txt for more info
+
+	II. Transcendental functions implemented using their Taylor series
+		1. Most functions work to within 10 digits of precision
+		   on either side of the mantissa.
+		2. Well ranged algorithms with argument reduction.
+		3. Varying in performance, slow with arguments nearing 1,
+		4. Functions
+			a, Most of the normative case transcendental functions
+			   (pow, exp, cos, tan and etc ..  ) 
+			b. Bessel functions (Bernoulli numbers) 
+
+	III. Transcendental functions using continued fraction expansions
+		1. Extremely fast.
+			a. Functions are completely resolved within 3 iterations
+		2. Functions
+			a. Transcendental sin, cos, tan and exp
+
+	IIII. Tests for various functions or programs
+		1. Tests
+			a. testmath.c
+			b. teststring.sh
+			c. continued_fraction,c
+
+	IIIII. Novelty programs and functions related to math
+		1. Programs
+			a. multiplication.c
+				-> Multiplication implemented as a function of 
+				   addition.
+				-> Accepts fractional arguments by decomposing
+				   floats using brute force.
+				-> Slow.
+			b. astronomy_calculator.c
+				-> compare basic log10(d) = (((m - M) + 5) / 5) 
+
+
+	Description: 
+	    All math routines are written in C and can operate without 
+	assistance from outside math.h libraries. They accomplish this by 
+	inter-relying on each other, for example many other transcendental 
+	functions call pow() or exp() to accomplish their ends.
+	
+	    The majority of the functions in this directory are implemented 
+	using their respective Taylor series.
+
+
+	Testing: 
+	To test the arbitrary precision string calculator, invoke make and then
+	run the ./teststrings.sh script which runs the "stringmath" binary 
+	against various test values.
+
+		make
+		./teststrings.sh
+
+	The continued fraction expansions are all contained within the file 
+	continued_fraction.c.
+		cc continued_fraction.c -lm
+		./continued_fraction
+
+	To test the Taylor series based math.h style  functions, build and 
+	run "testmath.c".  This program requires 2 arguments. If you are 
+	testing a function which only accepts one argument then just provide 
+	an irrelevant value for the second argument.
+	
+		make
+		./testmath [arg] [arg]
+
+	
+	To use these functions inside a program specify the full path name of
+	the function wrapper "math.c":
+	
+	#include "/path/to/cmath/math.c" 
+
+	
+	Author:
+	CM Graff
+

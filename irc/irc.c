@@ -17,11 +17,11 @@
 #include <stdint.h>
 
 /* local libraries */ 
-#include "../clib/string.h"
-#include "../clib/ansicode.h"
-#include "../clib/dial.h"
-#include "../clib/ircline.h"
-#include "../clib/date.h"
+#include "../lib/string.h"
+#include "../lib/ansicode.h"
+#include "../lib/dial.h"
+#include "../lib/ircline.h"
+#include "../lib/date.h"
 
 /* 
         2015 (C) Copyright, `Irc', CM Graff MIT/BSD Licensed 

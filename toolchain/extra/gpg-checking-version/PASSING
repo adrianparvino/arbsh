@@ -1,0 +1,153 @@
+A sample of passing grafland ottercross cross builds.
+
+
+Using gcc-5.3.0 and binutils-2.26 with current release musl, uClibc and glibc.
+
+MACHTYPE == powerpc64le-redhat-linux-gnu
+Wed Apr 13 04:18:54 UTC 2016
+NAME=Fedora
+PRETTY_NAME="Fedora 21 (Twenty One)"
+CPE_NAME="cpe:/o:fedoraproject:fedora:21"
+powerpc64le-redhat-linux-gnu    --> aarch64-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> alpha-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> i486-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> i486-pc-linux-musl
+powerpc64le-redhat-linux-gnu    --> i486-pc-linux-uclibc
+powerpc64le-redhat-linux-gnu    --> i586-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> i586-pc-linux-musl
+powerpc64le-redhat-linux-gnu    --> i586-pc-linux-uclibc
+powerpc64le-redhat-linux-gnu    --> i686-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> i686-pc-linux-musl
+powerpc64le-redhat-linux-gnu    --> i686-pc-linux-uclibc
+powerpc64le-redhat-linux-gnu    --> microblaze-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> microblaze-pc-linux-musl
+powerpc64le-redhat-linux-gnu    --> microblaze-pc-linux-uclibc
+powerpc64le-redhat-linux-gnu    --> mips-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> mips-pc-linux-musl
+powerpc64le-redhat-linux-gnu    --> mips-pc-linux-uclibc
+powerpc64le-redhat-linux-gnu    --> powerpc64-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> sh-pc-linux-musl
+powerpc64le-redhat-linux-gnu    --> sparc-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> sparc-pc-linux-uclibc
+powerpc64le-redhat-linux-gnu    --> x86_64-pc-linux-gnu
+powerpc64le-redhat-linux-gnu    --> x86_64-pc-linux-musl
+powerpc64le-redhat-linux-gnu    --> x86_64-pc-linux-uclibc
+powerpc64le-redhat-linux-gnu    --> xtensa-pc-linux-uclibc
+
+MACHTYPE == powerpc64-redhat-linux-gnu
+Wed Apr 13 07:42:38 UTC 2016
+NAME=Fedora
+PRETTY_NAME="Fedora 20 (Heisenbug)"
+CPE_NAME="cpe:/o:fedoraproject:fedora:20"
+powerpc64-redhat-linux-gnu      --> aarch64-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> aarch64-pc-linux-musl
+powerpc64-redhat-linux-gnu      --> alpha-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> i486-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> i486-pc-linux-musl
+powerpc64-redhat-linux-gnu      --> i486-pc-linux-uclibc
+powerpc64-redhat-linux-gnu      --> i586-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> i586-pc-linux-musl
+powerpc64-redhat-linux-gnu      --> i586-pc-linux-uclibc
+powerpc64-redhat-linux-gnu      --> i686-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> i686-pc-linux-musl
+powerpc64-redhat-linux-gnu      --> i686-pc-linux-uclibc
+powerpc64-redhat-linux-gnu      --> microblaze-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> microblaze-pc-linux-musl
+powerpc64-redhat-linux-gnu      --> microblaze-pc-linux-uclibc
+powerpc64-redhat-linux-gnu      --> mips-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> mips-pc-linux-musl
+powerpc64-redhat-linux-gnu      --> mips-pc-linux-uclibc
+powerpc64-redhat-linux-gnu      --> powerpc64-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> sh-pc-linux-musl
+powerpc64-redhat-linux-gnu      --> sparc-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> sparc-pc-linux-uclibc
+powerpc64-redhat-linux-gnu      --> x86_64-pc-linux-gnu
+powerpc64-redhat-linux-gnu      --> x86_64-pc-linux-musl
+powerpc64-redhat-linux-gnu      --> x86_64-pc-linux-uclibc
+powerpc64-redhat-linux-gnu      --> xtensa-pc-linux-uclibc
+
+MACHTYPE == i586-pc-linux-gnu
+Wed Apr 13 16:39:18 CEST 2016
+PRETTY_NAME="Debian GNU/Linux 8 (jessie)"
+NAME="Debian GNU/Linux"
+i586-pc-linux-gnu       --> aarch64-pc-linux-gnu
+i586-pc-linux-gnu       --> aarch64-pc-linux-musl
+i586-pc-linux-gnu       --> alpha-pc-linux-gnu
+i586-pc-linux-gnu       --> i486-pc-linux-gnu
+i586-pc-linux-gnu       --> i486-pc-linux-musl
+i586-pc-linux-gnu       --> i486-pc-linux-uclibc
+i586-pc-linux-gnu       --> i586-pc-linux-gnu
+i586-pc-linux-gnu       --> i586-pc-linux-musl
+i586-pc-linux-gnu       --> i686-pc-linux-musl
+i586-pc-linux-gnu       --> i686-pc-linux-uclibc
+i586-pc-linux-gnu       --> mips-pc-linux-gnu
+i586-pc-linux-gnu       --> mips-pc-linux-musl
+i586-pc-linux-gnu       --> mips-pc-linux-uclibc
+i586-pc-linux-gnu       --> powerpc64-pc-linux-gnu
+i586-pc-linux-gnu       --> sh-pc-linux-musl
+i586-pc-linux-gnu       --> sparc-pc-linux-gnu
+i586-pc-linux-gnu       --> sparc-pc-linux-uclibc
+i586-pc-linux-gnu       --> x86_64-pc-linux-gnu
+i586-pc-linux-gnu       --> x86_64-pc-linux-musl
+i586-pc-linux-gnu       --> x86_64-pc-linux-uclibc
+i586-pc-linux-gnu       --> xtensa-pc-linux-uclibc
+
+
+MACHTYPE == x86_64-pc-linux-gnu
+Wed Apr 13 08:05:24 CEST 2016
+PRETTY_NAME="Debian GNU/Linux 7 (wheezy)"
+NAME="Debian GNU/Linux"
+x86_64-pc-linux-gnu     --> aarch64-pc-linux-gnu
+x86_64-pc-linux-gnu     --> aarch64-pc-linux-musl
+x86_64-pc-linux-gnu     --> alpha-pc-linux-gnu
+x86_64-pc-linux-gnu     --> i486-pc-linux-musl
+x86_64-pc-linux-gnu     --> i486-pc-linux-uclibc
+x86_64-pc-linux-gnu     --> i586-pc-linux-musl
+x86_64-pc-linux-gnu     --> i586-pc-linux-uclibc
+x86_64-pc-linux-gnu     --> i686-pc-linux-musl
+x86_64-pc-linux-gnu     --> microblaze-pc-linux-gnu
+x86_64-pc-linux-gnu     --> microblaze-pc-linux-musl
+x86_64-pc-linux-gnu     --> microblaze-pc-linux-uclibc
+x86_64-pc-linux-gnu     --> mips-pc-linux-gnu
+x86_64-pc-linux-gnu     --> mips-pc-linux-musl
+x86_64-pc-linux-gnu     --> mips-pc-linux-uclibc
+x86_64-pc-linux-gnu     --> powerpc64-pc-linux-gnu
+x86_64-pc-linux-gnu     --> sh-pc-linux-musl
+x86_64-pc-linux-gnu     --> sparc-pc-linux-gnu
+x86_64-pc-linux-gnu     --> sparc-pc-linux-uclibc
+x86_64-pc-linux-gnu     --> x86_64-pc-linux-gnu
+x86_64-pc-linux-gnu     --> x86_64-pc-linux-musl
+x86_64-pc-linux-gnu     --> x86_64-pc-linux-uclibc
+x86_64-pc-linux-gnu     --> xtensa-pc-linux-uclibc
+
+MACHTYPE == aarch64-unknown-linux-gnu
+Thu Apr 14 04:49:12 PDT 2016
+NAME="Ubuntu"
+PRETTY_NAME="Ubuntu 14.04.3 LTS"
+aarch64-unknown-linux-gnu       --> aarch64-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> aarch64-pc-linux-musl
+aarch64-unknown-linux-gnu       --> alpha-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> i486-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> i486-pc-linux-musl
+aarch64-unknown-linux-gnu       --> i486-pc-linux-uclibc
+aarch64-unknown-linux-gnu       --> i586-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> i586-pc-linux-musl
+aarch64-unknown-linux-gnu       --> i586-pc-linux-uclibc
+aarch64-unknown-linux-gnu       --> i686-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> i686-pc-linux-musl
+aarch64-unknown-linux-gnu       --> i686-pc-linux-uclibc
+aarch64-unknown-linux-gnu       --> microblaze-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> microblaze-pc-linux-musl
+aarch64-unknown-linux-gnu       --> microblaze-pc-linux-uclibc
+aarch64-unknown-linux-gnu       --> mips-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> mips-pc-linux-musl
+aarch64-unknown-linux-gnu       --> mips-pc-linux-uclibc
+aarch64-unknown-linux-gnu       --> powerpc64-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> sh-pc-linux-musl
+aarch64-unknown-linux-gnu       --> sparc-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> sparc-pc-linux-uclibc
+aarch64-unknown-linux-gnu       --> x86_64-pc-linux-gnu
+aarch64-unknown-linux-gnu       --> x86_64-pc-linux-musl
+aarch64-unknown-linux-gnu       --> x86_64-pc-linux-uclibc
+aarch64-unknown-linux-gnu       --> xtensa-pc-linux-uclibc
+
