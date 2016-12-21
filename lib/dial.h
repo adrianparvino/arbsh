@@ -1,6 +1,3 @@
-//void* gmemset(void *, int, size_t);
-//void* gmemcpy(void*, const void*, size_t);
-
 int dialip(const char *server, unsigned short port)
 {
 	int sck;
