@@ -1,0 +1,134 @@
+NAME:
+-----
+	Ottercross
+	
+
+DESCRIPTION:
+------------
+	 A makefile based cross toolchain and build system.
+
+
+FEATURES:
+--------
+	
+
+	Gcc/binutuils on target.
+		(Gcc can be installed into the final build's root!)
+
+	Supports all major linux libc vendors.
+		(Musl, glibc and uClibc/uClibc-ng.)
+
+	Gpg signature checking.
+		(Strong security.)
+
+	Cross compiling is the default build type.
+		(As in netbsd, all builds are cross builds.)
+
+	Relocatable toolchains.
+		(Toolchains are built using a sysroot.)
+
+	Automatically logged stages.
+		(Individuated logged stages are compatible with autobuilders.)
+
+		
+USAGE:
+------
+	Build a toolchain;
+		
+		make
+
+	Build a toolchain using a different libc (musl is the default).
+
+		make VENDOR=gnu
+
+	Build a toolchain in a target root:
+
+		make gcc_target
+
+	Changing architectures:
+
+		make ARCH=x86_64
+
+	Change the linux kernel architecture:
+
+		make LINUXARCH=arm64
+
+	Change uclibc's arch (has no effect for musl and glibc):
+
+		make UCLIBCTARG=i386
+
+			Note: This is only needed as an adjunctory method
+			      for controlling uClibc/uClibc-ng as it has no
+			      configure script, it will generally be coupled
+			      with LINUXARCH=.
+
+
+	Put the above options together to create a more difficult to configure
+	toolchain (such as i686-pc-linux-uclibc).
+
+		make VENDOR=uclibc ARCH=i686 LINUXARCH=x86
+
+			or 
+
+		make VENDOR=gnu ARCH=aarch64 LINUXARCH=arm64
+
+
+	Quiet builds:
+
+		make LOGM='>' 
+
+
+
+
+EXTENDED DESCRIPTIONS:
+----------------------
+
+	Automatic logging:
+	
+		Ottecross is equiped with an autologging mechanism which logs
+		each stage of the build, names them and gathers them into a logs
+		directory.
+
+	Gpg keys:
+
+		Gpg signatures on all packages are checked automatically by 
+		ottercross so as to ensure a safe operating environment.
+	
+		If your system does not have gpg installed or it is installed
+		incorrectly  you may want to invoke the build system with
+		'make -i' to disable error checking. This will be replaced with
+		an option to disable or enable signature checking in the future.
+
+
+	Concurrent builds:
+
+		Cocurrent builds are possible with ottercross, However, it must
+		first be 'dry run" to populate the src directory with any tarballs.
+		There is no mechanism to prevent a race between various invocations
+		of ottercross populating the main src directory, but will hopegully
+		be added soon.
+
+
+
+
+          =+?
+       =ONNMM7~?                       7NN88DN
+   =MZNZZI+$IDI8ODZ=               NOZ7ZZ7O$O$8MZN
+    O7+8===I=+=+OI+ZNI   +    D8DDDND8D8?Z8Z++ZZ$D8MM=?
+      ?=~,:~~+?~I$D7NN8MNMNMNMNMDDMDO8NDO7O7$Z7=ZODNNMM
+           =~:=7Z8+O788DNMNMM8MM$88NNO8DO:?$I7Z7Z$87ODOM
+                7?DDZMMMDN8MDNNOD8DZDDO8DN=$++?IZOOD+$NMMI
+              ~   7$N8MDNMMODM8DDDONDZONO8~??=ZZOO~O7ZO8MN~
+                  ~7NNMMZMNMMMDNOMO$MZ7IZDOZI=I8O?$I?=$8N8NM?
+                 II8NZ8~=OMMMMMM$NODM=Z?I$O8~IM~,,+Z8OO8$+DDO~
+                 IO8O78~?I8MNMNMIZZN8D8II$Z~D7Z$I77$$8OZO8N$DN$
+                 ?8DO$?Z+MMMD$DOZ?NDZ??OO?$MIN7OZ777Z778DZ8=IDM8M
+                 Z8IMIDZDN8NODD+NM8I?  ~+?=+?=I++Z7I$ZO8DII+IZOMNM
+                 8N78ONNN?IMMO?8?         ?+++N7$7IZOOOOMM7Z?ZZDO8ZM
+                 OO$7MO,   $D+Z7D      ZND++$NZOOZOOZ$O7M$$78DZ8NM7DO7Z$$OO
+                I7MMN??    ~ONNN8      O$?M8=ODDDDZ8ZOZ$D7$$7ZZDDZONDD8DZOOZ$Z$$$
+             =D8$D??I?      :?:~     ?=I7$77$7Z$7$7ZO$88Z$Z$$$7$O$7ZMDNNNNNDNOD88NO$
+           I8O8?I?II?       I7$     Z$$I     ?IZIMMM8DZ$Z        I   O88O8O88NMNNMM8N8Z$Z$$Z
+
+
+

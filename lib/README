@@ -1,0 +1,10 @@
+This is GrafOS's internal C library.
+
+There are two types of files in this directory:
+
+	1) C library helper functions used by various utilities. 
+	   These libraries are unique to GrafOS and are not modeled
+	   after any specification conformant code.
+
+	2) Components of the C standard library which have been
+	   implmented specifically for GrafOS. 
