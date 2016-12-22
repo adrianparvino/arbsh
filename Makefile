@@ -74,14 +74,19 @@ clearenvars:
 
 release:
 
+	rm README.html
 	-echo "$(WEBSITE)/$(RELEASE)" >> README
 	-echo >> README
-	-echo "  <A HREF=\"$(WEBSITE)/$(RELEASE)\">$(WEBSITE)/$(RELEASE)</A>" >> README.html
-	-echo "  <br>" >> README.html
+	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>' > README.html
+	cat README >> README.html
+	echo '</pre>' >> README.html
+	sed 's/\(http.*\)/<a href="&"> &<\/a>/g' README.html > README.html.tmp
+	mv README.html.tmp README.html
+
 	-git add *
 	-git commit -m $(RELEASE)
 	-git push origin master
 	cd $(SPWD)/.. && tar -c $(NAME) -f $(RELEASE)
 	cd $(SPWD)/.. && scp $(RELEASE) $(SSHSERVER)
-	
+
 
