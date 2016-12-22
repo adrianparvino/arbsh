@@ -1,4 +1,10 @@
-﻿
+
+Grafland
+
+
+DESCRIPTION:
+----------- 
+
 	Grafland is a collection of unique; userland tools, cross
 	compiling toolchains, math libraries, arbitrary precision 
 	math libraries, terminal rendering libraries, standard C 
@@ -12,6 +18,7 @@
 
 HIER:
 -----
+
 	bin/
 		Userland applications written in C (native)
 	lib/
@@ -63,7 +70,7 @@ BUILDING:
         	make install DESTDIR=/path/to/target
 
 
-CROSS BUILDING:
+CROSSBUILDING:
 --------------- 
 
 	Because grafland has its own gcc based cross compiling
@@ -108,6 +115,11 @@ CONTACT:
 --------
 	CM Graff cm0graff@gmail.com
 
+UPSTREAM:
+---------
+	https://github.com/cmgraff/grafland
+
+
 
 RELEASES: 
 
@@ -118,8 +130,6 @@ http://www.csit.parkland.edu/~cgraff1/grafland-0.2e.tar.gz
 http://www.csit.parkland.edu/~cgraff1/grafland-0.2f.tar.gz
 
 http://www.csit.parkland.edu/~cgraff1/grafland-0.2g.tar.gz
-
-http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
 
 http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
 
