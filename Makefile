@@ -31,6 +31,7 @@ clean:
 	$(MAKE) -C sysmon clean
 	$(MAKE) -C math clean
 
+
 install:
 
 	-$(MAKE) -C bin install 
@@ -42,6 +43,18 @@ install:
 	-$(MAKE) -C math install
 	# Install toolchain last if it exists
 	-$(MAKE) -C toolchain install
+
+
+uninstall:
+
+	-$(MAKE) -C bin uninstall 
+	-$(MAKE) -C irc uninstall
+	-$(MAKE) -C gsh uninstall
+	-$(MAKE) -C shbin uninstall 
+	-$(MAKE) -C editor uninstall
+	-$(MAKE) -C sysmon uninstall
+	#-$(MAKE) -C math uninstall 
+	#-$(MAKE) -C toolchain uninstall
 
 toolchain:
 
