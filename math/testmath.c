@@ -146,9 +146,7 @@ int main(int argc, char *argv[])
 	printf("\n"); 
 
 	reta = myasin(arg1);
-      	printf("myasin        %19.19lf\n", reta); 
-	reta = myasin2(arg1);
-        printf("myasin2        %19.19lf\n", reta);
+      	printf("myasin        %19.19lf\n", reta);
         retb = asin(arg1);
         printf("libc asin     %19.19lf\n", retb); 
 	printf("\n"); 
