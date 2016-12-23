@@ -20,7 +20,7 @@
 #include <signal.h> 
 #include <sys/types.h> 
 #include <regex.h> 
-#include "../lib/ansicode.h" 
+#include "../lib/hexen.h" 
 
 #define TRUE 1
 #define FALSE 0 

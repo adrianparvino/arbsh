@@ -10,7 +10,7 @@ Editor
 	Editor does not depend on ncurses/curses.
 
 	Editor's screen drawing library is located
-	at grafland's ../lib/ansicode.h. Which is 
+	at grafland's ../lib/hexen.h. Which is 
 	a small (<500loc) ANSI screen drawing 
 	library.
 
