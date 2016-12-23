@@ -7,10 +7,10 @@ Gshline
 	(The Graff Shell)
 
 	You may wish to use this function outside of the GrafOS
-	build system. In this case make sure that the file ansicode.h
+	build system. In this case make sure that the file hexen.h
 	is also present on the build machine.
 
-	This library has a hard dependency on ansicode.h, an example
+	This library has a hard dependency on hexen.h, an example
 	of how to include it can be seen in readline-driver.c.
 
 	Developers wishing to use gshline() in their code can find 

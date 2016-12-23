@@ -1,5 +1,5 @@
 /* 
-	Copyright 2016, CM Graff, ansicode.h 
+	Copyright 2016, CM Graff, hexen.h 
 */ 
 
 /* Cursor movement */

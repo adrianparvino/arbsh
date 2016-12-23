@@ -3,7 +3,7 @@ sysmon
 sysmon is a system monitor based on top / htop
 
 sysmon is not really for everyday use, but instead was programmed
-to test grafland' ansicode.h screen drawing library.
+to test grafland' hexen.h screen drawing library.
 
 	Controls:
 

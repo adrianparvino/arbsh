@@ -8,7 +8,7 @@
 #include <limits.h>
 #include <termios.h>
 #include <sys/ioctl.h>
-#include "../lib/ansicode.h"
+#include "../lib/hexen.h"
 #include "../lib/ircline.h"
 
 
