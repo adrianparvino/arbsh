@@ -1,5 +1,8 @@
+grafland editor
+
 Editor
 ------
+
 	A simple text editor with no dependencies
 
 
@@ -11,13 +14,16 @@ Editor
 
 	Editor's screen drawing library is located
 	at grafland's ../lib/hexen.h. Which is 
-	a small (<500loc) ANSI screen drawing 
+	a small (<1000loc) ANSI screen drawing 
 	library.
+
 
 IMAGES
 ------
 
 	editor.png
+
+
 
 CONTACT:
 --------
