@@ -1,20 +1,21 @@
-Grafland toolchain
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Grafland toolchain</strong></dl><pre></dl><pre>
 
-BUILDING:
----------
+<br clear="left"/></pre><dl>BUILDING:</dl><pre>
+</pre><dd><hr/></dd><pre>
 	Build a toolchain:
 
 		make
 
-INSTALLATION:
--------------
+<br clear="left"/></pre><dl>INSTALLATION:</dl><pre>
+</pre><dd><hr/></dd><pre>
 	Install a toolchain's libc to a root.
 
 		make install DESTDIR=/full/path/
 
 
-FEATURES:
----------
+<br clear="left"/></pre><dl>FEATURES:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
 	Gcc on target.
 		(Cross built as a target package).
@@ -38,8 +39,8 @@ FEATURES:
 
 
 
-EXTERNAL USAGE:
----------------
+<br clear="left"/></pre><dl>EXTERNAL USAGE:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
 	Dump the environment needed to use the built toolchain:
 
@@ -56,14 +57,14 @@ EXTERNAL USAGE:
 			export `make clearenvars`
 
 
-DESCRIPTION:
-------------
+<br clear="left"/></pre><dl>DESCRIPTION:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
 
-The toolchain build system supports multiple C library vendors.
-At this time they are: musl, uClibc and glibc, the effectiveness
-of which in that order. The default libc is musl. To set the
-desired libc override the variable OM_LIBC as follows:
+<br clear="left"/></pre><dl>The toolchain build system supports multiple C library vendors.</dl><pre>
+<br clear="left"/></pre><dl>At this time they are: musl, uClibc and glibc, the effectiveness</dl><pre>
+<br clear="left"/></pre><dl>of which in that order. The default libc is musl. To set the</dl><pre>
+<br clear="left"/></pre><dl>desired libc override the variable OM_LIBC as follows:</dl><pre>
 
 	Build with uClibc:
 
@@ -79,9 +80,9 @@ desired libc override the variable OM_LIBC as follows:
 
 	... or open the single Makefile and set it as desired.
 
-The default is to cross build for i686, this is modified by setting
-the primary tuple prefix. To do this, open the Makefile and modify
-the following four lines:
+<br clear="left"/></pre><dl>The default is to cross build for i686, this is modified by setting</dl><pre>
+<br clear="left"/></pre><dl>the primary tuple prefix. To do this, open the Makefile and modify</dl><pre>
+<br clear="left"/></pre><dl>the following four lines:</dl><pre>
 
 	OM_LIBC = musl
 	OM_ARCH = i686
@@ -89,10 +90,10 @@ the following four lines:
 	OM_BACKWARDCOMPAT = i386 
 
 	
-TARGET PACKAGES:
-----------------
+<br clear="left"/></pre><dl>TARGET PACKAGES:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
-Using the internal package building system:
+<br clear="left"/></pre><dl>Using the internal package building system:</dl><pre>
 
 	The toolchain supports a minimal number of packages internally
 	on an experimental basis:
@@ -205,8 +206,8 @@ Using the internal package building system:
 
 
 
-ADDING TARGET PACKAGES:
------------------------
+<br clear="left"/></pre><dl>ADDING TARGET PACKAGES:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
 
 	Adding a source code package to the package build system:
@@ -224,7 +225,7 @@ ADDING TARGET PACKAGES:
 
 		And finally add a line to the "populate:" target.
 
-			@cd src && test -e $(OM_NEWPACKAGE).$(OM_SFX) || \
+			<a href="mailto:@cd src && test -e $(OM_NEWPACKAGE).$(OM_SFX) || \">@cd src && test -e $(OM_NEWPACKAGE).$(OM_SFX) || \</a>
 				wget $(GENERIC_MRR)/$(OM_NEPACKAGE).$(OM_SFX)
 
 
@@ -238,8 +239,8 @@ ADDING TARGET PACKAGES:
 			make populate
 			make mynewpackage_target
 
-SELF BOOTSTRAP:
----------------
+<br clear="left"/></pre><dl>SELF BOOTSTRAP:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
 	The toolchain build system provides a mechanism in which targets
 	can bootstrap themselves. The new toolchain will be built into
@@ -267,9 +268,10 @@ SELF BOOTSTRAP:
 	This functionality is in its fledgling experimental stages and
 	has not made it past a 3rd generation build lineage.
 
-ASSUMPTIONS ABOUT TARBALLS:
----------------------------
+<br clear="left"/></pre><dl>ASSUMPTIONS ABOUT TARBALLS:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
 	All tarballs must end in the same suffix. That suffix can be 
 	overridden by setting OM_SFX=.
 
+</pre>
