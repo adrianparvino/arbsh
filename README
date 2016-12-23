@@ -1,9 +1,7 @@
-
-Grafland
-
+Grafland 
 
 DESCRIPTION:
------------ 
+------------
 
 	Grafland is a collection of unique; userland tools, cross
 	compiling toolchains, math libraries, arbitrary precision 
@@ -13,8 +11,7 @@ DESCRIPTION:
 	It also contains a window manager, editor, system monitor
 	and other useful tools and shell scripts.
 	
-	Each subdirectory has a README which documents its usage.
-
+	Each subdirectory has a README which documents its usage.  
 
 HIER:
 -----
@@ -43,8 +40,6 @@ HIER:
 		A native shell.
 	irc/
 		A native irc client and library.
-	README
-		This README.
 	shbin/
 		Userland applications and libraries written in POSIX shell 
 		(native).
@@ -63,11 +58,11 @@ BUILDING:
 	make
 	make install DESTDIR=$(pwd)/myroot
 
-        Install a single component of grafland: 
-          
+	Install a single component of grafland: 
+	  
        		cd grafland/cbin
-        	make
-        	make install DESTDIR=/path/to/target
+		make
+		make install DESTDIR=/path/to/target
 
 
 CROSSBUILDING:
@@ -119,17 +114,37 @@ UPSTREAM:
 ---------
 	https://github.com/cmgraff/grafland
 
+IMAGES:
+-------
+
+	irc/irc.png
+	editor/editor.png
+	sysmon/sysmon.png
+	grafland.png
 
 
-RELEASES: 
+RELEASES:
+---------
 
-http://www.csit.parkland.edu/~cgraff1/grafland-0.2d.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.2d.tar.gz
 
-http://www.csit.parkland.edu/~cgraff1/grafland-0.2e.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.2e.tar.gz
 
-http://www.csit.parkland.edu/~cgraff1/grafland-0.2f.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.2f.tar.gz
 
-http://www.csit.parkland.edu/~cgraff1/grafland-0.2g.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.2g.tar.gz
 
-http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
+
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
+
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
+
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
+
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
+
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
+
+	http://www.csit.parkland.edu/~cgraff1/grafland-0.3a.tar.gz
 
