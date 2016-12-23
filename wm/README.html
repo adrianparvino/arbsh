@@ -3,6 +3,7 @@
 
 <br clear="left"/></pre><dl>DESCRIPTION:</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	graff-dwm is a rewrite of dwm (which is an extremely fast, small, 
 	and dynamic window manager for X) with a focus on clear concise
 	programming for the purpose of education (mostly my own).
@@ -10,11 +11,13 @@
 
 <br clear="left"/></pre><dl>REQUIREMENTS:</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	In order to build graff-dwm you need the Xlib header files.
 
 
 <br clear="left"/></pre><dl>INSTALLATION:</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	graff-dwm is not intended to be installed. Instead simply invoke 
 	make and then add an entry for the executable in .xinitrc. The 
 	window manager can then be started using `startx';
@@ -32,17 +35,20 @@
 
 <br clear="left"/></pre><dl>CHANGING DISPLAY:</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	DISPLAY=foo.bar:1 exec graff-dwm 
 
 
 <br clear="left"/></pre><dl>CONFIGURATION:</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	The configuration of graff-dwm is done by modifying graff-dwm.c
 	and recompiling.
 
 
 <br clear="left"/></pre><dl>Why does this project exist when normal dwm is probably better?</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	I found that despite dwm's concise code and simple user
 	interface that its combined 2000 LOC of source 100 LOC
 	of Makefile and around 100 LOC of configuration makes
@@ -55,6 +61,7 @@
 
 <br clear="left"/></pre><dl>Features that have been removed from the original dwm</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	1) Xinerama -- dual monitor support
 	2) Checks to ensure no other window managers are running
 	3) Version argument -v as argv[1]
@@ -68,11 +75,13 @@
 
 <br clear="left"/></pre><dl>When will graff-dwm be done?</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	When there is nothing left to remove.
 
 
 <br clear="left"/></pre><dl>Notes originally in dwm.c</dl><pre>
 </pre><dd><hr/></dd><pre>
+
  *
  * dynamic window manager is designed like any other X client as well. It is
  * driven through handling X events. In contrast to other X clients, a window
