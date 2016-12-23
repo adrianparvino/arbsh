@@ -18,7 +18,7 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <stdint.h>
-#include "../lib/ansicode.h"
+#include "../lib/hexen.h"
 #include "../lib/readline.h"
 
 

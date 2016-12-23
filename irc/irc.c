@@ -18,7 +18,7 @@
 
 /* local libraries */ 
 #include "../lib/string.h"
-#include "../lib/ansicode.h"
+#include "../lib/hexen.h"
 #include "../lib/dial.h"
 #include "../lib/ircline.h"
 #include "../lib/date.h"
@@ -28,7 +28,7 @@
         See LICENSE for copying details.
 */
 
-/* ANSI escape sequences (see ansicode.h) */
+/* ANSI escape sequences (see hexen.h) */
 #define USERCOLOR 	T_BOLD
 #define OTHERUSERS	T_BLUE_FG T_BOLD
 #define BARCOLOR	T_BLUE_BG
