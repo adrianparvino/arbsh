@@ -1,17 +1,19 @@
-graff-dwm - graff's rewrite of dwm (dynamic window manager)
-============================
+grafland window manager
+
+DESCRIPTION:
+------------
 	graff-dwm is a rewrite of dwm (which is an extremely fast, small, 
 	and dynamic window manager for X) with a focus on clear concise
 	programming for the purpose of education (mostly my own).
 
 
-Requirements
-------------
+REQUIREMENTS:
+------------- 
 	In order to build graff-dwm you need the Xlib header files.
 
 
-Installation
------------- 
+INSTALLATION:
+-------------
 	graff-dwm is not intended to be installed. Instead simply invoke 
 	make and then add an entry for the executable in .xinitrc. The 
 	window manager can then be started using `startx';
@@ -27,13 +29,13 @@ Installation
 	manager at this time.
 
 
-Changing display
----------------- 
+CHANGING DISPLAY:
+-----------------
 	DISPLAY=foo.bar:1 exec graff-dwm 
 
 
-Configuration
--------------
+CONFIGURATION:
+--------------
 	The configuration of graff-dwm is done by modifying graff-dwm.c
 	and recompiling.
 
