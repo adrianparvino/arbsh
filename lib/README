@@ -1,6 +1,9 @@
-This is GrafOS's internal C library.
+grafland C libraries
 
-There are two types of files in this directory:
+LIBRARIES:
+----------
+
+	Types of libraries in grafland:
 
 	1) C library helper functions used by various utilities. 
 	   These libraries are unique to GrafOS and are not modeled
@@ -8,3 +11,10 @@ There are two types of files in this directory:
 
 	2) Components of the C standard library which have been
 	   implmented specifically for GrafOS. 
+
+	3) Hexen, an curses / conio replacement library
+
+CONTACT:
+--------
+
+	CM Graff cm0graff@gmail.com
