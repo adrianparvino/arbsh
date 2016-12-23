@@ -7,7 +7,7 @@ SYNOPSIS
 	#include <stdlib.h>
 	#include <sys/ioctl.h>
 	#include <termios.h>
-	#include "../clib/ansicode.h" 
+	#include "../clib/hexen.h" 
 	int ansigetch(void);
 	int termcatch(int flags, int reset);
 	void writenumber(int desc, size_t height); 
