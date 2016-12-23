@@ -1,33 +1,28 @@
-
-NAME:
------
-
-	Cbin
-
+grafland userland utilities (bin)
 	
 DESCRIPTION:
 ------------
 
-	Cbin is a set of userland utilities which strives for POSIX
+	grafland's bin is a set of userland utilities which strives for POSIX
 	compliance. When a feature is implemented it is to meet POSIX
 	specifications. No additional features are added.
 
 BUILDING:
 ---------
 
-	cd cbin
+	cd bin
 	make
 
 
 INSTALLATION:
 -------------
 
-	cd cbin
+	cd bin
 	make install DESTDIR=/path/to/install/
 
 COLOPHON:
 ---------
-	This document belongs to the grafland project's cbin
+	This document belongs to the grafland project's bin
 	set of utilities written by CM Graff.
 
 
