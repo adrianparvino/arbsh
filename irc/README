@@ -1,10 +1,6 @@
-# Irc client 
+Irc client
 
-# An irc client with no dependencies.
-#
-
-
-Irc Client -- An irc client without dependencies.:
+Irc client -- An irc client without dependencies.:
 -------------------------------------------------- 
         
 	*) Colorful ascii and ansi escape sequence based interface.
@@ -212,6 +208,11 @@ References:
 
 	Useful website which provides a chart of various RFC protocol
 	https://www.alien.net.au/irc/irc2numerics.html
+
+Images:
+-------
+
+	irc.png
 
 
 Licensing / Copying:
