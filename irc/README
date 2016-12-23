@@ -10,107 +10,110 @@ Irc client -- An irc client without dependencies.:
 	*) Looks and feels like irssi.
 	*) Uninterupted multiplexing asynchronous user input.
 
-	Running the client:
-	-------------------
-	
-		Command line options:
-		--------------------- 
-			server=
-			port=
-			nick=
-			channel=
 
-			Use command line options to connect to freenode:
-			------------------------------------------------ 
-                	./irc \
-                	server='irc.freenode.net' \
-                	port=6667 \
-                	nick="$USER" \
-               		channel="#irctest" 
+
+	
+Command line options:
+--------------------- 
+		server=
+		port=
+		nick=
+		channel=
+
+Use command line options to connect to freenode:
+------------------------------------------------ 
+
+	./irc \
+	server='irc.freenode.net' \
+	port=6667 \
+	nick="$USER" \
+	channel="#irctest" 
 			
 
 
-		Builtin irc commands:
-		---------------------
+Builtin irc commands:
+---------------------
 
-                ctrl-n                  Toggle between channels.
+        ctrl-n                  Toggle between channels.
 
-		ctrl-x			Toggle between servers.
+	ctrl-x			Toggle between servers.
 
-                /j #channel             Join a channel.
+        /j #channel             Join a channel.
 
-		/p #channel		Part a channel.
+	/p #channel		Part a channel.
 
-		/c irc.oftc.net	6667	Join a server.
+	/c irc.oftc.net	6667	Join a server.
 
-		/d irc.oftc.net		Disconnect from a server.
+	/d irc.oftc.net		Disconnect from a server.
 
-		/n newnick		Change nickname.
+	/n newnick		Change nickname.
 
-                /q                      Quit.
+        /q                      Quit.
 
-                /r FORM DATA            Send a raw command and data to the 
-					server.
-                                        Eg: /r PRIVMSG nickname hello!
+        /r FORM DATA            Send a raw command and data to the 
+				server.
+                                Eg: /r PRIVMSG nickname hello!
 	
-		PageUp                  Scroll up.
+	PageUp                  Scroll up.
 
-                PageDown                Scroll down.
+        PageDown                Scroll down.
 
-		UpArrow			Line history.
+	UpArrow			Line history.
 		
-		DownArrow		Line history.
+	DownArrow		Line history.
 	
-		LeftArrow		Cursor left.
+	LeftArrow		Cursor left.
 
-		RightArrow		Cursor right.
+	RightArrow		Cursor right.
 
 
 
 	
-	Examples:
-	---------
+Examples:
+---------
 	
-		Connect to oftc:
-		----------------
-			./irc \
-			server='irc.oftc.net' \
-			port=6667 \
-			nick="$USER"
-	
-			/j #moocows
+Connect to oftc:
+----------------
 
-		Set up multiple connections from the user itnerface:
-		----------------------------------------------------
-			./irc
+	./irc \
+	server='irc.oftc.net' \
+	port=6667 \
+	nick="$USER"
 
-				[[]]>> /c irc.oftc.net 6667
-				
-				[[]]>> /j #moocows
+	/j #moocows
 
-				[[]]>> /c irc.rizon.net 6667
+Set up multiple connections from the user itnerface:
+----------------------------------------------------
 
-				[[]]>> /j #help
+	./irc
 
-				[[]]>> /j #frogs
+	[[]]>> /c irc.oftc.net 6667
+			
+	[[]]>> /j #moocows
+
+	[[]]>> /c irc.rizon.net 6667
+
+	[[]]>> /j #help
+
+	[[]]>> /j #frogs
 
 
 
-	Minimal support for raw CTCP commands:
-	--------------------------------------
+Minimal support for raw CTCP commands:
+--------------------------------------
 
-		Irc is programmed to respond to CTCP VERSION requests
-		automatically. However other than this functionality there 
-		is no built in support for CTCP (client to client protocol) 
-		except as follows:
+	Irc is programmed to respond to CTCP VERSION requests
+	automatically. However other than this functionality there 
+	is no built in support for CTCP (client to client protocol) 
+	except as follows:
 
-		Send a CTCP based notice:
-		-------------------------
-			/z NOTICE otheruser :
-			/x
-			/z VERSION
-			/x
-			/y
+	Send a CTCP based notice:
+	-------------------------
+		/z NOTICE otheruser :
+		/x
+		/z VERSION
+		/x
+		/y
 		What are these commands?
 		------------------------
 			These commands allow a person to hack out
@@ -124,8 +127,9 @@ Irc client -- An irc client without dependencies.:
 
 
 
-More about this project:
-------------------------
+About this project:
+-------------------
+
 	Irc client is more than just a replacement for other irc clients.
 	It is a paradigmatic replacement for curses/ncurses as well. The
 	library hexen.h has many useful ANSI escape sequences which 
@@ -136,27 +140,32 @@ More about this project:
 	 library.).
 
 
-Building this repository:
--------------------------
 	
-	Build:
-	------
-		git clone https://github.com/cmgraff/grafland
-		cd grafland/irc
-		make
+Building:
+--------- 
 
-	Installation:
-	------------- 
-		make install DESTDIR=/path/to/installation/
-
-	Uninstallation:
-	--------------- 
-		make uninstall
+	git clone https://github.com/cmgraff/grafland
+	cd grafland/irc
+	make
 
 
 
-Statically linking the IRC client:
-----------------------------------
+Installation:
+------------- 
+
+	make install DESTDIR=/path/to/installation/
+
+
+
+Uninstallation:
+--------------- 
+
+	make uninstall
+
+
+
+Static linking:
+---------------
 	
 	Simple way:
 	
@@ -196,10 +205,13 @@ Statically linking the IRC client:
 
 Releases:
 --------- 
+
 	Releases will be available as part of stable grafland releases. 
+
 
 References:
 -----------
+
 	RFC2812 protocol
 	https://tools.ietf.org/html/rfc2812
 
@@ -209,14 +221,15 @@ References:
 	Useful website which provides a chart of various RFC protocol
 	https://www.alien.net.au/irc/irc2numerics.html
 
+
 Images:
 -------
 
 	irc.png
 
 
-Licensing / Copying:
--------------------- 
+LIcense and copying:
+--------------------
 
 	2015 (C) Copyright, CM Graff MIT/BSD Licensed 
         See LICENSE for copying details.
