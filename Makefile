@@ -3,7 +3,7 @@
 .PHONY: toolchain
 
 
-RELEASE = grafland-0.3a.tar.gz
+RELEASE = grafland-0.3b.tar.gz
 WEBSITE = http://www.csit.parkland.edu/~cgraff1
 SPWD = $(shell pwd)
 NAME = $(shell basename $(SPWD))
