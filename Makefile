@@ -74,19 +74,10 @@ clearenvars:
 
 release:
 
-	rm README.html
+	-rm README.html
 	-printf "\t$(WEBSITE)/$(RELEASE)\n" >> README
 	-printf "\n" >> README
-	printf '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>\n' > README.html
-	cat README >> README.html
-	printf '</pre>\n' >> README.html
-	sed -i 's/\(http.*\)/<a href="&">&<\/a>/g' README.html
-	sed -i 's/\([a-Z,0-9,.,-]*@.*\)/<a href="mailto:&">&<\/a>/g' README.html
-	sed -i '2s/\(^[^\t][a-Z].*\)/<br clear="left"\/><\/pre><dl><strong>&<\/strong><\/dl><pre>/' README.html
-	sed -i 's/\(^[^\t][a-Z].*\)/<br clear="left"\/><\/pre><dl>&<\/dl><pre>/g' README.html
-	sed -i 's/\(^[^\t]-.*\)/<\/pre><dd><hr\/><\/dd><pre>/g' README.html
-	sed -i 's/\([a-Z,0-9,\/,.,-]*.png\)/<\/pre><dl><img src="&" style="float:left;height:15em;margin-right:1em"><\/img><pre><\/dl>/g' README.html
-
+	./shbin/text_to_html.sh README
 	-git add *
 	-git commit -m $(RELEASE)
 	-git push origin master
