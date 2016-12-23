@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>
 <br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Irc client</strong></dl><pre></dl><pre>
 
-<br clear="left"/></pre><dl>Irc Client -- An irc client without dependencies.:</dl><pre>
+<br clear="left"/></pre><dl>Irc client -- An irc client without dependencies.:</dl><pre>
 </pre><dd><hr/></dd><pre>
         
 	*) Colorful ascii and ansi escape sequence based interface.
@@ -11,107 +11,110 @@
 	*) Looks and feels like irssi.
 	*) Uninterupted multiplexing asynchronous user input.
 
-	Running the client:
-	-------------------
-	
-		Command line options:
-		--------------------- 
-			server=
-			port=
-			nick=
-			channel=
 
-			Use command line options to connect to freenode:
-			------------------------------------------------ 
-                	./irc \
-                	server='irc.freenode.net' \
-                	port=6667 \
-                	nick="$USER" \
-               		channel="#irctest" 
+
+	
+<br clear="left"/></pre><dl>Command line options:</dl><pre>
+</pre><dd><hr/></dd><pre>
+		server=
+		port=
+		nick=
+		channel=
+
+<br clear="left"/></pre><dl>Use command line options to connect to freenode:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	./irc \
+	server='irc.freenode.net' \
+	port=6667 \
+	nick="$USER" \
+	channel="#irctest" 
 			
 
 
-		Builtin irc commands:
-		---------------------
+<br clear="left"/></pre><dl>Builtin irc commands:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
-                ctrl-n                  Toggle between channels.
+        ctrl-n                  Toggle between channels.
 
-		ctrl-x			Toggle between servers.
+	ctrl-x			Toggle between servers.
 
-                /j #channel             Join a channel.
+        /j #channel             Join a channel.
 
-		/p #channel		Part a channel.
+	/p #channel		Part a channel.
 
-		/c irc.oftc.net	6667	Join a server.
+	/c irc.oftc.net	6667	Join a server.
 
-		/d irc.oftc.net		Disconnect from a server.
+	/d irc.oftc.net		Disconnect from a server.
 
-		/n newnick		Change nickname.
+	/n newnick		Change nickname.
 
-                /q                      Quit.
+        /q                      Quit.
 
-                /r FORM DATA            Send a raw command and data to the 
-					server.
-                                        Eg: /r PRIVMSG nickname hello!
+        /r FORM DATA            Send a raw command and data to the 
+				server.
+                                Eg: /r PRIVMSG nickname hello!
 	
-		PageUp                  Scroll up.
+	PageUp                  Scroll up.
 
-                PageDown                Scroll down.
+        PageDown                Scroll down.
 
-		UpArrow			Line history.
+	UpArrow			Line history.
 		
-		DownArrow		Line history.
+	DownArrow		Line history.
 	
-		LeftArrow		Cursor left.
+	LeftArrow		Cursor left.
 
-		RightArrow		Cursor right.
+	RightArrow		Cursor right.
 
 
 
 	
-	Examples:
-	---------
+<br clear="left"/></pre><dl>Examples:</dl><pre>
+</pre><dd><hr/></dd><pre>
 	
-		Connect to oftc:
-		----------------
-			./irc \
-			server='irc.oftc.net' \
-			port=6667 \
-			nick="$USER"
-	
-			/j #moocows
+<br clear="left"/></pre><dl>Connect to oftc:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
-		Set up multiple connections from the user itnerface:
-		----------------------------------------------------
-			./irc
+	./irc \
+	server='irc.oftc.net' \
+	port=6667 \
+	nick="$USER"
 
-				[[]]>> /c irc.oftc.net 6667
-				
-				[[]]>> /j #moocows
+	/j #moocows
 
-				[[]]>> /c irc.rizon.net 6667
+<br clear="left"/></pre><dl>Set up multiple connections from the user itnerface:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
-				[[]]>> /j #help
+	./irc
 
-				[[]]>> /j #frogs
+	[[]]>> /c irc.oftc.net 6667
+			
+	[[]]>> /j #moocows
+
+	[[]]>> /c irc.rizon.net 6667
+
+	[[]]>> /j #help
+
+	[[]]>> /j #frogs
 
 
 
-	Minimal support for raw CTCP commands:
-	--------------------------------------
+<br clear="left"/></pre><dl>Minimal support for raw CTCP commands:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
-		Irc is programmed to respond to CTCP VERSION requests
-		automatically. However other than this functionality there 
-		is no built in support for CTCP (client to client protocol) 
-		except as follows:
+	Irc is programmed to respond to CTCP VERSION requests
+	automatically. However other than this functionality there 
+	is no built in support for CTCP (client to client protocol) 
+	except as follows:
 
-		Send a CTCP based notice:
-		-------------------------
-			/z NOTICE otheruser :
-			/x
-			/z VERSION
-			/x
-			/y
+	Send a CTCP based notice:
+	-------------------------
+		/z NOTICE otheruser :
+		/x
+		/z VERSION
+		/x
+		/y
 		What are these commands?
 		------------------------
 			These commands allow a person to hack out
@@ -125,8 +128,9 @@
 
 
 
-<br clear="left"/></pre><dl>More about this project:</dl><pre>
+<br clear="left"/></pre><dl>About this project:</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	Irc client is more than just a replacement for other irc clients.
 	It is a paradigmatic replacement for curses/ncurses as well. The
 	library hexen.h has many useful ANSI escape sequences which 
@@ -137,26 +141,31 @@
 	 library.).
 
 
-<br clear="left"/></pre><dl>Building this repository:</dl><pre>
-</pre><dd><hr/></dd><pre>
 	
-	Build:
-	------
-		git clone <a href="https://github.com/cmgraff/grafland">https://github.com/cmgraff/grafland</a>
-		cd grafland/irc
-		make
+<br clear="left"/></pre><dl>Building:</dl><pre>
+</pre><dd><hr/></dd><pre>
 
-	Installation:
-	------------- 
-		make install DESTDIR=/path/to/installation/
-
-	Uninstallation:
-	--------------- 
-		make uninstall
+	git clone <a href="https://github.com/cmgraff/grafland">https://github.com/cmgraff/grafland</a>
+	cd grafland/irc
+	make
 
 
 
-<br clear="left"/></pre><dl>Statically linking the IRC client:</dl><pre>
+<br clear="left"/></pre><dl>Installation:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	make install DESTDIR=/path/to/<a href="installation/">installation/</a>
+
+
+
+<br clear="left"/></pre><dl>Uninstallation:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	make uninstall
+
+
+
+<br clear="left"/></pre><dl>Static linking:</dl><pre>
 </pre><dd><hr/></dd><pre>
 	
 	Simple way:
@@ -197,18 +206,22 @@
 
 <br clear="left"/></pre><dl>Releases:</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	Releases will be available as part of stable grafland releases. 
+
 
 <br clear="left"/></pre><dl>References:</dl><pre>
 </pre><dd><hr/></dd><pre>
+
 	RFC2812 protocol
 	<a href="https://tools.ietf.org/html/rfc2812">https://tools.ietf.org/html/rfc2812</a>
 
 	A public domained ncurses based irc client
-	<a href="http://c9x.me/irc/">http://c9x.me/irc/</a>
+	<a href="http://c9x.me/<a href="irc/">irc/</a>">http://c9x.me/<a href="irc/">irc/</a></a>
 
 	Useful website which provides a chart of various RFC protocol
 	<a href="https://www.alien.net.au/irc/irc2numerics.html">https://www.alien.net.au/irc/irc2numerics.html</a>
+
 
 <br clear="left"/></pre><dl>Images:</dl><pre>
 </pre><dd><hr/></dd><pre>
@@ -216,7 +229,7 @@
 	</pre><dl><img src="irc.png" style="float:left;height:15em;margin-right:1em"></img><pre></dl>
 
 
-<br clear="left"/></pre><dl>Licensing / Copying:</dl><pre>
+<br clear="left"/></pre><dl>LIcense and copying:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	2015 (C) Copyright, CM Graff MIT/BSD Licensed 
