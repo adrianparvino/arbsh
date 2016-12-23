@@ -87,11 +87,6 @@ release:
 	sed -i 's/\(^[^\t]-.*\)/<\/pre><dd><hr\/><\/dd><pre>/g' README.html
 	sed -i 's/\([a-Z,0-9,\/,.,-]*.png\)/<\/pre><dl><img src="&" style="float:left;height:15em;margin-right:1em"><\/img><pre><\/dl>/g' README.html
 
-	
-	# > README.html.tmp
-	#mv README.html.tmp README.html
-
-hold:
 	-git add *
 	-git commit -m $(RELEASE)
 	-git push origin master
