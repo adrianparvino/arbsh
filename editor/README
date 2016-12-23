@@ -1,14 +1,22 @@
 grafland editor
 
-Editor
-------
+
+
+DESCRIPTION:
+------------
 
 	A simple text editor with no dependencies
 
 
-		Controls:
-			ctrl-x to save
-			ctrl-n to quit
+CONTROLS:
+---------
+
+	ctrl-x to save
+	ctrl-n to quit
+
+
+DEPENDENCIES:
+-------------
 
 	Editor does not depend on ncurses/curses.
 
@@ -18,11 +26,10 @@ Editor
 	library.
 
 
-IMAGES
-------
+IMAGES:
+-------
 
 	editor.png
-
 
 
 CONTACT:
