@@ -2,10 +2,11 @@
 
 # quickly make a chroot using ldd
 
-set -xe
+
 
 [ "$#" -lt 2 ] && { echo "Usage $0 /path/tool mychroot" ; exit ; }
 
+set -xe
 
 dirnametool()
 { 
@@ -13,7 +14,6 @@ dirnametool()
 	then 	./dirnamesh $1
 	else	dirname $1
 	fi
-	
 }
 
 
