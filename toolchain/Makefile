@@ -2132,8 +2132,6 @@ simple_dist:
 	$(MAKE) busybox_target
 	$(MAKE) genext2fs_host
 	-cp -a ../tree/* libroot
-
-	
 	$(OM_PREF)/bin/genext2fs -b 1000000 -d $(OM_LIBROOT) binary.img
 	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
@@ -2155,10 +2153,22 @@ simple_dist_initramfs:
 	$(MAKE) busybox_target
 	-cp -a ../tree/* libroot
 	$(MAKE) linux_target
-
-	
-
 	qemu-system-$(OM_BACKWARDCOMPAT) -m 1000 -curses \
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-append "root=/dev/sda rdinit=/bin/init"
 	
+posinstall:
+
+	mkdir -p /newtoolchain/
+	mount /dev/sdc /newtoolchain/
+	mkdir -p /newtoolchain/src/
+	mount /dev/sdb /newtoolchain/src
+	cp -r /toolchain/* /newtoolchain
+	chown -R liveuser /newtoolchain
+	chmod 777 /tmp
+	su - liveuser
+	cd /newtoolchain/
+	$(eval PATH=/usr/local/bin:/usr/bin:/bin/:sbin)
+	$(eval CC=gcc)
+	#make > logfile 2>&1 &
+
