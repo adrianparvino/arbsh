@@ -1,16 +1,29 @@
 #!/bin/sh
 
-# A hack to quickly make a chroot using ldd
+# quickly make a chroot using ldd
 
-[ "$#" -lt 2 ] && { echo "Usage $0 /path/tool mychroot" ; exit ; } 
+set -xe
+
+[ "$#" -lt 2 ] && { echo "Usage $0 /path/tool mychroot" ; exit ; }
+
+
+dirnametool()
+{ 
+	if [ -e dirnamesh ]
+	then 	./dirnamesh $1
+	else	dirname $1
+	fi
+	
+}
+
 
 for i in $(ldd $1)
 do case "$i" in
-	*/* ) 	mkdir -p ${2}/$(dirname $i)
-		cp $i ${2}/$(dirname $i) 
+	*/* ) 	mkdir -p ${2}/$(dirnametool $i)
+		cp $i ${2}/$(dirnametool $i) 
 		;;
 	esac
 done
 
-mkdir -p ${2}/$(dirname $1)
-cp $1 ${2}/$(dirname $1)
+mkdir -p ${2}/$(dirnametool $1)
+cp $1 ${2}/$(dirnametool $1)
