@@ -219,12 +219,7 @@ ADDING TARGET PACKAGES:
 		the top:
 		
 			OM_NEWPACKAGE=mynewpackage-1.1.1
-
-		And finally add a line to the "populate:" target.
-
-			@cd src && test -e $(OM_NEWPACKAGE).$(OM_SFX) || \
-				wget $(GENERIC_MRR)/$(OM_NEPACKAGE).$(OM_SFX)
-
+			OM_NEWPACKAGE_MRR=http://www.some.org
 
 		Though this may seem archaic, the process is simple and fast.
 		One can add a basic package, build it and test it in less 
