@@ -40,7 +40,7 @@ HIER:
 		A native shell.
 	irc/
 		A native irc client and library.
-	shbin/
+	libsh/
 		Userland applications and libraries written in POSIX shell 
 		(native).
 	toolchain/
