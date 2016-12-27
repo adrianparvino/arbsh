@@ -1,8 +1,155 @@
-#!/bin/sh 
+#!/bin/sh
 
+grophelp()
+{
+	echo "V. 0.1 \`grop', a \"Glob Grabbing Parser\" "
+	echo "grop.sh [OPTION] [PATTERN] [FILE(S)]" 
+	echo "  -H     print file name of match" 
+	echo "  -o     print word match only (use alone)" 
+	echo "  -n     print line number of match"
+	exit 1
+}
 
-# Convert numbers to longhand written/spoken notation
+basenamesh()
+{
+	# record $1 into a mutable variable
+	BASENAME="$1" 
+	# remove trailing /s
+	HOLD=""
+	while [ "$BASENAME" != "$HOLD" ]
+	do	HOLD="$BASENAME"
+		BASENAME="${BASENAME%/}"
+		COUNT=$((COUNT + 1))
+	done
+	# remove the directory names
+	BASENAME="${BASENAME##*/}"
+	# return the string to stdout
+	printf -- "%s\n" "${BASENAME}" 
+} 
 
+dirnamesh()
+{
+	# record $1 into a mutable variable
+	DIRNAME="$1" 
+	# remove trailing /s
+	HOLD=""
+	while [ "$DIRNAME" != "$HOLD" ]
+	do	HOLD="$DIRNAME"
+		DIRNAME="${DIRNAME%/}"
+		COUNT=$((COUNT + 1))
+	done
+	# remove the remaining name
+	DIRNAME="${DIRNAME%/*}"
+	# return the string to stdout
+	printf -- "%s\n" "${DIRNAME}" 
+} 
+
+lddwrapsh()
+{
+	for i in $(ldd $1)
+	do case "$i" in
+		*/* ) 	mkdir -p ${2}/$(dirnamesh $i)
+			cp $i ${2}/$(dirnamesh $i) 
+			;;
+		esac
+	done
+	
+	mkdir -p ${2}/$(dirnamesh $1)
+	cp $1 ${2}/$(dirnamesh $1)
+}
+
+duprint()
+{ 
+	if [ "$#" -gt 1 ]
+	then	printf "%s" $( eval printf '$'$(( $# - 1 )))
+	fi
+}
+
+duwrap()
+{
+	duprint $(du -s $@ 2>/dev/null)
+}
+
+compare()
+{
+	case "$2" in 
+		*${1}*)	printf '%s%s%s\n' "${f:+$f:}" "${c:+$c:}" "${2}" ;; 
+	esac 
+
+}
+
+stdin()
+{
+	while IFS='' read -r i
+	do	compare "$p" "$i" 
+		[ -n "$c" ] && c=$((c + 1)) # count line number
+	done
+}
+
+concatenate()
+{
+	[ -z "$1" ] && stdin
+	for j in $@
+	do	[ -n "$f" ] && f="$j" # reset file name
+		[ -n "$c" ] && c=1 # reset line count
+		stdin < "$j"
+	done 
+} 
+
+grop()
+{ 
+	[ -n "$1" ] || help
+	for i in $@
+	do
+		p="$1" 
+		shift
+		case "$p" in 
+			-h)	help ;;
+			-H) 	p="$1"
+				f="$2"
+				continue 
+				;;
+			-o)	unset f c
+				p="$1"
+				shift 
+				for i in $(concatenate $@) 
+				do	compare "$p" "$i" 
+				done 
+				break 
+				;;
+			-n)	c="1"
+				continue 
+				;; 
+			*)	concatenate "$@" 
+				break
+				;; 
+		esac 
+     	done 
+} 
+
+hex_to_int()
+{
+	printf  "%d\n" "0x${1}"
+}
+
+hex_to_ip()
+{
+	CACHE="$1"
+	NUMBE="$(( ${#1} / 2 )) " 
+	COUNT="0"
+	REMOV=""
+	while [ "$COUNT" -lt "$NUMBE" ]
+	do 
+		REMOV=${CACHE%*??} 
+		printf  "%d"  "0x${CACHE##$REMOV}"
+		COUNT=$(( COUNT + 1 ))
+		[ "$COUNT" -eq "$NUMBE" ] && break
+		printf  "." 
+		CACHE="$REMOV" 
+	done
+	printf  "\n"
+	
+} 
 
 int_to_lex_main()
 {
@@ -135,6 +282,75 @@ int_to_lex()
 
 }
 
-int_to_lex_main $@
+shellstat()
+{
+	BOOL="0"
+	S=""
+	[ -e "$1" ] || return
+	[ -k "$1" -a "$BOOL" = "0" ] && S="S" && BOOL="1"
+	[ -h "$1" -a "$BOOL" = "0" ] && S="l" && BOOL="1"
+	[ -b "$1" -a "$BOOL" = "0" ] && S="b" && BOOL="1"
+	[ -c "$1" -a "$BOOL" = "0" ] && S="c" && BOOL="1"
+	[ -d "$1" -a "$BOOL" = "0" ] && S="d" && BOOL="1"
+	[ "$BOOL" = "0" ] && S="-"
+	S="${S}..."
+	[ -r "$1" ] && S="${S}r" || S="${S}-"
+	[ -w "$1" ] && S="${S}w" || S="${S}-"
+	[ -x "$1" ] && S="${S}x" || S="${S}-"
+	S="${S}..."
+	[ -G "$1" ] && S=" ${S} $WHOAMI :" || S="${S} ...... :"
+	[ -O "$1" ] && S=" ${S} $WHOAMI " || S="${S} ......"
+	printf "%s  %s\n" "${S}" "${1}"
+} 
 
+power()
+{
+        COUNT="1"
+        HOLD="$1"
+        LENGT="$2"
+        if [ "$LENGT" -eq 0 ]
+        then    printf "1"
+        else    while [ "$COUNT" -lt "$LENGT" ]
+                do
+                        HOLD=$(( HOLD * $1  ))
+                        COUNT=$((COUNT + 1 ))
+                done
+                printf "$HOLD"
+        fi
+}
+
+insertion_sort()
+{
+	C="0" 
+	N="$#"
+
+	for i in $@
+	do 	eval ARRAY_"$C"="$i" 
+		C=$(( $C + 1 ))
+	done 
+
+	C="1" 
+
+	while [ "$C" -lt "$N" ]
+	do 	D="$C" 
+		while [ "$D" -gt "0" -a \
+		"$( eval printf '$'ARRAY_$D )" -lt \
+		"$( eval printf '$'ARRAY_$(( $D - 1 )) )" ]
+		do 
+			HOLD="$( eval printf '$'ARRAY_$D )" 
+			eval ARRAY_"$D"="$( eval printf '$'ARRAY_$(( $D - 1 )) )" 
+			eval ARRAY_$(( $D - 1 ))="$HOLD"
+			D=$(( $D - 1 ))
+		done 
+		C=$(( $C + 1 ))
+	done 
+  
+	C="0" 
+
+	while [ "$C" -lt "$N" ]
+	do 	printf "%s\n"  "$( eval printf '$'ARRAY_$C )" 
+		C=$(( C + 1 )) 
+	done
+
+}
 

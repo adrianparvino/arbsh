@@ -1,30 +1,12 @@
 #!/bin/sh
 
+
 LINES=$(tput lines)
 ROWS=$(tput cols)
 
 WHOAMI=$(whoami)
 
-shellstat()
-{
-	BOOL="0"
-	S=""
-	[ -e "$1" ] || return
-	[ -k "$1" -a "$BOOL" = "0" ] && S="S" && BOOL="1"
-	[ -h "$1" -a "$BOOL" = "0" ] && S="l" && BOOL="1"
-	[ -b "$1" -a "$BOOL" = "0" ] && S="b" && BOOL="1"
-	[ -c "$1" -a "$BOOL" = "0" ] && S="c" && BOOL="1"
-	[ -d "$1" -a "$BOOL" = "0" ] && S="d" && BOOL="1"
-	[ "$BOOL" = "0" ] && S="-"
-	S="${S}..."
-	[ -r "$1" ] && S="${S}r" || S="${S}-"
-	[ -w "$1" ] && S="${S}w" || S="${S}-"
-	[ -x "$1" ] && S="${S}x" || S="${S}-"
-	S="${S}..."
-	[ -G "$1" ] && S=" ${S} $WHOAMI :" || S="${S} ...... :"
-	[ -O "$1" ] && S=" ${S} $WHOAMI " || S="${S} ......"
-	printf "%s  %s\n" "${S}" "${1}"
-}
+. ../libsh/libsh
 
 # Argument parsing
 LONGLIST="0"
@@ -127,4 +109,6 @@ do	if [ $LONGLIST -ne "0" ]
 	C=$(( $C + 1 )) 
 done
 printf "\n"
+
+
 

@@ -41,17 +41,8 @@ error()
         exit 1
 }
 
-duwrap()
-{ 
-        for i in $(du -cs $@ 2>/dev/null)
-        do      eval ARRAY_"$C"="$i"
-                C=$(( $C + 1 ))
-        done
-
-        C=$(( $C - 2 ))
-
-        printf "%s" "$(eval printf '$'ARRAY_$C )"
-} 
+# get duwrap
+. ../libsh/libsh 
 
 cdwrap()
 {
