@@ -218,8 +218,7 @@ all:
 	$(MAKE) install_path
 	$(MAKE) binutils_stage_make
 	$(MAKE) binutils_stage_install
-	$(MAKE) linux_stage 
-	#$(MAKE) netbsd_headers
+	$(MAKE) linux_stage
 	$(MAKE) gcc_stage_make
 	$(MAKE) gcc_stage_install
 ifeq ($(OM_LIBC),musl)
@@ -1977,20 +1976,6 @@ netbsdcurses_host: install_path
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_NETBSDCURSES)
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_NETBSDCURSES) install DESTDIR=$(OM_PREF)/$(OM_TARG)
 
-netbsd_headers:
-
-	mkdir -p $(OM_PREF)/$(OM_TARG)/include/machine/
-	mkdir -p $(OM_PREF)/$(OM_TARG)/include/sys/
-	
-	cp -r /home/blakor/cmgraff/netbsd/usr/src/include/* $(OM_PREF)/$(OM_TARG)/include
-	
-	#    /home/blakor/cmgraff/netbsd/usr/src/sys/arch/i386/include/cdefs.h
-	# netbsd/usr/src/sys/
-	#cp -r /home/blakor/cmgraff/netbsd/usr/src/sys/sys/* $(OM_PREF)/$(OM_TARG)/include/sys/
-	cp -r /home/blakor/cmgraff/netbsd/usr/src/sys/arch/i386/include/* $(OM_PREF)/$(OM_TARG)/include
-	cp -r /home/blakor/cmgraff/netbsd/usr/src/sys/arch/i386/include/* $(OM_PREF)/$(OM_TARG)/include/machine
-	cp -r /home/blakor/cmgraff/netbsd/usr/src/sys/arch/i386/include/* $(OM_PREF)/$(OM_TARG)/include/sys/ 
-
 slibtool_host: install_path
 
 	-rm -rf $(OM_SLIBTOOL)
@@ -2027,10 +2012,6 @@ valgrind_target: install_path
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_VALGRIND)
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_VALGRIND) install DESTDIR=$(OM_LIBROOT)
 
-netbsd_tools:
-
-	-@cd nbsdcmpt && ./buildwrapper.sh
-	-@cd nbsdcmpt/usr/src/ && ./build.sh -u -U -m $(OM_ARCH)
 	
 make_target: install_path
 
@@ -2043,6 +2024,7 @@ make_target: install_path
 
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_MAKE)
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_MAKE) install DESTDIR=$(OM_LIBROOT)
+
 
 genext2fs_host: install_path
 
