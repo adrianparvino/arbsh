@@ -59,29 +59,28 @@ EXTERNAL USAGE:
 DESCRIPTION:
 ------------
 
+	The toolchain build system supports multiple C library vendors.
+	At this time they are: musl, uClibc and glibc, the effectiveness
+	of which in that order. The default libc is musl. To set the
+	desired libc override the variable OM_LIBC as follows:
 
-The toolchain build system supports multiple C library vendors.
-At this time they are: musl, uClibc and glibc, the effectiveness
-of which in that order. The default libc is musl. To set the
-desired libc override the variable OM_LIBC as follows:
+		Build with uClibc:
 
-	Build with uClibc:
+			make OM_LIBC=uclibc
 
-		make OM_LIBC=uclibc
+		Build with musl:
 
-	Build with musl:
+			make OM_LIBC=musl
 
-		make OM_LIBC=musl
+		Build with glibc:
 
-	Build with glibc:
+			make OM_LIBC=gnu
 
-		make OM_LIBC=gnu
+		... or open the single Makefile and set it as desired.
 
-	... or open the single Makefile and set it as desired.
-
-The default is to cross build for i686, this is modified by setting
-the primary tuple prefix. To do this, open the Makefile and modify
-the following four lines:
+	The default is to cross build for i686, this is modified by setting
+	the primary tuple prefix. To do this, open the Makefile and modify
+	the following four lines:
 
 	OM_LIBC = musl
 	OM_ARCH = i686
@@ -92,7 +91,7 @@ the following four lines:
 TARGET PACKAGES:
 ----------------
 
-Using the internal package building system:
+	Using the internal package building system:
 
 	The toolchain supports a minimal number of packages internally
 	on an experimental basis:
@@ -169,8 +168,7 @@ Using the internal package building system:
 		17	popt_host
 		18	netbsdcurses_host
 		19	slibtool_host
-		20	netbsd_tools
-		21	genext2fs_host
+		20	genext2fs_host
 
 
 	Example:

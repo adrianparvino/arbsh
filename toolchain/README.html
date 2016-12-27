@@ -11,7 +11,7 @@
 </pre><dd><hr/></dd><pre>
 	Install a toolchain's libc to a root.
 
-		make install DESTDIR=/full/path/
+		make install DESTDIR=/full/<a href="path/">path/</a>
 
 
 <br clear="left"/></pre><dl>FEATURES:</dl><pre>
@@ -60,29 +60,28 @@
 <br clear="left"/></pre><dl>DESCRIPTION:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
+	The toolchain build system supports multiple C library vendors.
+	At this time they are: musl, uClibc and glibc, the effectiveness
+	of which in that order. The default libc is musl. To set the
+	desired libc override the variable OM_LIBC as follows:
 
-<br clear="left"/></pre><dl>The toolchain build system supports multiple C library vendors.</dl><pre>
-<br clear="left"/></pre><dl>At this time they are: musl, uClibc and glibc, the effectiveness</dl><pre>
-<br clear="left"/></pre><dl>of which in that order. The default libc is musl. To set the</dl><pre>
-<br clear="left"/></pre><dl>desired libc override the variable OM_LIBC as follows:</dl><pre>
+		Build with uClibc:
 
-	Build with uClibc:
+			make OM_LIBC=uclibc
 
-		make OM_LIBC=uclibc
+		Build with musl:
 
-	Build with musl:
+			make OM_LIBC=musl
 
-		make OM_LIBC=musl
+		Build with glibc:
 
-	Build with glibc:
+			make OM_LIBC=gnu
 
-		make OM_LIBC=gnu
+		... or open the single Makefile and set it as desired.
 
-	... or open the single Makefile and set it as desired.
-
-<br clear="left"/></pre><dl>The default is to cross build for i686, this is modified by setting</dl><pre>
-<br clear="left"/></pre><dl>the primary tuple prefix. To do this, open the Makefile and modify</dl><pre>
-<br clear="left"/></pre><dl>the following four lines:</dl><pre>
+	The default is to cross build for i686, this is modified by setting
+	the primary tuple prefix. To do this, open the Makefile and modify
+	the following four lines:
 
 	OM_LIBC = musl
 	OM_ARCH = i686
@@ -93,7 +92,7 @@
 <br clear="left"/></pre><dl>TARGET PACKAGES:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
-<br clear="left"/></pre><dl>Using the internal package building system:</dl><pre>
+	Using the internal package building system:
 
 	The toolchain supports a minimal number of packages internally
 	on an experimental basis:
@@ -170,8 +169,7 @@
 		17	popt_host
 		18	netbsdcurses_host
 		19	slibtool_host
-		20	netbsd_tools
-		21	genext2fs_host
+		20	genext2fs_host
 
 
 	Example:
