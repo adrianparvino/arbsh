@@ -1,0 +1,83 @@
+grafland shell library and scripts
+
+DESCRIPTION:
+------------
+	A POSIX shell library
+
+	Userland utilities and scripts implemented in portable shell
+	syntax. They are intended to be ran with ash, dash, bash or ksh. 
+
+	Most of the scripts and utilites are implemented using grafland's
+	POSIX shell library which is located at /libsh/libsh.
+
+FUNCTIONS:
+----------
+
+	(A partial list)
+
+	stdin()
+		Reap stdin and print it out
+	concatenate($@)
+		Call stdin() on a list of files
+	insertion_sort($@)
+		Return an argument list to stdout sorted.  
+	power($1, $2)
+		Raise a number to n-th power. 
+	shellstat($1)
+		Print human readable octal permissions
+	duwrap()
+		Only print the end result from du.
+	hex_to_int($1)
+		Convert hexadecimal to ip addresses.
+	hex_to_int($1)
+		Convert hexadecimal to an integer.
+	basenamesh($1)
+		Return the basename.
+	dirnamesh($1)
+		Return the dirname.
+	
+	
+
+UTILITIES:
+----------
+
+	* catsh.sh
+		A cat-like utility. For text only.
+	* duwrap.sh
+		A wrapper for du which makes it easier to use
+		in scripts when estimating filesystem usage.
+	* grepsh.sh
+		A grep-like utility which uses glob matching. For
+		text only.
+	* hex_to_ip.sh
+		Convert a hexidecimal value obtained from /proc to
+		an ip address.
+	* int_to_phrase.sh
+		Convert a large number to spoken English based on 
+		linguistic rules.
+	* lddwrap.sh
+		Quickly make a directory which can be chrooted into that
+		contains all of the specified program's library dependencies.
+	* lssh.sh
+		An `ls' like implementation for listing files and exploring
+		the file tree.
+	* remaster.sh
+		A remastery and back up tool.
+	* basenamesh.sh
+		A basename-like utility.
+	* dirnamesh.sh
+		A dirname-like utility.
+
+UPSTREAM:
+--------
+
+	https://github.com/cmgraff/grafland/tree/master/shbin
+	https://github.com/cmgraff/grafland/tree/master/libsh
+
+
+CONTACT:
+--------
+
+	CM Graff cm0graff@gmail.com
+
+
