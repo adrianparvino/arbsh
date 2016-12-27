@@ -16,7 +16,7 @@ all:
 	-$(MAKE) -C bin 
 	-$(MAKE) -C irc
 	-$(MAKE) -C gsh
-	-$(MAKE) -s -C shbin
+	-$(MAKE) -s -C libsh
 	-$(MAKE) -C editor
 	-$(MAKE) -C sysmon
 	-$(MAKE) -C math
@@ -26,7 +26,7 @@ clean:
 	$(MAKE) -C bin clean 
 	$(MAKE) -C irc clean
 	$(MAKE) -C gsh clean
-	$(MAKE) -C shbin clean
+	$(MAKE) -C libsh clean
 	$(MAKE) -C editor clean
 	$(MAKE) -C sysmon clean
 	$(MAKE) -C math clean
@@ -37,7 +37,7 @@ install:
 	-$(MAKE) -C bin install 
 	-$(MAKE) -C irc install
 	-$(MAKE) -C gsh install
-	-$(MAKE) -C shbin install 
+	-$(MAKE) -C libsh install 
 	-$(MAKE) -C editor install
 	-$(MAKE) -C sysmon install
 	-$(MAKE) -C math install
@@ -50,7 +50,7 @@ uninstall:
 	-$(MAKE) -C bin uninstall 
 	-$(MAKE) -C irc uninstall
 	-$(MAKE) -C gsh uninstall
-	-$(MAKE) -C shbin uninstall 
+	-$(MAKE) -C libsh uninstall 
 	-$(MAKE) -C editor uninstall
 	-$(MAKE) -C sysmon uninstall
 	#-$(MAKE) -C math uninstall 
@@ -77,7 +77,7 @@ release:
 	-rm README.html
 	-printf "\t$(WEBSITE)/$(RELEASE)\n" >> README
 	-printf "\n" >> README
-	./shbin/text_to_html.sh README
+	./libsh/text_to_html.sh README
 	-git add *
 	-git commit -m $(RELEASE)
 	-git push origin master
