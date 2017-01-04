@@ -93,6 +93,7 @@ int main(int argc, char **argv)
 	bigint2 = strallocate(1000 * sizeof(int));
 
 	/* arb divide */
+	printf("division\n");
 	carda = strlen(argv[0]);
 	cardb = strlen(argv[1]);
 	hold = str2ints(argv[0], bigint1);
@@ -102,36 +103,41 @@ int main(int argc, char **argv)
 	divide(hold, hold2, result);
 
 	/* arb multiply */
+	printf("multiplication\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	multiply(hold, hold2, result);
 
 	/* arb addition */
+	printf("addition\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	hold = addition_r(hold, hold2, result);
 	printarray(hold, cardinal);
 	
 	/* arb subtraction */
+	printf("subtraction\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	hold = subtraction_r(hold, hold2, result);
 	printarray(hold, cardinal);
 	
 	/* arb addition */
-	printf("add\n");
+	printf("simple addition\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	addition(hold, hold2);
 	printarray(hold, cardinal);
 
 	/* arb subtract */
+	printf("simple subtraction\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	subtract(hold, hold2);
 	printarray(hold, cardinal);
 	
 	/* arb setarray, arb iszero, arb copyarray */
+	printf("setarray. iszero, copyarray\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	setarray(hold, 0);
@@ -147,12 +153,14 @@ int main(int argc, char **argv)
 		printf("hold2 is now zero\n");
 
 	/* single digit arb multiplication */
+	printf("short multiplication\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	short_multiply(hold, hold2[0]);
 	printarray(hold, cardinal);
 	
 	/* single digit arb short_short_divide */
+	printf("short division\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	short_divide(hold, hold2[0]);
