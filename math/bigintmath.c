@@ -49,12 +49,14 @@ int main(int argc, char **argv)
 {
 	int *hold;	/* Copy of bigint1 */
 	int *hold2;	/* Copy of bigint2 */
+	double a = 0;
+	double b = 0;
 	int o = 0;
 	
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
-			case 'v': /* Set verbosity (not fully implemented) */
+			case 'v':
 				verbose = 1;
 				break;
 			case 'b': /* Override base */
@@ -71,10 +73,23 @@ int main(int argc, char **argv)
 	if ( argc < 2 )
 		die("Needs 2 args\n");
 
+	a = strtod(argv[0], 0);
+	b = strtod(argv[1], 0);
+
+	printf("  %20lf\n", a);
+
+	printf("  %20lf\n", b);
+	printf("  %20s\n", "-------------------");
+	printf("+ %20lf\n", a + b);
+	printf("- %20lf\n", a - b);
+	printf("* %20lf\n", a * b);
+	printf("/ %20lf\n", a / b);
+	
+
 	mirror = strallocate(1000 * sizeof(int));
 	result = strallocate(1000 * sizeof(int));
 	tmpmir = strallocate(1000 * sizeof(int));
-	bigint1  = strallocate(1000 * sizeof(int));
+	bigint1 = strallocate(1000 * sizeof(int));
 	bigint2 = strallocate(1000 * sizeof(int));
 
 	/* arb divide */
@@ -308,21 +323,25 @@ int *divide(int *a, int *b, int *c)
 	size_t i = 0;	
 	size_t j = 0;
 	size_t z = 0;
-	int sum = 0;	
-	int rec = 0; 
-	size_t denom = carda;
-	size_t divis = cardb;
 
+	size_t numer = carda;
+	size_t denom = cardb;
+	size_t left = numer; 
+
+	int sum = 0;
+	int rec = 0;
+
+	/* numerator / denominator */
 	setarray(c, 0);
 	setarray(mirror, 0);
 	copyarray(mirror, a);
 	setarray(tmpmir, 0);
 	copyarray(tmpmir, mirror);
 
-	for ( ; z < denom ; )
+	for ( ; z < numer ; )
 	{
 		copyarray(tmpmir, mirror);
-		for (rec = 0, i = 0, j = z; i < divis ; j++ ,i++) 
+		for (rec = 0, i = 0, j = z; i < denom ; j++ ,i++) 
 		{
 			sum = (mirror[j]) - (b[i]);
 			if ( sum < 0 )
@@ -350,8 +369,8 @@ int *divide(int *a, int *b, int *c)
 			c[z] += 1;
 		} 
 		
-		if ( iszero(tmpmir) == 0)
-			break;
+	//	if ( iszero(tmpmir) == 0)
+	//		break;
 	} 
 	printarray(c, z + 1); 
 	return c;
