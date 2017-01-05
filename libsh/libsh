@@ -11,36 +11,28 @@ grophelp()
 }
 
 basenamesh()
-{
-	# record $1 into a mutable variable
+{ 
 	BASENAME="$1" 
-	# remove trailing /s
 	HOLD=""
 	while [ "$BASENAME" != "$HOLD" ]
 	do	HOLD="$BASENAME"
 		BASENAME="${BASENAME%/}"
 		COUNT=$((COUNT + 1))
-	done
-	# remove the directory names
+	done 
 	BASENAME="${BASENAME##*/}"
-	# return the string to stdout
-	printf -- "%s\n" "${BASENAME}" 
+	printf -- "%s\n" "${BASENAME}"
 } 
 
 dirnamesh()
-{
-	# record $1 into a mutable variable
+{ 
 	DIRNAME="$1" 
-	# remove trailing /s
 	HOLD=""
 	while [ "$DIRNAME" != "$HOLD" ]
 	do	HOLD="$DIRNAME"
 		DIRNAME="${DIRNAME%/}"
 		COUNT=$((COUNT + 1))
-	done
-	# remove the remaining name
-	DIRNAME="${DIRNAME%/*}"
-	# return the string to stdout
+	done 
+	DIRNAME="${DIRNAME%/*}" 
 	printf -- "%s\n" "${DIRNAME}" 
 } 
 
