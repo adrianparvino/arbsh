@@ -270,10 +270,10 @@ ASSUMPTIONS ABOUT TARBALLS:
 REFERENCES:
 -----------
 
-	http://preshing.com/20141119/how-to-build-a-gcc-cross-compiler/
+	http://preshing.com/20141119/how-to-build-a-gcc-cross-compiler
 
 	https://www.gnu.org/software/autoconf/manual/autoconf.txt
 
-	https://gcc.gnu.org/onlinedocs/
+	https://gcc.gnu.org/onlinedocs
 
 
