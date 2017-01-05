@@ -266,3 +266,10 @@ ASSUMPTIONS ABOUT TARBALLS:
 	All tarballs must end in the same suffix. That suffix can be 
 	overridden by setting OM_SFX=.
 
+
+REFERENCES:
+-----------
+
+	http://preshing.com/20141119/how-to-build-a-gcc-cross-compiler/
+
+	
