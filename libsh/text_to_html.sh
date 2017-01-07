@@ -9,7 +9,7 @@ text2htmlsh()
 	cat $FILE >> ${FILE}.html
 	printf '</pre>\n' >> ${FILE}.html
 	# mark up directories
-	sed -i 's/\([a-Z,0-9]*\/\)$/<a href="&">&<\/a>/g' ${FILE}.html
+	sed -i 's/\([a-Z,0-9,/,-,.]*\/\)$/<a href="&">&<\/a>/g' ${FILE}.html
 	# mark up hyper links
 	sed -i 's/\(http.*\)/<a href="&">&<\/a>/g' ${FILE}.html
 	# mark up mailing links
