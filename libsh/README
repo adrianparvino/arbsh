@@ -17,9 +17,9 @@ FUNCTIONS:
 
 	stdin()
 		Reap stdin and print it out
-	concatenate($@)
+	concatenate(...)
 		Call stdin() on a list of files
-	insertion_sort($@)
+	insertion_sort(...)
 		Return an argument list to stdout sorted.  
 	power($1, $2)
 		Raise a number to n-th power. 
