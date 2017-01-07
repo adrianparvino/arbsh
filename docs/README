@@ -4,7 +4,7 @@ Documentation on using Linux, NetBSD and FreeBSD.
 -------------------------------------------------
 
 	BSD/
-		FreeBSD/
+		BSD/FreeBSD/
 			FreeBSD_jails.txt
 			FreeBSD_on_a_ZFS_disk_image.txt
 			FreeBSD_rescue_binary.txt
@@ -36,7 +36,7 @@ Documentation on using Linux, NetBSD and FreeBSD.
 			Netbsd_scripted_install_on_UFS_disk_image.sh
 			FreeBSD_on_a_UFS_hard_disk_image.sh
 			Netbsd_customize_kernel_ramdisk.txt
-		NetBSD/
+		BSD/NetBSD/
 			static_linking_with_netbsd.txt
 			Netbsd_scripted_install_on_UFS_disk_image.sh
 			use_netbsd_mailing_lists.txt
@@ -70,12 +70,12 @@ Documentation on using Linux, NetBSD and FreeBSD.
 			HOWTO_tails_iso_on_usb.sh
 			isolinux_with_xorriso_on_binary_hybrid_img_example.sh
 			lock
-		UML/
+		linux/UML/
 			make_and_test_a_kernel_module_with_UML_example.sh
 			simplelinux
 			Create_a_simple_busybox_based_system_example.sh
 			Create_a_simple_busybox_based_system_example.txt
-		debian/
+		linux/debian/
 			debian_luks_usb.sh
 			sDebootstrap_standalone
 			debootstrap_example_script_1.sh
@@ -83,10 +83,10 @@ Documentation on using Linux, NetBSD and FreeBSD.
 			initramfs_entry_points.txt
 			lock
 			DeCryptoStrap_usb_tarball_creator
-		qemu/
+		linux/qemu/
 			qemu_arm_archlinux_example_script_1.0.sh
 			sound_on_qemu.txt
-		buildroot/
+		linux/buildroot/
 			standalone_linux_kernel_with_attached_initramfs.sh
 			lock
 			buildroot_rootfs_with_xorg_example.sh
