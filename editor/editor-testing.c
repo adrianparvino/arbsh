@@ -54,19 +54,15 @@ int lines = 0;
 int winchg = 0;
 int cflags = 0;
 int topmarg = 0;
-int bottommarg = 0; 
-int leftmarg = 0; 
-int rightmarg = 0;
-int tabstop = 8; 
-
+int bottommarg = 10; 
+int leftmarg = 10; 
+int rightmarg = 10;
+int tabstop = 18;
 
 /* macros */
-#define TRUE 1
-#define FALSE 0
-#define LINSIZ		128
-//#define VLEN(ch,col)  (ch=='\t' ? tabstop - (col%tabstop) : 1)
-//#define VLINES(l)	 (1+(l?l->vlen/cols:0))
-
+#define	TRUE	1
+#define	FALSE	0
+#define	LINSIZ	128 
 
 /* function prototypes */
 void *ecalloc(size_t, size_t);
@@ -93,8 +89,8 @@ struct filepos m_nextscr(struct filepos);
 struct filepos m_prevscr(struct filepos); 
 void normalizetoscr(void);
 static void sigwinch(int);
-int VLEN(int, int);
-int VLINES(struct Line *);
+int vlencnt(int, int);
+int vlinecnt(struct Line *);
 
 
 int main(int argc, char *argv[])
@@ -219,7 +215,7 @@ void i_calcvlen(struct Line * l)
 	size_t i; 
 	l->vlen = 0;
 	for(i = 0; i < l->len; i++)
-		l->vlen += VLEN(l->c[i], l->vlen);
+		l->vlen += vlencnt(l->c[i], l->vlen);
 } 
 
 void i_die(const char *str)
@@ -380,7 +376,7 @@ void i_update(void)
 		if(l == fcur.l) { /* Can't have fcur.l before scrline, move scrline up */
 			i = 0;
 			while(l != scrline) {
-				if(VLINES(scrline) > 1) {
+				if(vlinecnt(scrline) > 1) {
 					i = -1;
 					break;
 				}
@@ -394,12 +390,12 @@ void i_update(void)
 		} 
 	}
 	for(i = irow = 1, l = scrline; l; l = l->next, irow += vlines) { 
-		vlines = VLINES(l);
+		vlines = vlinecnt(l);
 		if(fcur.l == l) { 
 			/* Can't have fcur.l after screen end, move scrline down */
 			while(irow + vlines > lines && scrline->next) {
-				irow -= VLINES(scrline);
-				i += VLINES(scrline); 
+				irow -= vlinecnt(scrline);
+				i += vlinecnt(scrline); 
 				scrline = scrline->next;
 				iline++;
 			}
@@ -412,13 +408,13 @@ void i_update(void)
 	//in = 0;
 	for(irow = 1 , l = scrline; irow < lines;
 		irow += vlines, iline++) {
-		vlines = VLINES(l);
+		vlines = vlinecnt(l);
 		if(fcur.l == l) { 
 			/* Update screen cursor position */
 			cursor_c = 0;
 			cursor_r = irow;
 			for(ichar = 0; ichar < fcur.o; ichar++)
-				cursor_c += VLEN(fcur.l->c[ichar], cursor_c);
+				cursor_c += vlencnt(fcur.l->c[ichar], cursor_c);
 			while(cursor_c >= cols) {
 				cursor_c -= cols;
 				cursor_r++;
@@ -432,17 +428,15 @@ void i_update(void)
 			while(ivchar < (1 + ixrow) * cols)
 			{
 				if(l && ichar < l->len) {
-			
-						
 					/* Tab nightmare */
 					if(l->c[ichar] == '\t') {
-						for(i = 0; i < VLEN('\t', ivchar); i++)
+						for(i = 0; i < vlencnt('\t', ivchar); i++)
 							ansiwaddch(' ', lim++);
 					}
 					else {
 						ansiwaddch(l->c[ichar], lim++);
 					}
-					ivchar += VLEN(l->c[ichar], ivchar);
+					ivchar += vlencnt(l->c[ichar], ivchar);
 					ichar++;
 				} else {
 					ansiwaddch(' ', lim++);
@@ -512,10 +506,10 @@ struct filepos m_prevchar(struct filepos pos) {
 struct filepos m_nextline(struct filepos pos) {
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
-		ivchar += VLEN(pos.l->c[ichar], ivchar); 
+		ivchar += vlencnt(pos.l->c[ichar], ivchar); 
 	if(pos.l->next) { 
 		for(pos.l = pos.l->next, pos.o = ichar = 0; ichar < ivchar && pos.o < pos.l->len; pos.o++)
-			ichar += VLEN(pos.l->c[pos.o], ichar); 
+			ichar += vlencnt(pos.l->c[pos.o], ichar); 
 	} else {
 		pos.o = pos.l->len;
 	}
@@ -525,10 +519,10 @@ struct filepos m_nextline(struct filepos pos) {
 struct filepos m_prevline(struct filepos pos) {
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
-		ivchar += VLEN(pos.l->c[ichar], (ivchar % (cols - 1))); 
+		ivchar += vlencnt(pos.l->c[ichar], (ivchar % (cols - 1))); 
 	if(pos.l->prev) { 
 		for(pos.l = pos.l->prev, pos.o = ichar = 0; ichar < ivchar && pos.o < pos.l->len; pos.o++)
-			ichar += VLEN(pos.l->c[pos.o], ichar); 
+			ichar += vlencnt(pos.l->c[pos.o], ichar); 
 	} else {
 		pos.o = 0;
 	}
@@ -538,7 +532,7 @@ struct filepos m_prevline(struct filepos pos) {
 struct filepos m_nextscr(struct filepos pos) {
 	int i;
 	struct Line *l; 
-	for(i = lines, l = pos.l; l->next && i > 0; i -= VLINES(l), l = l->next)
+	for(i = lines, l = pos.l; l->next && i > 0; i -= vlinecnt(l), l = l->next)
 		;
 	pos.l = l;
 	pos.o = pos.l->len;
@@ -548,7 +542,7 @@ struct filepos m_nextscr(struct filepos pos) {
 struct filepos m_prevscr(struct filepos pos) {
 	int i;
 	struct Line *l; 
-	for(i = lines, l = pos.l; l->prev && i > 0; i -= VLINES(l), l = l->prev)
+	for(i = lines, l = pos.l; l->prev && i > 0; i -= vlinecnt(l), l = l->prev)
 		;
 	pos.l = l;
 	pos.o = 0;
@@ -618,16 +612,15 @@ static void sigwinch(int sig)
 		winchg = 1;
 }
 
-int VLEN(int ch, int col)
+int vlencnt(int ch, int col)
 {
-//#define VLEN(ch,col)  (ch=='\t' ? tabstop - (col%tabstop) : 1)
 	if ( ch == '\t' )
-		return tabstop - (col%tabstop);
+		return tabstop - (col % tabstop);
 	return 1;
 }
-int VLINES(struct Line *l)
+
+int vlinecnt(struct Line *l)
 {
-//#define VLINES(l)	 (1+(l?l->vlen/cols:0))
 	if ( l )
 		return ( 1 + ( l->vlen / cols));
 	return 1;
