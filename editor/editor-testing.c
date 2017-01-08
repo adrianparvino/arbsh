@@ -65,7 +65,7 @@ int tabstop = 8;
 #define FALSE 0
 #define LINSIZ		128
 //#define VLEN(ch,col)  (ch=='\t' ? tabstop - (col%tabstop) : 1)
-#define VLINES(l)	 (1+(l?l->vlen/cols:0))
+//#define VLINES(l)	 (1+(l?l->vlen/cols:0))
 
 
 /* function prototypes */
@@ -94,6 +94,7 @@ struct filepos m_prevscr(struct filepos);
 void normalizetoscr(void);
 static void sigwinch(int);
 int VLEN(int, int);
+int VLINES(struct Line *);
 
 
 int main(int argc, char *argv[])
@@ -622,5 +623,12 @@ int VLEN(int ch, int col)
 //#define VLEN(ch,col)  (ch=='\t' ? tabstop - (col%tabstop) : 1)
 	if ( ch == '\t' )
 		return tabstop - (col%tabstop);
+	return 1;
+}
+int VLINES(struct Line *l)
+{
+//#define VLINES(l)	 (1+(l?l->vlen/cols:0))
+	if ( l )
+		return ( 1 + ( l->vlen / cols));
 	return 1;
 }
