@@ -1,7 +1,3 @@
-/*
-	See LICENSE file for copyright and license details. 
-*/ 
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h> 
@@ -18,127 +14,89 @@
 #include <sys/stat.h>
 #include <fcntl.h> 
 #include <signal.h> 
-#include <sys/types.h> 
-#include <regex.h> 
+#include <sys/types.h>
 #include "../lib/hexen.h" 
 
-#define TRUE 1
-#define FALSE 0 
-#define TOTMAPS 5
 
-/* regex globals */
-char COLORS[TOTMAPS][50] = { 
-T_BLUE_FG,
-T_YELLOW_FG,
-T_GREEN_FG, 
-T_RED_FG,
-T_MAGENTA_FG 
-}; 
+/*
+	See LICENSE file for copyright and license details. 
+*/ 
 
-char MAPS[TOTMAPS + 1][200] = { 
-"^(//.*|\\/\\*.*\\*/)",
-"^(if|else|while|for|do|default|break|return|case|switch)",
-"^(int|char|size_t|static|void|unsigned|bool|typedef|struct)",
-"^(\".*\"|<.*\\.[ch]>|NULL|BUFSIZ|PATH_MAX|[0-9]*|'.')",
-"^(#define .*|#include|'..')",
-".*\\.[ch]$"	/* file suffix match ( always last )*/
-}; 
 
-regex_t re[TOTMAPS + 1];
-regmatch_t rm[TOTMAPS + 1][2]; 
-
-regex_t rein;
-regmatch_t rmin[2];
-
-regex_t reout;
-regmatch_t rmout[2];
-
-int cflags = 0;
-int regexon = 0;
-int topmarg = 0;
-int bottommarg = 0; 
-int leftmarg = 0; 
-int rightmarg = 0;
-int inacomment = 0;
-static int tabstop = 8; 
-
-#define LINSIZ		128 
-#define VLEN(ch,col)  (ch=='\t' ? tabstop - (col%tabstop) : 1)
-#define VLINES(l)	 (1+(l?l->vlen/cols:0)) 
-
-/* Typedefs */
-typedef struct Line Line;
-
+/* structs */
 struct Line {		/** The internal representation of a line of text */
-	char *c;	/* Line content */
-	size_t len;	/* Line byte length */
+	char *c;	/* struct Line content */
+	size_t len;	/* struct Line byte length */
 	size_t vlen;	/* On-screen line-length */
 	size_t mul;	/* How many times LINSIZ is c malloc'd to */
 	bool dirty;	/* screen should be repainted */
-	Line *next;	/* Next line, NULL if last */
-	Line *prev;	/* Previous line, NULL if first */
-};
+	struct Line *next;	/* Next line, NULL if last */
+	struct Line *prev;	/* Previous line, NULL if first */
+} Line;
 
-typedef struct {	/** A position in the file */
-	struct Line *l;	/* Line */
+struct filepos {	/** A position in the file */
+	struct Line *l;	/* struct Line */
 	size_t o;	/* Offset inside the line */
-} Filepos;
+} filepos;
 
-/* Variables */
+/* Globals */
 int running = 1; 
-Line *fstline;	/* First line */
-Line *lstline;	/* Last line  */
-Line *scrline;	/* First line seen on screen */
-Filepos fsel;	/* Selection point on file   */
-Filepos fcur;	/* Insert position on file, cursor, current position */ 
-
+struct Line *fstline;	/* First line */
+struct Line *lstline;	/* Last line  */
+struct Line *scrline;	/* First line seen on screen */
+struct filepos fsel;	/* Selection point on file   */
+struct filepos fcur;	/* Insert position on file, cursor, current position */
 int ch = 0;		/* Used to store input */
-char c[7] = { 0} ;	/* Used to store input */ 
+char c[7] = { 0 };	/* Used to store input */ 
 char *fname = NULL;
 int cols = 0;
 int lines = 0;
 int winchg = 0;
+int cflags = 0;
+int topmarg = 0;
+int bottommarg = 0; 
+int leftmarg = 0; 
+int rightmarg = 0;
+int tabstop = 8; 
 
+
+/* macros */
+#define TRUE 1
+#define FALSE 0
+#define LINSIZ		128
+#define VLEN(ch,col)  (ch=='\t' ? tabstop - (col%tabstop) : 1)
+#define VLINES(l)	 (1+(l?l->vlen/cols:0))
+
+
+/* function prototypes */
 void *ecalloc(size_t, size_t);
-void *erealloc(void *, size_t);
-
+void *erealloc(void *, size_t); 
 void f_delete(void);
 void f_insert(void); 
-
 size_t edgetch(void);
-Filepos i_addtext(char *, Filepos); 
-void i_calcvlen(Line * l); 
-bool i_deltext(Filepos, Filepos);
+struct filepos i_addtext(char *, struct filepos); 
+void i_calcvlen(struct Line * l); 
+bool i_deltext(struct filepos, struct filepos);
 void i_die(const char *str); 
 void i_edit(void); 
 void i_readfile(void);
 void i_setup(void); 
-void i_sortpos(Filepos *, Filepos *);
+void i_sortpos(struct filepos *, struct filepos *);
 void i_update(void); 
 bool i_writefile(char *); 
-
-Filepos m_bol(Filepos); 
-Filepos m_nextchar(Filepos);
-Filepos m_prevchar(Filepos);
-Filepos m_nextline(Filepos);
-Filepos m_prevline(Filepos);
-Filepos m_nextscr(Filepos);
-Filepos m_prevscr(Filepos); 
-
-void highlight(char *, int, size_t); 
+struct filepos m_bol(struct filepos); 
+struct filepos m_nextchar(struct filepos);
+struct filepos m_prevchar(struct filepos);
+struct filepos m_nextline(struct filepos);
+struct filepos m_prevline(struct filepos);
+struct filepos m_nextscr(struct filepos);
+struct filepos m_prevscr(struct filepos); 
 void normalizetoscr(void);
-
-static void sigwinch(int sig)
-{
-	if (sig)
-		winchg = 1;
-}
+static void sigwinch(int);
 
 
 int main(int argc, char *argv[])
 { 
-	
-	size_t i = 0;
 
 	if ( argc < 2 ) 
 	{
@@ -148,19 +106,6 @@ int main(int argc, char *argv[])
 
 	
 	setlocale(LC_ALL, ""); 
-	regcomp(&re[TOTMAPS],MAPS[TOTMAPS], cflags);
-
-	regcomp(&rein, "\\/\\*", cflags);
-	regcomp(&reout, "\\*/)", cflags);
-
-	if (((regexec(&re[TOTMAPS], argv[1], 0, 0, 0)) == 0))
-	{
-		cflags |= REG_EXTENDED; 
-		
-		for ( i = 0;i < TOTMAPS ;i++)
-			regcomp(&re[i], MAPS[i], cflags); 
-		regexon = 1;
-	}
 
 	termcatch(~(ICANON | ECHO), 0);
 	signal(SIGWINCH, sigwinch);
@@ -192,8 +137,8 @@ void *erealloc(void *ptr, size_t size)
 
 void f_delete(void)
 { 
-	Filepos pos0 = fcur;
-	Filepos pos1 = (Filepos)m_prevchar(fcur);
+	struct filepos pos0 = fcur;
+	struct filepos pos1 = (struct filepos)m_prevchar(fcur);
 	
 	i_sortpos(&pos0, &pos1);
 	
@@ -205,7 +150,7 @@ void f_delete(void)
 
 void f_insert(void)
 {
-	Filepos newcur;
+	struct filepos newcur;
 	newcur = i_addtext((char *) c, fcur);
 	if(fcur.l != newcur.l)
 		fsel = newcur;
@@ -215,17 +160,17 @@ void f_insert(void)
 
 
 /* Add text at pos, return the position after the inserted text */
-Filepos i_addtext(char *buf, Filepos pos)
+struct filepos i_addtext(char *buf, struct filepos pos)
 {
-	Line *l = pos.l, *lnew = NULL; 
+	struct Line *l = pos.l, *lnew = NULL; 
 	size_t o = pos.o, i = 0, il = 0;
-	Filepos f;
+	struct filepos f;
 	char c; 
 	
 	for(c = buf[0]; c != '\0'; c = buf[++i]) { 
 		/* newline / line feed */
 		if(c == '\n' || c == '\r') {
-			lnew = (Line *)ecalloc(1, sizeof(Line));
+			lnew = (struct Line *)ecalloc(1, sizeof(struct Line));
 			lnew->c = ecalloc(1, LINSIZ);
 			lnew->dirty = l->dirty = TRUE;
 			lnew->len = lnew->vlen = 0;
@@ -266,8 +211,8 @@ Filepos i_addtext(char *buf, Filepos pos)
 	return f;
 }
 
-/* Update the vlen value of a Line */
-void i_calcvlen(Line * l)
+/* Update the vlen value of a struct Line */
+void i_calcvlen(struct Line * l)
 {
 	size_t i; 
 	l->vlen = 0;
@@ -284,9 +229,9 @@ void i_die(const char *str)
 
 /* Delete text between pos0 and pos1, which MUST be in order, fcur integrity
    is NOT assured after deletion, fsel integrity is returned as a bool */
-bool i_deltext(Filepos pos0, Filepos pos1)
+bool i_deltext(struct filepos pos0, struct filepos pos1)
 {
-	Line *ldel = NULL; 
+	struct Line *ldel = NULL; 
 	bool integrity = TRUE; 
 
 	if(pos0.l == fsel.l)
@@ -380,13 +325,13 @@ void i_readfile(void)
 
 void i_setup(void) 
 {
-	Line *l = NULL; 
+	struct Line *l = NULL; 
 	
 	ansiinit();
 	normalizetoscr();
 	ansicreate();
 	/* Init line structure */
-	l = (Line *) ecalloc(1, sizeof(Line));
+	l = (struct Line *) ecalloc(1, sizeof(struct Line));
 	l->c = ecalloc(1, LINSIZ);
 	l->dirty = FALSE;
 	l->len = l->vlen = 0;
@@ -401,9 +346,9 @@ void i_setup(void)
 } 
 
 /* Exchange pos0 and pos1 if not in order */
-void i_sortpos(Filepos * pos0, Filepos * pos1)
+void i_sortpos(struct filepos * pos0, struct filepos * pos1)
 {
-	Filepos p;
+	struct filepos p;
 
 	for(p.l = fstline; p.l; p.l = p.l->next) {
 		if(p.l == pos0->l || p.l == pos1->l) {
@@ -423,7 +368,7 @@ void i_update(void)
 	int iline, irow, ixrow, ivchar, i, vlines;
 	int cursor_r = 0, cursor_c = 0;
 	size_t ichar; 
-	Line *l;
+	struct Line *l;
 	
 	/* Check offset */
 	size_t lim = 0;
@@ -485,8 +430,8 @@ void i_update(void)
 			while(ivchar < (1 + ixrow) * cols)
 			{
 				if(l && ichar < l->len) {
-					if ( regexon == 1)
-						highlight(l->c, ichar, lim);
+			
+						
 					/* Tab nightmare */
 					if(l->c[ichar] == '\t') {
 						for(i = 0; i < VLEN('\t', ivchar); i++)
@@ -520,7 +465,7 @@ bool i_writefile(char *fname)
 {
 	int fd = 1; 
 	bool wok = TRUE;
-	Line *l; 
+	struct Line *l; 
 
 	if(fname != NULL
 		&& (fd = open(fname, O_WRONLY | O_TRUNC | O_CREAT,
@@ -537,12 +482,12 @@ bool i_writefile(char *fname)
 	return wok;
 }
 
-Filepos m_bol(Filepos pos) {
+struct filepos m_bol(struct filepos pos) {
 	pos.o = 0;
 	return pos;
 }
 
-Filepos m_nextchar(Filepos pos) {
+struct filepos m_nextchar(struct filepos pos) {
 	if(pos.o < pos.l->len) {
 		pos.o++; 
 	} else if(pos.l->next) {
@@ -552,7 +497,7 @@ Filepos m_nextchar(Filepos pos) {
 	return pos;
 } 
 
-Filepos m_prevchar(Filepos pos) {
+struct filepos m_prevchar(struct filepos pos) {
 	if(pos.o > 0) {
 		pos.o--; 
 	} else if(pos.l->prev) {
@@ -562,7 +507,7 @@ Filepos m_prevchar(Filepos pos) {
 	return pos;
 } 
 
-Filepos m_nextline(Filepos pos) {
+struct filepos m_nextline(struct filepos pos) {
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
 		ivchar += VLEN(pos.l->c[ichar], ivchar); 
@@ -575,7 +520,7 @@ Filepos m_nextline(Filepos pos) {
 	return pos;
 } 
 
-Filepos m_prevline(Filepos pos) {
+struct filepos m_prevline(struct filepos pos) {
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
 		ivchar += VLEN(pos.l->c[ichar], (ivchar % (cols - 1))); 
@@ -588,9 +533,9 @@ Filepos m_prevline(Filepos pos) {
 	return pos;
 } 
 
-Filepos m_nextscr(Filepos pos) {
+struct filepos m_nextscr(struct filepos pos) {
 	int i;
-	Line *l; 
+	struct Line *l; 
 	for(i = lines, l = pos.l; l->next && i > 0; i -= VLINES(l), l = l->next)
 		;
 	pos.l = l;
@@ -598,9 +543,9 @@ Filepos m_nextscr(Filepos pos) {
 	return pos;
 } 
 
-Filepos m_prevscr(Filepos pos) {
+struct filepos m_prevscr(struct filepos pos) {
 	int i;
-	Line *l; 
+	struct Line *l; 
 	for(i = lines, l = pos.l; l->prev && i > 0; i -= VLINES(l), l = l->prev)
 		;
 	pos.l = l;
@@ -612,38 +557,38 @@ size_t edgetch(void)
 {
 	static size_t len = 0; 
 	  
-	ch = supahfastgetch(); 
+	ch = getch(); 
 
 	switch (ch) { 
 	case K_ESCAPE: 
-		ch = supahfastgetch(); 
+		ch = getch(); 
 		switch (ch) {
 			case '[': 
-				ch = supahfastgetch(); 
+				ch = getch(); 
 				switch (ch) { 
 					case 'A': /* arrow up */ 
-						fcur = (Filepos)m_prevline(fcur); 
+						fcur = m_prevline(fcur); 
 						break;
 					case 'B': /* arrow down */ 
-						fcur = (Filepos)m_nextline(fcur); 
+						fcur = m_nextline(fcur); 
 						break;
 					case 'C': /* right arrow */ 
-						fcur = (Filepos)m_nextchar(fcur); 
+						fcur = m_nextchar(fcur); 
 						break;
 					case 'D': /* left arrow */ 
-						fcur = (Filepos)m_prevchar(fcur); 
+						fcur = m_prevchar(fcur); 
 						break;
 					case 'H': /* Home */ 
-						fcur = (Filepos)m_bol(fcur);
-						ch = supahfastgetch(); 
+						fcur = m_bol(fcur);
+						ch = getch(); 
 						break;
 					case '5': /* page up */ 
-						fcur = (Filepos)m_prevscr(fcur);
-						ch = supahfastgetch(); 
+						fcur = m_prevscr(fcur);
+						ch = getch(); 
 						break; 
 					case '6': /* page down */ 
-						fcur = (Filepos)m_nextscr(fcur);
-						ch = supahfastgetch(); 
+						fcur = m_nextscr(fcur);
+						ch = getch(); 
 						break;
 			}
 		}
@@ -663,48 +608,10 @@ size_t edgetch(void)
 		break;
 	}
 	return len;
-} 
-
-void highlight(char *s, int i, size_t lim)
-{ 
-	size_t j = 0, k;
-	static int inacomment = 0;
-	
-	if ( s[i] == '/' && s[i + 1] == '*') 
-		inacomment = 1;
-
-	if ( s[i] == '*' && s[i + 1] == '/') 
-	{
-		hardadd = 1;
-                addcolor(T_BLUE_FG,T_BLUE_FG_SZ, lim);
-		addcolor(T_BLUE_FG,T_BLUE_FG_SZ, lim + 1);
-                hardadd = 0;
-		if ( inacomment == 0 ) 
-		{
-			hardadd = 1;
-			for (j = lim; j > 0; --j)
-                	       addcolor(T_BLUE_FG, T_BLUE_FG_SZ, j); 
-			hardadd = 0;
-		} 
-		inacomment = 0;
-	}
-	
-	if ( inacomment == 1 )
-	{
-		hardadd = 1;
-		addcolor(T_BLUE_FG,T_BLUE_FG_SZ, lim);
-		hardadd = 0; 
-	}
-	
-	for ( k = 0; k < TOTMAPS ;) 
-	{
-		if (((regexec(&re[k], s+ i, 2, rm[k], 0)) == 0)) 
-		{
-       			for (j = rm[k][0].rm_so; j < (unsigned int)rm[k][0].rm_eo ; ++j)
-				addcolor(COLORS[k], T_BLUE_FG_SZ, lim + j); 
-		
-		}
-		++k;
-	}
 }
 
+static void sigwinch(int sig)
+{
+	if (sig)
+		winchg = 1;
+}
