@@ -67,10 +67,9 @@ int tabstop = 8;
 /* function prototypes */
 void *ecalloc(size_t, size_t);
 void *erealloc(void *, size_t); 
-void f_delete(void);
-void f_insert(void); 
 size_t edgetch(void);
-struct filepos i_addtext(char *, struct filepos); 
+void f_delete(void);
+void f_insert(void);
 void i_calcvlen(struct Line * l); 
 bool i_deltext(struct filepos, struct filepos);
 void i_die(const char *str); 
@@ -79,14 +78,12 @@ void i_readfile(void);
 void i_setup(void); 
 void i_sortpos(struct filepos *, struct filepos *);
 void i_update(void); 
-bool i_writefile(char *); 
-struct filepos m_bol(struct filepos); 
+bool i_writefile(char *);
+struct filepos i_addtext(char *, struct filepos); 
 struct filepos m_nextchar(struct filepos);
 struct filepos m_prevchar(struct filepos);
 struct filepos m_nextline(struct filepos);
 struct filepos m_prevline(struct filepos);
-struct filepos m_nextscr(struct filepos);
-struct filepos m_prevscr(struct filepos); 
 void normalizetoscr(void);
 static void sigwinch(int);
 int vlencnt(int, int);
@@ -96,14 +93,14 @@ int vlinecnt(struct Line *);
 int main(int argc, char *argv[])
 { 
 
-	if ( argc < 2 ) 
+	if ( argc < 2 )
 	{
 		write(2, "Requires a file to edit\n", 24);
 		return 1;
 	}
 
 	
-	setlocale(LC_ALL, ""); 
+	setlocale(LC_ALL, "");
 
 	termcatch(~(ICANON | ECHO), 0);
 	signal(SIGWINCH, sigwinch);
@@ -523,26 +520,6 @@ struct filepos m_prevline(struct filepos pos) {
 	return pos;
 } 
 
-struct filepos m_nextscr(struct filepos pos) {
-	int i;
-	struct Line *l; 
-	for(i = lines, l = pos.l; l->next && i > 0; i -= vlinecnt(l), l = l->next)
-		;
-	pos.l = l;
-	pos.o = pos.l->len;
-	return pos;
-} 
-
-struct filepos m_prevscr(struct filepos pos) {
-	int i;
-	struct Line *l; 
-	for(i = lines, l = pos.l; l->prev && i > 0; i -= vlinecnt(l), l = l->prev)
-		;
-	pos.l = l;
-	pos.o = 0;
-	return pos;
-} 
-
 size_t edgetch(void)
 {
 	static size_t len = 0; 
@@ -567,18 +544,6 @@ size_t edgetch(void)
 						break;
 					case 'D': /* left arrow */ 
 						fcur = m_prevchar(fcur); 
-						break;
-					case 'H': /* Home */ 
-						fcur = m_bol(fcur);
-						ch = getch(); 
-						break;
-					case '5': /* page up */ 
-						fcur = m_prevscr(fcur);
-						ch = getch(); 
-						break; 
-					case '6': /* page down */ 
-						fcur = m_nextscr(fcur);
-						ch = getch(); 
 						break;
 			}
 		}
