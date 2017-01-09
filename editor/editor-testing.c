@@ -412,7 +412,8 @@ void i_update(void)
 				if(l && ichar < l->len) {
 					/* Tab nightmare */
 					if(l->c[ichar] == '\t') { 
-						write(1, WHITESPACE, vlencnt('\t', ivchar));
+						//write(1, WHITESPACE, vlencnt('\t', ivchar));
+						write(1, "\t", 1);
 					}
 					else {
 						write(1, l->c + ichar, 1);
@@ -421,13 +422,13 @@ void i_update(void)
 					ichar++;
 				} else { 
 					//write(1, " ", 1);
-					write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
+					
 					ivchar++;
 					ichar++;
 				}
 				
 			}
-			
+			write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
 		} 
 		if(l)
 			l = l->next;
