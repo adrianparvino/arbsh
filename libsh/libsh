@@ -10,27 +10,35 @@ grophelp()
 	exit 1
 }
 
+requiresarg()
+{
+	if [ -z "$1"  ]
+	then	printf -- "%s requires an argument\n" "$0"
+		exit 1
+	fi
+}
+
 basenamesh()
 { 
-	BASENAME="$1" 
+	requiresarg $@
+	BASENAME="$1"
 	HOLD=""
 	while [ "$BASENAME" != "$HOLD" ]
 	do	HOLD="$BASENAME"
 		BASENAME="${BASENAME%/}"
-		COUNT=$((COUNT + 1))
-	done 
+	done
 	BASENAME="${BASENAME##*/}"
 	printf -- "%s\n" "${BASENAME}"
 } 
 
 dirnamesh()
 { 
-	DIRNAME="$1" 
+	requiresarg $@
+	DIRNAME="$1"
 	HOLD=""
 	while [ "$DIRNAME" != "$HOLD" ]
 	do	HOLD="$DIRNAME"
 		DIRNAME="${DIRNAME%/}"
-		COUNT=$((COUNT + 1))
 	done 
 	DIRNAME="${DIRNAME%/*}" 
 	printf -- "%s\n" "${DIRNAME}" 
@@ -65,9 +73,9 @@ duwrap()
 compare()
 {
 	case "$2" in 
-		*${1}*)	printf '%s%s%s\n' "${f:+$f:}" "${c:+$c:}" "${2}" ;; 
-	esac 
-
+		#*${1}*)	printf '%s%s%s\n' "${f:+$f:}" "${c:+$c:}" "${2}" ;; 
+		${1})	printf '%s%s%s\n' "${f:+$f:}" "${c:+$c:}" "${2}" ;; 
+	esac
 }
 
 stdin()
@@ -90,6 +98,8 @@ concatenate()
 
 grop()
 { 
+	# unset glob matching, it will still work in case statements
+	set -f
 	[ -n "$1" ] || help
 	for i in $@
 	do
@@ -103,7 +113,7 @@ grop()
 				;;
 			-o)	unset f c
 				p="$1"
-				shift 
+				shift
 				for i in $(concatenate $@) 
 				do	compare "$p" "$i" 
 				done 
@@ -348,7 +358,7 @@ insertion_sort()
 
 lssh()
 {
-	if	whereis tput
+	if	command -v tput >/dev/null 2>&1
 	then	LINES="$(tput lines)"
 		ROWS="$(tput cols)"
 	else	LINES="24"
