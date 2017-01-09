@@ -417,8 +417,7 @@ void i_update(void)
 					ivchar += vlencnt(l->c[ichar], ivchar);
 					ichar++;
 				} else { 
-					ivchar++;
-					ichar++;
+					break;
 				}
 				
 			}
