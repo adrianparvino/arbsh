@@ -1,15 +1,6 @@
 #!/bin/sh
 
-grophelp()
-{
-	echo "V. 0.2 \`grop', a \"Glob Grabbing Parser\" "
-	echo "grop.sh [OPTION] [PATTERN] [FILE(S)]" 
-	echo "  -H     print file name of match" 
-	echo "  -o     print word match only (use alone)" 
-	echo "  -n     print line number of match"
-	exit 1
-}
-
+# dirname and basename 
 requiresarg()
 {
 	if [ -z "$1"  ]
@@ -44,6 +35,7 @@ dirnamesh()
 	printf -- "%s\n" "${DIRNAME}" 
 } 
 
+# ldd wrapper
 lddwrapsh()
 {
 	for i in $(ldd $1)
@@ -58,6 +50,7 @@ lddwrapsh()
 	cp $1 ${2}/$(dirnamesh $1)
 }
 
+# du wrapper
 duprint()
 { 
 	if [ "$#" -gt 1 ]
@@ -70,6 +63,7 @@ duwrap()
 	duprint $(du -s $@ 2>/dev/null)
 }
 
+# text searching and glob parsing
 compare()
 {
 	# depends on set -f
@@ -98,15 +92,15 @@ concatenate()
 
 grop()
 { 
-	# unset glob matching, it will still work in case statements
+	# disable path name expansion
 	set -f
-	[ -n "$1" ] || help
+	[ -n "$1" ] || grophelp
 	for i in $@
 	do
 		p="$1" 
 		shift
 		case "$p" in 
-			-h)	help ;;
+			-h)	grophelp ;;
 			-H) 	p="$1"
 				f="$2"
 				continue 
@@ -129,6 +123,17 @@ grop()
      	done 
 } 
 
+grophelp()
+{
+	printf -- "%s\n" "V. 0.2 \`grop', a \"Glob Grabbing Parser\" "
+	printf -- "%s\n" "grop.sh [OPTION] [PATTERN] [FILE(S)]" 
+	printf -- "%s\n" "  -H     print file name of match" 
+	printf -- "%s\n" "  -o     print word match only (use alone)" 
+	printf -- "%s\n" "  -n     print line number of match"
+	exit 1
+}
+
+# networking
 hex_to_int()
 {
 	printf  "%d\n" "0x${1}"
@@ -153,6 +158,7 @@ hex_to_ip()
 	
 } 
 
+# lexicographic
 int_to_lex_main()
 {
 
@@ -284,27 +290,7 @@ int_to_lex()
 
 }
 
-shellstat()
-{
-	BOOL="0"
-	S=""
-	[ -e "$1" ] || return
-	[ -k "$1" -a "$BOOL" = "0" ] && S="S" && BOOL="1"
-	[ -h "$1" -a "$BOOL" = "0" ] && S="l" && BOOL="1"
-	[ -b "$1" -a "$BOOL" = "0" ] && S="b" && BOOL="1"
-	[ -c "$1" -a "$BOOL" = "0" ] && S="c" && BOOL="1"
-	[ -d "$1" -a "$BOOL" = "0" ] && S="d" && BOOL="1"
-	[ "$BOOL" = "0" ] && S="-"
-	S="${S}..."
-	[ -r "$1" ] && S="${S}r" || S="${S}-"
-	[ -w "$1" ] && S="${S}w" || S="${S}-"
-	[ -x "$1" ] && S="${S}x" || S="${S}-"
-	S="${S}..."
-	[ -G "$1" ] && S=" ${S} $USER :" || S="${S} ...... :"
-	[ -O "$1" ] && S=" ${S} $USER " || S="${S} ......"
-	printf "%s  %s\n" "${S}" "${1}"
-} 
-
+# math
 power()
 {
         COUNT="1"
@@ -321,6 +307,7 @@ power()
         fi
 }
 
+# sorting and array implementations
 insertion_sort()
 {
 	C="0" 
@@ -355,6 +342,28 @@ insertion_sort()
 	done
 
 }
+
+# file listing and stating
+shellstat()
+{
+	BOOL="0"
+	S=""
+	[ -e "$1" ] || return
+	[ -k "$1" -a "$BOOL" = "0" ] && S="S" && BOOL="1"
+	[ -h "$1" -a "$BOOL" = "0" ] && S="l" && BOOL="1"
+	[ -b "$1" -a "$BOOL" = "0" ] && S="b" && BOOL="1"
+	[ -c "$1" -a "$BOOL" = "0" ] && S="c" && BOOL="1"
+	[ -d "$1" -a "$BOOL" = "0" ] && S="d" && BOOL="1"
+	[ "$BOOL" = "0" ] && S="-"
+	S="${S}..."
+	[ -r "$1" ] && S="${S}r" || S="${S}-"
+	[ -w "$1" ] && S="${S}w" || S="${S}-"
+	[ -x "$1" ] && S="${S}x" || S="${S}-"
+	S="${S}..."
+	[ -G "$1" ] && S=" ${S} $USER :" || S="${S} ...... :"
+	[ -O "$1" ] && S=" ${S} $USER " || S="${S} ......"
+	printf "%s  %s\n" "${S}" "${1}"
+} 
 
 lssh()
 {
