@@ -54,10 +54,10 @@ int lines = 0;
 int winchg = 0;
 int cflags = 0;
 int topmarg = 0;
-int bottommarg = 10; 
-int leftmarg = 10; 
-int rightmarg = 10;
-int tabstop = 18;
+int bottommarg = 0; 
+int leftmarg = 0; 
+int rightmarg = 0;
+int tabstop = 8;
 
 /* macros */
 #define	TRUE	1
@@ -404,8 +404,7 @@ void i_update(void)
 	} 
 	/* end scroll area ? */ 
 	
-	/* Actually update lines on screen */ 
-	//in = 0;
+	/* Actually update lines on screen */
 	for(irow = 1 , l = scrline; irow < lines;
 		irow += vlines, iline++) {
 		vlines = vlinecnt(l);
@@ -424,22 +423,21 @@ void i_update(void)
 			l->dirty = FALSE; 
 		for(ixrow = ichar = ivchar = 0; ixrow < vlines && (irow + ixrow) < lines; ixrow++)
 		{
-			//setcursor((irow + ixrow ) + 1, (ivchar % cols) + 1);
+			setcursor((irow + ixrow ), (ivchar % cols));
 			while(ivchar < (1 + ixrow) * cols)
 			{
 				if(l && ichar < l->len) {
 					/* Tab nightmare */
-					if(l->c[ichar] == '\t') {
-						for(i = 0; i < vlencnt('\t', ivchar); i++)
-							ansiwaddch(' ', lim++);
+					if(l->c[ichar] == '\t') { 
+						write(1, WHITESPACE, vlencnt('\t', ivchar));
 					}
 					else {
-						ansiwaddch(l->c[ichar], lim++);
+						write(1, l->c + ichar, 1);
 					}
 					ivchar += vlencnt(l->c[ichar], ivchar);
 					ichar++;
-				} else {
-					ansiwaddch(' ', lim++);
+				} else { 
+					write(1, " ", 1);
 					ivchar++;
 					ichar++;
 				}
@@ -448,13 +446,9 @@ void i_update(void)
 		if(l)
 			l = l->next;
 			
-	}
-	ansiglb.c = 0;
-	ansiredraw(lim, topmarg, leftmarg, rightmarg);
-	
+	} 
 	/* Position cursor  ?? */
-	setcursor(cursor_r + topmarg, cursor_c + 1 + leftmarg); 
-	dothink = 0;
+	setcursor(cursor_r + topmarg, cursor_c  + 1+ leftmarg); 
 } 
 
 bool i_writefile(char *fname)
