@@ -366,8 +366,6 @@ void i_update(void)
 	struct Line *l;
 	
 	/* Check offset */
-	size_t lim = 0;
-
 	for(l = fstline, iline = 1;
 		l && scrline->prev && l != scrline; iline++, l = l->next) {
 		if(l == fcur.l) { /* Can't have fcur.l before scrline, move scrline up */
