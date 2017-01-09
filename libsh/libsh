@@ -2,7 +2,7 @@
 
 grophelp()
 {
-	echo "V. 0.1 \`grop', a \"Glob Grabbing Parser\" "
+	echo "V. 0.2 \`grop', a \"Glob Grabbing Parser\" "
 	echo "grop.sh [OPTION] [PATTERN] [FILE(S)]" 
 	echo "  -H     print file name of match" 
 	echo "  -o     print word match only (use alone)" 
@@ -72,8 +72,8 @@ duwrap()
 
 compare()
 {
-	case "$2" in 
-		#*${1}*)	printf '%s%s%s\n' "${f:+$f:}" "${c:+$c:}" "${2}" ;; 
+	# depends on set -f
+	case "$2" in
 		${1})	printf '%s%s%s\n' "${f:+$f:}" "${c:+$c:}" "${2}" ;; 
 	esac
 }
