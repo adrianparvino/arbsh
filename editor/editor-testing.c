@@ -88,16 +88,13 @@ int vlinecnt(struct Line *);
 
 int main(int argc, char *argv[])
 { 
-
 	if ( argc < 2 )
 	{
 		write(2, "Requires a file to edit\n", 24);
 		return 1;
 	}
 
-	
 	setlocale(LC_ALL, "");
-
 	termcatch(~(ICANON | ECHO), 0);
 	signal(SIGWINCH, sigwinch);
 	i_setup();
