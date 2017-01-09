@@ -52,11 +52,7 @@ char *fname = NULL;
 int cols = 0;
 int lines = 0;
 int winchg = 0;
-int cflags = 0;
-int topmarg = 0;
-int bottommarg = 0; 
-int leftmarg = 0; 
-int rightmarg = 0;
+int cflags = 0; 
 int tabstop = 8;
 
 /* macros */
@@ -84,7 +80,7 @@ struct filepos m_nextchar(struct filepos);
 struct filepos m_prevchar(struct filepos);
 struct filepos m_nextline(struct filepos);
 struct filepos m_prevline(struct filepos);
-void normalizetoscr(void);
+void getdimensions(void);
 static void sigwinch(int);
 int vlencnt(int, int);
 int vlinecnt(struct Line *);
@@ -266,18 +262,10 @@ bool i_deltext(struct filepos pos0, struct filepos pos1)
 	return integrity;
 } 
 
-void normalizetoscr(void)
+void getdimensions(void)
 {
 	cols = ansiglb.col;
-	lines = ansiglb.row;
-	if ( lines > topmarg )
-		lines -= topmarg;
-	if ( lines > topmarg )
-		lines -= bottommarg;
-	if ( cols > leftmarg )
-		cols -= leftmarg;
-	if ( cols > rightmarg )
-		cols -= rightmarg;
+	lines = ansiglb.row; 
 }
 
 /* Main editing loop */
@@ -290,7 +278,7 @@ void i_edit(void)
 		{ 
 			dothink = 1; 
 			ansiinit(); 
-			normalizetoscr();
+			getdimensions();
 			winchg=0; 
 		}
 		i_update(); 
@@ -323,7 +311,7 @@ void i_setup(void)
 	struct Line *l = NULL; 
 	
 	ansiinit();
-	normalizetoscr();
+	getdimensions();
 	ansicreate();
 	/* Init line structure */
 	l = (struct Line *) ecalloc(1, sizeof(struct Line));
@@ -432,18 +420,21 @@ void i_update(void)
 					ivchar += vlencnt(l->c[ichar], ivchar);
 					ichar++;
 				} else { 
-					write(1, " ", 1);
+					//write(1, " ", 1);
+					write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
 					ivchar++;
 					ichar++;
 				}
+				
 			}
+			
 		} 
 		if(l)
 			l = l->next;
 			
 	} 
 	/* Position cursor  ?? */
-	setcursor(cursor_r + topmarg, cursor_c  + 1+ leftmarg); 
+	setcursor(cursor_r, cursor_c  + 1); 
 } 
 
 bool i_writefile(char *fname)
