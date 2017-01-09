@@ -2,4 +2,4 @@
 
 . ../libsh/libsh
 
-lssh() $@
+lssh $@
