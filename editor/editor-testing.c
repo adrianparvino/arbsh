@@ -47,7 +47,7 @@ struct Line *scrline;	/* First line seen on screen */
 struct filepos fsel;	/* Selection point on file   */
 struct filepos fcur;	/* Insert position on file, cursor, current position */
 int ch = 0;		/* Used to store input */
-char c[7] = { 0 };	/* Used to store input */ 
+
 char *fname = NULL;
 int cols = 0;
 int lines = 0;
@@ -59,6 +59,8 @@ int tabstop = 8;
 #define	TRUE	1
 #define	FALSE	0
 #define	LINSIZ	128 
+#define DELIM	0
+char cb[7] = { DELIM };	/* Used to store input */ 
 
 /* function prototypes */
 void *ecalloc(size_t, size_t);
@@ -139,7 +141,9 @@ void f_delete(void)
 void f_insert(void)
 {
 	struct filepos newcur;
-	newcur = i_addtext((char *) c, fcur);
+
+	newcur = i_addtext(cb, fcur);
+	
 	if(fcur.l != newcur.l)
 		fsel = newcur;
 
@@ -153,9 +157,9 @@ struct filepos i_addtext(char *buf, struct filepos pos)
 	struct Line *l = pos.l, *lnew = NULL; 
 	size_t o = pos.o, i = 0, il = 0;
 	struct filepos f;
-	char c; 
+	char c;
 	
-	for(c = buf[0]; c != '\0'; c = buf[++i]) { 
+	for(c = buf[0]; c != DELIM; c = buf[++i]) { 
 		/* newline / line feed */
 		if(c == '\n' || c == '\r') {
 			lnew = (struct Line *)ecalloc(1, sizeof(struct Line));
@@ -177,7 +181,7 @@ struct filepos i_addtext(char *buf, struct filepos pos)
 				f.o = 0;
 				i_addtext(&(l->prev->c[o + il]), f);
 				l->prev->len = o + il;
-				l->prev->c[o + il] = '\0';
+				l->prev->c[o + il] = DELIM;
 			}
 			i_calcvlen(l->prev);
 			o = il = 0; 
@@ -189,7 +193,7 @@ struct filepos i_addtext(char *buf, struct filepos pos)
 			l->c[il + o] = c;
 			l->dirty = TRUE;
 			if(il + o >= (l->len)++)
-				l->c[il + o + 1] = '\0';
+				l->c[il + o + 1] = DELIM;
 			il++;
 		}
 	}
@@ -230,12 +234,12 @@ bool i_deltext(struct filepos pos0, struct filepos pos1)
 			(pos0.l->len - pos1.o));
 		pos0.l->dirty = TRUE;
 		pos0.l->len -= (pos1.o - pos0.o);
-		pos0.l->c[pos0.l->len] = '\0';
+		pos0.l->c[pos0.l->len] = DELIM;
 		i_calcvlen(pos0.l); 
 	} else { 
 
 		pos0.l->len = pos0.o;
-		pos0.l->c[pos0.l->len] = '\0';
+		pos0.l->c[pos0.l->len] = DELIM;
 		pos0.l->dirty = TRUE; // <<-- glitch in screen updates! 
 		// i_calcvlen is unneeded here, because we call i_addtext later
 		while(pos1.l != ldel) {
@@ -295,7 +299,7 @@ void i_readfile(void)
 
 	buf = ecalloc(1, BUFSIZ + 1);
 	while((n = read(fd, buf, BUFSIZ)) > 0) {
-		buf[n] = '\0';
+		buf[n] = DELIM;
 		fcur = i_addtext(buf, fcur);
 	}
 	fcur.l = fstline;
@@ -541,7 +545,7 @@ size_t edgetch(void)
 		i_die("");
 		break; 
 	default:
-		c[0] = (char) ch;
+		cb[0] = (char) ch;
 		f_insert();
 		break;
 	}
