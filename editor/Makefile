@@ -7,6 +7,7 @@ CFLAGS += -Wall -Wextra
 all:
 
 	$(CC) editor.c -o editor $(CFLAGS) $(LDFLAGS)
+	$(CC) editor-testing.c -o editor-testing $(CFLAGS) $(LDFLAGS)
 
 install:
 
@@ -21,6 +22,6 @@ uninstall:
 
 clean:
 
-	$(RM) editor
+	$(RM) editor editor-testing
 	$(RM) uninstall
 
