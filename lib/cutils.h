@@ -31,4 +31,12 @@ void *cutilrealloc(void *ptr, size_t size)
         return ret;
 }
 
+void cutilfree(void *ptr)
+{
+	if (ptr != NULL)
+		free(ptr);
+	else
+		cutilerror("cutilfree failed, can't free NULL pointer\n", 1); 
+}
+
 
