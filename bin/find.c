@@ -12,6 +12,7 @@
 #include <pwd.h>
 #include <grp.h>
 
+#include "../lib/cutils.h"
 /* 
 	(Copyright) 2014, , "find", C. Graff 
 */ 
@@ -88,7 +89,7 @@ int find_pattern(char *path, size_t tot, size_t last)
 { 
 	DIR *dir;
 	struct dirent *d;
-	char *spath = malloc (1);
+	char *spath = cutilmalloc (1);
 	int p, cache, good, pass; 
 	size_t dlen = 0; 
 
@@ -103,7 +104,7 @@ int find_pattern(char *path, size_t tot, size_t last)
 			dlen = strlen(d->d_name); 
 			
 			last = (tot + dlen + 2); /* +2 = '/' + '\0' */
-			spath = realloc(spath, last); 
+			spath = cutilrealloc(spath, last); 
 			if (!(spath))
 				return -1;
 			tot = sprintf(spath, "%s/%s", path, d->d_name);
