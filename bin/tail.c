@@ -6,12 +6,12 @@
 
 /* Copyright 2015, C. Graff  "tail" */ 
 
-void cattail(int, int []);
+void cattail(int, unsigned int *);
 
 int main(int argc, char *argv[])
 { 
-	int o, opt[4] = { 0, 10, 0, 0};
-
+	int o;
+	unsigned int opt[4] = { 0, 10, 0, 0};
 	while ((o = getopt (argc, argv, "c:fn:")) != -1)
                 switch (o) { 
 			case 'f': 
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
         argv += optind;
         argc -= optind;
-
+	
 	if ( argc == 0 ) 
 		cattail(STDIN_FILENO, opt);
         while  (*(argv))
@@ -59,15 +59,17 @@ int main(int argc, char *argv[])
 	return 0; 
 }
 
-void cattail(int source, int *opt)
+void cattail(int source, unsigned int *opt)
 {
 
-	int i, j, n, z, seekto;
+	//int i, j, n, z, seekto;
+	size_t i, j, n, z, seekto;
 	char buf[BUFSIZ];
-	int loci[100000]; 
+	//int loci[100000]; 
+	int *loci = malloc(sizeof(int));
 	int compensate = 0;
 
-	if ((source = -1))
+	if ((source == -1))
 		return;
 
 	seekto = z = i = j = n = 0; 
@@ -77,14 +79,15 @@ void cattail(int source, int *opt)
 		for (j = 0; j < i ;) 
 		{
 			if ( buf[j] == '\n' ) 
+			{
+				loci = realloc(loci, sizeof(int) * (n + 3));
 				*(loci+n++) = z; 
+			}
 			++j;
 			++z;
 		} 
-	} 
+	}
 
-	// a hack to compensate for files which do not end with '\n'
-	// off by one 
 	if ( buf[j - 1] != '\n' )
 		compensate = 1;
 
@@ -120,6 +123,7 @@ void cattail(int source, int *opt)
 
 		usleep(100);
 	}
+	free(loci);
 	close(source);
 }
 
