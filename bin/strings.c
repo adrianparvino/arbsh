@@ -114,13 +114,13 @@ int strings(char *file, size_t number, char format)
 				len = 0; 
 				switch(format){
 					case 'd': /* "The offset shall be written in decimal." */
-						len = snprintf(hold, 1024, "%7d %s", offset - number, buffer);
+						len = snprintf(hold, 1024, "%7d %s", (int)(offset - number), buffer);
 						break;
 					case 'o': /* "The offset shall be written in octal." */
-						len = snprintf(hold, 1024, "%7o %s", offset - number, buffer);
+						len = snprintf(hold, 1024, "%7o %s", (unsigned int)(offset - number), buffer);
 						break;
 					case 'x': /* "The offset shall be written in hexadecimal." */
-						len = snprintf(hold, 1024, "%7x %s", offset - number, buffer); 
+						len = snprintf(hold, 1024, "%7x %s", (unsigned int)(offset - number), buffer); 
 						break;
 					default:
 						
