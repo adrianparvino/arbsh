@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <fcntl.h> 
 #include <unistd.h> 
+#include "../lib/cutils.h"
 
 
 /* Copyright 2015, C. Graff  "tail" */ 
@@ -66,7 +67,7 @@ void cattail(int source, unsigned int *opt)
 	size_t i, j, n, z, seekto;
 	char buf[BUFSIZ];
 	//int loci[100000]; 
-	int *loci = malloc(sizeof(int));
+	int *loci = cutilmalloc(sizeof(int));
 	int compensate = 0;
 
 	if ((source == -1))
@@ -80,7 +81,7 @@ void cattail(int source, unsigned int *opt)
 		{
 			if ( buf[j] == '\n' ) 
 			{
-				loci = realloc(loci, sizeof(int) * (n + 3));
+				loci = cutilrealloc(loci, sizeof(int) * (n + 3));
 				*(loci+n++) = z; 
 			}
 			++j;
