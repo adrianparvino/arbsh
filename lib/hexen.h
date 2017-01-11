@@ -2,6 +2,8 @@
 	Copyright 2016, CM Graff, hexen.h 
 */ 
 
+#include "stdio.h"
+
 /* Cursor movement */
 #define T_CURSUP1ROW	"\033[A"	/* [A	Cursor up one row -- stop at top of screen 	*/
 #define T_CURSUP1ROW_SZ	3
@@ -205,9 +207,6 @@ int fastgetch()
 }
 
 #include "getch.h"
-#define supahfastgetch() getch()
-
-
 
 int ansigetch(void)
 {
@@ -227,24 +226,7 @@ int ansigetch(void)
 		return -1;
 	return str[0];
 } 
-int ansigetchn(void)
-{
-	static struct termios term, oterm;
-	char str[1];
-	str[0] = 0;
-	if ((tcgetattr(0, &oterm)) != 0)
-		return -1;
-	memcpy(&term, &oterm, sizeof(term));
-	term.c_lflag &= ~(ICANON | ECHO);
-	term.c_cc[VMIN] = 1; 
-	term.c_cc[VTIME] = 0;
-	if ((tcsetattr(0, TCSANOW, &term)) != 0 )
-		return -1;
-	read(0, str, 1);
-	if ((tcsetattr(0, TCSANOW, &oterm)) != 0 )
-		return -1;
-	return str[0];
-}
+
 int termcatch(int flags, int reset)
 { 
 	static int set = 0;
@@ -282,24 +264,7 @@ size_t szstrcat(char *dest, char *src)
 	for ( i = 0; src[i] != '\0' ; ++i)
 		dest[i] = src[i];
 	return i;
-}
-size_t uintostr2(char *s, size_t n)
-{
-	static size_t i =0;
-	if ( n == 0 )
-	{
-		s[i] = '0';
-		return 1;
-	}
-	if (n / 10 )
-	{
-		i = 0;
-		uintostr2(s, n / 10);
-	}
-	s[i] = (n % 10 + '0');
-
-	return ++i;
-}
+} 
 
 size_t uintostr(char *string, size_t num)
 { 
@@ -318,6 +283,7 @@ size_t uintostr(char *string, size_t num)
 		string[len++] = convtab[(num % (i * 10)) / i ]; 
 	return len;
 }
+
 
 size_t escapecat(int desc, char *start, size_t x, char *mid, size_t y, char *end)
 { 
@@ -343,25 +309,18 @@ size_t writenumber(int desc, size_t x)
 void setcursor(size_t x, size_t y)
 { 
 	escapecat(0, "\033[", x, ";", y, "H");
+	
 } 
-size_t escapecatchar(int desc, char *start, size_t x, char *mid, size_t y, char *end)
-{
-	char string[BUFSIZ];
-	size_t len = 0;
-	len = szstrcat(string + len, start);
-	len += uintostr(string + len, x);
-	len += szstrcat(string + len, mid);
-	len += uintostr(string + len, y);
-	len += szstrcat(string + len, end);
-	write(desc, string, len);
-	return len;
-}
+
 void setcursorchars(size_t x, size_t y, char s)
 {
 	char hold[3] = { 'H', '\0', '\0'};
-	hold[1] = s;
-	
-	escapecat(0, "\033[", x, ";", y, hold);
+        hold[1] = s; 
+        //escapecat(0, "\033[", x, ";", y, hold);
+	char str[1025] = { 0 }; 
+	size_t len = 0;
+	len = gsprintf(str, "\033[%zu;%zu%s", x, y, hold);
+	write(0, str, len);
 }
 
 void ansihorizon(size_t x, size_t X)
@@ -386,7 +345,6 @@ struct ANSIWINDOW{
 	int colordlen[BUFSIZ];
 	char *colorlast[BUFSIZ];
 }ANSIWINDOW[15] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
-// ANSIWINDOW[10] = { 0, 0, NULL, NULL};
 
 int dothink = 0;
 
