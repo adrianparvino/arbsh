@@ -16,7 +16,7 @@
 #include <errno.h>
 #include <stdint.h>
 
-/* local libraries */ 
+/* local libraries */
 #include "../lib/string.h"
 #include "../lib/hexen.h"
 #include "../lib/dial.h"
@@ -680,7 +680,8 @@ void drawscreen(void)
 
         /* center text */
         write(1, "\x1b[2;", 4);
-        writenumber(1, glb.h);
+        //writenumber(1, glb.h);
+	gprintf("%zu", glb.h);
         write(1, "r\n", 2);
         write(1, T_ERASEBEGL2CUR, T_ERASEBEGL2CUR_SZ);
 
