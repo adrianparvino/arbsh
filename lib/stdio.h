@@ -33,9 +33,8 @@ int gputchar(char c)
 } 
 
 
-int gprintf_inter(char *str, int flag, char *fmt, ...)
-{
-	va_list ap;
+int gprintf_inter(char *str, int flag, char *fmt, va_list ap)
+{ 
 	char *p = NULL;
 	char *out;
 	size_t i = 0; /* this should be an int according to the IEEE */
@@ -43,15 +42,11 @@ int gprintf_inter(char *str, int flag, char *fmt, ...)
 	char *sval = NULL;
 	size_t zuval = 0; 
 	int dval = 0; 
-	
-	
 
 	if (flag == 0) /* printf */
 		out = malloc(1025); 
 	if (flag == 1) /* sprintf */
-		out = str;
-
-	va_start(ap, fmt);
+		out = str; 
 
 	for (p = fmt; *p; p++) 
 	{
@@ -85,10 +80,9 @@ int gprintf_inter(char *str, int flag, char *fmt, ...)
 				break;
 		}
 	}
-	va_end(ap);
-
+	out[i + 1] = '\0';
 	if ( flag == 0 )
-		write(1, out, i);
+		write(1, out, i); 
 
 	return i;
 }
@@ -96,17 +90,22 @@ int gprintf_inter(char *str, int flag, char *fmt, ...)
 int gprintf(char *fmt, ...)
 {
 	size_t ret  = 0;
-
-	//ret = gprintf_inter(NULL, 0, fmt, ...);
+	va_list argptr;
+	va_start(argptr, fmt);
+	ret = gprintf_inter(NULL, 0, fmt, argptr);
+	va_end(argptr);
 	return ret;
-}
+} 
 
-//int gsprintf(char *str, char *fmt, ...)
-//{
-//	size_t ret = 0;
-//	ret = gprintf_inter(str, 1, fmt);
-//	return ret;
-//}
+int gsprintf(char *str, char *fmt, ...)
+{
+	size_t ret  = 0;
+	va_list argptr;
+	va_start(argptr, fmt);
+	ret = gprintf_inter(str, 1, fmt, argptr);
+	va_end(argptr);
+	return ret;
+} 
 
 size_t ggetline(char s[], int lim)
 {
