@@ -19,6 +19,7 @@ size_t uintostrbase(char *s, size_t n, int base)
         else
 
                 s[i] = (n % base + '0');
-        //s[i] = (n % base + '0');
+       
         return ++i;
 }
+
