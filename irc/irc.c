@@ -545,14 +545,14 @@ size_t ircgetch(char *l)
         size_t z = 0;
         int c;
 
-        c = supahfastgetch();
+        c = getch();
 
         switch (c) {
         case K_ESCAPE:
-                c = supahfastgetch();
+                c = getch();
                 switch (c) {
                 case '[':
-                        c = supahfastgetch();
+                        c = getch();
                         switch (c) {
                         case 'A': /* arrow up */
                                 if ( hglb.c > 0 )
@@ -584,13 +584,13 @@ size_t ircgetch(char *l)
                                 hglb.laro = len;
                                 break;
                         case '5': /* page up */ 
-				c = supahfastgetch(); 
+				c = getch(); 
 				if ( ss[sckno].chl[ss[sckno].ch].scroll < (ss[sckno].chl[ss[sckno].ch].real - (glb.w + glb.w)))
                                         ss[sckno].chl[ss[sckno].ch].scroll += glb.w;
 				drawscreen();
                                 break;
                         case '6': /* page down */
-				c = supahfastgetch();
+				c = getch();
 				if ( ss[sckno].chl[ss[sckno].ch].scroll > 0)
                                         ss[sckno].chl[ss[sckno].ch].scroll -= glb.w;
                                 drawscreen();

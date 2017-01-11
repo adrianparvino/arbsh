@@ -6,7 +6,6 @@ size_t gstrlen(const char string[])
 	size_t j = 0;
 	while ( string[j] != '\0' )
 		++j;
-
 	return j;
 }
 
