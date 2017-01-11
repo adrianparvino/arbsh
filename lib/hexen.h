@@ -3,6 +3,7 @@
 */ 
 
 #include "stdio.h"
+#include "getch.h"
 
 /* Cursor movement */
 #define T_CURSUP1ROW	"\033[A"	/* [A	Cursor up one row -- stop at top of screen 	*/
@@ -196,8 +197,11 @@
                                                                                "
 /*----------------------------------------------------------------------------*/
 
+/* globals */
+int dothink = 0;
+int hardadd = 0; /* this should be added as a 4th function arg */
 
-
+/* functions */
 int fastgetch() 
 { 
 	char s[1]; 
@@ -205,8 +209,6 @@ int fastgetch()
 	read(0, s, 1); 
 	return s[0]; 
 }
-
-#include "getch.h"
 
 int ansigetch(void)
 {
@@ -258,74 +260,42 @@ int termcatch(int flags, int reset)
 	
 }
 
-size_t szstrcat(char *dest, char *src)
-{ 
-	size_t i = 0;
-	for ( i = 0; src[i] != '\0' ; ++i)
-		dest[i] = src[i];
-	return i;
-} 
-
-size_t uintostr(char *string, size_t num)
-{ 
-	char convtab[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }; 
-	size_t i = 1;
-	size_t len = 0;
-	size_t max = (SIZE_MAX / 10);
-
-	if ( num == 0 )
-		string[len++] = '0'; 
-	else if ( num > max)
-		num = max;
-	while (i < (num) + 1 )
-	 	i *= 10;
-	while ( (i /= 10) > 0 )
-		string[len++] = convtab[(num % (i * 10)) / i ]; 
-	return len;
-}
-
-
-size_t escapecat(int desc, char *start, size_t x, char *mid, size_t y, char *end)
-{ 
-	char string[BUFSIZ]; 
-	size_t len = 0; 
-	len = szstrcat(string + len, start); 
-	len += uintostr(string + len, x); 
-	len += szstrcat(string + len, mid); 
-	len += uintostr(string + len, y); 
-	len += szstrcat(string + len, end); 
-	write(desc, string, len);
-	return len; 
-}
-
 size_t writenumber(int desc, size_t x)
 { 
-	char string[BUFSIZ];
+	char str[1025];
 	size_t len = 0;
-	len += uintostr(string + len, x);
-	write(desc, string, len);
+	len = gsprintf(str, "%zu", x);
+	write(desc, str, len);
 	return len;
 }
+
 void setcursor(size_t x, size_t y)
 { 
-	escapecat(0, "\033[", x, ";", y, "H");
-	
+	/* \033[?;?H */
+	char str[1025] = { 0 };
+	size_t len = 0;
+	len = gsprintf(str, "\033[%zu;%zuH", x, y);
+	write(0, str, len);
 } 
 
 void setcursorchars(size_t x, size_t y, char s)
 {
-	char hold[3] = { 'H', '\0', '\0'};
-        hold[1] = s; 
-        //escapecat(0, "\033[", x, ";", y, hold);
+	/* \033[?;?H? */
+	char hold[2] = { 0 };
+        hold[0] = s;
 	char str[1025] = { 0 }; 
 	size_t len = 0;
-	len = gsprintf(str, "\033[%zu;%zu%s", x, y, hold);
+	len = gsprintf(str, "\033[%zu;%zuH%s", x, y, hold);
 	write(0, str, len);
 }
 
 void ansihorizon(size_t x, size_t X)
 { 
-	escapecat(0, "\033[", x, ";", X, "r"); 
+	/* \033[?;?r */
+	char str[1025] = { 0 };
+	size_t len = 0;
+	len = gsprintf(str, "\033[%zu;%zur", x, X);
+	write(0, str, len);
 }
 
 struct ansiglb{
@@ -334,7 +304,6 @@ struct ansiglb{
 	size_t t;	/* total windows  */
 	size_t c;	/* current window */
 }ansiglb = { 0, 0, 0, 0};
-
 
 struct ANSIWINDOW{
 	size_t len;		/* length of primary buffer 	*/
@@ -345,8 +314,6 @@ struct ANSIWINDOW{
 	int colordlen[BUFSIZ];
 	char *colorlast[BUFSIZ];
 }ANSIWINDOW[15] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
-
-int dothink = 0;
 
 int ansiinit(void)
 {
@@ -361,9 +328,8 @@ int ansiinit(void)
 	write(1, T_ERASEALL, T_ERASEALL_SZ);
 	write(1,T_INSERTRESET, T_INSERTRESET_SZ);
 	return ret;
-} 
+}
 
-int hardadd = 0; /* this should be added as a 4th function arg */
 void addcolor(char *string, size_t len, size_t position)
 { 
 	/* only allow each color to be set away from white once */
@@ -391,7 +357,6 @@ void addcolorrange(char *string, size_t len, size_t position, size_t end)
 int ansicreate(void)
 {
 	size_t len = 0;
-
 	len = ANSIWINDOW[ansiglb.t].len = ( ansiglb.col * ansiglb.row );
 	ANSIWINDOW[ansiglb.t].ansilastmap = malloc(sizeof(char) * len * 10);
 	ANSIWINDOW[ansiglb.t].ansiwinbuf = malloc(sizeof(char) * len * 10);
@@ -400,10 +365,7 @@ int ansicreate(void)
 	ansiglb.c = ansiglb.t;
 	size_t i = 0;
 	while (i < (len))
-	{
-		addcolor(T_WHITE_FG,T_WHITE_FG_SZ, i);
-		++i;
-	}
+		addcolor(T_WHITE_FG,T_WHITE_FG_SZ, i++);
 	ansiglb.t++;
 	return (ansiglb.t) - 1;
 }
@@ -452,8 +414,6 @@ int ansiredraw(size_t lim, size_t x, size_t y, size_t rightmarg)
 	char *c;
 	char *d;
 	
-	
-	
 	while ( i < lim ) 
 	{
 		a = ANSIWINDOW[ansiglb.c].ansiwinbuf[i];
@@ -479,6 +439,5 @@ int ansiredraw(size_t lim, size_t x, size_t y, size_t rightmarg)
 		++i;
 		++j; 
 	}
-	//write (1, "\033[25h", 4);
 	return 0;
 }
