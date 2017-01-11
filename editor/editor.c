@@ -611,14 +611,14 @@ size_t edgetch(void)
 {
 	static size_t len = 0; 
 	  
-	ch = supahfastgetch(); 
+	ch = getch(); 
 
 	switch (ch) { 
 	case K_ESCAPE: 
-		ch = supahfastgetch(); 
+		ch = getch(); 
 		switch (ch) {
 			case '[': 
-				ch = supahfastgetch(); 
+				ch = getch(); 
 				switch (ch) { 
 					case 'A': /* arrow up */ 
 						fcur = (Filepos)m_prevline(fcur); 
@@ -634,15 +634,15 @@ size_t edgetch(void)
 						break;
 					case 'H': /* Home */ 
 						fcur = (Filepos)m_bol(fcur);
-						ch = supahfastgetch(); 
+						ch = getch(); 
 						break;
 					case '5': /* page up */ 
 						fcur = (Filepos)m_prevscr(fcur);
-						ch = supahfastgetch(); 
+						ch = getch(); 
 						break; 
 					case '6': /* page down */ 
 						fcur = (Filepos)m_nextscr(fcur);
-						ch = supahfastgetch(); 
+						ch = getch(); 
 						break;
 			}
 		}
