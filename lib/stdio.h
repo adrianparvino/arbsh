@@ -41,6 +41,9 @@ int gprintf(char *fmt, ...)
 	size_t zuval = 0;
 	char zuhold[1025];
 	size_t zulen = 0;
+	int dval = 0;
+	char dhold[1025];
+	size_t dlen = 0;
 
 	va_start(ap, fmt);
 	for (p = fmt; *p; p++) 
@@ -59,6 +62,11 @@ int gprintf(char *fmt, ...)
 					gputchar(*sval);
 					++i;
 				}
+				break;
+			case 'd': 
+				dval = va_arg(ap, int);
+				dlen = intostrbase(dhold, dval, 10);
+				write(1, dhold, dlen);
 				break;
 			case 'z':
 				switch (*++p)
