@@ -32,41 +32,47 @@ int gputchar(char c)
 	return write(1, buf, 1);
 } 
 
+
 int gprintf(char *fmt, ...)
 {
 	va_list ap;
 	char *p = NULL;
         char *sval = NULL;
-	size_t i = 0;
+	size_t i = 0; /* this should be an int according to the IEEE */
 	size_t zuval = 0;
 	char zuhold[1025];
 	size_t zulen = 0;
 	int dval = 0;
 	char dhold[1025];
 	size_t dlen = 0;
+	//char *out;
+	char out[1025] = { 0 };
+
+//	if ( flag == 0 ) // normal printf 
+//		out = malloc(1025); 
+//	if ( flag == 1) //sprintf 
+//		out = str;
 
 	va_start(ap, fmt);
+
 	for (p = fmt; *p; p++) 
 	{
 		if (*p != '%')
 		{
-			gputchar(*p);
-			++i;
+			out[i++] = *p;
 			continue;
 		}
 		switch (*++p)
 		{
 			case 's':
-				for (sval = va_arg(ap, char *); *sval; sval++)
-				{
-					gputchar(*sval);
-					++i;
-				}
+				for (sval = va_arg(ap, char *); *sval; sval++) 
+					out[i++] = *sval; 
 				break;
 			case 'd': 
 				dval = va_arg(ap, int);
 				dlen = intostrbase(dhold, dval, 10);
-				write(1, dhold, dlen);
+				memcpy(out + i, dhold, dlen);
+				i +=dlen;
 				break;
 			case 'z':
 				switch (*++p)
@@ -74,55 +80,38 @@ int gprintf(char *fmt, ...)
 					case 'u':
 						zuval = va_arg(ap, size_t);
 						zulen = uintostrbase(zuhold, zuval, 10);
-						write(1, zuhold, zulen);
+						memcpy(out + i, zuhold, zulen);
+						i += zulen;
 					default:
 						break;
 				}
 				break;
 			default:
-				gputchar(*p);
-				++i;
+				out[i++] = *p;
 				break;
 		}
 	}
 	va_end(ap);
+
+	//if ( flag == 0 )
+		write(1, out, i);
+
 	return i;
 }
 
-int gsprintf(char *str, char *fmt, ...)
-{
-        va_list ap;
-        char *p = NULL;
-	char *sval = NULL;
-	size_t i = 0; 
+//int gprintf(char *fmt, ...)
+//{
+//	size_t ret  = 0;
+//	ret = gprintf_inter(fmt, ...);
+//	return ret;
+//}
 
-        va_start(ap, fmt);
-	
-        for (p = fmt; *p ; p++)
-        {
-                if (*p != '%')
-                {
-			str[i++] = *p; 
-                        continue;
-                }
-		
-                switch (*++p)
-                { 
-                        case 's': 
-				sval = va_arg(ap, char *);
-                                for (; sval && *sval; sval++)
-				{ 
-					str[i++] = *sval;
-					str[i] = 0;
-				
-				} 
-                                break;
-                }
-		
-        }
-        va_end(ap);
-	return i;
-}
+//int gsprintf(char *str, char *fmt, ...)
+//{
+//	size_t ret = 0;
+//	ret = gprintf_inter(str, 1, fmt);
+//	return ret;
+//}
 
 size_t ggetline(char s[], int lim)
 {
