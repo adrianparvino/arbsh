@@ -193,6 +193,24 @@
                                                                                "
 /*----------------------------------------------------------------------------*/
 
+/* structs */
+struct ansiglb{
+	size_t row;	/* global rows    */
+	size_t col;	/* global columns */
+	size_t t;	/* total windows  */
+	size_t c;	/* current window */
+}ansiglb = { 0, 0, 0, 0};
+
+struct ANSIWINDOW{
+	size_t len;		/* length of primary buffer 	*/
+	size_t counter;		/* A countdown mechanism	*/
+	char *ansiwinbuf;	/* primary buffer 		*/
+	char *ansilastmap;	/* last buffer printed 		*/
+	char *cpairs[BUFSIZ];
+	int colordlen[BUFSIZ];
+	char *colorlast[BUFSIZ];
+}ANSIWINDOW[15] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
+
 /* globals */
 int dothink = 0;
 int hardadd = 0; /* this should be added as a 4th function arg */
@@ -256,15 +274,6 @@ int termcatch(int flags, int reset)
 	
 }
 
-size_t writenumber(int desc, size_t x)
-{ 
-	char str[1025];
-	size_t len = 0;
-	len = gsprintf(str, "%zu", x);
-	write(desc, str, len);
-	return len;
-}
-
 void setcursor(size_t x, size_t y)
 { 
 	/* [24;80H	Pos to line 24 col 80 (any line 1 to 24, any col 1 to 132)*/
@@ -296,23 +305,6 @@ void ansihorizon(size_t x, size_t X)
 	write(0, str, len);
 }
 
-struct ansiglb{
-	size_t row;	/* global rows    */
-	size_t col;	/* global columns */
-	size_t t;	/* total windows  */
-	size_t c;	/* current window */
-}ansiglb = { 0, 0, 0, 0};
-
-struct ANSIWINDOW{
-	size_t len;		/* length of primary buffer 	*/
-	size_t counter;		/* A countdown mechanism	*/
-	char *ansiwinbuf;	/* primary buffer 		*/
-	char *ansilastmap;	/* last buffer printed 		*/
-	char *cpairs[BUFSIZ];
-	int colordlen[BUFSIZ];
-	char *colorlast[BUFSIZ];
-}ANSIWINDOW[15] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
-
 int ansiinit(void)
 {
 	int ret = 0;
@@ -337,6 +329,7 @@ void addcolor(char *string, size_t len, size_t position)
 	ANSIWINDOW[ansiglb.c].cpairs[position] = string;
 	ANSIWINDOW[ansiglb.c].colordlen[position] = len;
 }
+
 void addcolorrange(char *string, size_t len, size_t position, size_t end)
 {
         /* only allow each color to be set away from white once */
@@ -390,7 +383,8 @@ int ansiaddmem(char *str, int position, size_t end)
 	for( ret = 0;i < end ; ++i, ++ret) 
 		ANSIWINDOW[ansiglb.c].ansiwinbuf[i] = str[ret]; 
 	return ret;
-} 
+}
+
 size_t ansiaddstr(char *str, size_t position)
 {
 	/* add a string, discard the '\0' */
@@ -423,7 +417,6 @@ int ansiredraw(size_t lim, size_t x, size_t y, size_t rightmarg)
 		{ 
 			setcursor(k, j); 
 			write(0, ANSIWINDOW[ansiglb.c].cpairs[i], ANSIWINDOW[ansiglb.c].colordlen[i]);
-			
 			ANSIWINDOW[ansiglb.c].colorlast[i] = c; 
 			setcursorchars(k, j, ANSIWINDOW[ansiglb.c].ansiwinbuf[i]); 
 			ANSIWINDOW[ansiglb.c].ansilastmap[i] = a; 
