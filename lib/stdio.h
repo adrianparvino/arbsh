@@ -49,7 +49,7 @@ size_t ggetline(char s[], int lim)
 }
 
 /* printf family (variadic formatted) */
-int gprintf_inter(char *str, int flag, char *fmt, va_list ap)
+int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 { 
 	char *p = NULL;
 	char *out;
@@ -63,7 +63,7 @@ int gprintf_inter(char *str, int flag, char *fmt, va_list ap)
 	if (flag == 0) /* printf */
 		out = malloc(1025); 
 	if (flag == 1) /* sprintf */
-		out = str; 
+		out = str;
 
 	for (p = fmt; *p; p++) 
 	{
@@ -103,7 +103,7 @@ int gprintf_inter(char *str, int flag, char *fmt, va_list ap)
 	}
 	out[i + 1] = '\0';
 	if ( flag == 0 )
-		write(1, out, i); 
+		write(fd, out, i); 
 
 	return i;
 }
@@ -113,7 +113,7 @@ int gprintf(char *fmt, ...)
 	size_t ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(NULL, 0, fmt, argptr);
+	ret = gprintf_inter(1, NULL, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
@@ -123,18 +123,18 @@ int gsprintf(char *str, char *fmt, ...)
 	size_t ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(str, 1, fmt, argptr);
+	ret = gprintf_inter(1, str, 1, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
 
-int gdprintf(char *str, char *fmt, ...)
+int gdprintf(int fd, char *fmt, ...)
 {
 	size_t ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(str, 1, fmt, argptr);
+	ret = gprintf_inter(fd, NULL, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
-} 
+}
 
