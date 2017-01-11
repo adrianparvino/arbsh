@@ -110,15 +110,12 @@
 #define T_DATA2PRNT	"\033[4i"	/* [4i	Data to printer not screen 	*/
 #define T_DATA2PRNT_SZ	4
 #define T_DATA2SCR	"\033[5i"	/* [5i	Data to screen not printer 	*/
-#define T_DATA2SCR_SZ	4
+#define T_DATA2SCR_SZ	4 
 
-
-	/* [24;80H	Pos to line 24 col 80 (any line 1 to 24, any col 1 to 132)*/
-	/* [?1;0c	VT100 with memory for 24 by 80, inverse video char attribute 	*/
-	/* [?1;2c	VT100 capable of 132 col mode, with bold+blink+underline+inverse */ 
-	/* [?6c	 	VT102 (printer port, 132 col mode, and ins/del) 	*/
-	/* [20;40r	Scrolling region set to lines 20 -> 40  	*/
-
+/* unused sequences */
+/* [?1;0c	VT100 with memory for 24 by 80, inverse video char attribute 	*/
+/* [?1;2c	VT100 capable of 132 col mode, with bold+blink+underline+inverse */ 
+/* [?6c	 	VT102 (printer port, 132 col mode, and ins/del) 	*/ 
 
 
 /* Mouse hits (must have a mouse enabled user daemon like gpm) */
@@ -126,7 +123,6 @@
 #define M_MOUSECATCH_SZ	5
 #define M_MOUSERELEA	"\033[?9l"	/* [?9l 	disable mouse catching 		*/
 #define M_MOUSERELEA_SZ 5
-
 #define M_CATCH		"\033[?1000h"	/* [?1000h 	true mouse catching mode 	*/
 #define M_CATCH_SZ	8
 #define M_RELEASE	"\033[?1000l"	/* \033[?1000l 	release true mouse catching mode*/
@@ -140,7 +136,7 @@
 #define K_ESCAPE 	033 
 
 
-
+/* dumb terminal controls (not implemented) */
 	/* [A		Up arrow 	*/
 	/* [B		Down arrow 	*/
 	/* [C		Right arrow 	*/
@@ -271,6 +267,7 @@ size_t writenumber(int desc, size_t x)
 
 void setcursor(size_t x, size_t y)
 { 
+	/* [24;80H	Pos to line 24 col 80 (any line 1 to 24, any col 1 to 132)*/
 	/* \033[?;?H */
 	char str[1025] = { 0 };
 	size_t len = 0;
@@ -291,6 +288,7 @@ void setcursorchars(size_t x, size_t y, char s)
 
 void ansihorizon(size_t x, size_t X)
 { 
+	/* [20;40r	Scrolling region set to lines 20 -> 40  	*/
 	/* \033[?;?r */
 	char str[1025] = { 0 };
 	size_t len = 0;
