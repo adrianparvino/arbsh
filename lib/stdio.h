@@ -38,6 +38,9 @@ int gprintf(char *fmt, ...)
 	char *p = NULL;
         char *sval = NULL;
 	size_t i = 0;
+	size_t zuval = 0;
+	char zuhold[1025];
+	size_t zulen = 0;
 
 	va_start(ap, fmt);
 	for (p = fmt; *p; p++) 
@@ -55,6 +58,17 @@ int gprintf(char *fmt, ...)
 				{
 					gputchar(*sval);
 					++i;
+				}
+				break;
+			case 'z':
+				switch (*++p)
+				{ 
+					case 'u':
+						zuval = va_arg(ap, size_t);
+						zulen = uintostrbase(zuhold, zuval, 10);
+						write(1, zuhold, zulen);
+					default:
+						break;
 				}
 				break;
 			default:
