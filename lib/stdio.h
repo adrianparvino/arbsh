@@ -33,25 +33,23 @@ int gputchar(char c)
 } 
 
 
-int gprintf(char *fmt, ...)
+int gprintf_inter(char *str, int flag, char *fmt, ...)
 {
 	va_list ap;
 	char *p = NULL;
-        char *sval = NULL;
+	char *out;
 	size_t i = 0; /* this should be an int according to the IEEE */
-	size_t zuval = 0;
-	char zuhold[1025];
-	size_t zulen = 0;
-	int dval = 0;
-	char dhold[1025];
-	size_t dlen = 0;
-	//char *out;
-	char out[1025] = { 0 };
+	/* data types */
+	char *sval = NULL;
+	size_t zuval = 0; 
+	int dval = 0; 
+	
+	
 
-//	if ( flag == 0 ) // normal printf 
-//		out = malloc(1025); 
-//	if ( flag == 1) //sprintf 
-//		out = str;
+	if (flag == 0) /* printf */
+		out = malloc(1025); 
+	if (flag == 1) /* sprintf */
+		out = str;
 
 	va_start(ap, fmt);
 
@@ -70,18 +68,14 @@ int gprintf(char *fmt, ...)
 				break;
 			case 'd': 
 				dval = va_arg(ap, int);
-				dlen = intostrbase(dhold, dval, 10);
-				memcpy(out + i, dhold, dlen);
-				i +=dlen;
+				i += intostrbase(out + i, dval, 10);
 				break;
 			case 'z':
 				switch (*++p)
 				{ 
 					case 'u':
 						zuval = va_arg(ap, size_t);
-						zulen = uintostrbase(zuhold, zuval, 10);
-						memcpy(out + i, zuhold, zulen);
-						i += zulen;
+						i += uintostrbase(out + i, zuval, 10);
 					default:
 						break;
 				}
@@ -93,18 +87,19 @@ int gprintf(char *fmt, ...)
 	}
 	va_end(ap);
 
-	//if ( flag == 0 )
+	if ( flag == 0 )
 		write(1, out, i);
 
 	return i;
 }
 
-//int gprintf(char *fmt, ...)
-//{
-//	size_t ret  = 0;
-//	ret = gprintf_inter(fmt, ...);
-//	return ret;
-//}
+int gprintf(char *fmt, ...)
+{
+	size_t ret  = 0;
+
+	//ret = gprintf_inter(NULL, 0, fmt, ...);
+	return ret;
+}
 
 //int gsprintf(char *str, char *fmt, ...)
 //{
