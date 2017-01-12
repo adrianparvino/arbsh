@@ -1,7 +1,6 @@
 
 /* globals */
 static double PRECISION = 0.00000000000001;
-static int MAX_NUMBER_STRING_SIZE = 32;
 
 /* function prototypes */
 char * gdtoa(char *, double);
