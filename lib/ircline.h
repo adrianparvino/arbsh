@@ -159,11 +159,8 @@ size_t gshgetch(char *l)
 
 void gshprint(char *l, size_t len, char *prompt, size_t plen)
 { 
-	
-	
 	size_t i; 
-	size_t real = 0;
-	
+	size_t real = 0; 
 	size_t off = 0;
 	size_t half;
 
@@ -220,7 +217,6 @@ void gshprint(char *l, size_t len, char *prompt, size_t plen)
 			} 
 		}
 	}
-	
 }
 
 int gsh_history(char *l, size_t len)
