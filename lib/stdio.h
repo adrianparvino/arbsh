@@ -16,7 +16,9 @@
 /* local libraries */
 /* --------------- */
 #include "itoa.h"
-//#include "dtoa.h"
+/* requires libm
+#include "dtoa.h"
+*/
 
 /* function declarations */
 /* --------------------- */
@@ -85,8 +87,10 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 	size_t zuval = 0; 
 	int dval = 0; 
 	long lval = 0;
-	//double fval = 0;
-	//char ftemp[1025]= { 0 };
+	/* requires libm
+	double fval = 0;
+	char ftemp[1025]= { 0 };
+	*/
 
 	if (flag == 0) /* printf */
 		out = malloc(1025); 
@@ -115,9 +119,11 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 				i += intostrbase(out + i, dval, 10);
 				break;
 			case 'f': 
-				//fval = va_arg(ap, double);
-				//gdtoa(ftemp, fval);
-				//i += gsprintf(out + i, "%s", ftemp);
+				/* requires libm
+				fval = va_arg(ap, double);
+				gdtoa(ftemp, fval);
+				i += gsprintf(out + i, "%s", ftemp);
+				*/
 				break;
 			case 'l':
 				switch (*++p)
@@ -127,9 +133,11 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 						i += intostrbase(out + i, lval, 10);
 						break;
 					case 'f': 
-						//fval = va_arg(ap, double);
-						//gdtoa(ftemp, fval);
-						//i += gsprintf(out + i, "%s", ftemp);
+						/* requires libm
+						fval = va_arg(ap, double);
+						gdtoa(ftemp, fval);
+						i += gsprintf(out + i, "%s", ftemp);
+						*/
 						break;
 					default:
 						break;
