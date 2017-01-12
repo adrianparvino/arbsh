@@ -28,19 +28,16 @@
         See LICENSE for copying details.
 */
 
-/* ANSI escape sequences (see hexen.h) */
-#define USERCOLOR 	T_BOLD
+/* defines */
+#define USERCOLOR	T_BOLD
 #define OTHERUSERS	T_BLUE_FG T_BOLD
 #define BARCOLOR	T_BLUE_BG
-
-/* trivial compile time limits and defines */
-#define INTERVAL 100000
-#define CHANLEN 	64
-#define LINELEN 	512
-#define MAXCHANS 	100
-#define DATEFMT 	"%H:%M"
+#define INTERVAL	100000
+#define CHANLEN		64
+#define LINELEN		512
+#define MAXCHANS	100
+#define DATEFMT		"%H:%M"
 #define ID_DELAY	100000
-
 
 /* structs */
 struct chan {
@@ -215,7 +212,6 @@ int main(int argc, char *argv[])
 				sckno = curserv;
 			} 
 		}
-
 		/* Catch keyboard events */ 
 		if (FD_ISSET(0, &rfs))
                 { 
@@ -226,9 +222,7 @@ int main(int argc, char *argv[])
                        	len = ircgetch(glb.userline);
                        	gshprint(glb.userline, len, "[[ ]]>> ", 8);
                	}
-		
-	}
-	
+	} 
 	
 	/* reset terminal */
 	termcatch(~(ICANON | ECHO), 1);
@@ -250,7 +244,6 @@ int chadd(char *name)
         if (!(ss[i].chl[ss[i].nch].buf = malloc(sizeof(char) * BUFSIZ)))
                 panic("Out of memory 4.");
         gmemset(ss[i].chl[ss[i].nch].buf, 0, BUFSIZ);
-
 
         ss[i].chl[ss[i].nch].eol = ss[i].chl[ss[i].nch].buf;
         ss[i].chl[ss[i].nch].scroll = 0;
@@ -374,14 +367,11 @@ int readin(void)
 		p = l;
         
 	rd = read(sck[sckno], p, BUFSIZ - (p-l));
-	
 
         if (rd < 0)
 	{
                 if (errno == EINTR) 
 			return -1;
-                //panic("IO error while reading.");
-		//return -1;
         }
         if (rd == 0) 
 		return 0;
@@ -486,9 +476,6 @@ void uparse(char *string)
                 write(sck[i], string, strlen(string));
         write(sck[i], "\r\n", 2);
 }
-
-
-
 
 void accumulator(int cn, char *format, char *line1, char *line2)
 {
@@ -687,23 +674,16 @@ void printout(void)
 int setupconn(char *s, int p)
 { 
 	usleep(ID_DELAY);
-	
 	if (!glb.nick)
 		return -1;
-
 	if ((sck[numserv] = dialurl(s, p)) == -1) 
-		return -1; 
-	
+		return -1;
 	sckno = numserv;
 	ss[numserv].nch = 0;
 	chadd(s); 
-
 	gdprintf(sck[numserv], "NICK %s\r\nUSER %s 8 * : \r\nMODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
-	//gdprintf(sck[numserv], "NICK %s USER %s 8 * : MODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
-
 	curserv = sckno = numserv;
-	++numserv;
-	
+	++numserv; 
 	return 0; 
 }
 
