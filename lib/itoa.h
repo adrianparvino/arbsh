@@ -1,3 +1,8 @@
+/*
+	Copyright 2017, CM Graff "itoa.h"
+	See LICENSE for copying details
+*/
+
 size_t uintostrbase(char *s, size_t n, int base)
 {
         static size_t i = 0;
