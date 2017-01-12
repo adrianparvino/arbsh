@@ -18,6 +18,15 @@
 #include "itoa.h"
 //#include "dtoa.h"
 
+/* function declarations */
+/* --------------------- */
+int ggetchar(void);
+int gputchar(char);
+size_t ggetline(char [], int);
+int gprintf_inter(int, char *, int, char *, va_list);
+int gprintf(char *, ...);
+int gsprintf(char *, char *, ...);
+int gdprintf(int, char *, ...);
 
 /* functions */
 /* --------- */
@@ -108,8 +117,7 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 			case 'f': 
 				//fval = va_arg(ap, double);
 				//gdtoa(ftemp, fval);
-				//strcpy(out + i, ftemp);
-				//i += strlen(ftemp);
+				//i += gsprintf(out + i, "%s", ftemp);
 				break;
 			case 'l':
 				switch (*++p)
@@ -121,8 +129,7 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 					case 'f': 
 						//fval = va_arg(ap, double);
 						//gdtoa(ftemp, fval);
-						//strcpy(out + i, ftemp);
-						//i += strlen(ftemp);
+						//i += gsprintf(out + i, "%s", ftemp);
 						break;
 					default:
 						break;
