@@ -5,8 +5,7 @@
 #include <time.h>
 
 /* 
-	2015 Copyright, `date', CM Graff
-
+	2017 Copyright, `date', CM Graff
 */
 
 size_t date(char *, char *, size_t);
@@ -25,7 +24,6 @@ int main(int argc, char *argv[])
 	
 	if (!setlocale(LC_CTYPE, ""))
 		datewrite(2, "Unable to set locale", 20, 1);
-
 
 	while ((o = getopt (argc, argv, "u")) != -1)
                 switch (o) {
@@ -56,8 +54,7 @@ int main(int argc, char *argv[])
 	if ((n = date(buf, format, 100)) == 0)
 		datewrite(2, "Unable to obtain date\n", 22, 1);
 
-	datewrite(1, buf, n, 0); 
-	
+	datewrite(1, buf, n, 0);
 
 	return 0;
 }
