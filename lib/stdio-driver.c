@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#define HASLIBM
 #include "stdio.h"
 
 
@@ -16,7 +17,7 @@ int main()
 	char string1[1000] = { 0 };
 	long ltest = 23459999;
 
-	double ftest = 76756.21315;
+	double ftest = 999976756.21315;
 
 	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f\n";
 

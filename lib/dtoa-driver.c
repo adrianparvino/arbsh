@@ -8,7 +8,7 @@ int main(void)
 {
 
 	int i;
-	char s[MAX_NUMBER_STRING_SIZE];
+	char s[7];
 	double d[] = {
 		0.0,
 		42.0,
