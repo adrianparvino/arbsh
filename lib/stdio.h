@@ -67,7 +67,7 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 { 
 	char *p = NULL;
 	char *out;
-	size_t i = 0; /* this should be an int according to the IEEE */
+	int i = 0;
 	/* data types */
 	int cval = 0;
 	char *sval = NULL;
