@@ -1,10 +1,24 @@
+/*
+	Copyright 2017. CM Graff "stdio.h"
+	See LICENSE for copying details
+*/
+
+/* defines */
+/* ------- */
 #define GBUFSIZ 4096
 #define IRCBUFSIZ GBUFSIZ
 
+/* self hosting dependencies */
+/* ------------------------- */
 #include <stddef.h>
 #include <stdarg.h>
 
+/* local libraries */
+/* --------------- */
 #include "itoa.h"
+
+/* functions */
+/* --------- */
 
 /* single char io  */
 int ggetchar(void)
