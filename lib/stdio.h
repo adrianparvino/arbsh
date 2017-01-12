@@ -103,7 +103,7 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 	}
 	out[i + 1] = '\0';
 	if ( flag == 0 )
-		write(fd, out, i); 
+		i = write(fd, out, i); /* if writing to an fd, then redefine the ret */
 
 	return i;
 }
