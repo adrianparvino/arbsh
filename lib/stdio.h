@@ -123,8 +123,11 @@ int gprintf_inter(int fd, char *str, size_t lim, int flag, char *fmt, va_list ap
 			case 'f': 
 #ifdef HASLIBM
 				fval = va_arg(ap, double);
-				gdtoa(ftemp, fval);
-				i += gsnprintf(out + i, 14, "%s", ftemp);
+				long freal = fval;
+				double fpart = fval - freal;
+				gdtoa(ftemp, fpart);
+				i += gsprintf(out + i, "%ld", freal);
+				i += gsnprintf(out + i, 7, "%s", ftemp + 1);
 #endif
 				break;
 			case 'l':
@@ -136,9 +139,16 @@ int gprintf_inter(int fd, char *str, size_t lim, int flag, char *fmt, va_list ap
 						break;
 					case 'f': 
 #ifdef HASLIBM
-						fval = va_arg(ap, double);
-						gdtoa(ftemp, fval);
-						i += gsnprintf(out + i, 14, "%s", ftemp);
+						
+				fval = va_arg(ap, double);
+				int freal = fval;
+				double fpart = fval - freal;
+				gdtoa(ftemp, fpart);
+				i += gsprintf(out + i, "%d", freal);
+				i += gsnprintf(out + i, 7, "%s", ftemp + 1);
+						//fval = va_arg(ap, double);
+						//gdtoa(ftemp, fval);
+						//i += gsprintf(out + i, "%s", ftemp);
 #endif
 						break;
 					default:
