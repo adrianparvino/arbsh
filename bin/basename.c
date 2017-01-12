@@ -1,9 +1,14 @@
 #include <unistd.h>
 #include <string.h>
-#include <libgen.h>
+
+#include "../lib/libgen.h"
 
 /*
-	Copyright 2015, C. Graff  "basename"
+	Copyright 2017, C. Graff  "basename"
+
+	TODO: rewrite ../lib/libgen.h to be POSIX conformant,
+	      currently this program will choke on / and /home/name/
+	      until that is changed.
 */
 
 int main(int argc, char *argv[])
@@ -23,7 +28,7 @@ int main(int argc, char *argv[])
 
 	if (argc > 1)
 	{
-		hold = basename(argv[1]);
+		hold = ggnu_basename(argv[1]);
 		i = len = strlen(hold);
 
 		if (!hold || !len)
