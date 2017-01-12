@@ -10,7 +10,6 @@ SYNOPSIS
 	#include "../lib/hexen.h" 
 	int ansigetch(void);
 	int termcatch(int flags, int reset);
-	void writenumber(int desc, size_t height); 
 	void setcursor(size_t x, size_t y);
 	void ansihorizon(size_t top, size_t bottom); 
 	int ansiinit(void) 
@@ -42,14 +41,6 @@ DESCRIPTION
 				termcatch(~(ICANON | ECHO), 0);
 	
 		termcatch() returns -1 upon error, 0 upon success.
-
-	void writenumber(int desc, size_t number);
-		writenumber() is an internal function that is used to
-		emit escape sequences. Programmers may find it useful for
-		debugging or emitting custom escape sequences. The first 
-		argument is the file descriptor to write to. The second 
-		argument is a numerical argument which will be written to
-		desc.
 
 	void setcursor(size_t x, size_t y) 
 		setcursor() sets the cursor to the specified x,y coordinates on
@@ -89,7 +80,7 @@ DESCRIPTION
 		char *ansilastmap;	/* last buffer printed 		*/
 
 	ansigetch --	get a char of user input and return it
-	termcatch -- 	set the ter
+	termcatch -- 	set the terminal
 
 RETURN VALUE
 	These functions return the character written, or the number of characters
