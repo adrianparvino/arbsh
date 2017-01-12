@@ -73,6 +73,7 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 	char *sval = NULL;
 	size_t zuval = 0; 
 	int dval = 0; 
+	long lval = 0;
 
 	if (flag == 0) /* printf */
 		out = malloc(1025); 
@@ -99,6 +100,16 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 			case 'd': 
 				dval = va_arg(ap, int);
 				i += intostrbase(out + i, dval, 10);
+				break;
+			case 'l':
+				switch (*++p)
+				{ 
+					case 'd':
+						lval = va_arg(ap, long);
+						i += intostrbase(out + i, lval, 10);
+					default:
+						break;
+				}
 				break;
 			case 'z':
 				switch (*++p)
