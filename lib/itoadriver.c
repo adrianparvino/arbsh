@@ -11,10 +11,11 @@ int main()
 	size_t zutest = 1234567;
 	int dtest = -9879871; 
 	char string1[1000] = { 0 };
+	long ltest = 23459999;
 
-	gdprintf(2, "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%c\n", zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd'); 
-	gprintf("%zu/%d/%s==%zu / %d / %s%c-%c-%c-%c\n", zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd'); 
-	gsprintf(string1, "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%c\n", zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd'); 
+	gdprintf(2, "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld\n", zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest); 
+	gprintf("%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld\n", zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest); 
+	gsprintf(string1, "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld\n", zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest); 
 	printf("%s", string1);
 
 }
