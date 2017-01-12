@@ -7,6 +7,7 @@
 /* ------- */
 #define GBUFSIZ 4096
 #define IRCBUFSIZ GBUFSIZ
+//#define HASLIBM
 
 /* self hosting dependencies */
 /* ------------------------- */
@@ -16,18 +17,19 @@
 /* local libraries */
 /* --------------- */
 #include "itoa.h"
-/* requires libm
+#ifdef HASLIBM
 #include "dtoa.h"
-*/
+#endif
 
 /* function declarations */
 /* --------------------- */
 int ggetchar(void);
 int gputchar(char);
 size_t ggetline(char [], int);
-int gprintf_inter(int, char *, int, char *, va_list);
+int gprintf_inter(int, char *, size_t, int, char *, va_list);
 int gprintf(char *, ...);
 int gsprintf(char *, char *, ...);
+int gsnprintf(char *, size_t, char *, ...);
 int gdprintf(int, char *, ...);
 
 /* functions */
@@ -76,7 +78,7 @@ size_t ggetline(char s[], int lim)
 }
 
 /* printf family (variadic and formatted) */
-int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
+int gprintf_inter(int fd, char *str, size_t lim, int flag, char *fmt, va_list ap)
 { 
 	char *p = NULL;
 	char *out;
@@ -87,14 +89,14 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 	size_t zuval = 0; 
 	int dval = 0; 
 	long lval = 0;
-	/* requires libm
+#ifdef HASLIBM
 	double fval = 0;
 	char ftemp[1025]= { 0 };
-	*/
+#endif
 
 	if (flag == 0) /* printf */
 		out = malloc(1025); 
-	if (flag == 1) /* sprintf */
+	if (flag == 1 || flag == 2) /* sprintf, snprintf */
 		out = str;
 
 	for (p = fmt; *p; p++) 
@@ -119,11 +121,11 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 				i += intostrbase(out + i, dval, 10);
 				break;
 			case 'f': 
-				/* requires libm
+#ifdef HASLIBM
 				fval = va_arg(ap, double);
 				gdtoa(ftemp, fval);
-				i += gsprintf(out + i, "%s", ftemp);
-				*/
+				i += gsnprintf(out + i, 14, "%s", ftemp);
+#endif
 				break;
 			case 'l':
 				switch (*++p)
@@ -133,11 +135,11 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 						i += intostrbase(out + i, lval, 10);
 						break;
 					case 'f': 
-						/* requires libm
+#ifdef HASLIBM
 						fval = va_arg(ap, double);
 						gdtoa(ftemp, fval);
-						i += gsprintf(out + i, "%s", ftemp);
-						*/
+						i += gsnprintf(out + i, 14, "%s", ftemp);
+#endif
 						break;
 					default:
 						break;
@@ -158,7 +160,14 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 				break;
 		}
 	}
+
+	
+	if ( flag == 2) 
+		i = lim;
+
 	out[i + 1] = '\0';
+
+
 	if ( flag == 0 )
 		i = write(fd, out, i); /* if writing to an fd, then redefine the ret */
 
@@ -170,7 +179,7 @@ int gprintf(char *fmt, ...)
 	size_t ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(1, NULL, 0, fmt, argptr);
+	ret = gprintf_inter(1, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
@@ -180,7 +189,17 @@ int gsprintf(char *str, char *fmt, ...)
 	size_t ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(1, str, 1, fmt, argptr);
+	ret = gprintf_inter(1, str, 0, 1, fmt, argptr);
+	va_end(argptr);
+	return ret;
+} 
+
+int gsnprintf(char *str, size_t lim, char *fmt, ...)
+{
+	size_t ret  = 0;
+	va_list argptr;
+	va_start(argptr, fmt);
+	ret = gprintf_inter(1, str, lim, 2, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
@@ -190,7 +209,7 @@ int gdprintf(int fd, char *fmt, ...)
 	size_t ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(fd, NULL, 0, fmt, argptr);
+	ret = gprintf_inter(fd, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 }
