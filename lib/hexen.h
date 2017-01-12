@@ -282,7 +282,7 @@ void setcursor(size_t x, size_t y)
 	size_t len = 0;
 	len = gsprintf(str, "\033[%zu;%zuH", x, y);
 	write(0, str, len);
-} 
+}
 
 void setcursorchars(size_t x, size_t y, char s)
 {
