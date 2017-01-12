@@ -16,6 +16,8 @@
 /* local libraries */
 /* --------------- */
 #include "itoa.h"
+//#include "dtoa.h"
+
 
 /* functions */
 /* --------- */
@@ -62,7 +64,7 @@ size_t ggetline(char s[], int lim)
         return i;
 }
 
-/* printf family (variadic formatted) */
+/* printf family (variadic and formatted) */
 int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 { 
 	char *p = NULL;
@@ -74,6 +76,8 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 	size_t zuval = 0; 
 	int dval = 0; 
 	long lval = 0;
+	//double fval = 0;
+	//char ftemp[1025]= { 0 };
 
 	if (flag == 0) /* printf */
 		out = malloc(1025); 
@@ -100,6 +104,12 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 			case 'd': 
 				dval = va_arg(ap, int);
 				i += intostrbase(out + i, dval, 10);
+				break;
+			case 'f': 
+				//fval = va_arg(ap, double);
+				//gdtoa(ftemp, fval);
+				//strcpy(out + i, ftemp);
+				//i += strlen(ftemp);
 				break;
 			case 'l':
 				switch (*++p)
