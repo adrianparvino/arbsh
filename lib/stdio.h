@@ -117,6 +117,13 @@ int gprintf_inter(int fd, char *str, int flag, char *fmt, va_list ap)
 					case 'd':
 						lval = va_arg(ap, long);
 						i += intostrbase(out + i, lval, 10);
+						break;
+					case 'f': 
+						//fval = va_arg(ap, double);
+						//gdtoa(ftemp, fval);
+						//strcpy(out + i, ftemp);
+						//i += strlen(ftemp);
+						break;
 					default:
 						break;
 				}
