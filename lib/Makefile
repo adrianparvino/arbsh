@@ -7,6 +7,7 @@ all:
 	$(CC) ircline-driver.c -o ircline-driver $(CFLAGS)
 	$(CC) itoadriver.c -o itoadriver $(CFLAGS)
 	$(CC) readline-driver.c -o readline-driver $(CFLAGS) 
+	$(CC) dtoa-driver.c -o dtoa-driver $(CFLAGS) -lm
 
 clean:
 
@@ -15,4 +16,5 @@ clean:
 	$(RM) ircline-driver
 	$(RM) itoadriver
 	$(RM) readline-driver
+	$(RM) dtoa-driver
 
