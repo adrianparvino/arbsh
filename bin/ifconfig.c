@@ -152,8 +152,7 @@ int setip(char *iface_name, char *ip_addr)
 
 	int sockfd = 0;
 	struct ifreq ifr; 
-	struct sockaddr_in sin; 
-	struct sockaddr hold;
+	struct sockaddr_in sin;
 
 	sockfd = socket(AF_INET, SOCK_DGRAM, 0); 
 	strncpy(ifr.ifr_name, iface_name, IFNAMSIZ); 
