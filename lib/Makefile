@@ -8,6 +8,7 @@ all:
 	$(CC) itoadriver.c -o itoadriver $(CFLAGS)
 	$(CC) readline-driver.c -o readline-driver $(CFLAGS) 
 	$(CC) dtoa-driver.c -o dtoa-driver $(CFLAGS) -lm
+	$(CC) stdio-driver.c -o stdio-driver $(CFLAGS) -lm
 
 clean:
 
@@ -17,4 +18,5 @@ clean:
 	$(RM) itoadriver
 	$(RM) readline-driver
 	$(RM) dtoa-driver
+	$(RM) stdio-driver
 
