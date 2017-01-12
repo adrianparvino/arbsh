@@ -19,7 +19,7 @@ int main(void)
 		111111111111111111111111.2222222222
 	};
 	for (i = 0; i < 7; i++) {
-		printf("%d: printf: %.14g, dtoa: %s\n", i+1, d[i], dtoa(s, d[i]));
+		printf("%d: printf: %.14g, dtoa: %s\n", i+1, d[i], gdtoa(s, d[i]));
 	}
 }
 
