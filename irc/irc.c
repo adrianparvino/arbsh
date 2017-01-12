@@ -698,8 +698,8 @@ int setupconn(char *s, int p)
 	ss[numserv].nch = 0;
 	chadd(s); 
 
-	//gdprintf(sck[numserv], "NICK %s\r\nUSER %s\r\n 8 * : \r\nMODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
-	gdprintf(sck[numserv], "NICK %s USER %s 8 * : MODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
+	gdprintf(sck[numserv], "NICK %s\r\nUSER %s 8 * : \r\nMODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
+	//gdprintf(sck[numserv], "NICK %s USER %s 8 * : MODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
 
 	curserv = sckno = numserv;
 	++numserv;
