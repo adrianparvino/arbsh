@@ -24,7 +24,7 @@
 #include "../lib/date.h"
 
 /* 
-        2015 (C) Copyright, `Irc', CM Graff MIT/BSD Licensed 
+        2016 (C) Copyright, `Irc', CM Graff MIT/BSD Licensed 
         See LICENSE for copying details.
 */
 
@@ -113,9 +113,8 @@ int main(int argc, char *argv[])
 
         if ( argc > 1 && strcmp(argv[1], "-h") == 0)
         {
-		write(2, argv[0], strlen(argv[0])); 
-		write(2, " server=irc.freenode.net port=6667", 34);
-		write(2, " nick=doormouse channel='#irctest'\n", 35);
+		gdprintf(2, "%s server=irc.freenode.net port=6667", argv[0]);
+		gdprintf(2, " nick=doormouse channel='#irctest'\n", 35);
                 return 0;
         }
 	
@@ -241,8 +240,6 @@ int main(int argc, char *argv[])
 
 int chadd(char *name)
 {
-        //if (ss[i].nch > 0 && !(ss[i].chl = realloc (ss[i].chl, sizeof(chl) * (ss[i].nch + 1))))
-        //      panic("Out of memory 2.");
         size_t i = sckno;
 
         if (!(ss[i].chl[ss[i].nch].name = malloc(sizeof(char) *BUFSIZ)))
@@ -261,9 +258,7 @@ int chadd(char *name)
         ss[i].chl[ss[i].nch].real = 0;
         ss[i].ch = ss[i].nch++;
 
-        write(sck[i], "JOIN ", 5);
-        write(sck[i], name, strlen(name));
-        write(sck[i], "\r\n", 2);
+	gdprintf(sck[i], "JOIN %s\r\n", name);
 
         return ss[i].nch;
 } 
@@ -298,10 +293,8 @@ void detectmessage(char *usr, char *cmd, char *par, char *data)
 	{ 
 		/* respond to VERSION requests, a hack */
 		if ( strcmp(data, "\001VERSION\001") == 0 )
-		{
-			write(sck[sckno], "NOTICE ", 7);
-			write(sck[sckno], usr, strlen(usr)); 
-			write(sck[sckno], " :\001VERSION Irc in C by CM Graff\001\r\n", 33);
+		{ 
+			gdprintf(sck[sckno], "NOTICE %s :\001VERSION Irc in C by CM Graff\001\r\n", usr);
 		} else
 		{ 
 			/* private message user channels */
@@ -367,9 +360,7 @@ void detectmessage(char *usr, char *cmd, char *par, char *data)
 
 void panic(const char *m)
 {
-	write(2, "Panic: ", 7);
-	write(2, m, strlen(m));
-	write(2, "\n", 1);
+	gdprintf(2, "Panic: %s\n", m);
 	glb.runstate = 0;
 } 
 
@@ -465,8 +456,7 @@ void uparse(char *string)
                         if ( string)
                                 delconn(string);
                 } else if ( *(string + 1) == 'r' ) {
-                        write(sck[i], (string + 2), strlen(string + 2));
-                        write(sck[i], "\r\n", 2);
+			gdprintf(sck[i], "%s\r\n", string + 2);
                 } else if ( *(string + 1) == 'x' ) {
                         write(sck[i], "\001", 1);
                 } else if ( *(string + 1) == 'y' ) {
@@ -656,34 +646,18 @@ size_t ircgetch(char *l)
 }
 	
 void drawscreen(void)
-{
-
+{ 
         size_t n = 0;
-
         size_t i = curserv;
 
-        /* top bar */
-        write(1, T_ERASEALL, T_ERASEALL_SZ);
-        write(1, T_BLUE_BG, T_BLUE_FG_SZ);
-        write(1, "\x1b[1;2r", 6);
-        n = write(1, "[", 1);
-        n += write(1, ss[i].chl[ss[i].ch].name, strlen(ss[i].chl[ss[i].ch].name));
-        n += write(1, "] ", 2);
-
-        n += write(1, "@ (", 3);
-        n += write(1, ss[i].chl[0].name, strlen(ss[i].chl[0].name));
-        n += write(1, ") ", 2);
-
+        /* top bar */ 
+	gprintf("%s%s\033[1;2r", T_ERASEALL, T_BLUE_BG);
+	n = gprintf(" [%s] @ (%s) ", ss[i].chl[ss[i].ch].name, ss[i].chl[0].name); 
         write(1, WHITESPACE, glb.w - n);
-        write(1, T_BLACK_BG, T_BLACK_BG_SZ);
-        write(1, "\n", 1);
+	gprintf("%s\n", T_BLACK_BG); 
 
-        /* center text */
-        write(1, "\x1b[2;", 4);
-        //writenumber(1, glb.h);
-	gprintf("%zu", glb.h);
-        write(1, "r\n", 2);
-        write(1, T_ERASEBEGL2CUR, T_ERASEBEGL2CUR_SZ);
+        /* center text */ 
+	gprintf("\033[2;%zur\n%s", glb.h, T_ERASEBEGL2CUR); 
 
         /* Print only last 300 lines or so? (yes this sucks)*/
         size_t totalchars = hglb.w * hglb.h - ss[i].chl[ss[i].ch].scroll;
@@ -696,15 +670,11 @@ void drawscreen(void)
         else
                 write(1, ss[i].chl[ss[i].ch].buf, ss[i].chl[ss[i].ch].real - ss[i].chl[ss[i].ch].scroll);
 
-        /* bottom bar */
-        write(1, T_BLUE_BG, T_BLUE_FG_SZ);
+        /* bottom bar */ 
+	gprintf("%s", T_BLUE_BG);
         n = 0;
-        write(1, WHITESPACE, glb.w - n);
-        write(1, T_BLACK_BG, T_BLACK_BG_SZ);
-        write(1, "\n", 1);
-
-
-
+        write(1, WHITESPACE, glb.w - n); 
+	gprintf("%s\n", T_BLACK_BG); 
         /* now the prompt can be drawn by another function */
 }
 
@@ -723,25 +693,12 @@ int setupconn(char *s, int p)
 
 	if ((sck[numserv] = dialurl(s, p)) == -1) 
 		return -1; 
-
-	//ss = realloc(ss, sizeof (struct servstrct) * (numserv + 1)); 
 	
 	sckno = numserv;
 	ss[numserv].nch = 0;
-	chadd(s);
+	chadd(s); 
 
-	//ss[numserv].nch = 1;
-
-	glb.nicklen = strlen(glb.nick);
-	write(sck[numserv], "NICK ", 5);
-	write(sck[numserv], glb.nick, glb.nicklen);
-	write(sck[numserv], "\r\n", 2);
-	write(sck[numserv], "USER ", 5);
-	write(sck[numserv], glb.nick, glb.nicklen);
-	write(sck[numserv], " 8 * : \r\n", 9);
-	write(sck[numserv], "MODE ", 5);
-	write(sck[numserv], glb.nick, glb.nicklen);
-	write(sck[numserv], " +i\r\n", 5);
+	gdprintf(sck[numserv], "NICK %s\r\nUSER %s\r\n 8 * : \r\nMODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
 
 	curserv = sckno = numserv;
 	++numserv;
@@ -756,9 +713,7 @@ int delconn(char *name)
 	{
 		if ( strcmp(ss[i].chl[0].name, name) == 0 )
 		{
-			write(sck[i], "QUIT ", 5);
-                        write(sck[i], name, strlen(name));
-                        write(sck[i], "\r\n", 2);
+			gdprintf(sck[i], "QUIT %s\r\n", name);
 			ss[i] = ss[numserv - 1];
 			--numserv;
 			return 0;
@@ -776,9 +731,7 @@ int chdel(char *name)
                 if (!strcmp(ss[sckno].chl[i].name, name))
 		{ 
 			ss[sckno].ch = 0;
-			write(sck[sckno], "PART ", 5);
-			write(sck[sckno], name, strlen(name));
-			write(sck[sckno], "\r\n", 2);
+			gdprintf(sck[sckno], "PART %s\r\n", name);
 			ss[sckno].chl[i] = ss[sckno].chl[ss[sckno].nch - 1];
 			ss[sckno].nch -= 1;
                         return 0;
