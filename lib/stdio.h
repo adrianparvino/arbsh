@@ -5,8 +5,8 @@
 
 /* defines */
 /* ------- */
-#define GBUFSIZ 4096
-#define IRCBUFSIZ GBUFSIZ
+#define GBUFSIZEE 4096
+#define IRCBUFSIZ GBUFSIZEE
 //#define HASLIBM
 
 /* self hosting dependencies */
@@ -20,15 +20,7 @@
 #ifdef HASLIBM
 #include "dtoa.h"
 #endif
-
-/* structures */
-/* ---------- */
-struct GFILE {
-	char buffer[GBUFSIZ];
-	char *next;
-	size_t left;
-	int fd;
-}GFILE = {{0}, NULL, 0, 0};
+#include "file.h"
 
 /* function declarations */
 /* --------------------- */
@@ -51,11 +43,11 @@ int gvdprintf(int, char *, va_list);
 /* single char io  */
 int ggetchar(void)
 { 
-	static char buf[GBUFSIZ];
+	static char buf[GBUFSIZEE];
 	static char *bufp = buf;
 	static size_t i = 0;
 
-        if (i >= (GBUFSIZ - 1))
+        if (i >= (GBUFSIZEE - 1))
 		return -1;
 	
 	if (i == 0) 
