@@ -17,7 +17,7 @@ int main()
 	char string1[1000] = { 0 };
 	long ltest = 23459999;
 
-	double ftest = 976756.21317892345;
+	double ftest = 3123.21317892345;
 
 	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f\n";
 
@@ -28,7 +28,7 @@ int main()
 	gprintf("gsprintf:\n");
 	gsprintf(string1, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("%s", string1);
-
+	//gvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("control:\n");
 	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 
