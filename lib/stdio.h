@@ -31,6 +31,10 @@ int gprintf(char *, ...);
 int gsprintf(char *, char *, ...);
 int gsnprintf(char *, size_t, char *, ...);
 int gdprintf(int, char *, ...);
+int gvprintf(char *, va_list);
+int gvsprintf(char *, char *, va_list);
+int gvsnprintf(char *, size_t, char *, va_list);
+int gvdprintf(int, char *, va_list);
 
 /* functions */
 /* --------- */
@@ -219,9 +223,31 @@ int gdprintf(int fd, char *fmt, ...)
 int gvprintf(char *fmt, va_list argptr)
 {
 	size_t ret  = 0;
-	//va_list argptr;
-	//va_start(argptr, fmt);
 	ret = gprintf_inter(1, NULL, 0, 0, fmt, argptr);
+	va_end(argptr);
+	return ret;
+}
+
+int gvsprintf(char *str, char *fmt, va_list argptr)
+{
+	size_t ret  = 0;
+	ret = gprintf_inter(1, str, 0, 1, fmt, argptr);
+	va_end(argptr);
+	return ret;
+}
+
+int gvsnprintf(char *str, size_t lim, char *fmt, va_list argptr)
+{
+	size_t ret  = 0;
+	ret = gprintf_inter(1, str, lim, 2, fmt, argptr);
+	va_end(argptr);
+	return ret;
+}
+
+int gvdprintf(int fd, char *fmt, va_list argptr)
+{
+	size_t ret  = 0;
+	ret = gprintf_inter(fd, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
