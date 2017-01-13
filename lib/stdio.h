@@ -21,6 +21,15 @@
 #include "dtoa.h"
 #endif
 
+/* structures */
+/* ---------- */
+struct GFILE {
+	char buffer[GBUFSIZ];
+	char *next;
+	size_t left;
+	int fd;
+}GFILE = {{0}, NULL, 0, 0};
+
 /* function declarations */
 /* --------------------- */
 int ggetchar(void);
@@ -182,7 +191,7 @@ int gprintf_inter(int fd, char *str, size_t lim, int flag, char *fmt, va_list ap
 
 int gprintf(char *fmt, ...)
 {
-	size_t ret  = 0;
+	int ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
 	ret = gprintf_inter(1, NULL, 0, 0, fmt, argptr);
@@ -192,7 +201,7 @@ int gprintf(char *fmt, ...)
 
 int gsprintf(char *str, char *fmt, ...)
 {
-	size_t ret  = 0;
+	int ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
 	ret = gprintf_inter(1, str, 0, 1, fmt, argptr);
@@ -202,7 +211,7 @@ int gsprintf(char *str, char *fmt, ...)
 
 int gsnprintf(char *str, size_t lim, char *fmt, ...)
 {
-	size_t ret  = 0;
+	int ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
 	ret = gprintf_inter(1, str, lim, 2, fmt, argptr);
@@ -212,7 +221,7 @@ int gsnprintf(char *str, size_t lim, char *fmt, ...)
 
 int gdprintf(int fd, char *fmt, ...)
 {
-	size_t ret  = 0;
+	int ret  = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
 	ret = gprintf_inter(fd, NULL, 0, 0, fmt, argptr);
@@ -222,7 +231,7 @@ int gdprintf(int fd, char *fmt, ...)
 
 int gvprintf(char *fmt, va_list argptr)
 {
-	size_t ret  = 0;
+	int ret  = 0;
 	ret = gprintf_inter(1, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
@@ -230,7 +239,7 @@ int gvprintf(char *fmt, va_list argptr)
 
 int gvsprintf(char *str, char *fmt, va_list argptr)
 {
-	size_t ret  = 0;
+	int ret  = 0;
 	ret = gprintf_inter(1, str, 0, 1, fmt, argptr);
 	va_end(argptr);
 	return ret;
@@ -238,7 +247,7 @@ int gvsprintf(char *str, char *fmt, va_list argptr)
 
 int gvsnprintf(char *str, size_t lim, char *fmt, va_list argptr)
 {
-	size_t ret  = 0;
+	int ret  = 0;
 	ret = gprintf_inter(1, str, lim, 2, fmt, argptr);
 	va_end(argptr);
 	return ret;
@@ -246,7 +255,7 @@ int gvsnprintf(char *str, size_t lim, char *fmt, va_list argptr)
 
 int gvdprintf(int fd, char *fmt, va_list argptr)
 {
-	size_t ret  = 0;
+	int ret  = 0;
 	ret = gprintf_inter(fd, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
