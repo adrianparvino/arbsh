@@ -122,11 +122,9 @@ int gprintf_inter(int fd, char *str, size_t lim, int flag, char *fmt, va_list ap
 				break;
 			case 'f': 
 #ifdef HASLIBM
-				fval = va_arg(ap, double);
-				long freal = fval;
-				double fpart = fval - freal;
-				gdtoa(ftemp, fpart);
-				i += gsprintf(out + i, "%ld", freal);
+				fval = va_arg(ap, double); 
+				gdtoa(ftemp, fval - (long)fval); 
+				i += gsprintf(out + i, "%ld", (long)fval);
 				i += gsnprintf(out + i, 7, "%s", ftemp + 1);
 #endif
 				break;
@@ -138,12 +136,10 @@ int gprintf_inter(int fd, char *str, size_t lim, int flag, char *fmt, va_list ap
 						i += intostrbase(out + i, lval, 10);
 						break;
 					case 'f': 
-#ifdef HASLIBM 
+#ifdef HASLIBM
 						fval = va_arg(ap, double);
-						int freal = fval;
-						double fpart = fval - freal;
-						gdtoa(ftemp, fpart);
-						i += gsprintf(out + i, "%d", freal);
+						gdtoa(ftemp, fval - (long)fval);
+						i += gsprintf(out + i, "%ld", (long)fval);
 						i += gsnprintf(out + i, 7, "%s", ftemp + 1);
 #endif
 						break;
@@ -218,5 +214,15 @@ int gdprintf(int fd, char *fmt, ...)
 	ret = gprintf_inter(fd, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
-}
+} 
+
+int gvprintf(char *fmt, va_list argptr)
+{
+	size_t ret  = 0;
+	//va_list argptr;
+	//va_start(argptr, fmt);
+	ret = gprintf_inter(1, NULL, 0, 0, fmt, argptr);
+	va_end(argptr);
+	return ret;
+} 
 
