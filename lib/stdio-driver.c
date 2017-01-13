@@ -8,6 +8,14 @@
 #define HASLIBM
 #include "stdio.h"
 
+void testgvprintf(char *fmt, ...)
+{
+		va_list args;
+		va_start(args, fmt);
+		vprintf(fmt, args);
+		va_end(args);
+}
+
 
 int main()
 {
@@ -28,7 +36,9 @@ int main()
 	gprintf("gsprintf:\n");
 	gsprintf(string1, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("%s", string1);
-	//gvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	//vprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	gprintf("gvprintf:\n");
+	testgvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("control:\n");
 	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 
