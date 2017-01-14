@@ -12,7 +12,7 @@ void testgvprintf(char *fmt, ...)
 {
 		va_list args;
 		va_start(args, fmt);
-		vprintf(fmt, args);
+		gvprintf(fmt, args);
 		va_end(args);
 }
 
@@ -41,6 +41,9 @@ int main()
 	testgvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("control:\n");
 	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+
+	gggetchar();
+	
 
 }
 
