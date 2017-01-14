@@ -41,9 +41,14 @@ int main()
 	testgvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("control:\n");
 	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
-
-	gggetchar();
+	fflush(stdout); 
 	
-
+	gputchar('\n');
+	gputchar('p');
+	gputchar('u');
+	gputchar('t');
+	gputchar('c');
+	gputchar('\n');
+	ggetchar();
 }
 
