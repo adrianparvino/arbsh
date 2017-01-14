@@ -128,14 +128,14 @@ int gprintf_inter(int fd, char *str, size_t lim, int flag, char *fmt, va_list ap
 				dval = va_arg(ap, int);
 				i += intostrbase(out + i, dval, 10);
 				break;
-			case 'f': 
 #ifdef HASLIBM
+			case 'f':
 				fval = va_arg(ap, double); 
 				gdtoa(ftemp, fval - (long)fval); 
 				i += gsprintf(out + i, "%ld", (long)fval);
 				i += gsnprintf(out + i, 7, "%s", ftemp + 1);
-#endif
 				break;
+#endif
 			case 'l':
 				switch (*++p)
 				{ 
@@ -143,14 +143,14 @@ int gprintf_inter(int fd, char *str, size_t lim, int flag, char *fmt, va_list ap
 						lval = va_arg(ap, long);
 						i += intostrbase(out + i, lval, 10);
 						break;
-					case 'f': 
 #ifdef HASLIBM
+					case 'f':
 						fval = va_arg(ap, double);
 						gdtoa(ftemp, fval - (long)fval);
 						i += gsprintf(out + i, "%ld", (long)fval);
 						i += gsnprintf(out + i, 7, "%s", ftemp + 1);
-#endif
 						break;
+#endif
 					default:
 						break;
 				}
@@ -256,7 +256,7 @@ int gvdprintf(int fd, char *fmt, va_list argptr)
 	return ret;
 }
 
-int gfprintf(GFILE *stream, char *fmt, ...)
+int gfprintf(GFILE *stream, char *fmt, ...) /* not implemented */
 {
 	int ret  = 0;
 	va_list argptr;
@@ -267,7 +267,7 @@ int gfprintf(GFILE *stream, char *fmt, ...)
 	return ret;
 }
 
-int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
+int gvfprintf(GFILE *stream, char *fmt, va_list argptr) /* not implemented */
 {
 	int ret  = 0;
 	(void) stream; // ................
