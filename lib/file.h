@@ -11,6 +11,15 @@
 #define gstderr		(&_iob[2])
 #define PERMS		0666
 
+
+#define gfeof(p)     ((p)->flag & _EOF) != 0)
+#define gferror(p)   ((p)->flag & _ERR) != 0)
+#define gfileno(p)   ((p)->fd)
+#define gggetc(p)   (--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
+#define ggputc(x,p) (--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p)) 
+#define gggetchar()   gggetc(stdin)
+#define ggputcher(x)  ggputc((x), stdout)
+
 /* typedefs */
 /*--------- */
 typedef struct _iobuf {
@@ -99,5 +108,4 @@ GFILE _iob[OPEN_MAX] = {
 	{ 0, (char *) 0, (char *) 0, _WRITE, 1 },
 	{ 0, (char *) 0, (char *) 0, _WRITE | _UNBUF, 2 }
 };
-
 
