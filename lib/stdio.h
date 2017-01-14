@@ -20,12 +20,12 @@
 #ifdef HASLIBM
 #include "dtoa.h"
 #endif
-#include "file.h"
+#include "kr2-stdio.h"
 
 /* function declarations */
 /* --------------------- */
-int ggetchar(void);
-int gputchar(char);
+//int ggetchar(void);
+//int gputchar(char);
 size_t ggetline(char [], int);
 int gprintf_inter(int, char *, size_t, int, char *, va_list);
 int gprintf(char *, ...);
@@ -44,6 +44,7 @@ int gvfprintf(GFILE *, char *, va_list);
 /* --------- */
 
 /* single char io  */
+/*
 int ggetchar(void)
 { 
 	static char buf[GBUFSIZEE];
@@ -71,7 +72,7 @@ int gputchar(char c)
 	buf[0] = c;
 	return write(1, buf, 1);
 }
-
+*/
 /* line retrieval */
 size_t ggetline(char s[], int lim)
 {
