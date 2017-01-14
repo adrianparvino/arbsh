@@ -6,31 +6,18 @@
 #define GEOF		(-1)
 #define GGBUFSIZE	1024
 #define OPEN_MAX	20 
-#define gstdin		(&_iob[0])
-#define gstdout		(&_iob[1])
-#define gstderr		(&_iob[2])
-#define PERMS		0666
-
-
-#define gfeof(p)     ((p)->flag & _EOF) != 0)
-#define gferror(p)   ((p)->flag & _ERR) != 0)
-#define gfileno(p)   ((p)->fd)
-#define gggetc(p)   (--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
-#define ggputc(x,p) (--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p)) 
-#define gggetchar()   gggetc(stdin)
-#define ggputcher(x)  ggputc((x), stdout)
 
 /* typedefs */
 /*--------- */
-typedef struct _iobuf {
+typedef struct _giobuf {
 	int  cnt;
 	char *ptr;
 	char *base;
 	int  flag;
 	int  fd;
-} GFILE;
+}GFILE;
 
-extern GFILE _iob[OPEN_MAX];
+GFILE _giob[OPEN_MAX];
 
 /* enums */
 /* ----- */
@@ -39,14 +26,31 @@ enum _flags {
 	_WRITE		= 02,
 	_UNBUF		= 04,
 	_GEOF		= 010,
-	_ERR		= 020,
-	_GEOF_ERR	= 030
+	_ERR		= 020
 };
 
+int _ggfillbug(GFILE *);
+GFILE *gfopen(char *, char *);
+
+
+GFILE _giob[OPEN_MAX] = {
+	{ 0, (char *) 0, (char *) 0, _READ, 0 },
+	{ 0, (char *) 0, (char *) 0, _WRITE, 1 },
+	{ 0, (char *) 0, (char *) 0, _WRITE | _UNBUF, 2 }
+};
+#define gstdin		(&_giob[0])
+#define gstdout		(&_giob[1])
+#define gstderr		(&_giob[2])
+#define PERMS		0666
+//#define gfeof(p)     ((p)->flag & _GEOF) != 0)
+//#define gferror(p)   ((p)->flag & _ERR) != 0)
+//#define gfileno(p)   ((p)->fd)
+#define gggetc(p)   (--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _ggfillbug(p))
+//#define ggputc(x,p) (--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p)) 
+#define gggetchar()   gggetc(gstdin)
+//#define ggputchar(x)  ggputc((x), gstdout)
 /* function declarations */
 /* --------------------- */
-int _fillbuf(GFILE *);
-GFILE *gfopen(char *, char *);
 
 /* functions */
 /* --------- */
@@ -57,10 +61,10 @@ GFILE *gfopen(char *name, char *mode)
 
 	if (*mode != 'r' && *mode != 'w' && *mode != 'a')
 		return GNULL;
-	for (fp = _iob; fp < _iob + OPEN_MAX; fp++)
+	for (fp = _giob; fp < _giob + OPEN_MAX; fp++)
 		if ((fp->flag & (_READ | _WRITE)) == 0)
 			break;
-	if (fp >= _iob + OPEN_MAX)
+	if (fp >= _giob + OPEN_MAX)
 		return GNULL;
 
 	if (*mode == 'w')
@@ -80,11 +84,11 @@ GFILE *gfopen(char *name, char *mode)
 	return fp;
 } 
 
-int _fillbuf(GFILE *fp)
+int _ggfillbug(GFILE *fp)
 {
 	int bufsize;
 
-	if ((fp->flag&(_READ|_GEOF_ERR)) != _READ)
+	if ((fp->flag&(_READ|_GEOF|_ERR)) != _READ)
 		return GEOF;
 	bufsize = (fp->flag & _UNBUF) ? 1 : GGBUFSIZE;
 	if (fp->base == GNULL)
@@ -103,9 +107,4 @@ int _fillbuf(GFILE *fp)
 	return (unsigned char) *fp->ptr++;
 }
 
-GFILE _iob[OPEN_MAX] = {
-	{ 0, (char *) 0, (char *) 0, _READ, 0 },
-	{ 0, (char *) 0, (char *) 0, _WRITE, 1 },
-	{ 0, (char *) 0, (char *) 0, _WRITE | _UNBUF, 2 }
-};
 
