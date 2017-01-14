@@ -32,10 +32,13 @@ int gprintf(char *, ...);
 int gsprintf(char *, char *, ...);
 int gsnprintf(char *, size_t, char *, ...);
 int gdprintf(int, char *, ...);
+int gfprintf(GFILE *, char *, ...);
 int gvprintf(char *, va_list);
 int gvsprintf(char *, char *, va_list);
 int gvsnprintf(char *, size_t, char *, va_list);
 int gvdprintf(int, char *, va_list);
+int gvfprintf(GFILE *, char *, va_list);
+
 
 /* functions */
 /* --------- */
@@ -251,5 +254,25 @@ int gvdprintf(int fd, char *fmt, va_list argptr)
 	ret = gprintf_inter(fd, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
-} 
+}
+
+int gfprintf(GFILE *stream, char *fmt, ...)
+{
+	int ret  = 0;
+	va_list argptr;
+	(void) stream; // ................
+	va_start(argptr, fmt);
+	ret = gprintf_inter(1, NULL, 0, 0, fmt, argptr);
+	va_end(argptr);
+	return ret;
+}
+
+int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
+{
+	int ret  = 0;
+	(void) stream; // ................
+	ret = gprintf_inter(1, NULL, 0, 0, fmt, argptr);
+	va_end(argptr);
+	return ret;
+}
 
