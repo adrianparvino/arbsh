@@ -1,5 +1,3 @@
-
-
 #define GNULL       0
 #define EOF        (-1)
 #define GBUFSIZ     1024
@@ -156,20 +154,24 @@ int _flushbuf(int c, GFILE *f)
         return EOF;
     } 
 }
-#ifdef TESTFLUSH
+
 /* gfflush */
 int gfflush(GFILE *f)
 {
     int retval;
-    int i;
+    //int i;
 
     retval = 0;
     if (f == GNULL) {
         /* flush all output streams */ 
+	/*
         for (i = 0; i < OPEN_MAX; i++) {
-            if ((_iob[i]->flag & _WRITE) && (gfflush(_iob[i]) == -1))
+            if ((_iob[i]->flag & _WRITE) && (gfflush(EOF, _iob[i]) == -1))
+	
                 retval = -1;
         }
+	*/
+	;
     } else {
         if ((f->flag & _WRITE) == 0)
             return -1;
@@ -199,6 +201,6 @@ int gfclose(GFILE *f)
     return close(fd);
 }
 
-#endif
+
 
 
