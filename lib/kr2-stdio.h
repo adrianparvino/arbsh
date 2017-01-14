@@ -37,15 +37,13 @@ GFILE _iob[OPEN_MAX] = {    /* stdin, stdout, stderr */
 
 int _fillbuf(GFILE *);
 int _flushbuf(int, GFILE *);
-#define feof(p)       ((p)->flag & _EOF) != 0)
-#define ferror(p)     ((p)->flag & _ERR) != 0)
-#define fileno(p)     ((p)->fd)
-#define ggetc(p)     (--(p)->cnt >= 0 \
-                ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
-#define gputc(x,p) (--(p)->cnt >= 0 \
-                ? *(p)->ptr++ = (x) : _flushbuf((x),p))
-#define ggetchar()     ggetc(gstdin)
-#define gputchar(x)    gputc((x), gstdout)
+#define feof(p)		((p)->flag & _EOF) != 0)
+#define ferror(p)	((p)->flag & _ERR) != 0)
+#define fileno(p)	((p)->fd)
+#define ggetc(p)	(--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
+#define gputc(x,p) 	(--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p))
+#define ggetchar()	ggetc(gstdin)
+#define gputchar(x)	gputc((x), gstdout)
 
 
 #include <fcntl.h>
