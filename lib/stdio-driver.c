@@ -10,23 +10,20 @@
 
 void testgvprintf(char *fmt, ...)
 {
-		va_list args;
-		va_start(args, fmt);
-		gvprintf(fmt, args);
-		va_end(args);
+	va_list args;
+	va_start(args, fmt);
+	gvprintf(fmt, args);
+	va_end(args);
 }
-
 
 int main()
 {
-	char string[10] = { 'h', 'e', 'l', 'l', 'o' , '\0' };
+	char string[10] = { 'h', 'e', 'l', 'l', 'o', '\0' };
 	size_t zutest = 1234567;
-	int dtest = -9879871; 
+	int dtest = -9879871;
 	char string1[1000] = { 0 };
 	long ltest = 23459999;
-
 	double ftest = 3123.21317892345;
-
 	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f\n";
 
 	gprintf("gdprintf:\n");
@@ -36,7 +33,6 @@ int main()
 	gprintf("gsprintf:\n");
 	gsprintf(string1, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("%s", string1);
-	//vprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	gprintf("gvprintf:\n");
 	testgvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("control:\n");
@@ -49,6 +45,10 @@ int main()
 	gputchar('t');
 	gputchar('c');
 	gputchar('\n');
+
+	GFILE *filepointer = gfopen("none", "rw");
+	gfclose(filepointer);
+
 	ggetchar();
 }
 
