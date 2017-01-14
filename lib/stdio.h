@@ -40,7 +40,7 @@ typedef struct _iobuf {
 	int fd;			/* file descriptor */
 } GFILE;
 
-//extern GFILE _iob[OPEN_MAX];
+extern GFILE _iob[OPEN_MAX];
 
 enum _flags {
 	_READ	 =	01,	/* file open for reading  01 */	
@@ -393,10 +393,10 @@ int _flushbuf(int c, GFILE *f)
 	} else {
 		/* buffered write */
 		if (c != EOF)
-	{
+		{
 			//f->ptr = uc;
-		f->ptr++;
-	}
+			f->ptr++;
+		}
 		bufsize = (int)(f->ptr - f->base);
 		num_written = write(f->fd, f->base, bufsize);
 		f->ptr = f->base;
@@ -413,19 +413,16 @@ int _flushbuf(int c, GFILE *f)
 int gfflush(GFILE *f)
 {
 	int retval;
-	//int i;
+	int i;
 
 	retval = 0;
 	if (f == GNULL) {
-		/* flush all output streams */ 
-	/*
+	/* flush all output streams */ 
 		for (i = 0; i < OPEN_MAX; i++) {
-			if ((_iob[i]->flag & _WRITE) && (gfflush(EOF, _iob[i]) == -1))
-	
+			//if ((_iob[i]->flag & _WRITE) && (gfflush(EOF, _iob[i]) == -1))
+			if ((gfflush(&_iob[i]) == -1))
 				retval = -1;
-		}
-	*/
-	;
+		} 
 	} else {
 		if ((f->flag & _WRITE) == 0)
 			return -1;
