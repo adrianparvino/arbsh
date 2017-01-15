@@ -47,11 +47,12 @@ int main()
 	gputchar('\n');
 
 	
-	GFILE *filepointer = gfopen("none", "rw");
+	GFILE *filepointer = gfopen("none", "r");
 	char buffer[1024];
 	size_t ret = 0;
 	ret = gfread(buffer, 1, 10, filepointer);
 	gfwrite(buffer, 1, ret, gstdout);
+	//gfwrite("testing\n", 1, 8, filepointer);
 	gfclose(filepointer);
 
 	ggetchar();
