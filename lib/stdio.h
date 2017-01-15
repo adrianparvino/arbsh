@@ -455,16 +455,16 @@ int gfclose(GFILE *f)
 } 
 
 size_t gfread(void *ptr, size_t size, size_t nmemb, GFILE *stream)
-{
-	(void)ptr, (void)size, (void)nmemb, (void)stream; // .....
-	size_t ret = 0;
-	return ret;
+{ 
+	size_t request = size * nmemb;
+	size_t ret = read(stream->fd, ptr, request);
+	return ret / size;
 }
 
 size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *stream)
 {
-	(void)ptr, (void)size, (void)nmemb, (void)stream; // .....
-	size_t ret = 0;
+	size_t request = size * nmemb;
+	size_t ret = write(stream->fd, ptr, request);
 	return ret;
 }
 
