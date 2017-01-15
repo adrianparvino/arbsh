@@ -78,7 +78,6 @@ size_t gfread(void *, size_t, size_t, GFILE *);
 size_t gfwrite(const void *, size_t, size_t, GFILE *);
 
 
-
 /* functions */
 /* --------- */
 
@@ -217,10 +216,10 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 
 	out[i + 1] = '\0';
 
-
-	if ( flag == 0 )
-		//i = gfwrite(out, 1, i, gstdout);
+	if (fp == NULL && flag == 0 )
 		i = write(fd, out, i); /* if writing to an fd, then redefine the ret */
+	else if ( flag == 0 )
+		i = gfwrite(out, 1, i, fp);
 
 	return i;
 }
@@ -317,7 +316,7 @@ int gvfprintf(GFILE *stream, char *fmt, va_list argptr) /* not implemented */
 	return ret;
 }
 
-/* fopen family (not implemented) */
+/* fopen family */
 GFILE *gfopen(char *name, char *mode)
 {
 	int fd;
@@ -352,10 +351,11 @@ int _fillbuf(GFILE *fp)
 	int bufsize;
 	if ((fp->flag&(_READ|_EOF|_ERR)) != _READ)
 		return EOF;
-	bufsize = (fp->flag & _UNBUF) ? 1 : GBUFSIZ;
-	if (fp->base == GNULL)		/* no buffer yet */
-		if ((fp->base = (char *) malloc(bufsize)) == GNULL)
-			 return EOF;		 /* can't get buffer */
+	//bufsize = (fp->flag & _UNBUF) ? 1 : GBUFSIZ;
+	bufsize = GBUFSIZ;
+	if (fp->base == GNULL)
+		if ((fp->base = malloc(bufsize)) == GNULL)
+			return EOF;
 	fp->ptr = fp->base;
 	fp->cnt = read(fp->fd, fp->ptr, bufsize);
 	if (--fp->cnt < 0) {
@@ -399,7 +399,7 @@ int _flushbuf(int c, GFILE *f)
 		/* buffered write */
 		if (c != EOF)
 		{
-			//f->ptr = uc;
+			*(f->ptr) = uc;
 			f->ptr++;
 		}
 		bufsize = (int)(f->ptr - f->base);
@@ -422,7 +422,6 @@ int gfflush(GFILE *f)
 
 	retval = 0;
 	if (f == GNULL) {
-	/* flush all output streams */ 
 		for (i = 0; i < OPEN_MAX; i++) {
 			//if ((_iob[i]->flag & _WRITE) && (gfflush(EOF, _iob[i]) == -1))
 			if ((gfflush(&_iob[i]) == -1))
