@@ -25,7 +25,12 @@ int main()
 	long ltest = 23459999;
 	double ftest = 3123.21317892345;
 	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f\n";
+	int c = 0;
+	char buffer[1024];
+	size_t ret = 0;
 
+	gprintf("gfprintf:\n");
+	gfprintf(gstderr, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	gprintf("gdprintf:\n");
 	gdprintf(2, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	gprintf("gprintf:\n");
@@ -49,15 +54,12 @@ int main()
 	printf("fopen the test file\n");
 	printf("and enter the ggetchar, putchar loop test \n");
 	GFILE *filepointer = gfopen("none", "r"); 
-	int c = 0;
 	while ( (c = ggetc(filepointer)) != EOF )
 		gputc(c, gstdout); 
 	gfclose(filepointer);
 
 	printf("fopen the test file\n");
 	printf("then test fread and fwrite\n");
-	char buffer[1024];
-	size_t ret = 0; 
 	filepointer = gfopen("none", "r");
 	gfprintf(filepointer, format,zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	ret = gfread(buffer, 1, 10, filepointer);
