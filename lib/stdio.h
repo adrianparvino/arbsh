@@ -16,7 +16,7 @@
 #define GNULL		0
 #define EOF		(-1)
 #define GBUFSIZ		1024
-#define OPEN_MAX	20	/* max #files open at once */ 
+#define OPEN_MAX	20
 #define gstdin		(&_iob[0])
 #define gstdout		(&_iob[1])
 #define gstderr		(&_iob[2]) 
@@ -27,7 +27,7 @@
 #define gputc(x,p) 	(--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p))
 #define ggetchar()	ggetc(gstdin)
 #define gputchar(x)	gputc((x), gstdout)
-#define PERMS		0666	/* RW for owner, group, others */
+#define PERMS		0666
 
 #define GBUFSIZEE 4096
 #define IRCBUFSIZ GBUFSIZEE
@@ -74,6 +74,9 @@ int gvsprintf(char *, char *, va_list);
 int gvsnprintf(char *, size_t, char *, va_list);
 int gvdprintf(int, char *, va_list);
 int gvfprintf(GFILE *, char *, va_list);
+size_t gfread(void *, size_t, size_t, GFILE *);
+size_t gfwrite(const void *, size_t, size_t, GFILE *);
+
 
 
 /* functions */
@@ -355,9 +358,9 @@ int _fillbuf(GFILE *fp)
 	fp->cnt = read(fp->fd, fp->ptr, bufsize);
 	if (--fp->cnt < 0) {
 		if (fp->cnt == -1)
-			 fp->flag |= _EOF;
+			fp->flag |= _EOF;
 		else
-			 fp->flag |= _ERR;
+			fp->flag |= _ERR;
 		fp->cnt = 0;
 		return EOF;
 	}
@@ -449,8 +452,19 @@ int gfclose(GFILE *f)
 	f->flag = 0;
 	f->fd = -1;
 	return close(fd);
+} 
+
+size_t gfread(void *ptr, size_t size, size_t nmemb, GFILE *stream)
+{
+	(void)ptr, (void)size, (void)nmemb, (void)stream; // .....
+	size_t ret = 0;
+	return ret;
 }
 
-
-
+size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *stream)
+{
+	(void)ptr, (void)size, (void)nmemb, (void)stream; // .....
+	size_t ret = 0;
+	return ret;
+}
 
