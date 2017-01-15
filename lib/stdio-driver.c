@@ -44,17 +44,26 @@ int main()
 	gputchar('u');
 	gputchar('t');
 	gputchar('c');
-	gputchar('\n');
+	gputchar('\n'); 
 
-	
-	GFILE *filepointer = gfopen("none", "r");
-	char buffer[1024];
-	size_t ret = 0;
-	ret = gfread(buffer, 1, 10, filepointer);
-	gfwrite(buffer, 1, ret, gstdout);
-	//gfwrite("testing\n", 1, 8, filepointer);
+	printf("fopen the test file\n");
+	printf("and enter the ggetchar, putchar loop test \n");
+	GFILE *filepointer = gfopen("none", "r"); 
+	int c = 0;
+	while ( (c = ggetc(filepointer)) != EOF )
+		gputc(c, gstdout); 
 	gfclose(filepointer);
 
-	ggetchar();
+	printf("fopen the test file\n");
+	printf("then test fread and fwrite\n");
+	char buffer[1024];
+	size_t ret = 0; 
+	filepointer = gfopen("none", "r");
+	gfprintf(filepointer, format,zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	ret = gfread(buffer, 1, 10, filepointer);
+	gfwrite(buffer, 1, ret, gstdout);
+	gfclose(filepointer); 
+	gputchar('\n'); 
+	gputchar('\n'); 
 }
 
