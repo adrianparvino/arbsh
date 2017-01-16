@@ -126,7 +126,7 @@ size_t ggetline(char s[], int lim)
 /* printf family (variadic and formatted) */
 int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt, va_list ap)
 { 
-	(void) fp; // ........
+	//(void) fp; // ........
 	char *p = NULL;
 	char *out;
 	int i = 0;
@@ -218,7 +218,7 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 
 	if (fp == NULL && flag == 0 )
 		i = write(fd, out, i); /* if writing to an fd, then redefine the ret */
-	else if ( flag == 0 )
+	else if ( fp != NULL )
 		i = gfwrite(out, 1, i, fp);
 
 	return i;
@@ -226,7 +226,7 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 
 int gprintf(char *fmt, ...)
 {
-	int ret  = 0;
+	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
 	ret = gprintf_inter(gstdout, 1, NULL, 0, 0, fmt, argptr);
@@ -236,7 +236,7 @@ int gprintf(char *fmt, ...)
 
 int gsprintf(char *str, char *fmt, ...)
 {
-	int ret  = 0;
+	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
 	ret = gprintf_inter(NULL, 1, str, 0, 1, fmt, argptr);
@@ -246,7 +246,7 @@ int gsprintf(char *str, char *fmt, ...)
 
 int gsnprintf(char *str, size_t lim, char *fmt, ...)
 {
-	int ret  = 0;
+	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
 	ret = gprintf_inter(NULL, 1, str, lim, 2, fmt, argptr);
@@ -256,7 +256,7 @@ int gsnprintf(char *str, size_t lim, char *fmt, ...)
 
 int gdprintf(int fd, char *fmt, ...)
 {
-	int ret  = 0;
+	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
 	ret = gprintf_inter(NULL, fd, NULL, 0, 0, fmt, argptr);
@@ -266,7 +266,7 @@ int gdprintf(int fd, char *fmt, ...)
 
 int gvprintf(char *fmt, va_list argptr)
 {
-	int ret  = 0;
+	int ret = 0;
 	ret = gprintf_inter(gstdout, 1, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
@@ -274,7 +274,7 @@ int gvprintf(char *fmt, va_list argptr)
 
 int gvsprintf(char *str, char *fmt, va_list argptr)
 {
-	int ret  = 0;
+	int ret = 0;
 	ret = gprintf_inter(NULL, 1, str, 0, 1, fmt, argptr);
 	va_end(argptr);
 	return ret;
@@ -282,7 +282,7 @@ int gvsprintf(char *str, char *fmt, va_list argptr)
 
 int gvsnprintf(char *str, size_t lim, char *fmt, va_list argptr)
 {
-	int ret  = 0;
+	int ret = 0;
 	ret = gprintf_inter(NULL, 1, str, lim, 2, fmt, argptr);
 	va_end(argptr);
 	return ret;
@@ -290,7 +290,7 @@ int gvsnprintf(char *str, size_t lim, char *fmt, va_list argptr)
 
 int gvdprintf(int fd, char *fmt, va_list argptr)
 {
-	int ret  = 0;
+	int ret = 0;
 	ret = gprintf_inter(NULL, fd, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
@@ -298,9 +298,8 @@ int gvdprintf(int fd, char *fmt, va_list argptr)
 
 int gfprintf(GFILE *stream, char *fmt, ...) /* not implemented */
 {
-	int ret  = 0;
+	int ret = 0;
 	va_list argptr;
-	(void) stream; // ................
 	va_start(argptr, fmt);
 	ret = gprintf_inter(stream, 1, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
@@ -309,8 +308,7 @@ int gfprintf(GFILE *stream, char *fmt, ...) /* not implemented */
 
 int gvfprintf(GFILE *stream, char *fmt, va_list argptr) /* not implemented */
 {
-	int ret  = 0;
-	(void) stream; // ................
+	int ret = 0;
 	ret = gprintf_inter(stream, 1, NULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
