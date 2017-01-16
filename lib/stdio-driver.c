@@ -31,6 +31,7 @@ int main()
 
 	gprintf("gfprintf:\n");
 	gfprintf(gstderr, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+
 	gprintf("gdprintf:\n");
 	gdprintf(2, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	gprintf("gprintf:\n");
@@ -42,8 +43,8 @@ int main()
 	testgvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	printf("control:\n");
 	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
-	fflush(stdout); 
-	
+	fflush(stdout);
+
 	gputchar('\n');
 	gputchar('p');
 	gputchar('u');
@@ -55,17 +56,21 @@ int main()
 	printf("and enter the ggetchar, putchar loop test \n");
 	GFILE *filepointer = gfopen("none", "r"); 
 	while ( (c = ggetc(filepointer)) != EOF )
-		gputc(c, gstdout); 
+		gputc(c, gstdout);
+
 	gfclose(filepointer);
+
 
 	printf("fopen the test file\n");
 	printf("then test fread and fwrite\n");
-	filepointer = gfopen("none", "r");
-	gfprintf(filepointer, format,zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	//filepointer = gfopen("none", "r");
+	//gfprintf(filepointer, format,zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	ret = gfread(buffer, 1, 10, filepointer);
 	gfwrite(buffer, 1, ret, gstdout);
 	gfclose(filepointer); 
 	gputchar('\n'); 
 	gputchar('\n'); 
+
+	gfflush(GNULL);
 }
 
