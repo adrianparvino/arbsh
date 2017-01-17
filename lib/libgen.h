@@ -6,21 +6,21 @@
 /* function prototypes */
 char *gbasename(char *);
 char *gdirname(char *);
-char *ggnu_basename(char *path);
 
 /* functions */
 char *gdirname(char *str)  /* not yet implemented */
-{
-	return str;
-}
+{ 
+	size_t i = 0;
+	int pathtab[4096] = { 0 };
+	size_t npth = 0;
 
-char *gnu_basename(char *path) /* non-POSIX GNU version of basename */
-{
-	char *base; 
-	base = strrchr(path, '/');
-	return base ? base+1 : path;
+	for( i = 0; path[i] != '\0' && i < 4096; i++)
+	{
+		if ( path[i] == '/' )
+			pathtab[npth++] = i;
+	}
+	
 }
-
 
 char *gbasename(char *path)
 {
@@ -33,14 +33,16 @@ char *gbasename(char *path)
 		if ( path[i] == '/' )
 			pathtab[npth++] = i;
 	}
+
 	for ( ; i > 1 && path[--i] == '/' ; )
 	{
 		path[i] = '\0';
 		--npth;
 	}
-	
+
 	if ( npth > 1)
 		return path + pathtab[npth - 1] + 1; 
 	else 
 		return path;
 }
+
