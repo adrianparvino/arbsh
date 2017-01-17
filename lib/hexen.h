@@ -135,35 +135,34 @@
 #define K_BACKSPACE 	0177
 #define K_ESCAPE 	033 
 
+/* Misc */
+#define	K_PF1P		"\033OP"	/* OP		PF1 key sends ESC O P 	*/
+#define	K_PF2Q		"\033OQ"	/* OQ		PF2 key sends ESC O Q 	*/
+#define K_PF3R		"\033OR"	/* OR		PF3 key sends ESC O R 	*/
+#define	k_PF3S		"\033OS"	/* OS		PF3 key sends ESC O S 	*/ 
+#define K_NUMPADAPPMODE	"\033 ="	/* ESC =	Set numpad applications mode 	*/
+#define K_NUMPADNUMMODE	"\033 >"	/* ESC >	Set numpad numbers mode 	*/
 
-/* dumb terminal controls (not implemented) */
-	/* [A		Up arrow 	*/
-	/* [B		Down arrow 	*/
-	/* [C		Right arrow 	*/
-	/* [D		Left arrow 	*/
-	/* OP		PF1 key sends ESC O P 	*/
-	/* OQ		PF2 key sends ESC O Q 	*/
-	/* OR		PF3 key sends ESC O R 	*/
-	/* OS		PF3 key sends ESC O S 	*/ 
-	/* ESC =	Set numpad applications mode 	*/
-	/* ESC >	Set numpad numbers mode 	*/
-	/* OA		Up cursor 	*/
-	/* OB		Down cursor 	*/
-	/* OC		Right cursor 	*/
-	/* OB		Left cursor 	*/
-	/* OM		enter  		*/
-	/* Ol		',' keypad 	*/
-	/* Om		'-' keypad 	*/
-	/* Op		'0' keypad  	*/
-	/* Oq		'1' keypad  	*/
-	/* Or		'2' keypad 	*/
-	/* Os		'3' keypad 	*/
-	/* Ot		'4' keypad 	*/
-	/* Ou		'5' keypad 	*/
-	/* Ov		'6' keypad 	*/
-	/* Ow		'7' keypad 	*/
-	/* Ox		'8' keypad 	*/
-	/* Oy		'9' keypad 	*/
+/* Dumb terminal */
+#define	K_DUMBUP	"\033OA"	/* OA		Up cursor 	*/
+#define	K_DUMBDOWN	"\033OB"	/* OB		Down cursor 	*/
+#define K_DUMBRIGHT	"\033OC"	/* OC		Right cursor 	*/
+#define K_DUMBLEFT	"\033OD"	/* OD		Left cursor 	*/
+#define K_DUMBENTER	"\033OM"	/* OM		enter  		*/
+
+/* Keypad */
+#define K_KEYPAD_COMMA	"\033O1"	/* Ol		',' keypad 	*/
+#define K_KEYPAD_SLASH	"\033Om"	/* Om		'-' keypad 	*/
+#define K_KEYPAD_0	"\033Op"	/* Op		'0' keypad  	*/
+#define K_KEYPAD_1	"\033Oq"	/* Oq		'1' keypad  	*/
+#define K_KEYPAD_2	"\033Or"	/* Or		'2' keypad 	*/
+#define K_KEYPAD_3	"\033Os"	/* Os		'3' keypad 	*/
+#define K_KEYPAD_4	"\033Ot"	/* Ot		'4' keypad 	*/
+#define K_KEYPAD_5	"\033Ou"	/* Ou		'5' keypad 	*/
+#define K_KEYPAD_6	"\033Ov"	/* Ov		'6' keypad 	*/
+#define K_KEYPAD_7	"\033Ow"	/* Ow		'7' keypad 	*/
+#define K_KEYPAD_8	"\033Ox"	/* Ox		'8' keypad 	*/
+#define K_KEYPAD_9	"\033Oy"	/* Oy		'9' keypad 	*/
 
 /* -------------------------- */
 
