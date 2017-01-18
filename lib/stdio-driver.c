@@ -55,7 +55,7 @@ int main()
 	printf("fopen the test file\n");
 	printf("and enter the ggetchar, putchar loop test \n");
 	GFILE *filepointer = gfopen("none", "r"); 
-	while ( (c = ggetc(filepointer)) != EOF )
+	while ( (c = ggetc(filepointer)) != GEOF )
 		gputc(c, gstdout);
 
 	gfclose(filepointer); 
