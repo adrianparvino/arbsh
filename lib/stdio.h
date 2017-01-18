@@ -15,25 +15,26 @@
 /* ------- */
 #define GNULL		0
 #define EOF		(-1)
-#define GBUFSIZ		1024
-#define OPEN_MAX	20
+#define GBUFSIZ		4096
+#define GBUFSIZEE	4096
+#define IRCBUFSIZ	4096
+#define OPEN_MAX	256
 #define gstdin		(&_iob[0])
 #define gstdout		(&_iob[1])
 #define gstderr		(&_iob[2]) 
 #define PERMS		0666
 
-/* unrelated, legacy */
-/* ----------------- */
+/* legacy */
+/* ------ */
 
-#define GBUFSIZEE 4096
-#define IRCBUFSIZ GBUFSIZEE
-
+/* type definitions */
+/* ---------------- */
 typedef struct _iobuf {
 	int cnt;		/* characters left */
 	char *ptr;		/* next character position */
 	char *base;		/* location of buffer */
-	int flag;		/* mode of file access */
-	int fd;			/* file descriptor */
+	int flag;
+	int fd;	
 } GFILE;
 
 extern GFILE _iob[OPEN_MAX];
@@ -46,10 +47,10 @@ enum _flags {
 	_ERR	=	01	/* error occurred on this file 020 */
 };
 
-GFILE _iob[OPEN_MAX] = {	/* stdin, stdout, stderr */
-	{ 0, (char *) 0, (char *) 0, _READ, 0 },
-	{ 0, (char *) 0, (char *) 0, _WRITE, 1 },
-	{ 0, (char *) 0, (char *) 0, _WRITE | _UNBUF, 2 }
+GFILE _iob[OPEN_MAX] = {
+	{ 0, GNULL, GNULL, _READ, 0 },		/* stdin */
+	{ 0, GNULL, GNULL, _WRITE, 1 },		/* stdout */
+	{ 0, GNULL, GNULL, _WRITE | _UNBUF, 2 }	/* stderr */
 };
 
 /* Function prototypes */ 
@@ -74,11 +75,9 @@ int gvdprintf(int, char *, va_list);
 int gvfprintf(GFILE *, char *, va_list);
 size_t gfread(void *, size_t, size_t, GFILE *);
 size_t gfwrite(const void *, size_t, size_t, GFILE *);
-
 int gfeof(GFILE *);
 int gferror(GFILE *);
 int gfileno(GFILE *);
-
 
 /* functions */
 /* --------- */
@@ -145,8 +144,7 @@ size_t ggetline(char s[], int lim)
 
 /* printf family (variadic and formatted) */
 int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt, va_list ap)
-{ 
-	//(void) fp; // ........
+{
 	char *p = NULL;
 	char *out;
 	int i = 0;
@@ -229,7 +227,6 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 				break;
 		}
 	}
-
 	
 	if ( flag == 2) 
 		i = lim;
@@ -395,10 +392,10 @@ int _flushbuf(int c, GFILE *f)
 
 	if ((f->flag & (_WRITE|_EOF|_ERR)) != _WRITE)
 		return EOF;
-	if (f->base == GNULL && ((f->flag & _UNBUF) == 0)) {
-		/* no buffer yet */
+	/* no buf */
+	if (f->base == GNULL && ((f->flag & _UNBUF) == 0))
+	{ 
 		if ((f->base = malloc(GBUFSIZ)) == GNULL) 
-			/* couldn't allocate a buffer, so try unbuffered */
 			f->flag |= _UNBUF;
 		else {
 			f->ptr = f->base;
