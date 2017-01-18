@@ -45,19 +45,25 @@ int main()
 	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
 	fflush(stdout);
 
-	gputchar('\n');
-	gputchar('p');
-	gputchar('u');
-	gputchar('t');
-	gputchar('c');
-	gputchar('\n'); 
+	//gputchar('\n');
+	//gputchar('p');
+	//gputchar('u');
+	//gputchar('t');
+	//gputchar('c');
+	//gputchar('\n'); 
 
 	printf("fopen the test file\n");
 	printf("and enter the ggetchar, putchar loop test \n");
 	GFILE *filepointer = gfopen("none", "r"); 
 	while ( (c = ggetc(filepointer)) != GEOF )
-		gputc(c, gstdout);
+		gputc(c, gstdout); 
+	gfclose(filepointer); 
 
+	printf("fopen the test file\n");
+	printf("and enter the ggetchar, putchar stderr loop test \n");
+	filepointer = gfopen("none", "r"); 
+	while ( (c = ggetc(filepointer)) != GEOF )
+		gputc(c, gstderr); 
 	gfclose(filepointer); 
 
 
