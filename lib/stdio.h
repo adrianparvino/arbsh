@@ -21,10 +21,9 @@
 #define OPEN_MAX	256
 #define PERMS		0666 
 #define	_GREAD		01	/* file open for reading 01 */
-#define	_GWRITE		03	/* file open for writing 02 */
-#define	_GUNBUF		07	/* file is unbuffered 04 */
-#define	_GEOF		04	/* GEOF has occurred on this file 010 */
-#define	_GERR		05	/* error occurred on this file 020 */
+#define	_GWRITE		02	/* file open for writing 02 */
+#define	_GEOF		03	/* GEOF has occurred on this file 010 */
+#define	_GERR		04	/* error occurred on this file 020 */
 
 /* type definitions */
 /* ---------------- */
@@ -39,9 +38,9 @@ typedef struct _iobuf {
 extern GFILE _iob[OPEN_MAX];
 
 GFILE _iob[OPEN_MAX] = {
-	{ 0, GNULL, GNULL, _GREAD, 0 },			/* stdin */
-	{ 0, GNULL, GNULL, _GWRITE, 1 },		/* stdout */
-	{ 0, GNULL, GNULL, _GWRITE | _GUNBUF, 2 }	/* stderr */
+	{ 0, GNULL, GNULL, _GREAD, 0 },		/* stdin */
+	{ 0, GNULL, GNULL, _GWRITE, 1 },	/* stdout */
+	{ 0, GNULL, GNULL, _GWRITE, 2 }		/* stderr */
 };
 
 GFILE *gstdin = (&_iob[0]);
@@ -361,7 +360,6 @@ int _fillbuf(GFILE *fp)
 	int bufsize;
 	if ((fp->flag&(_GREAD|_GEOF|_GERR)) != _GREAD)
 		return GEOF;
-	//bufsize = (fp->flag & _GUNBUF) ? 1 : GBUFSIZ;
 	bufsize = GBUFSIZ;
 	if (fp->base == GNULL)
 		if ((fp->base = malloc(bufsize)) == GNULL)
@@ -381,43 +379,16 @@ int _fillbuf(GFILE *fp)
 
 /* _flushbuf */
 int _flushbuf(int c, GFILE *f)
-{ 
-	size_t len = 0;
-	size_t bufsize = 0; 
-	unsigned char str[2] = { 0 };
-	str[0] = c;
-
-	//if ((f->flag & (_GWRITE|_GEOF|_GERR)) != _GWRITE)
-	//	return GEOF; 
+{
+	/* TODO: buffered writes */
 	f->ptr = f->base;
-	f->cnt = GBUFSIZ - 1; 
-
-	if (f->flag & _GUNBUF)
-	{
-		
-		f->ptr = f->base = GNULL;
-		f->cnt = 0;
-		if (c == GEOF)
-			return GEOF;
-		len = write(f->fd, str, 1);
-	} else { 
-		if (c != GEOF)
-		{
-			//*(f->ptr) = c;
-			*(f)->ptr = c;
-			f->ptr++;
-		}
-		bufsize = (f->ptr - f->base);
-		len = write(f->fd, f->base, bufsize);
-		f->ptr = f->base;
-		f->cnt = GBUFSIZ - 1;
-	}
-	if (len == bufsize)
-		return c;
-	else {		 
-		f->flag |= _GERR;
+	f->cnt = GBUFSIZ - 1;
+	f->ptr = f->base = GNULL;
+	f->cnt = 0;
+	if (c == GEOF)
 		return GEOF;
-	} 
+	write(f->fd, &c, 1);
+	return c;
 }
 
 int gfflush(GFILE *fp)
