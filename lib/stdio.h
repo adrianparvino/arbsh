@@ -22,10 +22,12 @@
 #define gstdin		(&_iob[0])
 #define gstdout		(&_iob[1])
 #define gstderr		(&_iob[2]) 
-#define PERMS		0666
-
-/* legacy */
-/* ------ */
+#define PERMS		0666 
+#define	_READ		01	/* file open for reading  01 */
+#define	_WRITE		01	/* file open for writing  02 */
+#define	_UNBUF		01	/* file is unbuffered  04 */
+#define	_EOF		01	/* EOF has occurred on this file 010 */
+#define	_ERR		01	/* error occurred on this file 020 */
 
 /* type definitions */
 /* ---------------- */
@@ -38,14 +40,6 @@ typedef struct _iobuf {
 } GFILE;
 
 extern GFILE _iob[OPEN_MAX];
-
-enum _flags {
-	_READ	 =	01,	/* file open for reading  01 */	
-	_WRITE	=	01,	/* file open for writing  02 */
-	_UNBUF	=	01,	/* file is unbuffered  04 */
-	_EOF	=	01,	/* EOF has occurred on this file 010 */
-	_ERR	=	01	/* error occurred on this file 020 */
-};
 
 GFILE _iob[OPEN_MAX] = {
 	{ 0, GNULL, GNULL, _READ, 0 },		/* stdin */
