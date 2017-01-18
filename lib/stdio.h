@@ -20,11 +20,11 @@
 #define IRCBUFSIZ	4096
 #define OPEN_MAX	256
 #define PERMS		0666 
-#define	_GREAD		01	/* file open for reading  01 */
-#define	_GWRITE		01	/* file open for writing  02 */
-#define	_GUNBUF		01	/* file is unbuffered  04 */
-#define	_GEOF		010	/* GEOF has occurred on this file 010 */
-#define	_ERR		020	/* error occurred on this file 020 */
+#define	_GREAD		01	/* file open for reading 01 */
+#define	_GWRITE		01	/* file open for writing 02 */
+#define	_GUNBUF		01	/* file is unbuffered 04 */
+#define	_GEOF		040	/* GEOF has occurred on this file 010 */
+#define	_GERR		050	/* error occurred on this file 020 */
 
 /* type definitions */
 /* ---------------- */
@@ -39,7 +39,7 @@ typedef struct _iobuf {
 extern GFILE _iob[OPEN_MAX];
 
 GFILE _iob[OPEN_MAX] = {
-	{ 0, GNULL, GNULL, _GREAD, 0 },		/* stdin */
+	{ 0, GNULL, GNULL, _GREAD, 0 },			/* stdin */
 	{ 0, GNULL, GNULL, _GWRITE, 1 },		/* stdout */
 	{ 0, GNULL, GNULL, _GWRITE | _GUNBUF, 2 }	/* stderr */
 };
@@ -114,7 +114,7 @@ int gfeof(GFILE *stream)
 
 int gferror(GFILE *stream)
 {
-	if (((stream)->flag * _ERR) != 0)
+	if (((stream)->flag * _GERR) != 0)
 		return 1;
 	return 0;
 }
@@ -359,8 +359,8 @@ GFILE *gfopen(char *name, char *mode)
 int _fillbuf(GFILE *fp)
 {
 	int bufsize;
-	if ((fp->flag&(_GREAD|_GEOF|_ERR)) != _GREAD)
-		return GEOF;
+	//if ((fp->flag&(_GREAD|_GEOF|_GERR)) != _GREAD)
+	//	return GEOF;
 	//bufsize = (fp->flag & _GUNBUF) ? 1 : GBUFSIZ;
 	bufsize = GBUFSIZ;
 	if (fp->base == GNULL)
@@ -372,7 +372,7 @@ int _fillbuf(GFILE *fp)
 		if (fp->cnt == -1)
 			fp->flag |= _GEOF;
 		else
-			fp->flag |= _ERR;
+			fp->flag |= _GERR;
 		fp->cnt = 0;
 		return GEOF;
 	}
@@ -385,17 +385,11 @@ int _flushbuf(int c, GFILE *f)
 	size_t len = 0;
 	size_t bufsize = 1; 
 
-	if ((f->flag & (_GWRITE|_GEOF|_ERR)) != _GWRITE)
-		return GEOF;
-	if (f->base == GNULL && ((f->flag & _GUNBUF) == 0)) 	/* no buf */
-	{
-		if ((f->base = malloc(GBUFSIZ)) == GNULL) 
-			f->flag |= _GUNBUF;
-		else {
-			f->ptr = f->base;
-			f->cnt = GBUFSIZ - 1;
-		}
-	}
+	if ((f->flag & (_GWRITE|_GEOF|_GERR)) != _GWRITE)
+		return GEOF; 
+	f->ptr = f->base;
+	f->cnt = GBUFSIZ - 1; 
+
 	if (f->flag & _GUNBUF)
 	{
 		f->ptr = f->base = GNULL;
@@ -406,7 +400,8 @@ int _flushbuf(int c, GFILE *f)
 	} else { 
 		if (c != GEOF)
 		{
-			*(f->ptr) = c;
+			//*(f->ptr) = c;
+			*(f)->ptr = c;
 			f->ptr++;
 		}
 		bufsize = (f->ptr - f->base);
@@ -417,7 +412,7 @@ int _flushbuf(int c, GFILE *f)
 	if (len == bufsize)
 		return c;
 	else {		 
-		f->flag |= _ERR;
+		f->flag |= _GERR;
 		return GEOF;
 	} 
 }
@@ -439,7 +434,7 @@ int gfflush(GFILE *fp)
 		if ((fp->flag & _GWRITE) == 0)
 			return -1;
 		_flushbuf(GEOF, fp);
-		if (fp->flag & _ERR)
+		if (fp->flag & _GERR)
 			ret = -1;
 	}
 	return ret;
