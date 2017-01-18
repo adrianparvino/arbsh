@@ -381,20 +381,19 @@ int _fillbuf(GFILE *fp)
 		fp->cnt = 0;
 		return EOF;
 	}
-	return (unsigned char) *fp->ptr++;
+	return *fp->ptr++;
 }
 
 /* _flushbuf */
 int _flushbuf(int c, GFILE *f)
-{
-	int num_written, bufsize;
-	unsigned char uc = c;	
+{ 
+	size_t len = 0;
+	size_t bufsize = 1; 
 
 	if ((f->flag & (_WRITE|_EOF|_ERR)) != _WRITE)
 		return EOF;
-	/* no buf */
-	if (f->base == GNULL && ((f->flag & _UNBUF) == 0))
-	{ 
+	if (f->base == GNULL && ((f->flag & _UNBUF) == 0)) 	/* no buf */
+	{
 		if ((f->base = malloc(GBUFSIZ)) == GNULL) 
 			f->flag |= _UNBUF;
 		else {
@@ -402,27 +401,25 @@ int _flushbuf(int c, GFILE *f)
 			f->cnt = GBUFSIZ - 1;
 		}
 	}
-	if (f->flag & _UNBUF) {
-		/* unbuffered write */
+	if (f->flag & _UNBUF)
+	{
 		f->ptr = f->base = GNULL;
 		f->cnt = 0;
 		if (c == EOF)
 			return EOF;
-		num_written = write(f->fd, &uc, 1);
-		bufsize = 1;
-	} else {
-		/* buffered write */
+		len = write(f->fd, &c, 1);
+	} else { 
 		if (c != EOF)
 		{
-			*(f->ptr) = uc;
+			*(f->ptr) = c;
 			f->ptr++;
 		}
-		bufsize = (int)(f->ptr - f->base);
-		num_written = write(f->fd, f->base, bufsize);
+		bufsize = (f->ptr - f->base);
+		len = write(f->fd, f->base, bufsize);
 		f->ptr = f->base;
 		f->cnt = GBUFSIZ - 1;
 	}
-	if (num_written == bufsize)
+	if (len == bufsize)
 		return c;
 	else {		 
 		f->flag |= _ERR;
