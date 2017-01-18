@@ -20,13 +20,13 @@
 #define gstdin		(&_iob[0])
 #define gstdout		(&_iob[1])
 #define gstderr		(&_iob[2]) 
-#define feof(p)		((p)->flag & _EOF) != 0)
-#define ferror(p)	((p)->flag & _ERR) != 0)
-#define fileno(p)	((p)->fd)
-#define ggetc(p)	(--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
-#define gputc(x,p) 	(--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p))
-#define ggetchar()	ggetc(gstdin)
-#define gputchar(x)	gputc((x), gstdout)
+//#define feof(p)		((p)->flag & _EOF) != 0)
+//#define ferror(p)	((p)->flag & _ERR) != 0)
+//#define fileno(p)	((p)->fd)
+//#define ggetc(p)	(--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
+//#define gputc(x,p) 	(--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p))
+//#define ggetchar()	ggetc(gstdin)
+//#define gputchar(x)	gputc((x), gstdout)
 #define PERMS		0666
 
 #define GBUFSIZEE 4096
@@ -60,8 +60,10 @@ GFILE _iob[OPEN_MAX] = {	/* stdin, stdout, stderr */
 /* ------------------- */ 
 int _fillbuf(GFILE *);
 int _flushbuf(int, GFILE *);
-int gggetchar(void);
-int ggputchar(char);
+int ggetchar(void);
+int gputchar(char);
+int ggetc(GFILE *);
+int gputc(int, GFILE *);
 size_t ggetline(char [], int);
 int gprintf_inter(GFILE *, int, char *, size_t, int, char *, va_list);
 int gprintf(char *, ...);
@@ -82,7 +84,7 @@ size_t gfwrite(const void *, size_t, size_t, GFILE *);
 /* --------- */
 
 /* single char io  */
-int ggetc_future(GFILE *stream)
+int ggetc(GFILE *stream)
 { 
 	if (--(stream)->cnt >= 0) 
 		return (unsigned char) *(stream)->ptr++; 
@@ -90,7 +92,7 @@ int ggetc_future(GFILE *stream)
 	return _fillbuf(stream);
 }
 
-int gputc_future(int c, GFILE *stream)
+int gputc(int c, GFILE *stream)
 { 
 	if (--(stream)->cnt >= 0) 
 		return *(stream)->ptr++ = c;
@@ -98,15 +100,21 @@ int gputc_future(int c, GFILE *stream)
 	return _flushbuf(c, stream);
 }
 
-int gggetchar(void)
+int ggetchar(void)
 {
-	return ggetc_future(gstdin);
+	return ggetc(gstdin);
 }
 
-int ggputchar(char c)
+int gputchar(char c)
 { 
-	return gputc_future(c, gstdin);
+	return gputc(c, gstdin);
 }
+
+/* error */
+
+#define feof(p)		((p)->flag & _EOF) != 0)
+#define ferror(p)	((p)->flag & _ERR) != 0)
+#define fileno(p)	((p)->fd)
 
 /* line retrieval */
 size_t ggetline(char s[], int lim)
