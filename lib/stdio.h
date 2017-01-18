@@ -82,34 +82,6 @@ size_t gfwrite(const void *, size_t, size_t, GFILE *);
 /* --------- */
 
 /* single char io  */
-int gggetchar(void)
-{ 
-	static char buf[GBUFSIZEE];
-	static char *bufp = buf;
-	static size_t i = 0;
-
-        if (i >= (GBUFSIZEE - 1))
-		return -1;
-	
-	if (i == 0) 
-	{
-		i = read(0, buf, 1);
-		bufp = buf;
-	}
-	
-        if ( i-- )
-		return  *bufp++;
-
-	return -1;
-} 
-
-int ggputchar(char c)
-{ 
-	char buf[1];
-	buf[0] = c;
-	return write(1, buf, 1);
-}
-
 int ggetc_future(GFILE *stream)
 { 
 	if (--(stream)->cnt >= 0) 
@@ -124,6 +96,16 @@ int gputc_future(int c, GFILE *stream)
 		return *(stream)->ptr++ = c;
 
 	return _flushbuf(c, stream);
+}
+
+int gggetchar(void)
+{
+	return ggetc_future(gstdin);
+}
+
+int ggputchar(char c)
+{ 
+	return gputc_future(c, gstdin);
 }
 
 /* line retrieval */
