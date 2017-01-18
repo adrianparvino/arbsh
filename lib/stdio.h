@@ -110,6 +110,15 @@ int ggputchar(char c)
 	return write(1, buf, 1);
 }
 
+int ggetc_future(int c)
+{
+//#define ggetc(p)	(--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
+}
+int gputc_future(int c, GFILE *stream)
+{
+//#define gputc(x,p) 	(--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p))
+}
+
 /* line retrieval */
 size_t ggetline(char s[], int lim)
 {
@@ -413,43 +422,43 @@ int _flushbuf(int c, GFILE *f)
 	} 
 }
 
-int gfflush(GFILE *f)
+int gfflush(GFILE *fp)
 {
-	int retval;
+	int ret;
 	int i;
 
-	retval = 0;
-	if (f == GNULL) {
-		for (i = 0; i < OPEN_MAX; i++) {
-			//if ((_iob[i]->flag & _WRITE) && (gfflush(EOF, _iob[i]) == -1))
+	ret = 0;
+	if (fp == GNULL)
+	{
+		for (i = 0; i < OPEN_MAX; i++)
+		{
 			if ((gfflush(&_iob[i]) == -1))
-				retval = -1;
+				ret = -1;
 		} 
 	} else {
-		if ((f->flag & _WRITE) == 0)
+		if ((fp->flag & _WRITE) == 0)
 			return -1;
-		_flushbuf(EOF, f);
-		if (f->flag & _ERR)
-			retval = -1;
+		_flushbuf(EOF, fp);
+		if (fp->flag & _ERR)
+			ret = -1;
 	}
-	return retval;
+	return ret;
 }
 
-int gfclose(GFILE *f)
+int gfclose(GFILE *fp)
 {
 	int fd;
-	
-	if (f == GNULL)
+	if (fp == GNULL)
 		return -1;
-	fd = f->fd;
-	gfflush(f);
-	f->cnt = 0;
-	f->ptr = GNULL;
-	if (f->base != GNULL)
-		free(f->base);
-	f->base = GNULL;
-	f->flag = 0;
-	f->fd = -1;
+	fd = fp->fd;
+	gfflush(fp);
+	fp->cnt = 0;
+	fp->ptr = GNULL;
+	if (fp->base != GNULL)
+		free(fp->base);
+	fp->base = GNULL;
+	fp->flag = 0;
+	fp->fd = -1;
 	return close(fd);
 } 
 
