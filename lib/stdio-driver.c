@@ -58,14 +58,15 @@ int main()
 	while ( (c = ggetc(filepointer)) != EOF )
 		gputc(c, gstdout);
 
-	gfclose(filepointer);
+	gfclose(filepointer); 
 
 
 	printf("fopen the test file\n");
 	printf("then test fread and fwrite\n");
 	//filepointer = gfopen("none", "r");
-	//gfprintf(filepointer, format,zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
-	ret = gfread(buffer, 1, 10, filepointer);
+	//gfprintf(filepointer, format,zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 	
+	filepointer = gfopen("none", "r"); 
+	ret = gfread(buffer, 1, 1000, filepointer);
 	gfwrite(buffer, 1, ret, gstdout);
 	gfclose(filepointer); 
 	gputchar('\n'); 
