@@ -20,14 +20,10 @@
 #define gstdin		(&_iob[0])
 #define gstdout		(&_iob[1])
 #define gstderr		(&_iob[2]) 
-//#define feof(p)		((p)->flag & _EOF) != 0)
-//#define ferror(p)	((p)->flag & _ERR) != 0)
-//#define fileno(p)	((p)->fd)
-//#define ggetc(p)	(--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
-//#define gputc(x,p) 	(--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p))
-//#define ggetchar()	ggetc(gstdin)
-//#define gputchar(x)	gputc((x), gstdout)
 #define PERMS		0666
+
+/* unrelated, legacy */
+/* ----------------- */
 
 #define GBUFSIZEE 4096
 #define IRCBUFSIZ GBUFSIZEE
@@ -79,6 +75,10 @@ int gvfprintf(GFILE *, char *, va_list);
 size_t gfread(void *, size_t, size_t, GFILE *);
 size_t gfwrite(const void *, size_t, size_t, GFILE *);
 
+int gfeof(GFILE *);
+int gferror(GFILE *);
+int gfileno(GFILE *);
+
 
 /* functions */
 /* --------- */
@@ -111,10 +111,24 @@ int gputchar(char c)
 }
 
 /* error */
+int gfeof(GFILE *stream)
+{
+	if (((stream)->flag * _EOF) != 0)
+		return 1;
+	return 0;
+}
 
-#define feof(p)		((p)->flag & _EOF) != 0)
-#define ferror(p)	((p)->flag & _ERR) != 0)
-#define fileno(p)	((p)->fd)
+int gferror(GFILE *stream)
+{
+	if (((stream)->flag * _ERR) != 0)
+		return 1;
+	return 0;
+}
+
+int gfileno(GFILE *stream)
+{
+	return (stream)->fd;
+}
 
 /* line retrieval */
 size_t ggetline(char s[], int lim)
@@ -302,7 +316,7 @@ int gvdprintf(int fd, char *fmt, va_list argptr)
 	return ret;
 }
 
-int gfprintf(GFILE *stream, char *fmt, ...) /* not implemented */
+int gfprintf(GFILE *stream, char *fmt, ...)
 {
 	int ret = 0;
 	va_list argptr;
@@ -312,7 +326,7 @@ int gfprintf(GFILE *stream, char *fmt, ...) /* not implemented */
 	return ret;
 }
 
-int gvfprintf(GFILE *stream, char *fmt, va_list argptr) /* not implemented */
+int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
 {
 	int ret = 0;
 	ret = gprintf_inter(stream, 1, NULL, 0, 0, fmt, argptr);
