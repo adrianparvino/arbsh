@@ -110,13 +110,20 @@ int ggputchar(char c)
 	return write(1, buf, 1);
 }
 
-int ggetc_future(int c)
-{
-//#define ggetc(p)	(--(p)->cnt >= 0 ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
+int ggetc_future(GFILE *stream)
+{ 
+	if (--(stream)->cnt >= 0) 
+		return (unsigned char) *(stream)->ptr++; 
+	
+	return _fillbuf(stream);
 }
+
 int gputc_future(int c, GFILE *stream)
-{
-//#define gputc(x,p) 	(--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x),p))
+{ 
+	if (--(stream)->cnt >= 0) 
+		return *(stream)->ptr++ = c;
+
+	return _flushbuf(c, stream);
 }
 
 /* line retrieval */
