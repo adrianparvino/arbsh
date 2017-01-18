@@ -21,10 +21,10 @@
 #define OPEN_MAX	256
 #define PERMS		0666 
 #define	_GREAD		01	/* file open for reading 01 */
-#define	_GWRITE		01	/* file open for writing 02 */
-#define	_GUNBUF		01	/* file is unbuffered 04 */
-#define	_GEOF		040	/* GEOF has occurred on this file 010 */
-#define	_GERR		050	/* error occurred on this file 020 */
+#define	_GWRITE		03	/* file open for writing 02 */
+#define	_GUNBUF		07	/* file is unbuffered 04 */
+#define	_GEOF		04	/* GEOF has occurred on this file 010 */
+#define	_GERR		05	/* error occurred on this file 020 */
 
 /* type definitions */
 /* ---------------- */
@@ -359,8 +359,8 @@ GFILE *gfopen(char *name, char *mode)
 int _fillbuf(GFILE *fp)
 {
 	int bufsize;
-	//if ((fp->flag&(_GREAD|_GEOF|_GERR)) != _GREAD)
-	//	return GEOF;
+	if ((fp->flag&(_GREAD|_GEOF|_GERR)) != _GREAD)
+		return GEOF;
 	//bufsize = (fp->flag & _GUNBUF) ? 1 : GBUFSIZ;
 	bufsize = GBUFSIZ;
 	if (fp->base == GNULL)
@@ -383,20 +383,23 @@ int _fillbuf(GFILE *fp)
 int _flushbuf(int c, GFILE *f)
 { 
 	size_t len = 0;
-	size_t bufsize = 1; 
+	size_t bufsize = 0; 
+	unsigned char str[2] = { 0 };
+	str[0] = c;
 
-	if ((f->flag & (_GWRITE|_GEOF|_GERR)) != _GWRITE)
-		return GEOF; 
+	//if ((f->flag & (_GWRITE|_GEOF|_GERR)) != _GWRITE)
+	//	return GEOF; 
 	f->ptr = f->base;
 	f->cnt = GBUFSIZ - 1; 
 
 	if (f->flag & _GUNBUF)
 	{
+		
 		f->ptr = f->base = GNULL;
 		f->cnt = 0;
 		if (c == GEOF)
 			return GEOF;
-		len = write(f->fd, &c, 1);
+		len = write(f->fd, str, 1);
 	} else { 
 		if (c != GEOF)
 		{
