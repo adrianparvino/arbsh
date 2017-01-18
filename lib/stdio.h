@@ -14,20 +14,17 @@
 /* defines */
 /* ------- */
 #define GNULL		0
-#define EOF		(-1)
+#define GEOF		(-1)
 #define GBUFSIZ		4096
 #define GBUFSIZEE	4096
 #define IRCBUFSIZ	4096
 #define OPEN_MAX	256
-#define gstdin		(&_iob[0])
-#define gstdout		(&_iob[1])
-#define gstderr		(&_iob[2]) 
 #define PERMS		0666 
-#define	_READ		01	/* file open for reading  01 */
-#define	_WRITE		01	/* file open for writing  02 */
-#define	_UNBUF		01	/* file is unbuffered  04 */
-#define	_EOF		01	/* EOF has occurred on this file 010 */
-#define	_ERR		01	/* error occurred on this file 020 */
+#define	_GREAD		01	/* file open for reading  01 */
+#define	_GWRITE		01	/* file open for writing  02 */
+#define	_GUNBUF		01	/* file is unbuffered  04 */
+#define	_GEOF		010	/* GEOF has occurred on this file 010 */
+#define	_ERR		020	/* error occurred on this file 020 */
 
 /* type definitions */
 /* ---------------- */
@@ -42,10 +39,14 @@ typedef struct _iobuf {
 extern GFILE _iob[OPEN_MAX];
 
 GFILE _iob[OPEN_MAX] = {
-	{ 0, GNULL, GNULL, _READ, 0 },		/* stdin */
-	{ 0, GNULL, GNULL, _WRITE, 1 },		/* stdout */
-	{ 0, GNULL, GNULL, _WRITE | _UNBUF, 2 }	/* stderr */
+	{ 0, GNULL, GNULL, _GREAD, 0 },		/* stdin */
+	{ 0, GNULL, GNULL, _GWRITE, 1 },		/* stdout */
+	{ 0, GNULL, GNULL, _GWRITE | _GUNBUF, 2 }	/* stderr */
 };
+
+GFILE *gstdin = (&_iob[0]);
+GFILE *gstdout = (&_iob[1]);
+GFILE *gstderr = (&_iob[2]);
 
 /* Function prototypes */ 
 /* ------------------- */ 
@@ -106,7 +107,7 @@ int gputchar(char c)
 /* error */
 int gfeof(GFILE *stream)
 {
-	if (((stream)->flag * _EOF) != 0)
+	if (((stream)->flag * _GEOF) != 0)
 		return 1;
 	return 0;
 }
@@ -123,7 +124,7 @@ int gfileno(GFILE *stream)
 	return (stream)->fd;
 }
 
-/* line retrieval */
+/* getline  */
 size_t ggetline(char s[], int lim)
 {
         int c;
@@ -136,7 +137,7 @@ size_t ggetline(char s[], int lim)
         return i;
 }
 
-/* printf family (variadic and formatted) */
+/* Printf family (variadic and formatted) */
 int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt, va_list ap)
 {
 	char *p = NULL;
@@ -333,7 +334,7 @@ GFILE *gfopen(char *name, char *mode)
 	if (*mode != 'r' && *mode != 'w' && *mode != 'a')
 		return GNULL;
 	for (fp = _iob; fp < _iob + OPEN_MAX; fp++)
-		if ((fp->flag & (_READ | _WRITE)) == 0)
+		if ((fp->flag & (_GREAD | _GWRITE)) == 0)
 			break;		/* found free slot */
 	if (fp >= _iob + OPEN_MAX)	 /* no free slots */
 		return GNULL;
@@ -350,7 +351,7 @@ GFILE *gfopen(char *name, char *mode)
 	fp->fd = fd;
 	fp->cnt = 0;
 	fp->base = GNULL;
-	fp->flag = (*mode == 'r') ? _READ : _WRITE;
+	fp->flag = (*mode == 'r') ? _GREAD : _GWRITE;
 	return fp;
 }
 
@@ -358,22 +359,22 @@ GFILE *gfopen(char *name, char *mode)
 int _fillbuf(GFILE *fp)
 {
 	int bufsize;
-	if ((fp->flag&(_READ|_EOF|_ERR)) != _READ)
-		return EOF;
-	//bufsize = (fp->flag & _UNBUF) ? 1 : GBUFSIZ;
+	if ((fp->flag&(_GREAD|_GEOF|_ERR)) != _GREAD)
+		return GEOF;
+	//bufsize = (fp->flag & _GUNBUF) ? 1 : GBUFSIZ;
 	bufsize = GBUFSIZ;
 	if (fp->base == GNULL)
 		if ((fp->base = malloc(bufsize)) == GNULL)
-			return EOF;
+			return GEOF;
 	fp->ptr = fp->base;
 	fp->cnt = read(fp->fd, fp->ptr, bufsize);
 	if (--fp->cnt < 0) {
 		if (fp->cnt == -1)
-			fp->flag |= _EOF;
+			fp->flag |= _GEOF;
 		else
 			fp->flag |= _ERR;
 		fp->cnt = 0;
-		return EOF;
+		return GEOF;
 	}
 	return *fp->ptr++;
 }
@@ -384,26 +385,26 @@ int _flushbuf(int c, GFILE *f)
 	size_t len = 0;
 	size_t bufsize = 1; 
 
-	if ((f->flag & (_WRITE|_EOF|_ERR)) != _WRITE)
-		return EOF;
-	if (f->base == GNULL && ((f->flag & _UNBUF) == 0)) 	/* no buf */
+	if ((f->flag & (_GWRITE|_GEOF|_ERR)) != _GWRITE)
+		return GEOF;
+	if (f->base == GNULL && ((f->flag & _GUNBUF) == 0)) 	/* no buf */
 	{
 		if ((f->base = malloc(GBUFSIZ)) == GNULL) 
-			f->flag |= _UNBUF;
+			f->flag |= _GUNBUF;
 		else {
 			f->ptr = f->base;
 			f->cnt = GBUFSIZ - 1;
 		}
 	}
-	if (f->flag & _UNBUF)
+	if (f->flag & _GUNBUF)
 	{
 		f->ptr = f->base = GNULL;
 		f->cnt = 0;
-		if (c == EOF)
-			return EOF;
+		if (c == GEOF)
+			return GEOF;
 		len = write(f->fd, &c, 1);
 	} else { 
-		if (c != EOF)
+		if (c != GEOF)
 		{
 			*(f->ptr) = c;
 			f->ptr++;
@@ -417,7 +418,7 @@ int _flushbuf(int c, GFILE *f)
 		return c;
 	else {		 
 		f->flag |= _ERR;
-		return EOF;
+		return GEOF;
 	} 
 }
 
@@ -435,9 +436,9 @@ int gfflush(GFILE *fp)
 				ret = -1;
 		} 
 	} else {
-		if ((fp->flag & _WRITE) == 0)
+		if ((fp->flag & _GWRITE) == 0)
 			return -1;
-		_flushbuf(EOF, fp);
+		_flushbuf(GEOF, fp);
 		if (fp->flag & _ERR)
 			ret = -1;
 	}
