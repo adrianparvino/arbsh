@@ -47,6 +47,9 @@ GFILE *gstdin = (&_iob[0]);
 GFILE *gstdout = (&_iob[1]);
 GFILE *gstderr = (&_iob[2]);
 
+GFILE *last;
+GFILE *first;
+
 /* Function prototypes */ 
 /* ------------------- */ 
 int _fillbuf(GFILE *);
@@ -78,18 +81,12 @@ int gfileno(GFILE *);
 
 /* single char io  */
 int ggetc(GFILE *stream)
-{ 
-	if (--(stream)->cnt >= 0) 
-		return (unsigned char) *(stream)->ptr++; 
-	
+{
 	return _fillbuf(stream);
 }
 
 int gputc(int c, GFILE *stream)
-{ 
-	if (--(stream)->cnt >= 0) 
-		return *(stream)->ptr++ = c;
-
+{
 	return _flushbuf(c, stream);
 }
 
@@ -357,37 +354,40 @@ GFILE *gfopen(char *name, char *mode)
 /* _fillbuf: allocate and fill input buffer */
 int _fillbuf(GFILE *fp)
 {
-	int bufsize;
-	if ((fp->flag&(_GREAD|_GEOF|_GERR)) != _GREAD)
-		return GEOF;
-	bufsize = GBUFSIZ;
+	int bufsize = GBUFSIZ;
+	int len = 0;
+	/* if fp->base does not yet exist then allocate a position for it */
 	if (fp->base == GNULL)
+	{
 		if ((fp->base = malloc(bufsize)) == GNULL)
 			return GEOF;
-	fp->ptr = fp->base;
-	fp->cnt = read(fp->fd, fp->ptr, bufsize);
-	if (--fp->cnt < 0) {
-		if (fp->cnt == -1)
-			fp->flag |= _GEOF;
-		else
-			fp->flag |= _GERR;
+	} 
+	/* read in the actual data and store the ret val in fp->cnt */
+	fp->cnt = read(fp->fd, fp-> base, bufsize);
+	last = fp;
+	if ( fp->cnt == 0 || fp->cnt == -1)
+	{
 		fp->cnt = 0;
 		return GEOF;
-	}
-	return *fp->ptr++;
+	} 
+	return *fp->base; 
 }
 
 /* _flushbuf */
 int _flushbuf(int c, GFILE *f)
 {
-	/* TODO: buffered writes */
-	f->ptr = f->base;
-	f->cnt = GBUFSIZ - 1;
-	f->ptr = f->base = GNULL;
-	f->cnt = 0;
+	/* shuffle back and forth between the read fd and write fd */
 	if (c == GEOF)
 		return GEOF;
-	write(f->fd, &c, 1);
+	int fd = f->fd; 
+	int old;
+	first = f;
+	f = last;
+	old = f->fd;
+	f->fd = fd; 
+	f->cnt = write(f->fd, f->base, f->cnt);
+	f->fd = old;
+	f = first;
 	return c;
 }
 
