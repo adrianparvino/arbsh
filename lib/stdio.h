@@ -32,15 +32,19 @@ typedef struct _iobuf {
 	char *ptr;		/* next character position */
 	char *base;		/* location of buffer */
 	int flag;
-	int fd;	
+	int fd;
+	int write;
+	int read;
+	int append;
+	int unbuf;
 } GFILE;
 
 extern GFILE _iob[OPEN_MAX];
 
 GFILE _iob[OPEN_MAX] = {
-	{ 0, GNULL, GNULL, _GREAD, 0 },		/* stdin */
-	{ 0, GNULL, GNULL, _GWRITE, 1 },	/* stdout */
-	{ 0, GNULL, GNULL, _GWRITE, 2 }		/* stderr */
+	{ 0, GNULL, GNULL, _GREAD, 0, 0, 1, 0, 0},	/* stdin */
+	{ 0, GNULL, GNULL, _GWRITE, 1, 1, 0, 0, 0},	/* stdout */
+	{ 0, GNULL, GNULL, _GWRITE, 2, 1, 0, 0, 1}	/* stderr */
 };
 
 GFILE *gstdin = (&_iob[0]);
@@ -48,7 +52,6 @@ GFILE *gstdout = (&_iob[1]);
 GFILE *gstderr = (&_iob[2]);
 
 GFILE *last;
-GFILE *first;
 
 /* Function prototypes */ 
 /* ------------------- */ 
@@ -323,69 +326,116 @@ int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
 }
 
 /* fopen family */
-GFILE *gfopen(char *name, char *mode)
+
+GFILE *gfopen(char *name, char *p)
 {
 	int fd;
 	GFILE *fp;
-	if (*mode != 'r' && *mode != 'w' && *mode != 'a')
-		return GNULL;
+	int oflags = 4242;
+	int seek = 0;
+	
+	/* find a free slot */
 	for (fp = _iob; fp < _iob + OPEN_MAX; fp++)
 		if ((fp->flag & (_GREAD | _GWRITE)) == 0)
-			break;		/* found free slot */
-	if (fp >= _iob + OPEN_MAX)	 /* no free slots */
+			break;
+
+	/* no free slots */
+	if (fp >= _iob + OPEN_MAX)
+		return GNULL; 
+
+	switch (*p)
+	{ 
+		case 'r':
+			oflags = O_RDONLY;
+			fp->read = 1;
+			switch (*++p) 
+			{ 
+				case '+':	
+					fp->write = 1;
+					oflags = O_RDWR; 
+				default:
+					break;
+			}
+			break; 
+		case 'w':
+			oflags = O_TRUNC | O_CREAT; 
+			fp->read = 1;
+			switch (*++p) 
+			{ 
+				case '+': 	
+					oflags = O_TRUNC | O_CREAT | O_RDWR;
+				default:
+					break;
+			}
+			break; 
+		case 'a':
+			oflags = O_CREAT | O_APPEND;
+			fp->append = 1;
+			switch (*++p)
+			{ 
+				case '+':
+					oflags = O_CREAT | O_APPEND | O_RDWR;
+				default:
+					break;
+			}
+			seek = SEEK_END;
+			break;
+		default: 
+			if ( oflags == 4242 )
+				return GNULL;
+			break;
+	}
+
+	if ((fd = open(name, oflags, 0)) == -1)
 		return GNULL;
-	if (*mode == 'w')
-		fd = creat(name, PERMS);
-	else if (*mode == 'a') {
-		if ((fd = open(name, O_WRONLY, 0)) == -1)
-			fd = creat(name, PERMS);
-		lseek(fd, 0L, 2);
-	} else
-		fd = open(name, O_RDONLY, 0);
-	if (fd == -1)		 /* couldn't access name */
-		return GNULL;
+	lseek(fd, 0L, seek);
+
+	/* initialize the new GFILE */
 	fp->fd = fd;
 	fp->cnt = 0;
 	fp->base = GNULL;
-	fp->flag = (*mode == 'r') ? _GREAD : _GWRITE;
+	fp->flag = 1;
 	return fp;
-}
+} 
 
-/* _fillbuf: allocate and fill input buffer */
 int _fillbuf(GFILE *fp)
 {
-	int bufsize = GBUFSIZ;
+	int bufsize = GBUFSIZ; 
 	int len = 0;
-	/* if fp->base does not yet exist then allocate a position for it */
-	if (fp->base == GNULL)
-	{
-		if ((fp->base = malloc(bufsize)) == GNULL)
-			return GEOF;
-	} 
-	/* read in the actual data and store the ret val in fp->cnt */
-	fp->cnt = read(fp->fd, fp-> base, bufsize);
-	last = fp;
-	if ( fp->cnt == 0 || fp->cnt == -1)
-	{
-		fp->cnt = 0;
+
+	if ((fp->base = malloc(bufsize)) == GNULL)
 		return GEOF;
-	} 
-	return *fp->base; 
+
+	if ( fp->cnt == 0 )
+	{
+		len = read(fp->fd, fp->base, bufsize);
+		fp->ptr = fp->base;
+	
+		last = fp;
+		if ( len == 0 || len == -1) 
+			return GEOF; 
+		fp->cnt += len;
+		return *(fp)->ptr; 
+	}
+	
+	return *(fp)->ptr++; 
 }
 
-/* _flushbuf */
+
 int _flushbuf(int c, GFILE *f)
-{
-	/* shuffle back and forth between the read fd and write fd */
+{ 
 	if (c == GEOF)
 		return GEOF;
 	int fd = f->fd; 
 	int old;
-	first = f;
+	GFILE *first = f;
 	f = last;
 	old = f->fd;
-	f->fd = fd; 
-	f->cnt = write(f->fd, f->base, f->cnt);
+	f->fd = fd;
+	if(first->unbuf == 1)
+		f->cnt -= write(f->fd, f->ptr, 1);
+	else
+		f->cnt -= write(f->fd, f->ptr, f->cnt);
 	f->fd = old;
 	f = first;
 	return c;
