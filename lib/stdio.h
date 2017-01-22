@@ -19,11 +19,7 @@
 #define GBUFSIZEE	4096
 #define IRCBUFSIZ	4096
 #define OPEN_MAX	256
-#define PERMS		0666 
-#define	_GREAD		01	/* file open for reading 01 */
-#define	_GWRITE		02	/* file open for writing 02 */
-#define	_GEOF		03	/* GEOF has occurred on this file 010 */
-#define	_GERR		04	/* error occurred on this file 020 */
+#define PERMS		0666
 
 /* type definitions */
 /* ---------------- */
@@ -42,9 +38,9 @@ typedef struct _iobuf {
 extern GFILE _iob[OPEN_MAX];
 
 GFILE _iob[OPEN_MAX] = {
-	{ 0, GNULL, GNULL, _GREAD, 0, 0, 1, 0, 0},	/* stdin */
-	{ 0, GNULL, GNULL, _GWRITE, 1, 1, 0, 0, 0},	/* stdout */
-	{ 0, GNULL, GNULL, _GWRITE, 2, 1, 0, 0, 1}	/* stderr */
+	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
+	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
+	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */
 };
 
 GFILE *gstdin = (&_iob[0]);
@@ -101,21 +97,6 @@ int ggetchar(void)
 int gputchar(char c)
 { 
 	return gputc(c, gstdin);
-}
-
-/* error */
-int gfeof(GFILE *stream)
-{
-	if (((stream)->flag * _GEOF) != 0)
-		return 1;
-	return 0;
-}
-
-int gferror(GFILE *stream)
-{
-	if (((stream)->flag * _GERR) != 0)
-		return 1;
-	return 0;
 }
 
 int gfileno(GFILE *stream)
@@ -332,17 +313,18 @@ GFILE *gfopen(char *name, char *p)
 	int fd;
 	GFILE *fp;
 	int oflags = 4242;
-	int seek = 0;
+	int seek = -1;
 	
 	/* find a free slot */
 	for (fp = _iob; fp < _iob + OPEN_MAX; fp++)
-		if ((fp->flag & (_GREAD | _GWRITE)) == 0)
+		if ((fp->flag == 0))
 			break;
 
 	/* no free slots */
 	if (fp >= _iob + OPEN_MAX)
 		return GNULL; 
 
+	/* fopen modes */
 	switch (*p)
 	{ 
 		case 'r':
@@ -350,19 +332,19 @@ GFILE *gfopen(char *name, char *p)
 			fp->read = 1;
 			switch (*++p) 
 			{ 
-				case '+':	
+				case '+':
 					fp->write = 1;
-					oflags = O_RDWR; 
+					oflags = O_RDWR;
 				default:
 					break;
 			}
-			break; 
+			break;
 		case 'w':
-			oflags = O_TRUNC | O_CREAT; 
+			oflags = O_TRUNC | O_CREAT;
 			fp->read = 1;
 			switch (*++p) 
-			{ 
-				case '+': 	
+			{
+				case '+': 
 					oflags = O_TRUNC | O_CREAT | O_RDWR;
 				default:
 					break;
@@ -372,7 +354,7 @@ GFILE *gfopen(char *name, char *p)
 			oflags = O_CREAT | O_APPEND;
 			fp->append = 1;
 			switch (*++p)
-			{ 
+			{
 				case '+':
 					oflags = O_CREAT | O_APPEND | O_RDWR;
 				default:
@@ -380,7 +362,7 @@ GFILE *gfopen(char *name, char *p)
 			}
 			seek = SEEK_END;
 			break;
-		default: 
+		default:
 			if ( oflags == 4242 )
 				return GNULL;
 			break;
@@ -388,7 +370,9 @@ GFILE *gfopen(char *name, char *p)
 
 	if ((fd = open(name, oflags, 0)) == -1)
 		return GNULL;
-	lseek(fd, 0L, seek);
+
+	if ( seek != -1)
+		lseek(fd, 0L, seek);
 
 	/* initialize the new GFILE */
 	fp->fd = fd;
@@ -400,21 +384,30 @@ GFILE *gfopen(char *name, char *p)
 
 int _fillbuf(GFILE *fp)
 {
-	int bufsize = GBUFSIZ; 
+	int bufsize = GBUFSIZ;
 	int len = 0;
+	char c = 0;
 
 	if ((fp->base = malloc(bufsize)) == GNULL)
-		return GEOF;
-
+	{
+		return GNULL;
+	}
+	
 	if ( fp->cnt == 0 )
 	{
-		len = read(fp->fd, fp->base, bufsize);
+		if ( fp->unbuf != 1 )
+			len = read(fp->fd, fp->base, bufsize);
+		else
+			len = read(fp->fd, &c, 1);
+		
 		fp->ptr = fp->base;
 	
 		last = fp;
 		if ( len == 0 || len == -1) 
 			return GEOF; 
 		fp->cnt += len;
+		if ( fp->unbuf == 1 )
+			return c;
 		return *(fp)->ptr; 
 	}
 	
@@ -433,7 +426,7 @@ int _flushbuf(int c, GFILE *f)
 	old = f->fd;
 	f->fd = fd;
 	if(first->unbuf == 1)
-		f->cnt -= write(f->fd, f->ptr, 1);
+		f->cnt -= write(f->fd, &c, 1);
 	else
 		f->cnt -= write(f->fd, f->ptr, f->cnt);
 	f->fd = old;
@@ -443,24 +436,16 @@ int _flushbuf(int c, GFILE *f)
 
 int gfflush(GFILE *fp)
 {
-	int ret;
-	int i;
-
-	ret = 0;
-	if (fp == GNULL)
-	{
-		for (i = 0; i < OPEN_MAX; i++)
-		{
+	int ret = 0;
+	int i; 
+	
+	if (fp == GNULL) 
+		for (i = 0; i < OPEN_MAX; i++) 
 			if ((gfflush(&_iob[i]) == -1))
-				ret = -1;
-		} 
-	} else {
-		if ((fp->flag & _GWRITE) == 0)
-			return -1;
+				ret = -1; 
+	else 
 		_flushbuf(GEOF, fp);
-		if (fp->flag & _GERR)
-			ret = -1;
-	}
+
 	return ret;
 }
 
