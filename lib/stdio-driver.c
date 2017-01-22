@@ -52,32 +52,39 @@ int main()
 	//gputchar('c');
 	//gputchar('\n'); 
 
-	printf("fopen the test file\n");
-	printf("and enter the ggetchar, putchar loop test \n");
-	GFILE *filepointer = gfopen("none", "r"); 
-	while ( (c = ggetc(filepointer)) != GEOF )
-		gputc(c, gstdout); 
-	gfclose(filepointer); 
+
 
 	printf("fopen the test file\n");
 	printf("and enter the ggetchar, putchar stderr loop test \n");
-	filepointer = gfopen("none", "r"); 
+	GFILE *filepointer = gfopen("none", "r"); 
 	while ( (c = ggetc(filepointer)) != GEOF )
 		gputc(c, gstderr); 
 	gfclose(filepointer); 
 
 
 	printf("fopen the test file\n");
-	printf("then test fread and fwrite\n");
+	printf("and enter the ggetchar, putchar loop test \n");
+	filepointer = gfopen("none", "r"); 
+	while ( (c = ggetc(filepointer)) != GEOF )
+		gputc(c, gstdout); 
+	gfclose(filepointer);
+	/*
+	printf("fopen the test file\n");
+	printf("and enter the ggetchar, putchar stdin / stdout loop test \n"); 
+	while ( (c = ggetc(gstdin)) != GEOF )
+		gputc(c, gstdout); 
+	*/
+	//printf("fopen the test file\n");
+	//printf("then test fread and fwrite\n");
 	//filepointer = gfopen("none", "r");
 	//gfprintf(filepointer, format,zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 	
-	filepointer = gfopen("none", "r"); 
-	ret = gfread(buffer, 1, 1000, filepointer);
-	gfwrite(buffer, 1, ret, gstdout);
-	gfclose(filepointer); 
-	gputchar('\n'); 
-	gputchar('\n'); 
+	//filepointer = gfopen("none", "r"); 
+	//ret = gfread(buffer, 1, 1000, filepointer);
+	//gfwrite(buffer, 1, ret, gstdout);
+	//gfclose(filepointer); 
+	//gputchar('\n'); 
+	//gputchar('\n'); 
 
-	gfflush(GNULL);
+	//gfflush(GNULL);
 }
 
