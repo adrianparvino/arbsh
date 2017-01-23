@@ -4,18 +4,23 @@
 #include "stdio.h"
 
 
-int simplecat(char *file)
-{
-	GFILE *fp = gfopen(file, "r");
-
+void simplecat(GFILE *fp)
+{ 
 	int c = 0;
 	
 	while (ggetc(fp) != GEOF )
 		gputc(c, gstdout);
-	gfclose(fp);
 }
 
 int main(int argc, char *argv[])
 {
-	simplecat(argv[1]);
+	if ( argc > 1 )
+	{
+		GFILE *fp = gfopen(argv[1], "r");
+		simplecat(fp);
+		gfclose(fp);
+	}else {
+		simplecat(gstdin);
+	}
+	return 0;
 }
