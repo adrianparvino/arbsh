@@ -388,6 +388,7 @@ int ggetc_inter(GFILE *fp)
 	int len = 0;
 	char c = 0;
 	int ret = 0; 
+	//char *a;
 
 	if ((fp->base = malloc(GBUFSIZ)) == GNULL) 
 		fp->unbuf = 1;
@@ -400,20 +401,22 @@ int ggetc_inter(GFILE *fp)
 			len = read(fp->fd, &c, 1);
 		}
 		
-		if ( len == 0 || len == -1) 
-			return GEOF; 
 		fp->ptr = fp->base;
 	
 		gstdhold = fp;
 		fp->cnt += len;
-		//if ( fp->unbuf == 1 )
-		//	return c;
 		
-		return c;
-		//else ret = *(fp)->ptr++; 
+		if ( len == 0 || len == -1) 
+			return GEOF; 
+		if ( fp->unbuf == 1 )
+			return c;
+		
+		else
+		 ret = *(fp)->ptr; 
 		//	return *(fp)->ptr; 
-	}
-	return ret = *(fp)->ptr++; 
+	}else
+	ret = *(fp)->ptr++; 
+	return ret;
 }
 
 
@@ -497,6 +500,7 @@ ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 		/* there is a bug in grafland's getc which makes this not work correctly */
 		
 		read (fp->fd, &c, 1);
+		
 		if ( c == 0 || c == -1)
 			c = GEOF;
 		
