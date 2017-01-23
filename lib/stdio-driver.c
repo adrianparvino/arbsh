@@ -47,17 +47,17 @@ int main()
 	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2); 
 	fflush(stdout); 
 
-	filepointer = gfopen("none", "r"); 
+	filepointer = gfopen("README", "r"); 
 	while ( (c = ggetc(filepointer)) != GEOF )
 		gputc(c, gstderr); 
 	gfclose(filepointer); 
 
-	filepointer = gfopen("none", "r"); 
+	filepointer = gfopen("README", "r"); 
 	while ( (c = ggetc(filepointer)) != GEOF )
 		gputc(c, gstdout); 
 	gfclose(filepointer);
 	
-	filepointer = gfopen("none", "r"); 
+	filepointer = gfopen("README", "r"); 
 	while ( (ret = gfread(buffer, 1, 1000, filepointer)) > 0 )
 		gfwrite(buffer, 1, ret, gstdout);
 	gfclose(filepointer); 
