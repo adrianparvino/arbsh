@@ -11,7 +11,7 @@ int main(void)
 	size_t len = 0;
 	ssize_t read = 0;
 
-	stream = fopen("none", "r");
+	stream = fopen("README", "r");
 	if (stream == NULL)
 		exit(EXIT_FAILURE);
 
