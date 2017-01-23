@@ -13,7 +13,7 @@ int main(void)
 	size_t len = 0;
 	ssize_t read = 0;
 
-	stream = gfopen("none", "r");
+	stream = gfopen("README", "r");
 	if (stream == NULL)
 		exit(EXIT_FAILURE);
 
