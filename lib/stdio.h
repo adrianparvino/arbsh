@@ -3,6 +3,7 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <fcntl.h>
+#include <string.h>
 
 /* local libraries */
 /* --------------- */
@@ -27,12 +28,12 @@ typedef struct _iobuf {
 	int cnt;		/* characters left */
 	char *ptr;		/* next character position */
 	char *base;		/* location of buffer */
-	int flag;
-	int fd;
-	int write;
-	int read;
-	int append;
-	int unbuf;
+	int flag;		/* a bool to see if the structure is valid */
+	int fd;			/* a file descriptor */
+	int write;		/* not used */
+	int read;		/* not used */
+	int append;		/* not used */
+	int unbuf;		/* output must be unbuffered, for stderr or failed malloc */
 } GFILE;
 
 extern GFILE _iob[OPEN_MAX];
@@ -40,7 +41,7 @@ extern GFILE _iob[OPEN_MAX];
 GFILE _iob[OPEN_MAX] = {
 	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
 	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
-	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */
+	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
 };
 
 GFILE *gstdin = (&_iob[0]);
@@ -55,8 +56,9 @@ int gputc_inter(int, GFILE *);
 int ggetchar(void);
 int gputchar(char);
 int ggetc(GFILE *);
-int gputc(int, GFILE *);
-size_t ggetline(char [], int);
+int gputc(int, GFILE *); 
+ssize_t ggetline (char **, size_t *, GFILE *);
+ssize_t ggetdelim(char **, size_t *, char, GFILE *);
 int gprintf_inter(GFILE *, int, char *, size_t, int, char *, va_list);
 int gprintf(char *, ...);
 int gsprintf(char *, char *, ...);
@@ -73,6 +75,7 @@ size_t gfwrite(const void *, size_t, size_t, GFILE *);
 int gfeof(GFILE *);
 int gferror(GFILE *);
 int gfileno(GFILE *);
+
 
 
 /* functions */
@@ -104,19 +107,7 @@ int gfileno(GFILE *fp)
 	return (fp)->fd;
 }
 
-/* getline  */
-size_t ggetline(char s[], int lim)
-{
-	/* TODO: modernize this getline */
-        int c;
-        size_t i = 0;
-        while (--lim > 0 && (c=ggetchar()) != -1 && c != '\n')
-                s[i++] = c;
-        if (c == '\n')
-                s[i++] = c;
-        s[i] = '\0';
-        return i;
-}
+
 
 /* Printf family (variadic and formatted) */
 int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt, va_list ap)
@@ -411,9 +402,9 @@ int ggetc_inter(GFILE *fp)
 		fp->cnt += len;
 		if ( fp->unbuf == 1 )
 			return c;
-		return *(fp)->ptr; 
+		else
+			return *(fp)->ptr; 
 	}
-	
 	return *(fp)->ptr++; 
 }
 
@@ -452,13 +443,11 @@ int gfclose(GFILE *fp)
 		return -1;
 	fd = fp->fd;
 	gfflush(fp);
-	fp->cnt = 0;
-	fp->ptr = GNULL;
 	if (fp->base != GNULL)
 		free(fp->base);
-	fp->base = GNULL;
-	fp->flag = 0;
+	fp->ptr = fp->base = GNULL;
 	fp->fd = -1;
+	fp->flag = fp->cnt = fp->append = fp->read = fp->write = fp->unbuf = 0;
 	return close(fd);
 } 
 
@@ -474,5 +463,67 @@ size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *stream)
 	size_t request = size * nmemb;
 	size_t ret = write(stream->fd, ptr, request);
 	return ret;
+} 
+
+/* getline  */
+ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
+{
+	size_t len = 0;
+	char *pos = GNULL;
+	ssize_t ret = -1;
+	size_t chunk = BUFSIZ;
+	int c = 0;
+
+	if (!*lineptr) 
+	{
+		*n = chunk;
+		if (!(*lineptr = malloc (chunk))) 
+			return -1; 
+	} 
+
+	len = *n;
+	pos = *lineptr;
+
+	for ( ; c != delim ;len--, pos++)
+	{ 
+		/* there is a bug in grafland's getc which makes this not work correctly */
+		//c = ggetc(fp);
+		
+		read (fp->fd, &c, 1);
+		if ( c == 0 || c == -1)
+			c = GEOF;
+		
+		if (len== 0)
+		{
+			*n += chunk; 
+			len = chunk; 
+			if (!(*lineptr = realloc (*lineptr, *n)))
+				return ret;
+			pos = *lineptr;
+		} 
+
+		if (c == GEOF)
+		{ 
+			if (pos == *lineptr)
+				return ret;
+			else
+				break;
+		}
+		*pos = c; 
+	} 
+
+	*pos = '\0';
+
+	ret = pos - (*lineptr);
+	return ret;
 }
+
+
+ssize_t ggetline(char **lineptr, size_t *n, GFILE *fp)
+{
+	return ggetdelim(lineptr, n, '\n', fp);
+}
+
+
+
 
