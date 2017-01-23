@@ -10,7 +10,9 @@ all:
 	$(CC) dtoa-driver.c -o dtoa-driver $(CFLAGS) -lm
 	$(CC) stdio-driver.c -o stdio-driver $(CFLAGS) -lm
 	$(CC) getline-driver.c -o getline-driver $(CFLAGS) -lm
+	$(CC) getline-control.c -o getline-control $(CFLAGS) -lm
 	$(CC) getchar-driver.c -o getchar-driver $(CFLAGS) -lm
+	
 
 clean:
 
@@ -22,5 +24,6 @@ clean:
 	$(RM) dtoa-driver
 	$(RM) stdio-driver
 	$(RM) getline-driver
+	$(RM) getline-control
 	$(RM) getchar-driver
 
