@@ -472,9 +472,9 @@ size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *stream)
 ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 {
 	size_t len = 0;
-	char *pos = NULL;
+	char *pos = GNULL;
 	ssize_t ret = -1;
-	size_t chunk = BUFSIZ;
+	size_t chunk = GBUFSIZ;
 	int c = 0;
 
 	if (!*lineptr) 
