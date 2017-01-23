@@ -154,10 +154,18 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 				break;
 #ifdef HASLIBM
 			case 'f':
+				fltcase:
 				fval = va_arg(ap, double); 
-				gdtoa(ftemp, fval - (long)fval); 
-				i += gsprintf(out + i, "%ld", (long)fval);
-				i += gsnprintf(out + i, 7, "%s", ftemp + 1);
+				if ( fval < 1 )
+				{ 
+					gdtoa(ftemp, fval); 
+					i += gsprintf(out + i, "0");
+					i += gsnprintf(out + i, 7, "%s", ftemp + 1);
+				} else {
+					gdtoa(ftemp, fval - (long)fval); 
+					i += gsprintf(out + i, "%ld", (long)fval);
+					i += gsnprintf(out + i, 7, "%s", ftemp + 1);
+				}
 				break;
 #endif
 			case 'l':
@@ -168,11 +176,8 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 						i += intostrbase(out + i, lval, 10);
 						break;
 #ifdef HASLIBM
-					case 'f':
-						fval = va_arg(ap, double);
-						gdtoa(ftemp, fval - (long)fval);
-						i += gsprintf(out + i, "%ld", (long)fval);
-						i += gsnprintf(out + i, 7, "%s", ftemp + 1);
+					case 'f': 
+						goto fltcase;
 						break;
 #endif
 					default:
@@ -395,11 +400,11 @@ int ggetc_inter(GFILE *fp)
 			len = read(fp->fd, &c, 1);
 		}
 		
+		if ( len == 0 || len == -1) 
+			return GEOF; 
 		fp->ptr = fp->base;
 	
 		gstdhold = fp;
-		if ( len == 0 || len == -1) 
-			return GEOF; 
 		fp->cnt += len;
 		//if ( fp->unbuf == 1 )
 		//	return c;
