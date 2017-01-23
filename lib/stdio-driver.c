@@ -25,9 +25,7 @@ int main()
 	long ltest = 23459999;
 	double ftest = 3123.21317892345;
 	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f\n";
-	int c = 0;
-	char buffer[1024];
-	size_t ret = 0;
+	int c = 0; 
 
 	gprintf("gfprintf:\n");
 	gfprintf(gstderr, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
