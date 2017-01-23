@@ -46,13 +46,12 @@ GFILE _iob[OPEN_MAX] = {
 GFILE *gstdin = (&_iob[0]);
 GFILE *gstdout = (&_iob[1]);
 GFILE *gstderr = (&_iob[2]);
-
 GFILE *last;
 
-/* Function prototypes */ 
-/* ------------------- */ 
-int _fillbuf(GFILE *);
-int _flushbuf(int, GFILE *);
+/* Function prototypes */
+/* ------------------- */
+int ggetc_inter(GFILE *);
+int gputc_inter(int, GFILE *);
 int ggetchar(void);
 int gputchar(char);
 int ggetc(GFILE *);
@@ -75,18 +74,19 @@ int gfeof(GFILE *);
 int gferror(GFILE *);
 int gfileno(GFILE *);
 
+
 /* functions */
 /* --------- */
 
 /* single char io  */
-int ggetc(GFILE *stream)
+int ggetc(GFILE *fp)
 {
-	return _fillbuf(stream);
+	return ggetc_inter(fp);
 }
 
-int gputc(int c, GFILE *stream)
+int gputc(int c, GFILE *fp)
 {
-	return _flushbuf(c, stream);
+	return gputc_inter(c, fp);
 }
 
 int ggetchar(void)
@@ -99,14 +99,15 @@ int gputchar(char c)
 	return gputc(c, gstdin);
 }
 
-int gfileno(GFILE *stream)
+int gfileno(GFILE *fp)
 {
-	return (stream)->fd;
+	return (fp)->fd;
 }
 
 /* getline  */
 size_t ggetline(char s[], int lim)
 {
+	/* TODO: modernize this getline */
         int c;
         size_t i = 0;
         while (--lim > 0 && (c=ggetchar()) != -1 && c != '\n')
@@ -382,23 +383,21 @@ GFILE *gfopen(char *name, char *p)
 	return fp;
 } 
 
-int _fillbuf(GFILE *fp)
-{
-	int bufsize = GBUFSIZ;
+int ggetc_inter(GFILE *fp)
+{ 
 	int len = 0;
 	char c = 0;
 
-	if ((fp->base = malloc(bufsize)) == GNULL)
-	{
-		return GNULL;
-	}
+	if ((fp->base = malloc(GBUFSIZ)) == GNULL) 
+		fp->unbuf = 1;
 	
 	if ( fp->cnt == 0 )
 	{
 		if ( fp->unbuf != 1 )
-			len = read(fp->fd, fp->base, bufsize);
-		else
+			len = read(fp->fd, fp->base, GBUFSIZ);
+		else { 
 			len = read(fp->fd, &c, 1);
+		}
 		
 		fp->ptr = fp->base;
 	
@@ -415,22 +414,15 @@ int _fillbuf(GFILE *fp)
 }
 
 
-int _flushbuf(int c, GFILE *f)
+int gputc_inter(int c, GFILE *f)
 { 
 	if (c == GEOF)
 		return GEOF;
-	int fd = f->fd; 
-	int old;
-	GFILE *first = f;
-	f = last;
-	old = f->fd;
-	f->fd = fd;
-	if(first->unbuf == 1)
-		f->cnt -= write(f->fd, &c, 1);
+
+	if(f->unbuf == 1)
+		last->cnt -= write(f->fd, &c, 1);
 	else
-		f->cnt -= write(f->fd, f->ptr, f->cnt);
-	f->fd = old;
-	f = first;
+		last->cnt -= write(f->fd, last->ptr, last->cnt);
 	return c;
 }
 
@@ -444,7 +436,7 @@ int gfflush(GFILE *fp)
 			if ((gfflush(&_iob[i]) == -1))
 				ret = -1; 
 	else 
-		_flushbuf(GEOF, fp);
+		gputc_inter(GEOF, fp);
 
 	return ret;
 }
