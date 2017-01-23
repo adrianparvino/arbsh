@@ -46,7 +46,7 @@ GFILE _iob[OPEN_MAX] = {
 GFILE *gstdin = (&_iob[0]);
 GFILE *gstdout = (&_iob[1]);
 GFILE *gstderr = (&_iob[2]);
-GFILE *last;
+GFILE *gstdhold;
 
 /* Function prototypes */
 /* ------------------- */
@@ -135,9 +135,9 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 	char ftemp[1025]= { 0 };
 #endif
 
-	if (flag == 0) /* printf */
+	if (flag == 0)			/* printf, vprintf, dprintf etc */
 		out = malloc(1025); 
-	if (flag == 1 || flag == 2) /* sprintf, snprintf */
+	if (flag == 1 || flag == 2)	/* sprintf, snprintf etc */
 		out = str;
 
 	for (p = fmt; *p; p++) 
@@ -204,8 +204,11 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 		}
 	}
 	
-	if ( flag == 2) 
+	if ( flag == 2) /* snprintf */
+	{
+		/* TODO: fill with zeros until end */
 		i = lim;
+	}
 
 	out[i + 1] = '\0';
 
@@ -308,12 +311,11 @@ int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
 }
 
 /* fopen family */
-
-GFILE *gfopen(char *name, char *p)
+GFILE *gfopen(char *file, char *mode)
 {
 	int fd;
 	GFILE *fp;
-	int oflags = 4242;
+	int oflags = O_RDWR;
 	int seek = -1;
 	
 	/* find a free slot */
@@ -326,12 +328,12 @@ GFILE *gfopen(char *name, char *p)
 		return GNULL; 
 
 	/* fopen modes */
-	switch (*p)
+	switch (*mode)
 	{ 
 		case 'r':
 			oflags = O_RDONLY;
 			fp->read = 1;
-			switch (*++p) 
+			switch (*++mode) 
 			{ 
 				case '+':
 					fp->write = 1;
@@ -343,7 +345,7 @@ GFILE *gfopen(char *name, char *p)
 		case 'w':
 			oflags = O_TRUNC | O_CREAT;
 			fp->read = 1;
-			switch (*++p) 
+			switch (*++mode) 
 			{
 				case '+': 
 					oflags = O_TRUNC | O_CREAT | O_RDWR;
@@ -354,7 +356,7 @@ GFILE *gfopen(char *name, char *p)
 		case 'a':
 			oflags = O_CREAT | O_APPEND;
 			fp->append = 1;
-			switch (*++p)
+			switch (*++mode)
 			{
 				case '+':
 					oflags = O_CREAT | O_APPEND | O_RDWR;
@@ -369,10 +371,12 @@ GFILE *gfopen(char *name, char *p)
 			break;
 	}
 
-	if ((fd = open(name, oflags, 0)) == -1)
+	/* open the file */
+	if ((fd = open(file, oflags, 0)) == -1)
 		return GNULL;
 
-	if ( seek != -1)
+	/* and lseek to the end of it if in append mode */
+	if ( seek == SEEK_END)
 		lseek(fd, 0L, seek);
 
 	/* initialize the new GFILE */
@@ -401,7 +405,7 @@ int ggetc_inter(GFILE *fp)
 		
 		fp->ptr = fp->base;
 	
-		last = fp;
+		gstdhold = fp;
 		if ( len == 0 || len == -1) 
 			return GEOF; 
 		fp->cnt += len;
@@ -414,15 +418,15 @@ int ggetc_inter(GFILE *fp)
 }
 
 
-int gputc_inter(int c, GFILE *f)
+int gputc_inter(int c, GFILE *fp)
 { 
 	if (c == GEOF)
 		return GEOF;
 
-	if(f->unbuf == 1)
-		last->cnt -= write(f->fd, &c, 1);
+	if(fp->unbuf == 1)
+		gstdhold->cnt -= write(fp->fd, &c, 1);
 	else
-		last->cnt -= write(f->fd, last->ptr, last->cnt);
+		gstdhold->cnt -= write(fp->fd, gstdhold->ptr, gstdhold->cnt);
 	return c;
 }
 
