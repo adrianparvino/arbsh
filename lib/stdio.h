@@ -19,7 +19,7 @@
 #define GBUFSIZ		4096
 #define GBUFSIZEE	4096
 #define IRCBUFSIZ	4096
-#define OPEN_MAX	256
+#define OPEN_MAX	12
 #define PERMS		0666
 
 /* type definitions */
@@ -304,9 +304,9 @@ int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
 /* fopen family */
 GFILE *gfopen(char *file, char *mode)
 {
-	int fd;
-	GFILE *fp;
-	int oflags = O_RDWR;
+	int fd = -1;
+	GFILE *fp = GNULL;
+	int oflags = 4242;
 	int seek = -1;
 	
 	/* find a free slot */
@@ -382,6 +382,7 @@ int ggetc_inter(GFILE *fp)
 { 
 	int len = 0;
 	char c = 0;
+	int ret = 0; 
 
 	if ((fp->base = malloc(GBUFSIZ)) == GNULL) 
 		fp->unbuf = 1;
@@ -400,12 +401,14 @@ int ggetc_inter(GFILE *fp)
 		if ( len == 0 || len == -1) 
 			return GEOF; 
 		fp->cnt += len;
-		if ( fp->unbuf == 1 )
-			return c;
-		else
-			return *(fp)->ptr; 
+		//if ( fp->unbuf == 1 )
+		//	return c;
+		
+		return c;
+		//else ret = *(fp)->ptr++; 
+		//	return *(fp)->ptr; 
 	}
-	return *(fp)->ptr++; 
+	return ret = *(fp)->ptr++; 
 }
 
 
@@ -469,7 +472,7 @@ size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *stream)
 ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 {
 	size_t len = 0;
-	char *pos = GNULL;
+	char *pos = NULL;
 	ssize_t ret = -1;
 	size_t chunk = BUFSIZ;
 	int c = 0;
@@ -487,7 +490,6 @@ ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 	for ( ; c != delim ;len--, pos++)
 	{ 
 		/* there is a bug in grafland's getc which makes this not work correctly */
-		//c = ggetc(fp);
 		
 		read (fp->fd, &c, 1);
 		if ( c == 0 || c == -1)
@@ -508,6 +510,7 @@ ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 				return ret;
 			else
 				break;
+			
 		}
 		*pos = c; 
 	} 
