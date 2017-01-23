@@ -24,65 +24,43 @@ int main()
 	char string1[1000] = { 0 };
 	long ltest = 23459999;
 	double ftest = 3123.21317892345;
-	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f\n";
+	double ftest2 = 0.202309823709099;
+	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f==%lf\n";
 	int c = 0; 
+	ssize_t ret = 0;
+	char buffer[GBUFSIZ] = { 0 };
+	GFILE *filepointer;
 
 	gprintf("gfprintf:\n");
-	gfprintf(gstderr, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	gfprintf(gstderr, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2); 
 
 	gprintf("gdprintf:\n");
-	gdprintf(2, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	gdprintf(2, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2); 
 	gprintf("gprintf:\n");
-	gprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	gprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2); 
 	gprintf("gsprintf:\n");
-	gsprintf(string1, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	gsprintf(string1, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2); 
 	printf("%s", string1);
 	gprintf("gvprintf:\n");
-	testgvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
+	testgvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2); 
 	printf("control:\n");
-	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 
-	fflush(stdout);
+	printf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2); 
+	fflush(stdout); 
 
-	//gputchar('\n');
-	//gputchar('p');
-	//gputchar('u');
-	//gputchar('t');
-	//gputchar('c');
-	//gputchar('\n'); 
-
-
-
-	printf("fopen the test file\n");
-	printf("and enter the ggetchar, putchar stderr loop test \n");
-	GFILE *filepointer = gfopen("none", "r"); 
+	filepointer = gfopen("none", "r"); 
 	while ( (c = ggetc(filepointer)) != GEOF )
 		gputc(c, gstderr); 
 	gfclose(filepointer); 
 
-
-	printf("fopen the test file\n");
-	printf("and enter the ggetchar, putchar loop test \n");
 	filepointer = gfopen("none", "r"); 
 	while ( (c = ggetc(filepointer)) != GEOF )
 		gputc(c, gstdout); 
 	gfclose(filepointer);
-	/*
-	printf("fopen the test file\n");
-	printf("and enter the ggetchar, putchar stdin / stdout loop test \n"); 
-	while ( (c = ggetc(gstdin)) != GEOF )
-		gputc(c, gstdout); 
-	*/
-	//printf("fopen the test file\n");
-	//printf("then test fread and fwrite\n");
-	//filepointer = gfopen("none", "r");
-	//gfprintf(filepointer, format,zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest); 	
-	//filepointer = gfopen("none", "r"); 
-	//ret = gfread(buffer, 1, 1000, filepointer);
-	//gfwrite(buffer, 1, ret, gstdout);
-	//gfclose(filepointer); 
-	//gputchar('\n'); 
-	//gputchar('\n'); 
+	
+	filepointer = gfopen("none", "r"); 
+	while ( (ret = gfread(buffer, 1, 1000, filepointer)) > 0 )
+		gfwrite(buffer, 1, ret, gstdout);
+	gfclose(filepointer); 
 
-	//gfflush(GNULL);
 }
 
