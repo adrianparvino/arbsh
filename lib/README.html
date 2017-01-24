@@ -57,6 +57,15 @@ C STANDARD LIBRARY:
 		int gferror(GFILE *);
 		int gfileno(GFILE *);
 		
+	stdlib.h
+		
+		gatoi(char []);
+		double gatof(char []);
+		void *gmalloc(size_t);
+		internal:
+			Header *morecore(unsigned);
+		void gfree(void *);
+		void *grealloc(void *, size_t);
 
 	string.h
 
@@ -106,4 +115,6 @@ C STANDARD LIBRARY:
 </pre><dd><hr/></dd><pre>
 
 	CM Graff <a href="mailto:cm0graff@gmail.com">cm0graff@gmail.com</a>
+
+
 </pre>
