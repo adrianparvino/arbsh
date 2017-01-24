@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>
 <br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>grafland C libraries</strong></dl><pre></dl><pre>
 
+
 <br clear="left"/></pre><dl>LIBRARIES:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
@@ -10,10 +11,96 @@
 	   These libraries are unique to GrafOS and are not modeled
 	   after any specification conformant code.
 
-	2) Components of the C standard library which have been
+	2) Utilities and drivers designed to test the C standard library.
+
+	3) Components of the C standard library which have been
 	   implmented specifically for GrafOS. 
 
-	3) Hexen, a curses / conio replacement library
+	4) Hexen, a curses / conio replacement library
+
+	5) Line editing and history libraries for shells, irc clients
+	   and 
+
+
+
+C STANDARD LIBRARY:
+</pre><dd><hr/></dd><pre>
+
+	( an incomplete list )
+
+	stdio.h
+	
+		internal:
+			int ggetc_inter(GFILE *);
+			int gputc_inter(int, GFILE *);
+		int ggetchar(void);
+		int gputchar(char);
+		int ggetc(GFILE *);
+		int gputc(int, GFILE *); 
+		ssize_t ggetline (char **, size_t *, GFILE *);
+		ssize_t ggetdelim(char **, size_t *, char, GFILE *);
+		internal:
+			int gprintf_inter(GFILE *, int, char *, size_t, int, char *, va_list);
+		int gprintf(char *, ...);
+		int gsprintf(char *, char *, ...);
+		int gsnprintf(char *, size_t, char *, ...);
+		int gdprintf(int, char *, ...);
+		int gfprintf(GFILE *, char *, ...);
+		int gvprintf(char *, va_list);
+		int gvsprintf(char *, char *, va_list);
+		int gvsnprintf(char *, size_t, char *, va_list);
+		int gvdprintf(int, char *, va_list);
+		int gvfprintf(GFILE *, char *, va_list);
+		size_t gfread(void *, size_t, size_t, GFILE *);
+		size_t gfwrite(const void *, size_t, size_t, GFILE *);
+		int gfeof(GFILE *);
+		int gferror(GFILE *);
+		int gfileno(GFILE *);
+		
+
+	string.h
+
+		size_t gstrlen(const char []); 
+		int gstrcmp(char *, char *);
+		char *gstrchr(const char *, int); 
+		char *gstrcpy(char *, char *);
+		char *gstrncpy(char *, const char *, size_t);
+		char *gstrtok(char *, const char *);
+		size_t gstrspn(const char *, const char *);
+		void* gmemset(void *, int, size_t);
+		void* gmemcpy(void*, const void*, size_t) ;
+		void *gmemmove(void *, const void *, size_t);
+
+
+<br clear="left"/></pre><dl>HEXEN CURSOR LIRARY:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	hexen.h
+	
+		int fastgetch(void);
+		int ansigetch(void);
+		int termcatch(int, int);
+		void setcursor(size_t, size_t);
+		void setcursorchars(size_t, size_t, char);
+		void ansihorizon(size_t, size_t);
+		int ansiinit(void);
+		void addcolor(char *, size_t, size_t);
+		void addcolorrange(char *, size_t, size_t, size_t);
+		int ansicreate(void);
+		int ansidestroy(void);
+		int ansiwaddch(int, int);
+		int ansiaddmem(char, int, size_t);
+		size_t ansiaddstr(char *, size_t);
+		int ansiredraw(size_t, size_t, size_t, size_t);
+		
+
+<br clear="left"/></pre><dl>TESTING:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	cd <a href="grafland/lib/">grafland/lib/</a>
+	make
+	./stdio-driver
+
 
 <br clear="left"/></pre><dl>CONTACT:</dl><pre>
 </pre><dd><hr/></dd><pre>
