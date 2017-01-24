@@ -18,8 +18,8 @@
 
 	4) Hexen, a curses / conio replacement library
 
-	5) Line editing and history libraries for shells, irc clients
-	   and 
+	5) Line editing and history libraries for shells and irc clients
+	   
 
 
 
@@ -30,17 +30,12 @@ C STANDARD LIBRARY:
 
 	stdio.h
 	
-		internal:
-			int ggetc_inter(GFILE *);
-			int gputc_inter(int, GFILE *);
 		int ggetchar(void);
 		int gputchar(char);
 		int ggetc(GFILE *);
 		int gputc(int, GFILE *); 
 		ssize_t ggetline (char **, size_t *, GFILE *);
 		ssize_t ggetdelim(char **, size_t *, char, GFILE *);
-		internal:
-			int gprintf_inter(GFILE *, int, char *, size_t, int, char *, va_list);
 		int gprintf(char *, ...);
 		int gsprintf(char *, char *, ...);
 		int gsnprintf(char *, size_t, char *, ...);
@@ -57,15 +52,21 @@ C STANDARD LIBRARY:
 		int gferror(GFILE *);
 		int gfileno(GFILE *);
 		
+		internal:
+			int ggetc_inter(GFILE *);
+			int gputc_inter(int, GFILE *);
+			int gprintf_inter(GFILE *, int, char *, size_t, int, char *, va_list);
+		
 	stdlib.h
 		
 		gatoi(char []);
 		double gatof(char []);
 		void *gmalloc(size_t);
-		internal:
-			Header *morecore(unsigned);
 		void gfree(void *);
 		void *grealloc(void *, size_t);
+
+		internal:
+			Header *morecore(unsigned);
 
 	string.h
 
@@ -101,14 +102,37 @@ C STANDARD LIBRARY:
 		int ansiaddmem(char, int, size_t);
 		size_t ansiaddstr(char *, size_t);
 		int ansiredraw(size_t, size_t, size_t, size_t);
-		
+
+<br clear="left"/></pre><dl>TEST DRIVERS:</dl><pre>
+</pre><dd><hr/></dd><pre>
+	
+	dirwalk.h
+		dirwalk-driver.c
+	stdio.h
+		dtoa-driver.c
+		getchar-driver.c
+		getline-driver.c
+		itoadriver.c
+		stdio-driver.c
+	glob.h
+		globdriver.c
+	ircline.h
+		ircline-driver.c
+	stdlib.h
+		malloc-driver.c
+	readline.h
+		readline-driver.c
+
 
 <br clear="left"/></pre><dl>TESTING:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
-	cd <a href="grafland/lib/">grafland/lib/</a>
-	make
-	./stdio-driver
+	Test a function by invoking a driver:
+
+		cd <a href="grafland/lib/">grafland/lib/</a>
+		make
+		./stdio-driver
+		./readline-driver
 
 
 <br clear="left"/></pre><dl>CONTACT:</dl><pre>
