@@ -81,7 +81,7 @@ C STANDARD LIBRARY:
 		void *gmemmove(void *, const void *, size_t);
 
 
-HEXEN CURSOR LIRARY:
+HEXEN CURSOR LIBRARY:
 --------------------
 
 	hexen.h
