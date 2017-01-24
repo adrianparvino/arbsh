@@ -214,6 +214,23 @@ struct ANSIWINDOW{
 int dothink = 0;
 int hardadd = 0; /* this should be added as a 4th function arg */
 
+/* fumction prototypes */ 
+int fastgetch(void);
+int ansigetch(void);
+int termcatch(int, int);
+void setcursor(size_t, size_t);
+void setcursorchars(size_t, size_t, char);
+void ansihorizon(size_t, size_t);
+int ansiinit(void);
+void addcolor(char *, size_t, size_t);
+void addcolorrange(char *, size_t, size_t, size_t);
+int ansicreate(void);
+int ansidestroy(void);
+int ansiwaddch(int, int);
+int ansiaddmem(char *, int, size_t);
+size_t ansiaddstr(char *, size_t);
+int ansiredraw(size_t, size_t, size_t, size_t);
+
 /* functions */
 int fastgetch() 
 { 
