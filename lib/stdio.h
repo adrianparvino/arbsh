@@ -127,11 +127,11 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 #endif
 
 	if (flag == 0)			/* printf, vprintf, dprintf etc */
-		out = malloc(1025); 
+		out = malloc(GBUFSIZ); 
 	if (flag == 1 || flag == 2)	/* sprintf, snprintf etc */
 		out = str;
 
-	for (p = fmt; *p; p++) 
+	for (p = fmt; *p && i < GBUFSIZ ; p++) 
 	{
 		if (*p != '%')
 		{
@@ -156,11 +156,10 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 			case 'f':
 				fltcase:
 				fval = va_arg(ap, double); 
-				if ( fval < 1 )
+				if ( fval < 1 && fval > -1 )
 				{ 
 					gdtoa(ftemp, fval); 
-					i += gsprintf(out + i, "0");
-					i += gsnprintf(out + i, 7, "%s", ftemp + 1);
+					i += gsnprintf(out + i, 8, "%s", ftemp);
 				} else {
 					gdtoa(ftemp, fval - (long)fval); 
 					i += gsprintf(out + i, "%ld", (long)fval);
@@ -323,6 +322,13 @@ GFILE *gfopen(char *file, char *mode)
 	if (fp >= _iob + OPEN_MAX)
 		return GNULL; 
 
+	/* init */
+	fp->unbuf = 0;
+	fp->cnt = 0;
+	fp->append = 0;
+	fp->write = 0;
+	fp->read = 0;
+
 	/* fopen modes */
 	switch (*mode)
 	{ 
@@ -387,11 +393,15 @@ int ggetc_inter(GFILE *fp)
 { 
 	int len = 0;
 	char c = 0;
-	int ret = 0; 
+	//int ret = 0; 
 	//char *a;
 
-	if ((fp->base = malloc(GBUFSIZ)) == GNULL) 
-		fp->unbuf = 1;
+	if (!(fp->base))
+	{
+		if ((fp->base = malloc(GBUFSIZ)) == GNULL) 
+			fp->unbuf = 1;
+		fp->ptr = fp->base;
+	}
 	
 	if ( fp->cnt == 0 )
 	{
@@ -407,16 +417,18 @@ int ggetc_inter(GFILE *fp)
 		fp->cnt += len;
 		
 		if ( len == 0 || len == -1) 
+		//if ( fp->cnt < 1 )
 			return GEOF; 
 		if ( fp->unbuf == 1 )
 			return c;
-		
 		else
-		 ret = *(fp)->ptr; 
-		//	return *(fp)->ptr; 
-	}else
-	ret = *(fp)->ptr++; 
-	return ret;
+		
+			return *(fp)->ptr; 
+	}
+
+
+	
+	return *(fp)->ptr++; 
 }
 
 
@@ -496,33 +508,29 @@ ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 	pos = *lineptr;
 
 	for ( ; c != delim ;len--, pos++)
-	{ 
-		/* there is a bug in grafland's getc which makes this not work correctly */
-		
-		read (fp->fd, &c, 1);
-		
-		if ( c == 0 || c == -1)
+	{
+		read (fp->fd, &c, 1); 
+		if (c == 0 || c == -1)
 			c = GEOF;
 		
-		if (len== 0)
+		if (len == 0)
 		{
 			*n += chunk; 
 			len = chunk; 
 			if (!(*lineptr = realloc (*lineptr, *n)))
 				return ret;
 			pos = *lineptr;
-		} 
+		}
 
-		if (c == GEOF)
-		{ 
-			if (pos == *lineptr)
+		if (c == GEOF )
+		{
+			if (pos == *lineptr) 
 				return ret;
 			else
 				break;
-			
 		}
-		*pos = c; 
-	} 
+		*pos = c;
+	}
 
 	*pos = '\0';
 
