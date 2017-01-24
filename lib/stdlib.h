@@ -40,6 +40,7 @@ Header *morecore(unsigned);
 void gfree(void *);
 void *grealloc(void *, size_t);
 
+/* atoi family */
 int gatoi(char s[])
 {
 	int i, n;
@@ -70,7 +71,7 @@ double gatof(char s[])
 	return sign * val / power;
 }
 
-
+/* malloc family */
 void* gmalloc(size_t nbytes) 
 {
 	Header *p, *prevp;		
