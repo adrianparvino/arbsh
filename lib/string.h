@@ -1,5 +1,13 @@
+size_t gstrlen(const char []); 
+int gstrcmp(char *, char *);
+char *gstrchr(const char *, int); 
+char *gstrcpy(char *, char *);
+char *gstrncpy(char *, const char *, size_t);
+char *gstrtok(char *, const char *);
+size_t gstrspn(const char *, const char *);
 void* gmemset(void *, int, size_t);
-void* gmemcpy(void*, const void*, size_t);
+void* gmemcpy(void*, const void*, size_t) ;
+void *gmemmove(void *, const void *, size_t);
 
 size_t gstrlen(const char string[])
 {
@@ -99,7 +107,7 @@ char *gstrtok(char *s, const char *delim)
         }
 } 
 
-size_t mystrspn(const char *s1, const char *s2)
+size_t gstrspn(const char *s1, const char *s2)
 {
 	size_t i = 0;
 	size_t j = 9;
