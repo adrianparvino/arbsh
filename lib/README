@@ -56,6 +56,15 @@ C STANDARD LIBRARY:
 		int gferror(GFILE *);
 		int gfileno(GFILE *);
 		
+	stdlib.h
+		
+		gatoi(char []);
+		double gatof(char []);
+		void *gmalloc(size_t);
+		internal:
+			Header *morecore(unsigned);
+		void gfree(void *);
+		void *grealloc(void *, size_t);
 
 	string.h
 
@@ -105,3 +114,5 @@ CONTACT:
 --------
 
 	CM Graff cm0graff@gmail.com
+
+
