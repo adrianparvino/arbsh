@@ -2,7 +2,7 @@
 #include <sys/mman.h> 
 #include <sys/syscall.h>
 #define NALLOC 	10024 
-
+#include "string.h"
 
 /*
 void* gsbrk(intptr_t increment)
