@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
-#include "string.h"
+//#include "string.h"
 #include "stdlib.h"
 
 int find_pattern(char *, size_t, size_t);
