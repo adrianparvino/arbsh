@@ -1,16 +1,16 @@
 /*
-        2015 (C) Copyright, gshline.c, CM Graff
+	2017 (C) Copyright, readline.h, CM Graff
 */
 
-
-/* function prototypes */
-static int readchar(void);
-size_t gshline(char *, char *, size_t);
-size_t gshgetch(char *);
-void gshprint(char *, size_t, char *, size_t);
-int gsh_history(char *, size_t);
+/* function prototypes */ 
+size_t ircline(char *, char *, size_t);
+void ircprint(char *, size_t, char *, size_t); 
 void determinewin(void); 
-
+static int readchar(void);
+size_t greadline(char *, char *, size_t);
+size_t greadgetch(char *);
+void greadprint(char *, size_t, char *, size_t);
+int gread_history(char *, size_t);
 
 /* structures */
 struct hglb {		/* globals	*/
@@ -18,10 +18,9 @@ struct hglb {		/* globals	*/
 	size_t c;	/* Current	*/
 	int r;		/* Runstate	*/
 	size_t laro;	/* left arrow(s)*/ 
-        size_t w;
-        size_t h;
+	size_t w;
+	size_t h;
 } hglb = { 0, 0, 0, 0, 0, 0};
-
 
 struct hist {			/* history lines	*/
 	char line[BUFSIZ];	/* lines		*/ 
@@ -34,18 +33,106 @@ static int readchar(void)
 	static struct termios term, oterm;
 	char str[1];
 	str[0] = 0;
-	tcgetattr(0, &oterm);
+	if ((tcgetattr(0, &oterm)) != 0)
+		return -1;
 	memcpy(&term, &oterm, sizeof(term));
-	term.c_lflag &= ~(ICANON | ECHO);
+	term.c_lflag &= ~(ICANON | ECHO); 
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
-	tcsetattr(0, TCSANOW, &term);
+	if ((tcsetattr(0, TCSANOW, &term)) != 0 )
+		return -1;
 	read(0, str, 1);
-	tcsetattr(0, TCSANOW, &oterm);
+	if ((tcsetattr(0, TCSANOW, &oterm)) != 0 )
+		return -1;
 	return str[0];
 }
 
-size_t gshline(char *l, char *prompt, size_t promptlen)
+size_t ircline(char *l, char *prompt, size_t promptlen)
+{ 
+	size_t len = 0;
+	hglb.r = 1; 
+	
+	while ( hglb.r )
+	{ 
+		determinewin();
+		ircprint(l, len, prompt, promptlen);
+		len = greadgetch(l);
+	}
+
+	return len;
+}
+
+void ircprint(char *l, size_t len, char *prompt, size_t plen)
+{ 
+	size_t i; 
+	size_t real = 0; 
+	size_t off = 0;
+	size_t half;
+
+	if ( len )
+	{
+		hglb.w = (hglb.w - 1 - plen);
+
+		half = (hglb.w / 2);
+	
+		if ( len > (hglb.w) )
+			off = len - hglb.w;
+	}
+	/* clear character attributes */
+	write(1, T_CLRCHARS, T_CLRCHARS_SZ);
+	
+	/* clear the line */
+	write(1, "\r", 1);
+	write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
+
+	/* write the prompt out */
+	write(1, prompt, plen);
+	
+	if ( len )
+	{
+		if (hglb.laro >= half) 
+			real = (hglb.laro - half); 
+
+		/* write the user's line out */
+		if (len < hglb.w)
+	       	 	write(1, l, len);
+		else if ( len - hglb.laro <= half ) 
+			write(1, l, hglb.w);
+		else
+			write(1, l + off - real, hglb.w);
+
+		if (hglb.laro)
+		{
+			/* split */
+			if (len - hglb.laro > half )
+			{
+				for (i=0; i < hglb.laro && i < half; ++i) 
+			       		write(1, T_CURSBK1COL, T_CURSBK1COL_SZ);
+			}
+			/* don't split */
+			else if ( len < hglb.w )
+			{
+				for (i = 0; i < hglb.laro; ++i)
+					write(1, T_CURSBK1COL, T_CURSBK1COL_SZ);
+			}
+			else
+			{
+				for (i = len - hglb.laro ; i < hglb.w; ++i) 
+	      				write(1, T_CURSBK1COL, T_CURSBK1COL_SZ);
+			} 
+		}
+	}
+} 
+
+void determinewin(void)
+{ 
+	struct winsize win;
+	ioctl(0, TIOCGWINSZ, &win);
+	hglb.w = win.ws_col;
+	hglb.h = win.ws_row;
+}
+
+size_t greadline(char *l, char *prompt, size_t promptlen)
 { 
 	size_t len = 0;
 	hglb.r = 1; 
@@ -53,14 +140,14 @@ size_t gshline(char *l, char *prompt, size_t promptlen)
 	while ( hglb.r )
 	{
 		determinewin(); 
-		gshprint(l, len, prompt, promptlen); 
-       		len = gshgetch(l);
+		greadprint(l, len, prompt, promptlen); 
+       		len = greadgetch(l);
 	}
 
 	return len;
 }
 
-size_t gshgetch(char *l)
+size_t greadgetch(char *l)
 {
         static size_t len = 0;
 	static size_t ret = 0;
@@ -155,7 +242,7 @@ size_t gshgetch(char *l)
 	return len;
 }
 
-void gshprint(char *l, size_t len, char *prompt, size_t plen)
+void greadprint(char *l, size_t len, char *prompt, size_t plen)
 { 
 	
         static size_t deep = 0;
@@ -203,7 +290,7 @@ void gshprint(char *l, size_t len, char *prompt, size_t plen)
         }
 }
 
-int gsh_history(char *l, size_t len)
+int gread_history(char *l, size_t len)
 {
 	if ( len > 1)
         { 
@@ -216,12 +303,3 @@ int gsh_history(char *l, size_t len)
 	hglb.c = hglb.t;
 	return 1;
 }
-
-void determinewin(void)
-{
-        struct winsize w;
-        ioctl(0, TIOCGWINSZ, &w);
-        hglb.w = w.ws_col;
-        hglb.h = w.ws_row;
-}
-
