@@ -8,8 +8,8 @@
 #include <limits.h>
 #include <termios.h>
 #include <sys/ioctl.h>
-#include "../lib/hexen.h"
-#include "new-readline.h"
+#include "hexen.h"
+#include "readline.h"
 
 
 int main(void)
