@@ -3,7 +3,7 @@
 */ 
 
 #include "stdio.h"
-#include "getch.h"
+
 
 /* Cursor movement */
 #define T_CURSUP1ROW	"\033[A"	/* [A	Cursor up one row -- stop at top of screen 	*/
