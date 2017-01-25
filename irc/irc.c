@@ -20,11 +20,11 @@
 #include "../lib/string.h"
 #include "../lib/hexen.h"
 #include "../lib/dial.h"
-#include "../lib/ircline.h"
+#include "../lib/readline.h"
 #include "../lib/date.h"
 
 /* 
-        2016 (C) Copyright, `Irc', CM Graff MIT/BSD Licensed 
+        2016-2017 (C) Copyright, `Irc', CM Graff
         See LICENSE for copying details.
 */
 
@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
 			drawscreen();
 			glb.w = hglb.w = win.ws_col;
         		glb.h = hglb.h = win.ws_row;
-			gshprint(glb.userline, len, "[[ ]]>> ", 8);
+			ircprint(glb.userline, len, "[[ ]]>> ", 8);
 			len = ircgetch(glb.userline);
 			continue;
 		} 
@@ -208,7 +208,7 @@ int main(int argc, char *argv[])
 				sckno = z;
 				readin(); 
 				drawscreen();
-				gshprint(glb.userline, len, "[[ ]]>> ", 8); 
+				ircprint(glb.userline, len, "[[ ]]>> ", 8); 
 				sckno = curserv;
 			} 
 		}
@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
                        	glb.w = hglb.w = win.ws_col;
                        	glb.h = hglb.h = win.ws_row;
                        	len = ircgetch(glb.userline);
-                       	gshprint(glb.userline, len, "[[ ]]>> ", 8);
+                       	ircprint(glb.userline, len, "[[ ]]>> ", 8);
                	}
 	} 
 	
@@ -599,7 +599,7 @@ size_t ircgetch(char *l)
                 uparse(l);
 		drawscreen();
 		if ( ret > 0 )
-			gsh_history(l, ret); 
+			gread_history(l, ret); 
                 return 0;
 		//return ret;
         case K_BACKSPACE:
