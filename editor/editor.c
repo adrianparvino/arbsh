@@ -105,7 +105,7 @@ static void *erealloc(void *, size_t);
 static void f_delete(void);
 static void f_insert(void); 
 
-size_t edgetch(void);
+size_t edfastgetch(void);
 static Filepos i_addtext(char *, Filepos); 
 static void i_calcvlen(Line * l); 
 static bool i_deltext(Filepos, Filepos);
@@ -353,7 +353,7 @@ void i_edit(void)
 			winchg=0; 
 		}
 		i_update(); 
-		edgetch();
+		edfastgetch();
 	}
 } 
 
@@ -607,18 +607,18 @@ Filepos m_prevscr(Filepos pos) {
 	return pos;
 } 
 
-size_t edgetch(void)
+size_t edfastgetch(void)
 {
 	static size_t len = 0; 
 	  
-	ch = getch(); 
+	ch = fastgetch(); 
 
 	switch (ch) { 
 	case K_ESCAPE: 
-		ch = getch(); 
+		ch = fastgetch(); 
 		switch (ch) {
 			case '[': 
-				ch = getch(); 
+				ch = fastgetch(); 
 				switch (ch) { 
 					case 'A': /* arrow up */ 
 						fcur = (Filepos)m_prevline(fcur); 
@@ -634,15 +634,15 @@ size_t edgetch(void)
 						break;
 					case 'H': /* Home */ 
 						fcur = (Filepos)m_bol(fcur);
-						ch = getch(); 
+						ch = fastgetch(); 
 						break;
 					case '5': /* page up */ 
 						fcur = (Filepos)m_prevscr(fcur);
-						ch = getch(); 
+						ch = fastgetch(); 
 						break; 
 					case '6': /* page down */ 
 						fcur = (Filepos)m_nextscr(fcur);
-						ch = getch(); 
+						ch = fastgetch(); 
 						break;
 			}
 		}

@@ -65,7 +65,7 @@ char cb[7] = { DELIM };	/* Used to store input */
 /* function prototypes */
 void *ecalloc(size_t, size_t);
 void *erealloc(void *, size_t); 
-size_t edgetch(void);
+size_t edfastgetch(void);
 void f_delete(void);
 void f_insert(void);
 void i_calcvlen(struct Line * l); 
@@ -283,7 +283,7 @@ void i_edit(void)
 			winchg=0; 
 		}
 		i_update(); 
-		edgetch();
+		edfastgetch();
 	}
 } 
 
@@ -507,18 +507,18 @@ struct filepos m_prevline(struct filepos pos) {
 	return pos;
 } 
 
-size_t edgetch(void)
+size_t edfastgetch(void)
 {
 	static size_t len = 0; 
 	  
-	ch = getch(); 
+	ch = fastgetch(); 
 
 	switch (ch) { 
 	case K_ESCAPE: 
-		ch = getch(); 
+		ch = fastgetch(); 
 		switch (ch) {
 			case '[': 
-				ch = getch(); 
+				ch = fastgetch(); 
 				switch (ch) { 
 					case 'A': /* arrow up */ 
 						fcur = m_prevline(fcur); 
