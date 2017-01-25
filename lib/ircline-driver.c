@@ -9,7 +9,7 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 #include "../lib/hexen.h"
-#include "../lib/ircline.h"
+#include "new-readline.h"
 
 
 int main(void)
@@ -21,10 +21,9 @@ int main(void)
         while ( 1 )
         {
 		userline[0] = '\0'; 
-                len = gshline(userline, "[ircline]>> ", 12); 
-		//len = gshline(userline, "", 0);
+                len = ircline(userline, "[ircline]>> ", 12);
 		printf ("Finished line was: \n%s\n", userline);
-		gsh_history(userline, len); 
+		gread_history(userline, len); 
         }
 	free(hist);
         return 0;
