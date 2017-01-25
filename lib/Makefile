@@ -12,6 +12,8 @@ all:
 	$(CC) getline-driver.c -o getline-driver $(CFLAGS) -lm
 	$(CC) getline-control.c -o getline-control $(CFLAGS) -lm
 	$(CC) getchar-driver.c -o getchar-driver $(CFLAGS) -lm
+	$(CC) malloc-driver.c -o malloc-driver $(CFLAGS) -lm
+
 	
 
 clean:
@@ -26,4 +28,5 @@ clean:
 	$(RM) getline-driver
 	$(RM) getline-control
 	$(RM) getchar-driver
+	$(RM) malloc-driver
 
