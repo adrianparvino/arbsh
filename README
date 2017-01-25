@@ -6,32 +6,52 @@ DESCRIPTION:
 	Grafland is a collection of unique; userland tools, cross
 	compiling toolchains, math libraries, arbitrary precision 
 	math libraries, terminal rendering libraries, standard C 
-	libraries, an irc client, a shell and a cross build system.
+	libraries, readline line editing libraries, an irc client, 
+	a shell and a cross build system.
 
 	It also contains a window manager, editor, system monitor
 	and other useful tools and shell scripts.
 	
-	Each subdirectory has a README which documents its usage.  
+	Each subdirectory has a README which documents its usage. 
+	Navigate to a subdiurectory of grafland to learn more about
+	the project it contains.
+	
 
 HIER:
 -----
 
 	bin/
 		Userland applications written in C (native)
+
+		cp, ls, fetch, dd, find and many more, implemented from scratch
+		to subsets of POSIX specifications.
+
 	lib/
 		Standard C library components and helper libraries, (native)
 		
-		Gshline. An editline/readline like implementation. This
-		library is used to supply line editing and history to
+		Readline line editing. An editline/readline like implementation.
+		This library is used to supply line editing and history to
 		the graff shell (Gsh) and grafland irc client. The latter
-		is supplied with a unique ircline() function (native).
+		is supplied with a unique ircline() function (native).  
+
+		Hexen, a minimal curses / conio style library. Hexen supplies
+		grafland's terminal capabilities and ultimately powers grafland's
+		readline/editline/ircline implementation, editor, irc client
+		and system monitor.
 
 	math/
 		Arbitrary precision string and bigint / bignum functions in C.
+			-A bignum data type implementations.
+
 		Transcendental mathematics functions written in C (native).
+			-Operate on and tranform double precision types.
+			-sqrt, atan, sin, jn, log and many more such math.h
+			 function implementations. This library covers most of
+			 the math.h / libm normative cases.
 	docs/
-		Whitepages I have written to document various OS and books 
-		(native).
+		Whitepages written specifically for grafland, but which document
+		outside software and operating systems. This directory contains
+		dozens of unique documents on building micro sized unix systems.
 	editor/
 		A native editor.
 	wm/
