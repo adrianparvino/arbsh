@@ -27,6 +27,8 @@ struct hist {			/* history lines	*/
 	size_t len;		/* line length		*/
 }*hist;
 
+struct winsize win;
+
 /* functions */
 static int readchar(void)
 {
@@ -126,7 +128,6 @@ void ircprint(char *l, size_t len, char *prompt, size_t plen)
 
 void determinewin(void)
 { 
-	struct winsize win;
 	ioctl(0, TIOCGWINSZ, &win);
 	hglb.w = win.ws_col;
 	hglb.h = win.ws_row;
