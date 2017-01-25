@@ -89,7 +89,7 @@ int chfind(char *);
 int delconn(char *s);
 void detectmessage(char *, char *, char *, char *);
 void drawscreen(void);
-size_t ircgetch(char *); 
+size_t ircfastgetch(char *); 
 void panic(const char *);
 void printout(void); 
 int readin(void);
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 			glb.w = hglb.w = win.ws_col;
         		glb.h = hglb.h = win.ws_row;
 			ircprint(glb.userline, len, "[[ ]]>> ", 8);
-			len = ircgetch(glb.userline);
+			len = ircfastgetch(glb.userline);
 			continue;
 		} 
 		
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
                		determinewin();
                        	glb.w = hglb.w = win.ws_col;
                        	glb.h = hglb.h = win.ws_row;
-                       	len = ircgetch(glb.userline);
+                       	len = ircfastgetch(glb.userline);
                        	ircprint(glb.userline, len, "[[ ]]>> ", 8);
                	}
 	} 
@@ -515,21 +515,21 @@ void accumulator(int cn, char *format, char *line1, char *line2)
 	c->real += (n + 1); 
 } 
 
-size_t ircgetch(char *l)
+size_t ircfastgetch(char *l)
 {
         static size_t len = 0;
         static size_t ret = 0;
         size_t z = 0;
         int c;
 
-        c = getch();
+        c = fastgetch();
 
         switch (c) {
         case K_ESCAPE:
-                c = getch();
+                c = fastgetch();
                 switch (c) {
                 case '[':
-                        c = getch();
+                        c = fastgetch();
                         switch (c) {
                         case 'A': /* arrow up */
                                 if ( hglb.c > 0 )
@@ -561,13 +561,13 @@ size_t ircgetch(char *l)
                                 hglb.laro = len;
                                 break;
                         case '5': /* page up */ 
-				c = getch(); 
+				c = fastgetch(); 
 				if ( ss[sckno].chl[ss[sckno].ch].scroll < (ss[sckno].chl[ss[sckno].ch].real - (glb.w + glb.w)))
                                         ss[sckno].chl[ss[sckno].ch].scroll += glb.w;
 				drawscreen();
                                 break;
                         case '6': /* page down */
-				c = getch();
+				c = fastgetch();
 				if ( ss[sckno].chl[ss[sckno].ch].scroll > 0)
                                         ss[sckno].chl[ss[sckno].ch].scroll -= glb.w;
                                 drawscreen();
