@@ -1,5 +1,5 @@
 /* 
-	Copyright 2016, CM Graff, hexen.h 
+	Copyright 2016-2017, CM Graff, hexen.h 
 */ 
 
 #include "stdio.h"
