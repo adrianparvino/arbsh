@@ -13,7 +13,7 @@ LIBRARIES:
 	2) Utilities and drivers designed to test the C standard library.
 
 	3) Components of the C standard library which have been
-	   implmented specifically for GrafOS. 
+	   implmented specifically for GrafOS.
 
 	4) Hexen, a curses / conio replacement library
 
@@ -136,15 +136,21 @@ TESTING:
 REFERENCES:
 -----------
 
-	http://www.exploringbinary.com/how-strtod-works-and-sometimes-doesnt/
 
-	https://groups.google.com/forum/m/#!topic/comp.lang.tcl/83RL61OcuWM
+	strtod and printing doubles:
+
+		http://www.exploringbinary.com/how-strtod-works-and-sometimes-doesnt/
+
+		https://groups.google.com/forum/m/#!topic/comp.lang.tcl/83RL61OcuWM
+
+		http://krashan.ppa.pl/articles/stringtofloat/
 
 
 CONTACT:
 --------
 
 	CM Graff cm0graff@gmail.com
+
 
 
 
