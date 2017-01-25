@@ -14,7 +14,7 @@
 /* waitpid() */
 #include <sys/wait.h>
 
-/* gshline() */
+/* greadline() */
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <stdint.h>
@@ -27,7 +27,7 @@
 */
 
 
-#define GSHPROMPT	"gsh>> "
+#define GSHPROMPT	"gread>> "
 #define GSHPROMPTLEN	6
 
 struct glb
@@ -137,11 +137,11 @@ int main(int argc, char **argv)
 		/* get user input */
 		else if ( ! argc ) 
 		{ 
-			if (!(len = gshline(l, GSHPROMPT, GSHPROMPTLEN)))
+			if (!(len = greadline(l, GSHPROMPT, GSHPROMPTLEN)))
 				continue;
 			else {
 		
-				gsh_history(l, len ); 
+				gread_history(l, len ); 
 				++glb.count;
 			}
 		}
