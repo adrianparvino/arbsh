@@ -133,10 +133,21 @@ TESTING:
 		./stdio-driver
 		./readline-driver
 
+REFERENCES:
+-----------
+
+	http://www.exploringbinary.com/how-strtod-works-and-sometimes-doesnt/
+
+	https://groups.google.com/forum/m/#!topic/comp.lang.tcl/83RL61OcuWM
+
 
 CONTACT:
 --------
 
 	CM Graff cm0graff@gmail.com
+
+
+
+
 
 
