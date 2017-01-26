@@ -1,4 +1,7 @@
-#define HASHSIZE 10000
+
+/* globals */
+int hashsize = 4096;
+int hashprime = 31;
 
 /* structures */
 struct snlist {     /* table entry: */
@@ -13,8 +16,9 @@ struct inlist {
 	int defn;
 };
 
-static struct snlist *shashtab[HASHSIZE]; /* pointer table */
-static struct inlist *ihashtab[HASHSIZE]; 
+/* TODO: Dynamically allocate the pointer table */
+static struct snlist *shashtab[4096]; 
+static struct inlist *ihashtab[4096]; 
 
 /* function prototypes */
 unsigned shash(char *);
@@ -29,15 +33,15 @@ unsigned shash(char *s)
 {
 	unsigned shashval;
 	for (shashval = 0; *s != '\0'; s++)
-		shashval = *s + 31 * shashval;
-	return shashval % HASHSIZE;
+		shashval = *s + hashprime * shashval;
+	return shashval % hashsize;
 }
 
 unsigned ihash(int s)
 {
 	unsigned ihashval = 1;
-	ihashval = s + 31 * ihashval;
-	return ihashval % HASHSIZE;
+	ihashval = s + hashprime * ihashval;
+	return ihashval % hashsize;
 } 
 
 struct snlist *slookup(char *s)
