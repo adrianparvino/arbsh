@@ -23,9 +23,7 @@ LIBRARIES:
 
 
 C STANDARD LIBRARY:
--------------------
-
-	( an incomplete list )
+------------------- 
 
 	stdio.h
 	
@@ -101,6 +99,140 @@ HEXEN CURSOR LIBRARY:
 		int ansiaddmem(char, int, size_t);
 		size_t ansiaddstr(char *, size_t);
 		int ansiredraw(size_t, size_t, size_t, size_t);
+
+	
+	DESCRIPTION
+
+	The ansihexen family of functions are micro sized alternatives to the
+	curses API.
+
+	int ansigetch(void);
+		ansigetch() is a very heavy getchar-like function which stores,
+		changes and then returns the terminal settings to normal. Some
+		programmers may choose to use a simple call to read() for this
+		purpose instead. Ansigetch() returns immediately upon receiving 
+		any character.
+
+		ansigetch() returns -1 upon error. Otherwise it returns the 
+		character it read.
+
+	int termcatch(int flags, int reset);
+		termcatch() takes a series of bitflag arguments for termios.h.
+		The second field can be either a 0 or 1, which saves or restores
+		the user's terminal settings.
+	
+			Example:
+				termcatch(~(ICANON | ECHO), 0);
+	
+		termcatch() returns -1 upon error, 0 upon success.
+
+	void setcursor(size_t x, size_t y) 
+		setcursor() sets the cursor to the specified x,y coordinates on
+		the terminal.  
+
+			Set the cursor to row 1 column 1: |x    |
+							  |     |
+    							  |     |    
+				setcursor(1. 1);
+
+
+			Set the cursor to row 2 column 3: |     |
+                                                          |  x  |
+                                                          |     |
+                                setcursor(2. 3);
+
+	int ansiinit(void); 
+		ansinit() initializes the ansiglb structure which has the following 
+		members:
+		struct ansiglb
+                	size_t row;     /* global rows    */
+                	size_t col;     /* global columns */
+                	size_t t;       /* total windows  */
+                	size_t c; 	/* current window */
+	
+	
+	The "dothink" global allows ansihexen to know that the screen has changed
+	and to allow the redraw logic to pass. Setting it to "1" allows the redraw
+	logic to pass over.
+
+	int dothink = 0; /* allow redraw logic to pass during screen changes */ 
+
+	struct ANSIWINDOW
+        	size_t len;		/* length of primary buffer 	*/
+		size_t counter;		/* A countdown mechanism	*/
+        	char *ansiwinbuf;	/* primary buffer 		*/
+		char *ansilastmap;	/* last buffer printed 		*/
+
+	ansigetch --	get a char of user input and return it
+	termcatch -- 	set the terminal
+
+	RETURN VALUE
+
+	These functions return the character written, or the number of characters
+	written upon success, or -1 upon error.
+
+	CONFORMING TO
+
+	The ansihexen() family of function seeks compliance with ANSI terminal
+	specifications.
+	
+
+		
+
+READLINE LINE EDITING LIBRARY:
+------------------------------ 
+
+	readline.h
+		
+		size_t ircline(char *, char *, size_t);
+		void ircprint(char *, size_t, char *, size_t); 
+		void determinewin(void); 
+		static int readchar(void);
+		size_t greadline(char *, char *, size_t);
+		size_t greadgetch(char *);
+		void greadprint(char *, size_t, char *, size_t);
+		int gread_history(char *, size_t); 
+
+	An editline()/readline() like function.
+
+	This function is intended to be used with Gsh, 
+	(The Graff Shell). However, it can also be used as a 
+	drop in replacement for other line retrieval functions.  
+
+	Up arrow	Scroll history
+	Down arrow	Scroll history
+
+	Tab 		Not implemented
+	Left arrow	Cursor back one pos
+	Right arrow	Cursor forward one pos
+
+	Home		Cursor to start of line
+
+
+
+	Other functions:
+
+	ircline.h / ircline()
+	
+	Ircline() is similiar to readline except that the text remains
+	on a single line and scrolls from side to side. 
+
+	This function is not very straight forward to use. If you want
+	to use it in an irc client you'll have to hack the function 
+	ircgetch apart and use it in an asychronous event loop. An
+	example of how to do this can be ound in grafland's irc client. 
+	This can be fixed at a later date by adding function pointer 
+	entry points to the API (then all other key catches could be 
+	added as well).
+
+	The builtin line editing key catches are as follows:
+		Left arrow      Cursor back one pos
+        	Right arrow     Cursor forward one pos 
+       		Home            Cursor to start of line
+
+	Add other key catches as needed.
+
+
 
 TEST DRIVERS:
 -------------
