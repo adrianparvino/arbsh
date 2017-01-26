@@ -13,6 +13,7 @@ all:
 	$(CC) getline-control.c -o getline-control $(CFLAGS) -lm
 	$(CC) getchar-driver.c -o getchar-driver $(CFLAGS) -lm
 	$(CC) malloc-driver.c -o malloc-driver $(CFLAGS) -lm
+	$(CC) hash-driver.c -o hash-driver $(CFLAGS) -lm
 
 	
 
@@ -29,4 +30,5 @@ clean:
 	$(RM) getline-control
 	$(RM) getchar-driver
 	$(RM) malloc-driver
+	$(RM) hash-driver
 
