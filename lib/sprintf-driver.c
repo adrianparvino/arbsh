@@ -9,17 +9,16 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
-#include "string.h"
-#include "hash.h"
+//#include "string.h"
 #include "stdio.h"
+//#include "stdlib.h"
 
 int find_pattern(char *, size_t, size_t);
 
 int main(int argc, char *argv[])
 {
-
 	if (argc > 1)
-		find_pattern(argv[1], gstrlen(argv[1]), 0);
+		find_pattern(argv[1], strlen(argv[1]), 0);
 	else
 		find_pattern(".", 1, 0);
 	return 0;
@@ -40,23 +39,23 @@ int find_pattern(char *path, size_t tot, size_t last)
 		d = readdir(dir); 
 		while (d) 
 		{ 
-			dlen = gstrlen(d->d_name); 
+			dlen = strlen(d->d_name); 
 			
 			last = (tot + dlen + 2); /* +2 = '/' + '\0' */
 			spath = realloc(spath, last);
 			if (!(spath))
 				return -1;
-			tot = sprintf(spath, "%s/%s", path, d->d_name);
-			sinstall(spath, spath);
-			if ( gstrcmp( ".", d->d_name) && 
-			   ( gstrcmp( "..", d->d_name)) )
+			tot = gsprintf(spath, "%s/%s", path, d->d_name);
+	
+			if ( strcmp( ".", d->d_name) && 
+			   ( strcmp( "..", d->d_name)) )
 			{
 				printf("%s\n", spath);
 			}
 
 			if ( d->d_type == DT_DIR &&
-			   ( gstrcmp( ".", d->d_name)) &&
-			   ( gstrcmp( "..", d->d_name))) 
+			   ( strcmp( ".", d->d_name)) &&
+			   ( strcmp( "..", d->d_name))) 
 				find_pattern(spath, tot, last); 
 			d = readdir(dir); 
 		}
