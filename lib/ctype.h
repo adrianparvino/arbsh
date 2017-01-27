@@ -1,6 +1,5 @@
-/* ctype.h character types */
-
-/*
+/* 
+	ctype.h  - character types 
 
 	Copyright 2017, CM Graff, 'ctype.h'
 	
@@ -129,7 +128,6 @@ int gisspace(int x)
 		case '\t':
 			return ret;
 			break;
-		
 		case '\n':
 			return ret;
 			break;
@@ -168,17 +166,19 @@ int gisxdigit(int x)
 }
 
 int gtolower(int x)
-{
-	/* should probably check for valid inputs first */
-	return x - 26;
+{ 
+	if (gisupper(x))
+		return ('a' + x - 'A');
+	else 
+		return x;
 }
 
 int gtoupper(int x)
-{
-	/* should probably check for valid inputs first */
-	return x + 26;
+{ 
+	if (gislower(x))
+		return ('A' + x - 'a');
+	else
+		return x;
 }
-
-
 
 
