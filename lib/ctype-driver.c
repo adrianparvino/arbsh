@@ -59,11 +59,11 @@ int main()
 			printf("isxdigit\n");
 		printf("\n\n");
 			
-		//printf("gtolower %c\n", gtolower(i));
-		//printf("tolower %c\n", tolower(i));
+		printf("gtolower %c\n", gtolower(i));
+		printf("tolower %c\n", tolower(i));
 	
-		//printf("gtoupper %c\n", gtoupper(i));
-		//printf("toupper %c\n", toupper(i)); 
+		printf("gtoupper %c\n", gtoupper(i));
+		printf("toupper %c\n", toupper(i)); 
 	}
 
 	return 0;
