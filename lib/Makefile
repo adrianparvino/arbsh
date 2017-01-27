@@ -15,6 +15,7 @@ all:
 	$(CC) malloc-driver.c -o malloc-driver $(CFLAGS) -lm
 	$(CC) hash-driver.c -o hash-driver $(CFLAGS) -lm
 	$(CC) sprintf-driver.c -o sprintf-driver $(CFLAGS) -lm
+	$(CC) ctype-driver.c -o ctype-driver $(CFLAGS) -lm
 
 	
 
@@ -33,4 +34,5 @@ clean:
 	$(RM) malloc-driver
 	$(RM) hash-driver
 	$(RM) sprintf-driver
+	$(RM) ctype-driver
 
