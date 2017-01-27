@@ -1,7 +1,8 @@
-#include <ctype.h>
+//#include <ctype.h>
 #include <sys/mman.h> 
 #include <sys/syscall.h>
 #define NALLOC 	10024 
+#include "ctype.h"
 #include "string.h"
 
 /*
@@ -54,16 +55,16 @@ double gatof(char s[])
 {
 	double val, power;
 	size_t i, sign;
-	for (i = 0; isspace(s[i]); i++) /* skip white space */
+	for (i = 0; gisspace(s[i]); i++) /* skip white space */
 		;
 	sign = (s[i] == '-') ? -1 : 1;
 	if (s[i] == '+' || s[i] == '-')
 		i++;
-	for (val = 0.0; isdigit(s[i]); i++)
+	for (val = 0.0; gisdigit(s[i]); i++)
 		val = 10.0 * val + (s[i] - '0');
 	if (s[i] == '.')
 		i++;
-	for (power = 1.0; isdigit(s[i]); i++) 
+	for (power = 1.0; gisdigit(s[i]); i++) 
 	{
 		val = 10.0 * val + (s[i] - '0');
 		power *= 10;
