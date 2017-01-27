@@ -1,38 +1,49 @@
 /* ctype.h character types */
 
+/*
+
+	Copyright 2017, CM Graff, 'ctype.h'
+	
+	This prototype list adhers to the POSIX 2016
+	non-xsi text for ctype.h.
+
+	TODO: Create locale_t type
+*/
+
 /* function prototypes */
-int gisalnum(int); 
-int gisalpha(int); 
-int gisblank(int); 
-int giscntrl(int); 
-int gisdigit(int); 
-int gisgraph(int); 
-int gislower(int); 
-int gisprint(int); 
-int gispunct(int); 
-int gisspace(int); 
-int gisupper(int); 
-int gisxdigit(int); 
-int gtolower(int); 
+int gisalnum(int);
+int gisalpha(int);
+int gisblank(int);
+int giscntrl(int);
+int gisdigit(int);
+int gisgraph(int);
+int gislower(int);
+int gisprint(int);
+int gispunct(int);
+int gisspace(int);
+int gisupper(int);
+int gisxdigit(int);
+int gtolower(int);
 int gtoupper(int);
 
 
 /* functions */
-
-/*
-	These ctype functions are a bit heavy, but designed so that
-	ret = 1, can be easily changed to ret =x, or so that new
-	char values can be added as needed.
-*/
-
-int gisalnum(int x) 
+int gisalnum(int x)
 {
-	return x;
+	/* Use the identity */
+	if (gisalpha(x) || gisdigit(x))
+		return 1;
+	return 0;
 }
+
 int gisalpha(int x) 
 {
-	return x;
+	/* Use the identity */
+	if (gisupper(x) || gislower(x))
+		return 1;
+	return 0;
 }
+
 int gisblank(int x) 
 {
 	int ret = 1;
@@ -50,36 +61,59 @@ int gisblank(int x)
 	}
 	return ret;
 }
-int giscntrl(int x) 
+
+int giscntrl(int x)
 {
-	return x;
+	if (x >= '\0' && x < ' ' )
+		return 1;
+	return 0;
 }
+
 int gisdigit(int x) 
 {
 	if ( x >= '0' && x <= '9')
 		return 1;
 	return 0;
-
 }
+
 int gisgraph(int x) 
 {
-	return x;
+	/* Use the identity */
+	if (x == ' ')
+		return 0;
+	if (gisprint(x))
+		return 1;
+	return 0;
 }
+
 int gislower(int x) 
 {
-	/* a table might be faster here */
 	if (x >= 'a' && x <= 'z')
 		return 1;
 	return 0;
 }
-int gisprint(int x) 
+
+int gisprint(int x)
 {
-	return x;
+	/* Use the identity */
+	if (gisspace(x) == 0)
+		return 1;
+	return 0;
 }
-int gispunct(int x) 
+
+int gispunct(int x)
 {
-	return x;
+	if (x >= '!' && x <= '/')
+		return 1;
+	if (x >= ':' && x <= '@')
+		return 1;
+	if (x >= '[' && x <= '`')
+		return 1;
+	if (x >= '{' && x <= '~')
+		return 1;
+	return 0;
 }
+
 int gisspace(int x) 
 {
 	int ret = 1;
@@ -110,22 +144,35 @@ int gisspace(int x)
 	}
 	return ret;
 }
+
 int gisupper(int x) 
-{
-	
-	return x;
+{ 
+	if (x >= 'A' && x <= 'Z')
+		return 1;
+	return 0;
 }
-int gisxdigit(int x) 
+
+int gisxdigit(int x)
 {
-	return x;
+	if (gisdigit(x))
+		return 1;
+	if (x >= 'a' && x <= 'f')
+		return 1;
+	if (x >= 'A' && x <= 'F')
+		return 1;
+	return 0;
 }
+
 int gtolower(int x)
 {
-	return x;
+	/* should probably check for valid inputs first */
+	return x - 26;
 }
+
 int gtoupper(int x)
 {
-	return x;
+	/* should probably check for valid inputs first */
+	return x + 26;
 }
 
 
