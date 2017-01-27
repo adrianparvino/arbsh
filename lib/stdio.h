@@ -147,6 +147,7 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 			case 's':
 				for (sval = va_arg(ap, char *); *sval; sval++) 
 					out[i++] = *sval; 
+					
 				break;
 			case 'd': 
 				dval = va_arg(ap, int);
@@ -195,6 +196,7 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 				break;
 			default:
 				out[i++] = *p;
+				
 				break;
 		}
 	}
@@ -205,7 +207,8 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 		i = lim;
 	}
 
-	out[i + 1] = '\0';
+	out[i] = '\0';
+	//out[i + 1] = '\0';
 
 	if (fp == NULL && flag == 0 )
 		i = write(fd, out, i); /* if writing to an fd, then redefine the ret */
