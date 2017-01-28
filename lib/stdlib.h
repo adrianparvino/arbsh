@@ -5,18 +5,6 @@
 #include "ctype.h"
 #include "string.h"
 
-/*
-void* gsbrk(intptr_t increment)
-{
-	void *new, *old = (void *)syscall(__NR_brk, 0);
-
-	new = (void *)syscall(__NR_brk, ((uintptr_t)old) + increment);
-	
-	return (((uintptr_t)new) == (((uintptr_t)old) + increment)) ? old :
-	(void *)-1;
-}
-*/
-
 typedef long Align;
 
 union header {			
