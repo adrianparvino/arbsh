@@ -9,12 +9,11 @@
  * Modified by CM Graff for GrafOS 
  */ 
 
-//#include "string.h" 
 
-char *optarg; /* Global argument pointer. */
-int optind = 0; /* Global argv index. */
+char *optarg; 			/* Global argument pointer. */
+int optind = 0;			/* Global argv index. */
 
-static char *scan = NULL; /* Private scan pointer. */
+static char *scan = NULL;	/* Private scan pointer. */
 
 int ggetopt(int argc, char *argv[], char *optstring)
 {
@@ -41,7 +40,7 @@ int ggetopt(int argc, char *argv[], char *optstring)
 	}
 
 	c = *scan++;
-	place = gstrchr(optstring, c);
+	place = strchr(optstring, c);
 
 	if (!place || c == ':') 
 		return '?';
@@ -63,3 +62,24 @@ int ggetopt(int argc, char *argv[], char *optstring)
 
 	return c;
 }
+
+
+
+
+#ifdef __NR_brk
+void* gsbrk(intptr_t x)
+{
+	void *new;
+	void *old;
+
+	old = (void *)syscall(__NR_brk, 0);
+
+	new = (void *)syscall(__NR_brk, ((uintptr_t)old) + x);
+
+	if ( (((uintptr_t)new) == (((uintptr_t)old) + x)) )
+		return old;
+
+	return (void *)-1;
+}
+#endif
+
