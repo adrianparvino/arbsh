@@ -1,12 +1,18 @@
-/* 
+/*
 	ctype.h  - character types 
 
-	Copyright 2017, CM Graff, 'ctype.h'
+	Copyright 2017, CM Graff, 'ctype.h', a ctype.h
+	implementation.
+
+	See grafland/LICENSE for copying details.
 	
 	This prototype list adhers to the POSIX 2016
-	non-xsi text for ctype.h.
-
-	TODO: Create locale_t type
+	non-xsi text for ctype.h.  
+	
+	TODO: POSIX conformity: 
+		Create locale_t type 
+	TODO: Algorithm changes 
+		Use lookup tables instead of ranges
 */
 
 /* function prototypes */
