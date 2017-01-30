@@ -18,6 +18,7 @@ all:
 	$(CC) ctype-driver.c -o ctype-driver $(CFLAGS) -lm
 	$(CC) getopt-driver.c -o getopt-driver $(CFLAGS) -lm
 	$(CC) fwrite-driver.c -o fwrite-driver $(CFLAGS) -lm
+	$(CC) hash-driver.c -o hash-driver $(CFLAGS) -lm
 
 	
 
@@ -39,4 +40,6 @@ clean:
 	$(RM) ctype-driver
 	$(RM) getopt-driver
 	$(RM) fwrite-driver
+	$(RM) hash-driver
+
 
