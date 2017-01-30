@@ -13,7 +13,7 @@ size_t primes[9] = {
 	131071,
 	262139,
 	524287,
-	1327144009,
+	1327144009
 };
 
 /* numbuckets * prime = domain */
