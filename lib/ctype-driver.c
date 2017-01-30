@@ -5,7 +5,7 @@
 int main()
 {
 	size_t i = 0;
-	for ( ; i < 127 ; i++)
+	for ( ; i < 130 ; i++)
 	{
 		int gisalnum(int);
 		
@@ -57,6 +57,13 @@ int main()
 			printf("gisxdigit\n");
 		if (isxdigit(i))
 			printf("isxdigit\n");
+		
+		
+		if (gisascii(i))
+			printf("gisascii\n");
+		if (isascii(i))
+			printf("isascii\n");
+			
 		printf("\n\n");
 			
 		printf("gtolower %c\n", gtolower(i));
