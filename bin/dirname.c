@@ -12,26 +12,22 @@
 */
 
 int main(int argc, char *argv[]) 
-{
-	char *hold = NULL;
-	size_t len = 0;
-	size_t i = 0;
-	size_t j = 0;
-	size_t k = 0;
-	char *strip = NULL;
-
+{ 
+	char *hold;
+	char *hold2;
+	char string[4096] = { 0 };
 	if (argc < 2 )
 	{
 		write(2, "Dirname needs > 1 arg\n", 22);
 		return 1;
-	}
+	} 
+	strcpy(string, argv[1]);
+	hold = dirname(string);
+	printf("%s\n", hold);
 
-	hold = gdirname(argv[1]);
-	i = len = strlen(hold);
-
-	if (!hold || !len)
-		return 1;
-
+	
+	hold2 = gdirname(argv[1]);
+	printf("%s\n", hold2);
 	return 0;
 }
 
