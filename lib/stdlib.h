@@ -97,12 +97,11 @@ void* gmalloc(size_t nbytes)
 
 Header *morecore(unsigned nu)
 {
-	char *cp, *isbrk(intptr_t);
+	char *cp;
 	void gfree(void*);
 	Header *up;
 	if (nu < NALLOC)
 		nu = NALLOC;
-	/* Old K&R sbrk() changed out to a more modern mmap() technique */
 	/* cp = sbrk(nu * sizeof(Header)); */
 	cp = mmap( 0, nu* sizeof(Header), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
 	if (cp == (char *) -1)	
