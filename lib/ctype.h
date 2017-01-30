@@ -214,17 +214,3 @@ int gisascii(int x)
 	else 
 		return 0; 
 }
-/*
-	ctype.h  - character types 
-
-	Copyright 2017, CM Graff, 'ctype.h', a ctype.h
-	implementation.
-
-	See grafland/LICENSE for copying details.
-	
-	This prototype list adhers to the POSIX 2016
-	non-xsi text for ctype.h.  
-	
-	TODO: POSIX conformity: 
-		Create locale_t type
-
