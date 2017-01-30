@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include "../lib/limits.h"
+#include <stdlib.h>
 #include "../lib/string.h"
 
 /* 
