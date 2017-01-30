@@ -11,9 +11,32 @@
 	
 	TODO: POSIX conformity: 
 		Create locale_t type
-	TODO: Algorithm changes 
-		Use lookup tables instead of ranges
 	TODO: Use ints instead of character constants
+
+	
+	Useful range tokens:
+		'\0' ==   0 
+		'\t' ==   9
+		'\n' ==  10
+		'\v' ==  11
+		'\f' ==  12
+		'\r' ==  13 
+		' '  ==  32
+		'!'  ==  33
+		'/'  ==  47
+		'0'  ==  49
+		'9'  ==  57 
+		':'  ==  58
+		'@'  ==  64 
+		'A'  ==  65
+		'F'  ==  70 
+		'Z'  ==  90
+		'['  ==  91
+		'`'  ==  96
+		'a'  ==  97
+		'z'  == 122 
+		'{'  == 123 
+		'~'  == 126 
 */
 
 /* function prototypes */
@@ -191,3 +214,17 @@ int gisascii(int x)
 	else 
 		return 0; 
 }
+/*
+	ctype.h  - character types 
+
+	Copyright 2017, CM Graff, 'ctype.h', a ctype.h
+	implementation.
+
+	See grafland/LICENSE for copying details.
+	
+	This prototype list adhers to the POSIX 2016
+	non-xsi text for ctype.h.  
+	
+	TODO: POSIX conformity: 
+		Create locale_t type
+
