@@ -17,6 +17,7 @@ all:
 	$(CC) sprintf-driver.c -o sprintf-driver $(CFLAGS) -lm
 	$(CC) ctype-driver.c -o ctype-driver $(CFLAGS) -lm
 	$(CC) getopt-driver.c -o getopt-driver $(CFLAGS) -lm
+	$(CC) fwrite-driver.c -o fwrite-driver $(CFLAGS) -lm
 
 	
 
@@ -37,4 +38,5 @@ clean:
 	$(RM) sprintf-driver
 	$(RM) ctype-driver
 	$(RM) getopt-driver
+	$(RM) fwrite-driver
 
