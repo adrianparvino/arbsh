@@ -114,24 +114,26 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 {
 	char *p = NULL;
 	char *out;
-	int i = 0;
+	size_t i = 0;
 	/* data types */
 	int cval = 0;
 	char *sval = NULL;
 	size_t zuval = 0; 
 	int dval = 0; 
 	long lval = 0;
+	size_t bound = GBUFSIZ; 
 #ifdef HASLIBM
 	double fval = 0;
-	char ftemp[1025]= { 0 };
+	char ftemp[GBUFSIZ]= { 0 };
 #endif
-
+	if ( flag == 2 ) 	/* snprintf */
+		bound = lim;
 	if (flag == 0)			/* printf, vprintf, dprintf etc */
 		out = malloc(GBUFSIZ); 
 	if (flag == 1 || flag == 2)	/* sprintf, snprintf etc */
 		out = str;
 
-	for (p = fmt; *p && i < GBUFSIZ ; p++) 
+	for (p = fmt; *p && i < bound; p++) 
 	{
 		if (*p != '%')
 		{
@@ -199,21 +201,21 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 				
 				break;
 		}
+		
 	}
 	
-	if ( flag == 2) /* snprintf */
-	{
-		/* TODO: fill with zeros until end */
-		i = lim;
-	}
 
-	out[i] = '\0';
-	//out[i + 1] = '\0';
+	if ( flag == 2)  /* snprintf */ 
+		i = bound; 
+
+	out[i] = '\0'; 
 
 	if (fp == NULL && flag == 0 )
 		i = write(fd, out, i); /* if writing to an fd, then redefine the ret */
 	else if ( fp != NULL )
 		i = gfwrite(out, 1, i, fp);
+	if ( flag == 0 )
+		free(out);
 
 	return i;
 }
@@ -477,18 +479,18 @@ int gfclose(GFILE *fp)
 	return close(fd);
 } 
 
-size_t gfread(void *ptr, size_t size, size_t nmemb, GFILE *stream)
-{ 
+size_t gfread(void *ptr, size_t size, size_t nmemb, GFILE *fp)
+{
 	size_t request = size * nmemb;
-	size_t ret = read(stream->fd, ptr, request);
+	size_t ret = read(fp->fd, ptr, request);
 	return ret / size;
 }
 
-size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *stream)
+size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *fp)
 {
 	size_t request = size * nmemb;
-	size_t ret = write(stream->fd, ptr, request);
-	return ret;
+	size_t ret = write(fp->fd, ptr, request);
+	return ret / size;
 } 
 
 /* getline  */
