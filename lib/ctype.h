@@ -10,9 +10,10 @@
 	non-xsi text for ctype.h.  
 	
 	TODO: POSIX conformity: 
-		Create locale_t type 
+		Create locale_t type
 	TODO: Algorithm changes 
 		Use lookup tables instead of ranges
+	TODO: Use ints instead of character constants
 */
 
 /* function prototypes */
@@ -29,21 +30,19 @@ int gisspace(int);
 int gisupper(int);
 int gisxdigit(int);
 int gtolower(int);
-int gtoupper(int);
-
+int gtoupper(int); 
+int gisascii(int); 
 
 /* functions */
 int gisalnum(int x)
-{
-	/* Use the identity */
+{ 
 	if (gisalpha(x) || gisdigit(x))
 		return 1;
 	return 0;
 }
 
 int gisalpha(int x) 
-{
-	/* Use the identity */
+{ 
 	if (gisupper(x) || gislower(x))
 		return 1;
 	return 0;
@@ -83,7 +82,6 @@ int gisdigit(int x)
 
 int gisgraph(int x) 
 {
-	/* Use the identity */
 	if (x == ' ')
 		return 0;
 	if (gisprint(x))
@@ -100,7 +98,6 @@ int gislower(int x)
 
 int gisprint(int x)
 {
-	/* Use the identity */
 	if ( giscntrl(x))
 		return 0;
 	if ( x == ' ' )
@@ -187,4 +184,10 @@ int gtoupper(int x)
 		return x;
 }
 
-
+int gisascii(int x)
+{ 
+	if (x >= 0 && x <= 127)
+		return 1;
+	else 
+		return 0; 
+}
