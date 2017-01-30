@@ -8,18 +8,16 @@ char *gbasename(char *);
 char *gdirname(char *);
 
 /* functions */
-char *gdirname(char *str)  /* not yet implemented */
+char *gdirname(char *path)
 { 
-	size_t i = 0;
-	int pathtab[4096] = { 0 };
-	size_t npth = 0;
-
-	for( i = 0; path[i] != '\0' && i < 4096; i++)
-	{
-		if ( path[i] == '/' )
-			pathtab[npth++] = i;
-	}
-	
+	size_t i = strlen(path);
+	for (; i && path[--i] == '/';)
+		path[i] = 0;
+	for (; i && path[i] != '/';)
+		path[i--] = 0;
+	for (; i && path[i] == '/';)
+		path[i--] = 0;
+	return path;
 }
 
 char *gbasename(char *path)
