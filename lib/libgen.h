@@ -1,6 +1,10 @@
 /*
 	Copyright 2017, CM Graff, "libgen.h"
 	See LICENSE for copying details
+
+	TODO: 	These functions only cover the normative case
+	      	bring them up to POSIX specs for all argument 
+		cases.
 */
 
 /* function prototypes */

@@ -5,32 +5,30 @@
 #include "ctype.h"
 #include "string.h"
 
-typedef long Align;
-
-union header {			
+/* structures */
+union header {
 	struct {
 		union header	*ptr;  
 		unsigned 	size;	
 	} s;
-	Align x;			
+	long x;
 };
 
 typedef union header Header;
-
-static Header base;		
-static Header *gfreep = NULL;	
-
+static Header base;
+static Header *gfreep = NULL;
 
 /* function prototypes */ 
-int gatoi(char []);
-double gatof(char []);
+int gatoi(char *);
+double gatof(char *);
 void *gmalloc(size_t);
 Header *morecore(unsigned);
 void gfree(void *);
 void *grealloc(void *, size_t);
 
+/* Functions */
 /* atoi family */
-int gatoi(char s[])
+int gatoi(char *s)
 {
 	int i, n;
 	i = n = 0;
@@ -39,12 +37,15 @@ int gatoi(char s[])
 	return n;
 } 
 
-double gatof(char s[])
+double gatof(char *s)
 {
 	double val, power;
-	size_t i, sign;
-	for (i = 0; gisspace(s[i]); i++) /* skip white space */
-		;
+	static size_t i = 0;
+	size_t sign = 0;
+	if (gisspace(*s))
+		gatof(s + ++i);
+	//for (i = 0; gisspace(s[i]); i++)
+		//;
 	sign = (s[i] == '-') ? -1 : 1;
 	if (s[i] == '+' || s[i] == '-')
 		i++;
@@ -75,8 +76,7 @@ void* gmalloc(size_t nbytes)
 		base.s.size = 0;	
 	}
 	for (p = prevp->s.ptr; ; prevp = p, p = p->s.ptr) 
-	{ 
-
+	{
 		if (p->s.size >= nunits)
 		{
 			if (p->s.size == nunits) 	
@@ -104,11 +104,11 @@ Header *morecore(unsigned nu)
 		nu = NALLOC;
 	/* cp = sbrk(nu * sizeof(Header)); */
 	cp = mmap( 0, nu* sizeof(Header), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
-	if (cp == (char *) -1)	
+	if (cp == (char *) -1)
 		return NULL;
 	up = (Header*) cp;
-	up->s.size = nu;	
-	gfree((void*)(up+1));	
+	up->s.size = nu;
+	gfree((void*)(up+1));
 	return gfreep;
 }
 
@@ -122,10 +122,8 @@ void gfree(void *ap)
 		if (p >= p->s.ptr && (bp > p || bp < p->s.ptr))
 			break;
 
-
 	if (bp + bp->s.size == p->s.ptr) 
 	{
-
 		bp->s.size += p->s.ptr->s.size;
 		bp->s.ptr = p->s.ptr->s.ptr;
 	}
