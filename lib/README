@@ -56,8 +56,8 @@ C STANDARD LIBRARY:
 		
 	stdlib.h
 		
-		gatoi(char []);
-		double gatof(char []);
+		gatoi(const char *);
+		double gatof(const char *);
 		void *gmalloc(size_t);
 		void gfree(void *);
 		void *grealloc(void *, size_t);
