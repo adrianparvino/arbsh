@@ -8,7 +8,7 @@ size_t gstrspn(const char *, const char *);
 void* gmemset(void *, int, size_t);
 void* gmemcpy(void*, const void*, size_t) ;
 void *gmemmove(void *, const void *, size_t);
-char *gstrdup(char *);
+char *gstrdup(const char *);
 
 size_t gstrlen(const char *s)
 {
@@ -200,7 +200,7 @@ void *gmemmove(void *to, const void *from, size_t size)
 	return(to);
 }
 
-char *gstrdup(char *s)
+char *gstrdup(const char *s)
 {
 	char *ret;
 	size_t len = gstrlen(s) + 1;
