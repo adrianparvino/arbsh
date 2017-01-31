@@ -1,4 +1,5 @@
 size_t gstrlen(const char *); 
+size_t gstrnlen(const char *, size_t); 
 int gstrcmp(char *, char *);
 char *gstrchr(const char *, int); 
 char *gstrcpy(char *, const char *);
@@ -9,14 +10,23 @@ void* gmemset(void *, int, size_t);
 void* gmemcpy(void*, const void*, size_t) ;
 void *gmemmove(void *, const void *, size_t);
 char *gstrdup(const char *);
+char *gstrndup(const char *m size_t);
 
 size_t gstrlen(const char *s)
 {
-	size_t j = 0;
-	while ( s[j] != '\0' )
-		++j;
-	return j;
+	size_t i = 0;
+	while ( s[i] != '\0' )
+		++i;
+	return i;
 } 
+
+size_t gstrnlen(const char *s, size_t lim)
+{
+	size_t i = 0;
+	while ( s[i] != '\0' && i < lim)
+		++i;
+	return i;
+}
 
 int gstrcmp(char *s, char *t)
 {
@@ -206,5 +216,15 @@ char *gstrdup(const char *s)
 	size_t len = gstrlen(s) + 1;
 	ret = malloc(len);
 	gmemcpy(ret, s, len);
+	return ret;
+}
+
+char *gstrndup(const char *s, size_t lim)
+{
+	char *ret;
+	size_t len = gstrnlen(s, lim) + 1;
+	ret = malloc(len);
+	gmemcpy(ret, s, len);
+	ret[len] = 0;
 	return ret;
 }
