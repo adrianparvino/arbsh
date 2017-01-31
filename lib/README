@@ -67,7 +67,7 @@ C STANDARD LIBRARY:
 
 	string.h
 
-		size_t gstrlen(const char []); 
+		size_t gstrlen(const char *); 
 		int gstrcmp(char *, char *);
 		char *gstrchr(const char *, int); 
 		char *gstrcpy(char *, char *);
@@ -77,6 +77,7 @@ C STANDARD LIBRARY:
 		void* gmemset(void *, int, size_t);
 		void* gmemcpy(void*, const void*, size_t) ;
 		void *gmemmove(void *, const void *, size_t);
+		char *strdup(const char *);
 
 
 HEXEN CURSOR LIBRARY:
