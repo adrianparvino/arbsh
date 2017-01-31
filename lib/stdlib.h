@@ -19,8 +19,8 @@ static Header base;
 static Header *gfreep = NULL;
 
 /* function prototypes */ 
-int gatoi(char *);
-double gatof(char *);
+int gatoi(const char *);
+double gatof(const char *);
 void *gmalloc(size_t);
 Header *morecore(unsigned);
 void gfree(void *);
