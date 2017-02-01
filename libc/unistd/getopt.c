@@ -9,6 +9,7 @@
  * Modified by CM Graff for GrafOS 
  */
 
+#include "stdlib.h"
 char *optarg; 			/* Global argument pointer. */
 int optind = 0;			/* Global argv index. */ 
 static char *scan = NULL;	/* Private scan pointer. */
@@ -25,11 +26,11 @@ int ggetopt(int argc, char *argv[], char *optstring)
 			optind++;
 
 		if (optind >= argc || argv[optind][0] != '-' || argv[optind][1] == '\0')
-				return EOF;
+				return -1;
 		if (argv[optind][1] == '-' && argv[optind][2] == '\0')
 		{
 			optind++;
-			return EOF;
+			return -1;
 		}
 
 		scan = argv[optind]+1;
@@ -37,7 +38,7 @@ int ggetopt(int argc, char *argv[], char *optstring)
 	}
 
 	c = *scan++;
-	place = strchr(optstring, c);
+	place = gstrchr(optstring, c);
 
 	if (!place || c == ':') 
 		return '?';
