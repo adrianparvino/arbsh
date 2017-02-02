@@ -1,0 +1,123 @@
+libgen/dirname.c: In function ‘gdirname’:
+libgen/dirname.c:5:13: warning: implicit declaration of function ‘strlen’ [-Wimplicit-function-declaration]
+  size_t i = strlen(path);
+             ^
+libgen/dirname.c:5:13: warning: incompatible implicit declaration of built-in function ‘strlen’
+libgen/dirname.c:5:13: note: include ‘<string.h>’ or provide a declaration of ‘strlen’
+string/strdup.c: In function ‘gstrdup’:
+string/strdup.c:9:15: warning: implicit declaration of function ‘gmalloc’ [-Wimplicit-function-declaration]
+         ret = gmalloc(len);
+               ^
+string/strdup.c:9:13: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+         ret = gmalloc(len);
+             ^
+string/strndup.c: In function ‘gstrndup’:
+string/strndup.c:9:15: warning: implicit declaration of function ‘gmalloc’ [-Wimplicit-function-declaration]
+         ret = gmalloc(len);
+               ^
+string/strndup.c:9:13: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+         ret = gmalloc(len);
+             ^
+stdlib/realloc.c: In function ‘grealloc’:
+stdlib/realloc.c:20:3: warning: implicit declaration of function ‘gmemcpy’ [-Wimplicit-function-declaration]
+   gmemcpy(new_ptr, old_ptr, old_nbytes);
+   ^
+unistd/getopt.c: In function ‘ggetopt’:
+unistd/getopt.c:41:10: warning: implicit declaration of function ‘gstrchr’ [-Wimplicit-function-declaration]
+  place = gstrchr(optstring, c);
+          ^
+unistd/getopt.c:41:8: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+  place = gstrchr(optstring, c);
+        ^
+unistd/getopt.c:56:4: warning: implicit declaration of function ‘write’ [-Wimplicit-function-declaration]
+    write(2, "option requires argument\n", 27);
+    ^
+stdio/dtoa.c: In function ‘gdtoa’:
+stdio/dtoa.c:14:6: warning: implicit declaration of function ‘isnan’ [-Wimplicit-function-declaration]
+  if (isnan(n)) {
+      ^
+stdio/dtoa.c:15:3: warning: implicit declaration of function ‘strcpy’ [-Wimplicit-function-declaration]
+   strcpy(s, "nan");
+   ^
+stdio/dtoa.c:15:3: warning: incompatible implicit declaration of built-in function ‘strcpy’
+stdio/dtoa.c:15:3: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’
+stdio/dtoa.c:16:13: warning: implicit declaration of function ‘isinf’ [-Wimplicit-function-declaration]
+  } else if (isinf(n)) {
+             ^
+stdio/dtoa.c:17:3: warning: incompatible implicit declaration of built-in function ‘strcpy’
+   strcpy(s, "inf");
+   ^
+stdio/dtoa.c:17:3: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’
+stdio/dtoa.c:19:3: warning: incompatible implicit declaration of built-in function ‘strcpy’
+   strcpy(s, "0");
+   ^
+stdio/dtoa.c:19:3: note: include ‘<string.h>’ or provide a declaration of ‘strcpy’
+stdio/dtoa.c:27:7: warning: implicit declaration of function ‘log10’ [-Wimplicit-function-declaration]
+   m = log10(n);
+       ^
+stdio/dtoa.c:27:7: warning: incompatible implicit declaration of built-in function ‘log10’
+stdio/dtoa.c:27:7: note: include ‘<math.h>’ or provide a declaration of ‘log10’
+stdio/dtoa.c:35:12: warning: implicit declaration of function ‘pow’ [-Wimplicit-function-declaration]
+    n = n / pow(10.0, m);
+            ^
+stdio/dtoa.c:35:12: warning: incompatible implicit declaration of built-in function ‘pow’
+stdio/dtoa.c:35:12: note: include ‘<math.h>’ or provide a declaration of ‘pow’
+stdio/dtoa.c:44:20: warning: incompatible implicit declaration of built-in function ‘pow’
+    double weight = pow(10.0, m);
+                    ^
+stdio/dtoa.c:44:20: note: include ‘<math.h>’ or provide a declaration of ‘pow’
+stdio/dtoa.c:46:13: warning: implicit declaration of function ‘floor’ [-Wimplicit-function-declaration]
+     digit = floor(n / weight);
+             ^
+stdio/dtoa.c:46:13: warning: incompatible implicit declaration of built-in function ‘floor’
+stdio/dtoa.c:46:13: note: include ‘<math.h>’ or provide a declaration of ‘floor’
+stdio/stdio.c: In function ‘gprintf_inter’:
+stdio/stdio.c:86:9: warning: implicit declaration of function ‘gmalloc’ [-Wimplicit-function-declaration]
+   out = gmalloc(GBUFSIZ); 
+         ^
+stdio/stdio.c:86:7: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+   out = gmalloc(GBUFSIZ); 
+       ^
+stdio/stdio.c:110:10: warning: implicit declaration of function ‘intostrbase’ [-Wimplicit-function-declaration]
+     i += intostrbase(out + i, dval, 10);
+          ^
+stdio/stdio.c:168:7: warning: implicit declaration of function ‘write’ [-Wimplicit-function-declaration]
+   i = write(fd, out, i); /* if writing to an fd, then redefine the ret */
+       ^
+stdio/stdio.c:172:3: warning: implicit declaration of function ‘gfree’ [-Wimplicit-function-declaration]
+   gfree(out);
+   ^
+stdio/stdio.c: In function ‘gfopen’:
+stdio/stdio.c:327:11: error: ‘SEEK_END’ undeclared (first use in this function)
+    seek = SEEK_END;
+           ^
+stdio/stdio.c:327:11: note: each undeclared identifier is reported only once for each function it appears in
+stdio/stdio.c:336:12: warning: implicit declaration of function ‘open’ [-Wimplicit-function-declaration]
+  if ((fd = open(file, oflags, 0)) == -1)
+            ^
+stdio/stdio.c:341:3: warning: implicit declaration of function ‘lseek’ [-Wimplicit-function-declaration]
+   lseek(fd, 0L, seek);
+   ^
+stdio/stdio.c: In function ‘ggetc_inter’:
+stdio/stdio.c:360:17: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+   if ((fp->base = gmalloc(GBUFSIZ)) == GNULL) 
+                 ^
+stdio/stdio.c:368:10: warning: implicit declaration of function ‘read’ [-Wimplicit-function-declaration]
+    len = read(fp->fd, fp->base, GBUFSIZ);
+          ^
+stdio/stdio.c: In function ‘gfclose’:
+stdio/stdio.c:433:9: warning: implicit declaration of function ‘close’ [-Wimplicit-function-declaration]
+  return close(fd);
+         ^
+stdio/stdio.c: In function ‘ggetdelim’:
+stdio/stdio.c:462:18: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+   if (!(*lineptr = gmalloc (chunk))) 
+                  ^
+stdio/stdio.c:479:21: warning: implicit declaration of function ‘grealloc’ [-Wimplicit-function-declaration]
+    if (!(*lineptr = grealloc (*lineptr, *n)))
+                     ^
+stdio/stdio.c:479:19: warning: assignment makes pointer from integer without a cast [-Wint-conversion]
+    if (!(*lineptr = grealloc (*lineptr, *n)))
+                   ^
+make[1]: *** [build] Error 1
+make: *** [all] Error 2
