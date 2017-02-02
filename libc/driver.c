@@ -1,6 +1,7 @@
 #include "stddef/stddef.h"
 #include "ctype/ctype.h"
 #include "string/string.h"
+#include "stdio/stdio.h"
 int main (int argc, char *argv[])
 {
 	char string[1024] = { 0 };
