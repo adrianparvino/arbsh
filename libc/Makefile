@@ -1,6 +1,4 @@
-CFLAGS = -Wall
-
-DIR = :=
+CFLAGS = -Wall -Wextra
 
 all:
 
@@ -8,37 +6,50 @@ all:
 	$(MAKE) archive
 	$(MAKE) create
 
+
+dynamic:
+
+	$(MAKE) dynobj
+	$(MAKE) dynlink
+	$(MAKE) dyncreate
+
+
 build:
-	gcc -c ctype/*.c
-	gcc -c libgen/*.c
-	gcc -c string/*.c
-	gcc -c stdlib/*.c
-	gcc -c unistd/*.c
-	gcc -c stdio/*.c -lm
+
+	gcc -c */*.c 
 
 
 archive:
-	ar -cvq libc.a *.o
 
+	ar -cvq libc.a *.o 
 
 
 create:
-	gcc -o driver driver.c libc.a
+
+	gcc -o driver driver.c libc.a -lm
+
 
 clean:
-	rm -rf *.o libc.a driver
 
-dynbuild:
+	rm -rf *.o libc.a driver dynamic_driver libcoo.so
 
-	gcc -c -fpic ctype/*.c
-	gcc -c -fpic libgen/*.c
-	gcc -c -fpic string/*.c
-	gcc -c -fpic stdlib/*.c
-	gcc -c -fpic unistd/*.c
+
+dynobj:
+
+	gcc -c -fpic */*.c
+
 
 dynlink:
 
-	gcc -shared -Wl,-soname,libc.so.1 -o libc.so.1.0.1 *.o
+	gcc -shared -Wl,-soname,libcoo.so -o libcoo.so *.o
+
 
 dyncreate:
-	gcc driver.c -o dynamic_driver -L. -lc
+
+	gcc driver.c -L. -lcoo -o dynamic_driver -lm
+
+exec_dyn:
+
+	LD_LIBRARY_PATH=. ./dynamic_driver blankvar
+
+
