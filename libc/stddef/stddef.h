@@ -14,7 +14,8 @@
 	NULL should be a cast to type void * according to POSIX 2008,
 	however the C standard leaves it implementation defined.
 */ 
-#define NULL	0
+//#define NULL	0
+#define NULL (void *) 0
 
 /* 
 	Implementations must potentially support ptrdiff_t, size_t and wchar_t 
