@@ -1,8 +1,11 @@
+//#include <ctype.h>
 #include <sys/mman.h> 
 #include <sys/syscall.h>
 #define NALLOC 	10024 
 #include "../stddef/stddef.h"
-#include "../ctype/ctype.h"
+#include "ctype.h"
+#include "string.h"
+
 /* structures */
 union header {
 	struct {
