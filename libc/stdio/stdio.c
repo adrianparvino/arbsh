@@ -3,6 +3,19 @@
 #include "stdio.h"
 
 
+
+GFILE _iob[OPEN_MAX] = {
+	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
+	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
+	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
+};
+
+GFILE *gstdin = (&_iob[0]);
+GFILE *gstdout = (&_iob[1]);
+GFILE *gstderr = (&_iob[2]);
+GFILE *gstdhold;
+
+
 /* Function prototypes */
 /* ------------------- */
 int ggetc_inter(GFILE *);
@@ -502,6 +515,20 @@ ssize_t ggetline(char **lineptr, size_t *n, GFILE *fp)
 {
 	return ggetdelim(lineptr, n, '\n', fp);
 }
+
+
+
+
+#include <stdarg.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include "../stddef/stddef.h"
+#include "../fcntl/fcntl.h"
+
+char * gdtoa(char *, double);
+size_t uintostrbase(char *, size_t, int);
+size_t intostrbase_inter(char *, int, int); 
+	
 
 
 

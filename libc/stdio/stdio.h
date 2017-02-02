@@ -33,16 +33,16 @@ typedef struct _iobuf {
 
 extern GFILE _iob[OPEN_MAX];
 
-GFILE _iob[OPEN_MAX] = {
-	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
-	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
-	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
-};
+//GFILE _iob[OPEN_MAX] = {
+//	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
+//	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
+//	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
+//};
 
-GFILE *gstdin = (&_iob[0]);
-GFILE *gstdout = (&_iob[1]);
-GFILE *gstderr = (&_iob[2]);
-GFILE *gstdhold;
+//GFILE *gstdin = (&_iob[0]);
+//GFILE *gstdout = (&_iob[1]);
+//GFILE *gstderr = (&_iob[2]);
+//GFILE *gstdhold;
 
 /* Function prototypes */
 /* ------------------- */
