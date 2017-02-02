@@ -1,6 +1,4 @@
 #include "stdlib.h"
-
-
 void gfree(void *ap) 
 {
 	Header *bp, *p;
