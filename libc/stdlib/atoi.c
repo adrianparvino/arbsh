@@ -1,5 +1,4 @@
 #include "stdlib.h"
-
 int gatoi(const char *s)
 {
 	int i, n;
