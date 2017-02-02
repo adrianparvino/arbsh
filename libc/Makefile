@@ -14,6 +14,7 @@ build:
 	gcc -c string/*.c
 	gcc -c stdlib/*.c
 	gcc -c unistd/*.c
+	gcc -c stdio/*.c -lm
 
 
 archive:
