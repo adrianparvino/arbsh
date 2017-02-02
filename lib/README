@@ -281,10 +281,16 @@ REFERENCES:
 		http://krashan.ppa.pl/articles/stringtofloat
 
 
+	A useful tutorial on creating static or shared C libraries:
+
+		http://www.adp-gmbh.ch/cpp/gcc/create_lib.html
+
+
 CONTACT:
 --------
 
 	CM Graff cm0graff@gmail.com
+
 
 
 
