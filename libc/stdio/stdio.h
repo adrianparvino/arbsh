@@ -3,7 +3,7 @@
 #include <sys/types.h>
 #include "../stddef/stddef.h"
 #include "../fcntl/fcntl.h"
-
+#include "../string/string.h"
 char * gdtoa(char *, double);
 size_t uintostrbase(char *, size_t, int);
 size_t intostrbase_inter(char *, int, int); 
