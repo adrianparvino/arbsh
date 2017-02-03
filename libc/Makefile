@@ -1,52 +1,56 @@
 CFLAGS = -Wall -Wextra
+LDFLAGS = -lm
+
+CC = gcc
 
 all:
 
-	$(MAKE) build
-	$(MAKE) archive
-	$(MAKE) create
+	$(MAKE) static_obj
+	$(MAKE) static_link
+	$(MAKE) static_create
 
 
 dynamic:
 
-	$(MAKE) dynobj
-	$(MAKE) dynlink
-	$(MAKE) dyncreate
+	$(MAKE) dynamic_obj
+	$(MAKE) dynamic_link
+	$(MAKE) dynamic_create
 
 
-build:
+static_obj:
 
-	gcc -c */*.c -lm
-
-
-archive:
-
-	ar -cvq libc.a *.o 
+	$(CC) -c stdlib/*.c $(LDFLAGS)
+	$(CC) -c */*.c $(LDFLAGS)
 
 
-create:
+static_link:
 
-	gcc -o driver driver.c libc.a -lm
+	ar -cvq libgc.a *.o 
+
+
+static_create:
+
+	$(CC) -o static_driver driver.c libgc.a $(LDFLAGS)
 
 
 clean:
 
-	rm -rf *.o libc.a driver dynamic_driver libcoo.so
+	$(RM) *.o libgc.a static_driver dynamic_driver libgc.so a.out log
 
 
-dynobj:
+dynamic_obj:
 
-	gcc -c -fpic */*.c
-
-
-dynlink:
-
-	gcc -shared -Wl,-soname,libcoo.so -o libcoo.so *.o
+	$(CC) -c -fpic */*.c $(LDFLAGS)
 
 
-dyncreate:
+dynamic_link:
 
-	gcc driver.c -L. -lcoo -o dynamic_driver -lm
+	$(CC) -shared -Wl,-soname,libgc.so -o libgc.so *.o
+
+
+dynamic_create:
+
+	$(CC) driver.c -L. -lgc -o dynamic_driver $(LDFLAGS)
 
 exec_dyn:
 

@@ -9,7 +9,7 @@
  * Modified by CM Graff for GrafOS 
  */
 
-#include "stdlib.h"
+#include "unistd.h"
 char *optarg; 			/* Global argument pointer. */
 int optind = 0;			/* Global argv index. */ 
 static char *scan = NULL;	/* Private scan pointer. */
