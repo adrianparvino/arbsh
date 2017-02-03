@@ -1,5 +1,5 @@
 #include "../stddef/stddef.h"
-
+#include "../stdlib/stdlib.h"
 #include "stdio.h"
 
 
@@ -81,6 +81,7 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 {
 	char *p = NULL;
 	char *out;
+	
 	size_t i = 0;
 	/* data types */
 	int cval = 0;
@@ -88,15 +89,15 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 	size_t zuval = 0; 
 	int dval = 0; 
 	long lval = 0;
-	size_t bound = GBUFSIZ; 
+	size_t bound = 4096;
 #ifdef HASLIBM
 	double fval = 0;
-	char ftemp[GBUFSIZ]= { 0 };
+	char ftemp[4096]= { 0 };
 #endif
 	if ( flag == 2 ) 	/* snprintf */
 		bound = lim;
 	if (flag == 0)			/* printf, vprintf, dprintf etc */
-		out = gmalloc(GBUFSIZ); 
+		out = gmalloc(sizeof(char) * 4096); 
 	if (flag == 1 || flag == 2)	/* sprintf, snprintf etc */
 		out = str;
 
@@ -515,21 +516,4 @@ ssize_t ggetline(char **lineptr, size_t *n, GFILE *fp)
 {
 	return ggetdelim(lineptr, n, '\n', fp);
 }
-
-
-
-
-#include <stdarg.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include "../stddef/stddef.h"
-#include "../fcntl/fcntl.h"
-
-char * gdtoa(char *, double);
-size_t uintostrbase(char *, size_t, int);
-size_t intostrbase_inter(char *, int, int); 
-	
-
-
-
 
