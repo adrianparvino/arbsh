@@ -2,6 +2,8 @@
 
 #include "string.h"
 
+#include "../stdlib/stdlib.h"
+
 char *gstrdup(const char *s)
 {
         char *ret;
