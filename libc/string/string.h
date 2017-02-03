@@ -1,3 +1,5 @@
+#include "../stddef/stddef.h"
+
 size_t gstrlen(const char *); 
 size_t gstrnlen(const char *, size_t); 
 int gstrcmp(char *, char *);
