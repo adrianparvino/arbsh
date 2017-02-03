@@ -4,11 +4,14 @@
 #include "../stddef/stddef.h"
 #include "../fcntl/fcntl.h"
 #include "../string/string.h"
-char * gdtoa(char *, double);
+
+
+
+
+char *gdtoa(char *, double);
 size_t uintostrbase(char *, size_t, int);
 size_t intostrbase_inter(char *, int, int); 
 size_t intostrbase(char *, int, int);
-
 /* defines */
 /* ------- */
 #define GNULL		0
@@ -31,7 +34,8 @@ typedef struct _iobuf {
 	int read;		/* not used */
 	int append;		/* not used */
 	int unbuf;		/* output must be unbuffered, for stderr or failed malloc */
-} GFILE;
+}GFILE;
+
 
 extern GFILE _iob[OPEN_MAX];
 
