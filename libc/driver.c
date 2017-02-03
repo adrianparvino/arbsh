@@ -18,7 +18,7 @@ int main (int argc, char *argv[])
 	
 	gsprintf(some + ret, "asdlkjasdkj\n");
 	gprintf("%s\n", some);
-	char *dogs = strdup(some);
+	char *dogs = gstrdup("boooon");
 	gprintf("hurm %s\n", dogs);
 	return 0;
 }
