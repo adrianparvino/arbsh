@@ -11,8 +11,8 @@ OBJ = $(SRC:.c=.o)
 
 all: $(OBJ)
 	
-	#$(MAKE) static_link
-	#$(MAKE) static_create
+	$(MAKE) static_link
+	$(MAKE) static_create
 
 
 dynamic:
