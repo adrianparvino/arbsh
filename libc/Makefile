@@ -16,7 +16,7 @@ dynamic:
 
 build:
 
-	gcc -c */*.c 
+	gcc -c */*.c -lm
 
 
 archive:
