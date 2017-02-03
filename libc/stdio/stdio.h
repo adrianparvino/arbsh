@@ -7,6 +7,8 @@
 char * gdtoa(char *, double);
 size_t uintostrbase(char *, size_t, int);
 size_t intostrbase_inter(char *, int, int); 
+size_t intostrbase(char *, int, int);
+
 /* defines */
 /* ------- */
 #define GNULL		0
@@ -69,4 +71,4 @@ size_t gfread(void *, size_t, size_t, GFILE *);
 size_t gfwrite(const void *, size_t, size_t, GFILE *);
 int gfeof(GFILE *);
 int gferror(GFILE *);
-int gfileno(GFILE *);
+int gfileno(GFILE *); 
