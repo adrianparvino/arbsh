@@ -1,13 +1,18 @@
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -c
 LDFLAGS = -lm
 
-CC = gcc
+MAKEFLAGS = 
+CC = gcc 
 
-all:
 
-	$(MAKE) static_obj
-	$(MAKE) static_link
-	$(MAKE) static_create
+SRC = $(wildcard */*.c)
+BIN = $(patsubst %.c,%,$(SRC))
+OBJ = $(SRC:.c=.o)
+
+all: $(OBJ)
+	
+	#$(MAKE) static_link
+	#$(MAKE) static_create
 
 
 dynamic:
@@ -25,7 +30,7 @@ static_obj:
 
 static_link:
 
-	ar -cvq libgc.a *.o 
+	ar -cvq libgc.a $(OBJ)
 
 
 static_create:
@@ -35,7 +40,7 @@ static_create:
 
 clean:
 
-	$(RM) *.o libgc.a static_driver dynamic_driver libgc.so a.out log
+	$(RM) *.o libgc.a static_driver dynamic_driver libgc.so a.out log */*.o
 
 
 dynamic_obj:
@@ -55,5 +60,3 @@ dynamic_create:
 exec_dyn:
 
 	LD_LIBRARY_PATH=. ./dynamic_driver blankvar
-
-
