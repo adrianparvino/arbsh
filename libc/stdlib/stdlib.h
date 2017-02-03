@@ -16,8 +16,6 @@ union header {
 };
 
 typedef union header Header;
-//static Header base;
-//static Header *gfreep = NULL;
 
 /* function prototypes */ 
 int gatoi(const char *);
