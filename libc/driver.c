@@ -4,6 +4,7 @@
 #include "string/string.h"
 #include "stdio/stdio.h"
 #include "stdlib/stdlib.h"
+//#include "math/math.h"
 int main (int argc, char *argv[])
 {
 	char *some = gmalloc(100); 

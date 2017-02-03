@@ -23,7 +23,7 @@ double mygamma(double x)
         }
 
 	/* -(x + a) */
-        ret *= exp(-(x + a)) * pow(x + a, x + 0.5);
+        ret *= myexp(-(x + a)) * mypow(x + a, x + 0.5);
 	
 
         return (ret / x);

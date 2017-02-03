@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myasin(double x)
+double myasinh(double x)
 {
         int i = 0;
         int n = 3;
