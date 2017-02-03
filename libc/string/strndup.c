@@ -2,6 +2,8 @@
 
 #include "string.h"
 
+#include "../stdlib/stdlib.h"
+
 char *gstrndup(const char *s, size_t lim)
 {
         char *ret;
