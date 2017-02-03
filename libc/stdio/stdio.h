@@ -8,10 +8,6 @@
 
 
 
-char *gdtoa(char *, double);
-size_t uintostrbase(char *, size_t, int);
-size_t intostrbase_inter(char *, int, int); 
-size_t intostrbase(char *, int, int);
 /* defines */
 /* ------- */
 #define GNULL		0
@@ -37,18 +33,8 @@ typedef struct _iobuf {
 }GFILE;
 
 
-extern GFILE _iob[OPEN_MAX];
+extern GFILE _iob[OPEN_MAX]; 
 
-//GFILE _iob[OPEN_MAX] = {
-//	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
-//	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
-//	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
-//};
-
-//GFILE *gstdin = (&_iob[0]);
-//GFILE *gstdout = (&_iob[1]);
-//GFILE *gstderr = (&_iob[2]);
-//GFILE *gstdhold;
 
 /* Function prototypes */
 /* ------------------- */
@@ -76,3 +62,9 @@ size_t gfwrite(const void *, size_t, size_t, GFILE *);
 int gfeof(GFILE *);
 int gferror(GFILE *);
 int gfileno(GFILE *); 
+
+
+char *gdtoa(char *, double);
+size_t uintostrbase(char *, size_t, int);
+size_t intostrbase_inter(char *, int, int); 
+size_t intostrbase(char *, int, int);
