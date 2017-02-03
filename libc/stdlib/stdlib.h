@@ -3,8 +3,8 @@
 #include <sys/syscall.h>
 #define NALLOC 	10024 
 #include "../stddef/stddef.h"
-#include "ctype.h"
-#include "string.h"
+#include "../ctype/ctype.h"
+#include "../string/string.h"
 
 /* structures */
 union header {
