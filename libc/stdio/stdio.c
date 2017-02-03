@@ -13,40 +13,8 @@ GFILE _iob[OPEN_MAX] = {
 GFILE *gstdin = (&_iob[0]);
 GFILE *gstdout = (&_iob[1]);
 GFILE *gstderr = (&_iob[2]);
-GFILE *gstdhold;
+GFILE *gstdhold; 
 
-
-/* Function prototypes */
-/* ------------------- */
-int ggetc_inter(GFILE *);
-int gputc_inter(int, GFILE *);
-int ggetchar(void);
-int gputchar(char);
-int ggetc(GFILE *);
-int gputc(int, GFILE *); 
-ssize_t ggetline (char **, size_t *, GFILE *);
-ssize_t ggetdelim(char **, size_t *, char, GFILE *);
-int gprintf_inter(GFILE *, int, char *, size_t, int, char *, va_list);
-int gprintf(char *, ...);
-int gsprintf(char *, char *, ...);
-int gsnprintf(char *, size_t, char *, ...);
-int gdprintf(int, char *, ...);
-int gfprintf(GFILE *, char *, ...);
-int gvprintf(char *, va_list);
-int gvsprintf(char *, char *, va_list);
-int gvsnprintf(char *, size_t, char *, va_list);
-int gvdprintf(int, char *, va_list);
-int gvfprintf(GFILE *, char *, va_list);
-size_t gfread(void *, size_t, size_t, GFILE *);
-size_t gfwrite(const void *, size_t, size_t, GFILE *);
-int gfeof(GFILE *);
-int gferror(GFILE *);
-int gfileno(GFILE *);
-
-
-
-/* functions */
-/* --------- */
 
 /* single char io  */
 int ggetc(GFILE *fp)
