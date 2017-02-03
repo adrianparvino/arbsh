@@ -1,22 +1,17 @@
-
-
 #include "stdio.h"
+
 /* globals */
-static double PRECISION = 0.00000000000001;
-
-/* function prototypes */
-char * gdtoa(char *, double);
-
+static double PRECISION = 0.00000000000001; 
 /* functions */
 char * gdtoa(char *s, double n) 
 {
 	/* handle special cases */
 	if (isnan(n)) {
-		strcpy(s, "nan");
+		gstrcpy(s, "nan");
 	} else if (isinf(n)) {
-		strcpy(s, "inf");
+		gstrcpy(s, "inf");
 	} else if (n == 0.0) {
-		strcpy(s, "0");
+		gstrcpy(s, "0");
 	} else {
 		int digit, m, m1;
 		char *c = s;
