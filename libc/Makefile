@@ -1,10 +1,9 @@
-CFLAGS = -Wall -Wextra -c
-LDFLAGS = -lm 
-CC = gcc
+CFLAGS := -Wall -Wextra -c
+LDFLAGS := -lm
+CC := gcc
+OBJ = $(shell for i in */*.c ; do echo $${i%.c}.o ; done )
+AR := ar
 
-SRC = $(wildcard */*.c)
-BIN = $(patsubst %.c,%,$(SRC))
-OBJ = $(SRC:.c=.o)
 
 all: $(OBJ)
 	
@@ -16,29 +15,20 @@ dynflags:
 
 	$(eval CC=$(CC) -fpic)
 	
-dynamic: dynflags $(OBJ) 
+dynamic: dynflags $(OBJ)
 
-	
 	$(MAKE) dynamic_link
-	$(MAKE) dynamic_create
-
-static_obj: 
-
-	$(CC) -c */*.c $(LDFLAGS)
-
-dynamic_obj:
-
-	$(CC) -c -fpic */*.c $(LDFLAGS)
+	$(MAKE) dynamic_create 
 
 static_link:
 
-	ar -cvq libgc.a $(OBJ)
+	$(AR) -cvq libgc.a $(OBJ)
 
 dynamic_link:
 
 	$(CC) -shared -Wl,-soname,libgc.so -o libgc.so */*.o
 
-static_create:
+static_create: 
 
 	$(CC) -o static_driver driver.c libgc.a $(LDFLAGS)
 
@@ -52,4 +42,4 @@ exec_dyn:
 
 clean:
 
-	$(RM) *.o libgc.a static_driver dynamic_driver libgc.so a.out log */*.o
+	$(RM) *.a *_driver *.so log */*.o
