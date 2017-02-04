@@ -12,15 +12,18 @@ all: $(OBJ)
 	$(MAKE) static_create
 
 
-dynamic:
+dynflags:
 
-	$(MAKE) dynamic_obj
+	$(eval CC=$(CC) -fpic)
+	
+dynamic: dynflags $(OBJ) 
+
+	
 	$(MAKE) dynamic_link
 	$(MAKE) dynamic_create
 
-static_obj:
+static_obj: 
 
-	$(CC) -c stdlib/*.c $(LDFLAGS)
 	$(CC) -c */*.c $(LDFLAGS)
 
 dynamic_obj:
@@ -33,7 +36,7 @@ static_link:
 
 dynamic_link:
 
-	$(CC) -shared -Wl,-soname,libgc.so -o libgc.so *.o
+	$(CC) -shared -Wl,-soname,libgc.so -o libgc.so */*.o
 
 static_create:
 
