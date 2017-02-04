@@ -1,9 +1,6 @@
 CFLAGS = -Wall -Wextra -c
-LDFLAGS = -lm
-
-MAKEFLAGS = 
-CC = gcc 
-
+LDFLAGS = -lm 
+CC = gcc
 
 SRC = $(wildcard */*.c)
 BIN = $(patsubst %.c,%,$(SRC))
@@ -21,37 +18,26 @@ dynamic:
 	$(MAKE) dynamic_link
 	$(MAKE) dynamic_create
 
-
 static_obj:
 
 	$(CC) -c stdlib/*.c $(LDFLAGS)
 	$(CC) -c */*.c $(LDFLAGS)
 
+dynamic_obj:
+
+	$(CC) -c -fpic */*.c $(LDFLAGS)
 
 static_link:
 
 	ar -cvq libgc.a $(OBJ)
 
-
-static_create:
-
-	$(CC) -o static_driver driver.c libgc.a $(LDFLAGS)
-
-
-clean:
-
-	$(RM) *.o libgc.a static_driver dynamic_driver libgc.so a.out log */*.o
-
-
-dynamic_obj:
-
-	$(CC) -c -fpic */*.c $(LDFLAGS)
-
-
 dynamic_link:
 
 	$(CC) -shared -Wl,-soname,libgc.so -o libgc.so *.o
 
+static_create:
+
+	$(CC) -o static_driver driver.c libgc.a $(LDFLAGS)
 
 dynamic_create:
 
@@ -59,4 +45,8 @@ dynamic_create:
 
 exec_dyn:
 
-	LD_LIBRARY_PATH=. ./dynamic_driver blankvar
+	LD_LIBRARY_PATH=. ./dynamic_driver
+
+clean:
+
+	$(RM) *.o libgc.a static_driver dynamic_driver libgc.so a.out log */*.o
