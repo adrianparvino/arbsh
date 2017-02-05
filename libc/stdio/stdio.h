@@ -31,9 +31,30 @@ typedef struct _iobuf {
 	int append;		/* not used */
 	int unbuf;		/* output must be unbuffered, for stderr or failed malloc */
 }GFILE;
+extern GFILE _iob[OPEN_MAX];
+#define gstdin  (&_iob[0])
+#define gstdout  (&_iob[1])
+#define gstderr  (&_iob[2])
+//GFILE _iob[OPEN_MAX] = {
 
+//
+//	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
+//	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
+//	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
+//};
 
-extern GFILE _iob[OPEN_MAX]; 
+//
+
+//extern GFILE _iob[OPEN_MAX] = {
+//	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
+//	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
+//	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
+//};
+
+//GFILE *gstdin = (&_iob[0]);
+//GFILE *gstdout = (&_iob[1]);
+//GFILE *gstderr = (&_iob[2]);
+GFILE *gstdhold; 
 
 
 /* Function prototypes */
@@ -68,3 +89,5 @@ char *gdtoa(char *, double);
 size_t uintostrbase(char *, size_t, int);
 size_t intostrbase_inter(char *, int, int); 
 size_t intostrbase(char *, int, int);
+
+
