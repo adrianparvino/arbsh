@@ -1,7 +1,11 @@
 CFLAGS := -Wall -Wextra -c
+
 LDFLAGS := -lm
+
 CC := gcc
+
 OBJ = $(shell for i in */*.c ; do echo $${i%.c}.o ; done )
+
 AR := ar
 
 LIBNAME = gc
@@ -10,8 +14,11 @@ STATLIB = lib$(LIBNAME).a
 
 DYNLIB = lib$(LIBNAME).so
 
+DYNCC = CC="$(CC) -fpic"
 
-all: 
+
+all:
+
 	$(MAKE) static
 	$(MAKE) cleanobj
 	$(MAKE) dynamic
@@ -23,13 +30,12 @@ static: $(OBJ)
 	$(MAKE) static_create
 
 
-dynflags:
-
-	$(eval CC=$(CC) -fpic)
+dynwrap: $(OBJ)
 
 	
-dynamic: dynflags $(OBJ) 
+dynamic: 
 
+	$(MAKE) $(DYNCC) dynwrap
 	$(MAKE) dynamic_link
 	$(MAKE) dynamic_create 
 
@@ -66,4 +72,5 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
-	$(RM) *driver
+	$(RM) *driver log
+
