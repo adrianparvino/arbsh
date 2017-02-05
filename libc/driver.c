@@ -25,6 +25,8 @@ int main (int argc, char *argv[])
 	char *dogs = gstrdup("boooon");
 
 	gprintf("hurm %s\n", dogs);
+
+	gfprintf(gstdout, "hurm %s\n", dogs);
 	
 	return 0;
 }
