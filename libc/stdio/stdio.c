@@ -3,19 +3,11 @@
 #include "stdio.h"
 
 
-
-
 GFILE _iob[OPEN_MAX] = {
 	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
 	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
 	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
-};
-
-//extern GFILE *gstdin = (&_iob[0]);
-//extern GFILE *gstdout = (&_iob[1]);
-//extern GFILE *gstderr = (&_iob[2]);
-//extern GFILE *gstdhold; 
-
+}; 
 
 /* single char io  */
 int ggetc(GFILE *fp)
@@ -376,13 +368,14 @@ int ggetc_inter(GFILE *fp)
 
 int gputc_inter(int c, GFILE *fp)
 { 
+	GFILE *last = gstdhold;
 	if (c == GEOF)
 		return GEOF;
 
 	if(fp->unbuf == 1)
-		gstdhold->cnt -= write(fp->fd, &c, 1);
+		last->cnt -= write(fp->fd, &c, 1);
 	else
-		gstdhold->cnt -= write(fp->fd, gstdhold->ptr, gstdhold->cnt);
+		last->cnt -= write(fp->fd, last->ptr, last->cnt);
 	return c;
 }
 
