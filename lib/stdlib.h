@@ -28,7 +28,7 @@ void *grealloc(void *, size_t);
 
 /* Functions */
 /* atoi family */
-int gatoi(char *s)
+int gatoi(const char *s)
 {
 	int i, n;
 	i = n = 0;
@@ -37,7 +37,7 @@ int gatoi(char *s)
 	return n;
 } 
 
-double gatof(char *s)
+double gatof(const char *s)
 {
 	double val, power;
 	static size_t i = 0;
