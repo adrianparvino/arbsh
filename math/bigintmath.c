@@ -338,6 +338,9 @@ int *divide(int *a, int *b, int *c)
 
 	int sum = 0;
 	int rec = 0;
+	size_t cnt = 0;
+
+	size_t cd = numer;
 
 	/* numerator / denominator */
 	setarray(c, 0);
@@ -352,6 +355,7 @@ int *divide(int *a, int *b, int *c)
 		for (rec = 0, i = 0, j = z; i < denom ; j++ ,i++) 
 		{
 			sum = (mirror[j]) - (b[i]);
+			
 			if ( sum < 0 )
 			{
 				if ( j == z )
@@ -359,12 +363,16 @@ int *divide(int *a, int *b, int *c)
 					mirror[j + 1] += ((mirror[j]) * base);
 					mirror[j] = 0;
 					++z;
+					
+					//--numer;
 				}
 			 	else
 				{
 					mirror[j - 1] -= 1;
 					mirror[j] += base;
+				//	--cd;
 				}
+				
 				rec = 1;
 				break;
 			}
@@ -373,14 +381,20 @@ int *divide(int *a, int *b, int *c)
 		
 		if ( rec == 0 )
 		{
+			
 			copyarray(mirror, tmpmir);
+			//printarray(c, cd ); 
+			
 			c[z] += 1;
 		} 
-		
-	//	if ( iszero(tmpmir) == 0)
-	//		break;
-	} 
-	printarray(c, z + 1); 
+	
+		if ( iszero(tmpmir) == 0)
+			break;
+	}
+	size_t len =  numer -denom + 1; 
+	printarray(c, z); 
+	printarray(c, len);
+	printarray(c + len,z-len ); 
 	return c;
 }
 
