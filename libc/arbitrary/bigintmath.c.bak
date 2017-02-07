@@ -84,6 +84,7 @@ int main(int argc, char **argv)
 	printf("- %20lf\n", a - b);
 	printf("* %20lf\n", a * b);
 	printf("/ %20lf\n", a / b);
+	
 
 	mirror = strallocate(1000 * sizeof(int));
 	result = strallocate(1000 * sizeof(int));
@@ -329,28 +330,29 @@ int *divide(int *a, int *b, int *c)
 {
 	size_t i = 0;	
 	size_t j = 0;
-	size_t z = 0;
+	size_t z = 0; 
+	size_t numer = arraylen(a, 4242);	/* cardinality of the numerator */
+	size_t denom = arraylen(b, 4242); 	/* cardinality of the denominator */
+	size_t real_cardinality = 0;		/* cardinality of the quotient's real part */
+	size_t imag_cardinality = 0;		/* cardinality of the quotient's imaginary part */
+	int sum = 0; 				/* hold a temporary signed value <= base */
+	int rec = 0; 				/* boolean record */
 
-	size_t numer = carda;
-	size_t denom = cardb;
-	size_t left = numer; 
-
-	int sum = 0;
-	int rec = 0;
-
-	/* numerator / denominator */
+	
 	setarray(c, 0);
 	setarray(mirror, 0);
 	copyarray(mirror, a);
 	setarray(tmpmir, 0);
 	copyarray(tmpmir, mirror);
 
+	/* numerator / denominator  =  quotient */
 	for ( ; z < numer ; )
 	{
 		copyarray(tmpmir, mirror);
 		for (rec = 0, i = 0, j = z; i < denom ; j++ ,i++) 
 		{
 			sum = (mirror[j]) - (b[i]);
+			
 			if ( sum < 0 )
 			{
 				if ( j == z )
@@ -364,22 +366,31 @@ int *divide(int *a, int *b, int *c)
 					mirror[j - 1] -= 1;
 					mirror[j] += base;
 				}
+				
 				rec = 1;
-				break;
+				break; /* keep it */
 			}
 			tmpmir[j] = sum;
 		}
 		
 		if ( rec == 0 )
-		{
-			copyarray(mirror, tmpmir);
+		{ 
+			copyarray(mirror, tmpmir); 
 			c[z] += 1;
 		} 
-		
-	//	if ( iszero(tmpmir) == 0)
-	//		break;
-	} 
-	printarray(c, z + 1); 
+		if ( iszero(tmpmir) == 0)
+			break;
+	}
+	if ( numer + 1 > denom )
+		real_cardinality =  numer - denom + 1;
+	else
+		real_cardinality = z;
+	if ( z >= real_cardinality )
+		imag_cardinality = z - real_cardinality;
+	
+	printarray(c, real_cardinality);
+	
+	printarray(c + (real_cardinality) ,imag_cardinality); 
 	return c;
 }
 
