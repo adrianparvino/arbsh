@@ -332,8 +332,10 @@ int *divide(int *a, int *b, int *c)
 	size_t j = 0;
 	size_t z = 0;
 
-	size_t numer = carda;
-	size_t denom = cardb;
+	//size_t numer = carda;
+	//size_t denom = cardb;
+	size_t numer = arraylen(a, 4242);
+	size_t denom = arraylen(b, 4242);
 	size_t left = numer; 
 
 	int sum = 0;
@@ -392,8 +394,9 @@ int *divide(int *a, int *b, int *c)
 			break;
 	}
 	size_t len =  numer -denom + 1; 
-	printarray(c, z); 
+	//printarray(c, z); 
 	printarray(c, len);
+	if ( z > len )
 	printarray(c + len,z-len ); 
 	return c;
 }
