@@ -10,7 +10,7 @@ void* gmemset(void *, int, size_t);
 void* gmemcpy(void*, const void*, size_t) ;
 void *gmemmove(void *, const void *, size_t);
 char *gstrdup(const char *);
-char *gstrndup(const char *m size_t);
+char *gstrndup(const char *, size_t);
 
 size_t gstrlen(const char *s)
 {
