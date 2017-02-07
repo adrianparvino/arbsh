@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
-//#include "string.h"
+//#include "../string.h"
 #include "../stdlib.h"
 #include "../stdio.h"
 
@@ -28,11 +28,12 @@ int find_pattern(char *path, size_t tot, size_t last)
 { 
 	DIR *dir;
 	struct dirent *d;
-	char *spath = gmalloc (1);
+	//char *spath = gmalloc (1);
+	char *spath = NULL;
 	size_t dlen = 0; 
 
-	if (!(spath))
-		return -1;
+	//if (!(spath))
+	//	return -1;
 	
 	if ( ( dir = opendir(path) ) ) 
 	{
@@ -61,7 +62,8 @@ int find_pattern(char *path, size_t tot, size_t last)
 		}
 		
 	}
-	gfree(spath);
+	if ( spath)
+		gfree(spath);
 	closedir(dir);
 	return 0;
 }
