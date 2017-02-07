@@ -1,12 +1,9 @@
-
 #include "../stddef/stddef.h"
-#include "../string/string.h"
-#include "../stdio/stdio.h"
+#include "../string/string.h" 
 
 char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
 void die(char *);
-char *division(char *, char *, char *);
 int getcharval(char *, size_t);
 char *multiply(char *, char *, char *);
 void print_real(char *, char *);
