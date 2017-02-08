@@ -9,8 +9,6 @@ char *arb_str_divide(char *a, char *b, char *c)
 	size_t z = 0;
 	size_t numer = gstrlen(a);
 	size_t denom = gstrlen(b);
-	size_t real_cardinality = 0;		/* cardinality of the quotient's real part */
-	size_t imag_cardinality = 0;		/* cardinality of the quotient's imaginary part */
 	int sum = 0; 				/* hold a temporary signed value <= base */
 	int rec = 0; 				/* boolean record */
 
