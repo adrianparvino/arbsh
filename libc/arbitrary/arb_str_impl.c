@@ -1,4 +1,4 @@
-#include "stringmath.h" 
+#include "arb_str.h" 
 
 void print_real(char *s, char *realname)
 {
