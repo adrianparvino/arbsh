@@ -29,7 +29,7 @@ typedef unsigned long size_t;
 	TODO: Add support for __STDC_MB_MIGHT_NEQ_WC__ to wchar_t
 	#ifndef __STDC_MB_MIGHT_NEQ_WC__.
 */
-typedef long wchar_t;
+//typedef long wchar_t;
 
 /* 
 	TODO: Add support for offsetof()

@@ -16,7 +16,7 @@ char *arb_str_addition(char *a, char *b, char *c)
 
         for( i=0; i < width ; i++)
 	{
-		sum = getcharval(a, i) + getcharval(b, i) + carry;
+		sum = arb_str_index(a, i) + arb_str_index(b, i) + carry;
                 carry = 0;
                 if(sum > 9){
                         carry = 1;
@@ -27,7 +27,7 @@ char *arb_str_addition(char *a, char *b, char *c)
         if (carry)
 		c[i++] = '1';
         c[i] = '\0';
-        reversestr(c--);
+        arb_str_rev(c--);
 	return c;
 } 
 
