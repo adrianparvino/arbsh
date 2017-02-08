@@ -4,7 +4,7 @@
 #include "string/string.h"
 #include "stdio/stdio.h"
 #include "stdlib/stdlib.h"
-#include "arbitrary/stringmath.h"
+#include "arbitrary/arb_str.h"
 //#include "curses/curses.h"
 #include "math/math.h"
 int main (int argc, char *argv[])
@@ -30,15 +30,16 @@ int main (int argc, char *argv[])
 	gfprintf(gstdout, "hurm %s\n", dogs);
 
 	char *out = gmalloc (1000);
-
+	mirror = gmalloc (1000);
+	tmpmir = gmalloc (1000);
 	//out = addition("123", "123", out);
 
 	
 
 	//gfprintf(gstdout, "%s\n", out);
 
-	out = multiply("-123", "-121323", out);
-
+	//out = multiply("-123", "-121323", out);
+	out = arb_str_divide("123123123", "321", out);
 	gfprintf(gstdout, "%s\n", out);
 	
 	return 0;
