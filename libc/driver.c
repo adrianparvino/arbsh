@@ -19,15 +19,15 @@ int main (int argc, char *argv[])
 	
 	size_t ret = gstrlen(some);
 	
-	gsprintf(some + ret, "asdlkjasdkj\n");
+	gsprintf(some + ret, "  Metamophosis\n");
 
 	gprintf("%s\n", some);
 
-	char *dogs = gstrdup("boooon");
+	char *temp = gstrdup("a poem and a mistake");
 
-	gprintf("hurm %s\n", dogs);
+	gprintf("surely %s\n", temp);
 
-	gfprintf(gstdout, "hurm %s\n", dogs);
+	gfprintf(gstdout, "------ %s\n", temp);
 
 	char *out = gmalloc (1000);
 	mirror = gmalloc (1000);
@@ -39,6 +39,7 @@ int main (int argc, char *argv[])
 	//gfprintf(gstdout, "%s\n", out);
 
 	//out = multiply("-123", "-121323", out);
+	//arb_str_verbosity = 1;
 	out = arb_str_divide("-123123123", "-321", out);
 	gfprintf(gstdout, "%s\n", out);
 	
