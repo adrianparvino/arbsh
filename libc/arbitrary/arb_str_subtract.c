@@ -1,4 +1,4 @@
-#include "stringmath.h" 
+#include "arb_str.h" 
 char *subtraction(char *a, char *b, char *c)
 { 
 	size_t i = 0;

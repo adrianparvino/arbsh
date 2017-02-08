@@ -1,4 +1,4 @@
-#include "stringmath.h"
+#include "arb_str.h"
 
 char *addition(char *a, char *b, char *c)
 {
