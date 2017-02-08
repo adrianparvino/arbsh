@@ -1,6 +1,6 @@
 #include "arb_str.h" 
 
-char *multiply(char *a, char *b, char *c)
+char *arb_str_multiply(char *a, char *b, char *c)
 {
 	int i = 0;
 	int j = 0;
