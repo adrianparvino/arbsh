@@ -1,6 +1,6 @@
 #include "arb_str.h"
 
-char *addition(char *a, char *b, char *c)
+char *arb_str_addition(char *a, char *b, char *c)
 {
 	size_t i = 0;
 	size_t width = 0;
@@ -32,7 +32,7 @@ char *addition(char *a, char *b, char *c)
 } 
 
 
-char * add(char *x, char *y, char *c)
+char * arb_str_add(char *x, char *y, char *c)
 { 
 	if (x[0] == '+')
 		++x; 
@@ -42,18 +42,18 @@ char * add(char *x, char *y, char *c)
 	if ( x[0] == '-' && y[0] == '-' )
 	{
 		setsign(c);
-		return c = addition(x + 1, y + 1, c); 
+		return c = arb_str_addition(x + 1, y + 1, c); 
 	}
 	else if (x[0] == '-')
 	{
 		setsign(c);
 		setsign(c); 
-		return c = subtraction(y, x + 1, c);
+		return c = arb_str_subtraction(y, x + 1, c);
 	}
 	else if (y[0] == '-')
 	{
-		return c = subtraction(x, y + 1, c);
-	} else c = addition(x, y, c);
+		return c = arb_str_subtraction(x, y + 1, c);
+	} else c = arb_str_addition(x, y, c);
 	
 	return c; 
 }
