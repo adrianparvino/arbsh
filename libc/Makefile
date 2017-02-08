@@ -1,4 +1,4 @@
-CFLAGS := -Wall -Wextra -c
+CFLAGS := -Wall -Wextra -c -lm
 
 LDFLAGS := -lm
 
