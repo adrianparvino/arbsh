@@ -34,8 +34,6 @@ void *strallocate(size_t);	/* Memory allocater with error */
 
 /* Globals */
 size_t cardinal;		/* All array functions must have the same length (cardinality) */
-size_t carda;
-size_t cardb;
 int *bigint1;			/* Copy of argument 1 */
 int *bigint2;			/* Copy of argument 2 */
 int base = 10;			/* Default to base 10 */
@@ -52,6 +50,8 @@ int main(int argc, char **argv)
 	double a = 0;
 	double b = 0;
 	int o = 0;
+	size_t carda;
+	size_t cardb;
 	
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
@@ -179,7 +179,7 @@ void printarray(int *a, size_t len)
 {
 	size_t i = 0;
 	for ( i = 0; i < len ; )
-		printf("%d ", a[i++]);
+		printf("%d", a[i++]);
 	printf("\n");
 } 
 
@@ -296,8 +296,8 @@ int *multiply(int *a, int *b, int *c)
 	int lb = 0;
 	/* either is zero, return c "0" ... */
  
-	la = carda;
-	lb = cardb;
+	la = arraylen(a, 4242);
+	lb = arraylen(b, 4242);
 	memset(c, 0, 100);
 
 	for ( i = la - 1; i >= 0 ; i--)
@@ -310,7 +310,7 @@ int *multiply(int *a, int *b, int *c)
 		}
 		c[k] += carry; 
 	}
-	printarray(c, carda + cardb); 
+	printarray(c, la + lb); 
 	return c;
 }
 
@@ -330,27 +330,22 @@ int *divide(int *a, int *b, int *c)
 {
 	size_t i = 0;	
 	size_t j = 0;
-	size_t z = 0;
+	size_t z = 0; 
+	size_t numer = arraylen(a, 4242);	/* cardinality of the numerator */
+	size_t denom = arraylen(b, 4242); 	/* cardinality of the denominator */
+	size_t real_cardinality = 0;		/* cardinality of the quotient's real part */
+	size_t imag_cardinality = 0;		/* cardinality of the quotient's imaginary part */
+	int sum = 0; 				/* hold a temporary signed value <= base */
+	int rec = 0; 				/* boolean record */
 
-	//size_t numer = carda;
-	//size_t denom = cardb;
-	size_t numer = arraylen(a, 4242);
-	size_t denom = arraylen(b, 4242);
-	size_t left = numer; 
-
-	int sum = 0;
-	int rec = 0;
-	size_t cnt = 0;
-
-	size_t cd = numer;
-
-	/* numerator / denominator */
+	
 	setarray(c, 0);
 	setarray(mirror, 0);
 	copyarray(mirror, a);
 	setarray(tmpmir, 0);
 	copyarray(tmpmir, mirror);
 
+	/* numerator / denominator  =  quotient */
 	for ( ; z < numer ; )
 	{
 		copyarray(tmpmir, mirror);
@@ -363,41 +358,39 @@ int *divide(int *a, int *b, int *c)
 				if ( j == z )
 				{
 					mirror[j + 1] += ((mirror[j]) * base);
-					mirror[j] = 0;
 					++z;
-					
-					//--numer;
 				}
 			 	else
 				{
 					mirror[j - 1] -= 1;
 					mirror[j] += base;
-				//	--cd;
 				}
-				
 				rec = 1;
-				break;
+				break; 
 			}
 			tmpmir[j] = sum;
 		}
 		
 		if ( rec == 0 )
-		{
-			
-			copyarray(mirror, tmpmir);
-			//printarray(c, cd ); 
-			
+		{ 
+			copyarray(mirror, tmpmir); 
 			c[z] += 1;
 		} 
-	
 		if ( iszero(tmpmir) == 0)
 			break;
 	}
-	size_t len =  numer -denom + 1; 
-	//printarray(c, z); 
-	printarray(c, len);
-	if ( z > len )
-	printarray(c + len,z-len ); 
+
+	if ( numer + 1 > denom )
+		real_cardinality = numer - denom + 1;
+	else
+		real_cardinality = z;
+
+	if ( z >= real_cardinality )
+		imag_cardinality = z - real_cardinality;
+	
+	printarray(c, real_cardinality);
+	
+	printarray(c + (real_cardinality) ,imag_cardinality); 
 	return c;
 }
 
@@ -406,8 +399,8 @@ void addition(int *a, int *b)
 	int i;
 	int carry = 0;
 	size_t width = 0;
-	size_t wa = carda;
-	size_t wb = cardb;
+	size_t wa = arraylen(a, 4242);
+	size_t wb = arraylen(b, 4242);
 	
 	if ( wa > wb ) width = wa;
 	else width = wb;
@@ -436,8 +429,10 @@ int *addition_r(int *a, int *b, int *c)
 	size_t width = 0;
 	int sum = 0;
 	int carry = 0;
-	size_t wa = carda;
-	size_t wb = cardb;
+
+	
+	size_t wa = arraylen(a, 4242);
+	size_t wb = arraylen(b, 4242);
 
 	if ( wa > wb ) width = wa;
 	else width = wb;
@@ -539,3 +534,18 @@ int *subtraction_r(int *a, int *b, int *c)
 	printarray(c, i );
 	return c;
 } 
+
+
+
+void set_array(int *array, int init, size_t dec, int sign, int terminator, size_t len)
+{
+	/* set_array(array, 0, 0, '+', 4242, 4099); */
+	size_t i = 2;
+	for( i = 2; i < len; i++)
+		array[i] = init;
+	array[0] = dec;
+	array[1] = sign;
+	array[len] = terminator;
+}
+
+ 
