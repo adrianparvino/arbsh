@@ -31,7 +31,13 @@ int main (int argc, char *argv[])
 
 	char *out = gmalloc (1000);
 
-	out = addition("123", "123", out);
+	//out = addition("123", "123", out);
+
+	
+
+	//gfprintf(gstdout, "%s\n", out);
+
+	out = multiply("-123", "-121323", out);
 
 	gfprintf(gstdout, "%s\n", out);
 	
