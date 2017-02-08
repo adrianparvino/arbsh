@@ -39,7 +39,7 @@ int main (int argc, char *argv[])
 	//gfprintf(gstdout, "%s\n", out);
 
 	//out = multiply("-123", "-121323", out);
-	out = arb_str_divide("123123123", "321", out);
+	out = arb_str_divide("-123123123", "-321", out);
 	gfprintf(gstdout, "%s\n", out);
 	
 	return 0;
