@@ -13,6 +13,18 @@ char *arb_str_divide(char *a, char *b, char *c)
 	size_t imag_cardinality = 0;		/* cardinality of the quotient's imaginary part */
 	int sum = 0; 				/* hold a temporary signed value <= base */
 	int rec = 0; 				/* boolean record */
+
+	
+	setsign(c);
+	if (*a == '-' && ++a)
+		setsign(c);
+	else if (*a == '+')
+		++a;
+	if (*b == '-' && ++b)
+		setsign(c);
+	else if (*b == '+')
+		++b;
+	++c;
 	
 	gmemset(c, '0', numer + denom);
 	c[numer + denom] = '\0';
@@ -25,7 +37,7 @@ char *arb_str_divide(char *a, char *b, char *c)
 	for ( ; z < numer ; )
 	{
 		//copyarray(tmpmir, mirror);
-		gprintf("was here \n");
+		
 		gstrcpy(tmpmir, mirror);
 		for (rec = 0, i = 0, j = z; i < denom ; j++ ,i++) 
 		{
@@ -54,5 +66,7 @@ char *arb_str_divide(char *a, char *b, char *c)
 		} 
 	} 
 	c[numer - denom + 1] = 0;
+	--c;
 	return c;
 }
+
