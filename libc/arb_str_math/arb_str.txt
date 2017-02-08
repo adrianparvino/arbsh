@@ -53,13 +53,6 @@ RETURN VALUE
 
 BUGS:
 	Leading zeroes on some division combinations.
-	
-
-
-
-	
-
-
-
+	Division requires a leading zero for numbers that start with 9.
 
 
