@@ -19,8 +19,8 @@ char *arb_str_subtraction(char *a, char *b, char *c)
 
         for( i=0; i < width ; i++)
 	{
-		sum = getcharval(a, i) - getcharval(b, i) + borrow; 
-		mir = getcharval(a, i) - getcharval(b, i) + carry;
+		sum = arb_str_index(a, i) - arb_str_index(b, i) + borrow; 
+		mir = arb_str_index(a, i) - arb_str_index(b, i) + carry;
                 carry = borrow = 0;
 		if(sum < 0)
 		{
@@ -43,7 +43,7 @@ char *arb_str_subtraction(char *a, char *b, char *c)
 		if (!(*(a-1) == '-' && *(b-1) == '-'))
 			setsign(c - 1); 
 	}
-        reversestr(c--);
+        arb_str_rev(c--);
 	return c;
 } 
 
