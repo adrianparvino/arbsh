@@ -1,4 +1,4 @@
-#include "stringmath.h" 
+#include "arb_str.h" 
 
 char *multiply(char *a, char *b, char *c)
 {
