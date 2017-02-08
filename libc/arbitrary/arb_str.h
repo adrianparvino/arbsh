@@ -1,10 +1,9 @@
 #include "../stddef/stddef.h"
-#include "../string/string.h" 
-//#include "../stdio/stdio.h"
+#include "../string/string.h"
 
 static int arb_str_verbosity = 0;
-static char *mirror;
-static char *tmpmir;
+char *mirror;
+char *tmpmir;
 
 char *add(char *, char *, char *);
 char *addition(char *, char *, char *);
@@ -17,4 +16,4 @@ void setsign(char *);
 void *strallocate(size_t);
 char *subtract(char *, char *, char *);
 char *subtraction(char *, char *, char *);
-
+char *arb_str_divide(char *, char *, char *);
