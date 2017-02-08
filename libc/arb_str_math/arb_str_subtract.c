@@ -1,5 +1,5 @@
 #include "arb_str.h" 
-char *subtraction(char *a, char *b, char *c)
+char *arb_str_subtraction(char *a, char *b, char *c)
 { 
 	size_t i = 0;
 	size_t width = 0;
@@ -47,7 +47,7 @@ char *subtraction(char *a, char *b, char *c)
 	return c;
 } 
 
-char * subtract(char *x, char *y, char *c)
+char * arb_str_subtract(char *x, char *y, char *c)
 { 
 	if (x[0] == '+')
 		++x; 
@@ -58,20 +58,20 @@ char * subtract(char *x, char *y, char *c)
 		setsign(c);
 		*mirror = '\0';
 		setsign(mirror); 
-		return c = subtraction(x + 1, y + 1, c);
+		return c = arb_str_subtraction(x + 1, y + 1, c);
 	} 
 	else if (x[0] == '-')
 	{ 
 		setsign(c);
 		*mirror = '\0';
 		setsign(mirror);
-		return c = addition(x + 1, y, c);
+		return c = arb_str_addition(x + 1, y, c);
 	}
 	else if (y[0] == '-')
 	{ 
-		return c = addition(x, y + 1, c); 
+		return c = arb_str_addition(x, y + 1, c); 
 	} else { 
-		c = subtraction(x, y, c); 
+		c = arb_str_subtraction(x, y, c); 
 	} 
 	return c;
 } 
