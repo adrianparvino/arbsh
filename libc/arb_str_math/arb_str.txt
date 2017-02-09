@@ -21,6 +21,11 @@ DESCRIPTION
 		char *answer = malloc((strlen(a) + atrlen(b) + pad )* (sizeof(char));
 		mirror = malloc((strlen(a) + atrlen(b) + pad )* (sizeof(char));
 		tmpmir = malloc((strlen(a) + atrlen(b) + pad )* (sizeof(char));
+
+		char *a = "09912398712398098098340703457034708734987342847912847987";
+		char *b = "0293482023049820394823409394";
+
+		answer = arb_str_divide(a, b, answer);
 		
 
 	APSA (arbitrary precision arithmetic) uses arrays of characters to store
@@ -53,6 +58,6 @@ RETURN VALUE
 
 BUGS:
 	Leading zeroes on some division combinations.
-	Division requires a leading zero for numbers that start with 9.
+	Division dpends on having 1 leading zero;
 
 
