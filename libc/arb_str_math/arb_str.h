@@ -16,4 +16,4 @@ void setsign(char *);
 void *arb_str_malloc(size_t);
 char *arb_str_subtract(char *, char *, char *);
 char *arb_str_subtraction(char *, char *, char *);
-char *arb_str_divide(char *, char *, char *);
+char *arb_str_divide(signed char *, signed char *, signed char *);
