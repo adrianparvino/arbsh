@@ -72,5 +72,5 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
-	$(RM) *driver log
+	$(RM) *driver log stringmath
 
