@@ -2,7 +2,7 @@
 
 int base = 10;
 
-char *arb_str_divide(signed char *a, signed char *b, signed char *c)
+char *arb_str_divide(char *a, char *b, char *cc)
 {
 	size_t i = 0;
 	size_t j = 0;
@@ -11,35 +11,32 @@ char *arb_str_divide(signed char *a, signed char *b, signed char *c)
 	size_t denom = gstrlen(b);
 	int sum = 0; 				/* hold a temporary signed value <= base */
 	int rec = 0; 				/* boolean record */
-	size_t len = 0;
-
-
-	setsign(c);
-	if (*a == '-' && ++a)
-		setsign(c);
+	size_t len = 0; 
+	setsign(cc);
+	if (*a == '-' && ++a) 
+		setsign(cc); 
 	else if (*a == '+')
-	{
-		++a;
-		numer = gstrlen(a);
-	}
-	if (*b == '-' && ++b)
-		setsign(c);
+		++a; 
+	if (*b == '-' && ++b) 
+		setsign(cc); 
 	else if (*b == '+')
-	{
-		++b;
-		denom = gstrlen(b);
-	}
-	++c; 
-
-	len = numer + denom;
-	gmemset(c, '0', len);
-	c[numer + denom] = '\0';
-	gmemset(mirror, '0', len);
+		++b; 
+	++cc; 
+	numer = gstrlen(a);
+	denom = gstrlen(b); 
+	len = numer + denom + 3; 
+	gmemset(cc, '0', len);
+	cc[numer + denom] = '\0';
+	gmemset(mirror, 0, len);
 	gstrcpy(mirror, a); 
-	gmemset(tmpmir, '0', len);
+	gmemset(tmpmir, 0, len);
 	gstrcpy(tmpmir, mirror);
 
 	tmpmir[len] = mirror[len] = 0;
+
+	gprintf("%s\n", mirror);
+	gprintf("%s\n", tmpmir);
+	gprintf("%s\n", b);
 
 	/* numerator / denominator  =  quotient */
 	for ( ; z <numer ; )
@@ -68,11 +65,11 @@ char *arb_str_divide(signed char *a, signed char *b, signed char *c)
 		if ( rec == 0 )
 		{
 			gstrcpy(mirror, tmpmir); 
-			c[z] += 1;
+			cc[z] += 1;
 		} 
 	} 
-	c[numer - denom + 1] = 0;
-
-	return c;
+	cc[numer - denom + 1] = 0;
+	--cc; 
+	return cc;
 }
 
