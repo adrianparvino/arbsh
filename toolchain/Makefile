@@ -440,6 +440,7 @@ gnu_stage_three:
 
 ncurses_host: install_path 
 
+	@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(OM_NCURSES_MRR)/$(OM_NCURSES).$(OM_SFX)
 	rm -rf $(OM_NCURSES) 
 	@tar -xf $(OM_SRC)/$(OM_NCURSES).$(OM_SFX) -C $(SPWD) 
 	cd $(SPWD)/$(OM_NCURSES) && $(INACROSS) $(SPWD)/$(OM_NCURSES)/configure \
@@ -849,22 +850,14 @@ populate:
 	#@cd src && test -e $(OM_EMACS).$(OM_SFX) || wget $(GNU_MRR)/emacs/$(OM_EMACS).$(OM_SFX) 
 	#@cd src && test -e $(OM_HURD).$(OM_SFX) || wget $(GNU_MRR)/hurd/$(OM_HURD).$(OM_SFX)
 	#@cd src && test -e $(OM_LIGHTNING).$(OM_SFX) || wget $(GNU_MRR)/lightning/$(OM_LIGHTNING).$(OM_SFX) 
-	#@cd src && test -e $(OM_WICD).$(OM_SFX) || wget $(OM_WICD_MRR)/$(OM_WICD).$(OM_SFX)
+	#@cd src && test -e $(OM_WICD).$(OM_SFX) || wget $(OM_WICD_MRR)/$(OM_WICD).$(OM_SFX) 
+	#@cd src && test -e $(OM_NETTLE).$(OM_SFX) || wget $(OM_NETTLE_MRR)/$(OM_NETTLE).$(OM_SFX) 
+	#@cd src && test -e $(OM_MPLAYER).$(OM_SFX) || wget $(OM_MPLAYER_MRR)/$(OM_MPLAYER).$(OM_SFX) 
+	#@cd src && test -e $(OM_YASM).$(OM_SFX) || wget $(OM_YASM_MRR)/$(OM_YASM).$(OM_SFX)
 	
-	@cd src && test -e $(OM_LIBPAM).$(OM_SFX) || wget $(OM_LIBPAM_MRR)/$(OM_LIBPAM).$(OM_SFX)
-	@cd src && test -e $(OM_NETTLE).$(OM_SFX) || wget $(OM_NETTLE_MRR)/$(OM_NETTLE).$(OM_SFX)
-	@cd src && test -e $(OM_WEECHAT).$(OM_SFX) || wget $(OM_WEECHAT_MRR)/$(OM_WEECHAT).$(OM_SFX)
-	@cd src && test -e $(OM_GNUCRYPT).$(OM_SFX) || wget $(OM_GNUCRYPT_MRR)/$(OM_GNUCRYPT).$(OM_SFX)
-	@cd src && test -e $(OM_IRCII).$(OM_SFX) || wget $(OM_IRCII_MRR)/$(OM_IRCII).$(OM_SFX)
-	@cd src && test -e $(OM_MPLAYER).$(OM_SFX) || wget $(OM_MPLAYER_MRR)/$(OM_MPLAYER).$(OM_SFX)
-	@cd src && test -e $(OM_MUTT).$(OM_SFX) || wget $(OM_MUTT_MRR)/$(OM_MUTT).$(OM_SFX)
-	@cd src && test -e $(OM_INETUTILS).$(OM_SFX) || wget $(OM_INETUTILS_MRR)/$(OM_INETUTILS).$(OM_SFX)
-	@cd src && test -e $(OM_ZSH).$(OM_SFX) || wget $(OM_ZSH_MRR)/$(OM_ZSH).$(OM_SFX)
-	@cd src && test -e $(OM_YASM).$(OM_SFX) || wget $(OM_YASM_MRR)/$(OM_YASM).$(OM_SFX)
-	@cd src && test -e $(OM_XZ).$(OM_SFX) || wget $(OM_XZ_MRR)/$(OM_XZ).$(OM_SFX)
-	@cd src && test -e $(OM_GPTFDISK).$(OM_SFX) || wget $(OM_GPTFDISK_MRR)/$(OM_GPTFDISK).$(OM_SFX)
-	@cd src && test -e $(OM_POPT).$(OM_SFX) || wget $(OM_POPT_MRR)/$(OM_POPT).$(OM_SFX)
-	@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(OM_NCURSES_MRR)/$(OM_NCURSES).$(OM_SFX)
+	
+	
+	
 	@cd src && test -e $(OM_PDKSH).$(OM_SFX) || wget $(OM_PDKSH_MRR)/$(OM_PDKSH).$(OM_SFX)
 	@cd src && test -e $(OM_PDCURSES).$(OM_SFX) || wget $(OM_PDCURSES_MRR)/$(OM_PDCURSES).$(OM_SFX)
 	#@cd src && test -e $(OM_NETBSDCURSES).$(OM_SFX) || wget $(OM_NETBSDCURSES_MRR)/$(OM_NETBSDCURSES).$(OM_SFX)
@@ -878,7 +871,7 @@ populate:
 	@cd patches && test -e grub-2.00-musl.patch || wget $(GENERIC_MRR)/grub-2.00-musl.patch
 	@cd patches && test -e $(OM_PYTHON)-xcompile_improvements.patch || \
 			wget $(GENERIC_MRR)/$(OM_PYTHON)-xcompile_improvements.patch
-	@cd patches && test -e inetutils-PATH_PROCNET_DEV.patch || wget $(GENERIC_MRR)/inetutils-PATH_PROCNET_DEV.patch
+	
 
 	@cd patches && test -e wireless_tools-xcompile.patch || wget $(GENERIC_MRR)/wireless_tools-xcompile.patch
 	@cd patches && test -e ircii-20151120-xcompile.patch || wget $(GENERIC_MRR)/ircii-20151120-xcompile.patch
@@ -1792,6 +1785,7 @@ libpam_target: install_path
 
 weechat_target: install_path
 
+	@cd src && test -e $(OM_WEECHAT).$(OM_SFX) || wget $(OM_WEECHAT_MRR)/$(OM_WEECHAT).$(OM_SFX)
 	# this depends on gnucrypt / gcrypt which depends on java
 	# untested
 	-rm -rf $(OM_WEECHAT)
@@ -1808,6 +1802,7 @@ weechat_target: install_path
 
 gnucrypt_host: install_path
 
+	@cd src && test -e $(OM_GNUCRYPT).$(OM_SFX) || wget $(OM_GNUCRYPT_MRR)/$(OM_GNUCRYPT).$(OM_SFX)
 	# this depends on a java compiler, untested
 	rm -rf $(OM_GNUCRYPT)
 	@tar -xf $(OM_SRC)/$(OM_GNUCRYPT).$(OM_SFX) -C $(SPWD)
@@ -1822,6 +1817,7 @@ gnucrypt_host: install_path
 
 ircii_target: install_path
 
+	@cd src && test -e $(OM_IRCII).$(OM_SFX) || wget $(OM_IRCII_MRR)/$(OM_IRCII).$(OM_SFX)
 	-rm -rf $(OM_IRCII)
 	-mkdir -p $(OM_IRCII)
 	@tar -xf $(OM_SRC)/$(OM_IRCII).$(OM_SFX) -C $(SPWD) 
@@ -1839,6 +1835,7 @@ ircii_target: install_path
 
 mutt_target: install_path
 
+	@cd src && test -e $(OM_MUTT).$(OM_SFX) || wget $(OM_MUTT_MRR)/$(OM_MUTT).$(OM_SFX)
 	-rm -rf $(OM_MUTT)
 	-mkdir -p $(OM_MUTT)
 	@tar -xf $(OM_SRC)/$(OM_MUTT).$(OM_SFX) -C $(SPWD) 
@@ -1852,6 +1849,8 @@ mutt_target: install_path
 
 inetutils_target: install_path
 
+	@cd patches && test -e inetutils-PATH_PROCNET_DEV.patch || wget $(GENERIC_MRR)/inetutils-PATH_PROCNET_DEV.patch
+	@cd src && test -e $(OM_INETUTILS).$(OM_SFX) || wget $(OM_INETUTILS_MRR)/$(OM_INETUTILS).$(OM_SFX)
 	-rm -rf $(OM_INETUTILS)
 	-mkdir -p $(OM_INETUTILS)
 	@tar -xf $(OM_SRC)/$(OM_INETUTILS).$(OM_SFX) -C $(SPWD)
@@ -1908,6 +1907,7 @@ createhost:
 
 zsh_target: install_path
 
+	@cd src && test -e $(OM_ZSH).$(OM_SFX) || wget $(OM_ZSH_MRR)/$(OM_ZSH).$(OM_SFX)
 	-rm -rf $(OM_ZSH)
 	@tar -xf $(OM_SRC)/$(OM_ZSH).$(OM_SFX) -C $(SPWD)
 	-cd $(SPWD)/$(OM_ZSH) && $(INACROSS) $(SPWD)/$(OM_ZSH)/configure \
@@ -1920,6 +1920,7 @@ zsh_target: install_path
 
 xz_target: install_path
 
+	@cd src && test -e $(OM_XZ).$(OM_SFX) || wget $(OM_XZ_MRR)/$(OM_XZ).$(OM_SFX)
 	-rm -rf $(OM_XZ)
 	@tar -xf $(OM_SRC)/$(OM_XZ).$(OM_SFX) -C $(SPWD)
 	-cd $(SPWD)/$(OM_XZ) && $(INACROSS) $(SPWD)/$(OM_XZ)/configure \
@@ -1931,6 +1932,7 @@ xz_target: install_path
 
 gptfdisk_target: install_path
 
+	@cd src && test -e $(OM_GPTFDISK).$(OM_SFX) || wget $(OM_GPTFDISK_MRR)/$(OM_GPTFDISK).$(OM_SFX)
 	#-$(MAKE) popt_host
 	#-$(MAKE) e2fsprogs_host
 	-rm -rf $(OM_GPTFDISK)
@@ -1943,6 +1945,7 @@ gptfdisk_target: install_path
 
 popt_host: install_path
 
+	@cd src && test -e $(OM_POPT).$(OM_SFX) || wget $(OM_POPT_MRR)/$(OM_POPT).$(OM_SFX)
 	-rm -rf $(OM_POPT)
 	@tar -xf $(OM_SRC)/$(OM_POPT).$(OM_SFX) -C $(SPWD)
 	-cd $(SPWD)/$(OM_POPT) && $(INACROSS) $(SPWD)/$(OM_POPT)/configure \
