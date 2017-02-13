@@ -273,6 +273,9 @@ gcc_stage_make: host_path
 	@cd patches && test -e gcc-4.9.2-musl.diff || wget $(GENERIC_MRR)/gcc-4.9.2-musl.diff
 	@cd patches && test -e gcc-4.9.3-musl.diff || wget $(GENERIC_MRR)/gcc-4.9.3-musl.diff
 	@cd patches && test -e gcc-5.3.0-musl.diff || wget $(GENERIC_MRR)/gcc-5.3.0-musl.diff
+	@cd src && test -e $(OM_GMP).$(OM_SFX) || wget $(GNU_MRR)/gmp/$(OM_GMP).$(OM_SFX)
+	@cd src && test -e $(OM_MPFR).$(OM_SFX) || wget $(GNU_MRR)/mpfr/$(OM_MPFR).$(OM_SFX)
+	@cd src && test -e $(OM_MPC).$(OM_SFX) || wget $(GNU_MRR)/mpc/$(OM_MPC).$(OM_SFX)
 	@cd src && test -e $(OM_GCC).$(OM_SFX) || wget $(GNU_MRR)/gcc/$(OM_GCC)/$(OM_GCC).$(OM_SFX)
 	@test -d $(OM_GCC) || tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
 
