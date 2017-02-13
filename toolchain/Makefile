@@ -805,6 +805,7 @@ e2fsprogs_target: install_path
 
 parted_target: install_path
 
+	@cd src && test -e $(OM_PARTED).$(OM_SFX) || wget $(OM_PARTED_MRR)/$(OM_PARTED).$(OM_SFX)
 	rm -rf $(OM_PARTED)
 	mkdir -p $(OM_PARTED)
 	@tar -xf $(OM_SRC)/$(OM_PARTED).$(OM_SFX) -C $(SPWD) 
@@ -819,7 +820,7 @@ parted_target: install_path
 
 grub_target: install_path
 
-
+	@cd src && test -e $(OM_GRUB).$(OM_SFX) || wget $(GNU_MRR)/grub/$(OM_GRUB).$(OM_SFX)
 	rm -rf $(OM_GRUB)
 	mkdir -p $(OM_GRUB) 
 	-@tar -xf $(OM_SRC)/$(OM_GRUB).$(OM_SFX) -C $(SPWD) 
@@ -842,24 +843,12 @@ endif
 populate:
 
 	-@mkdir -p $(SPWD)/src/
-	-@mkdir -p $(SPWD)/patches/
-	
-	
-	
-	
-	
-	
-	
+	-@mkdir -p $(SPWD)/patches/ 
 	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_NCURSES).$(OM_SFX)
 	
 	
 	
-
 	
-	@cd src && test -e $(OM_PARTED).$(OM_SFX) || wget $(OM_PARTED_MRR)/$(OM_PARTED).$(OM_SFX)
-	@cd src && test -e $(OM_GRUB).$(OM_SFX) || wget $(GNU_MRR)/grub/$(OM_GRUB).$(OM_SFX)
-	@cd src && test -e $(OM_GDB).$(OM_SFX) || wget $(GNU_MRR)/gdb/$(OM_GDB).$(OM_SFX)
-	@cd src && test -e $(OM_PERL).$(OM_SFX) || wget $(OM_PERL_MRR)/$(OM_PERL).$(OM_SFX)
 	@cd src && test -e $(OM_PERL_CROSS).$(OM_SFX) || wget $(OM_PERL_CROSS_MRR)/$(OM_PERL_CROSS).$(OM_SFX)
 	@cd src && test -e $(OM_BASH).$(OM_SFX) || wget $(GNU_MRR)/bash/$(OM_BASH).$(OM_SFX)
 	@cd src && test -e $(OM_BISON).$(OM_SFX) || wget $(GNU_MRR)/bison/$(OM_BISON).$(OM_SFX)
@@ -1198,6 +1187,7 @@ links_target: install_path
 
 gdb_target: install_path
 
+	@cd src && test -e $(OM_GDB).$(OM_SFX) || wget $(GNU_MRR)/gdb/$(OM_GDB).$(OM_SFX)
 	-rm -rf $(OM_GDB)
 	-mkdir -p $(OM_GDB)
 	@tar -xf $(OM_SRC)/$(OM_GDB).$(OM_SFX) -C $(SPWD) 
@@ -1282,6 +1272,7 @@ python_target: install_path
 perl_target: install_path
 
 	# this must be built at -j1
+	@cd src && test -e $(OM_PERL).$(OM_SFX) || wget $(OM_PERL_MRR)/$(OM_PERL).$(OM_SFX)
 	-rm -rf $(OM_PERL)
 	-mkdir -p $(OM_PERL)
 	@tar -xf $(OM_SRC)/$(OM_PERL).$(OM_SFX) -C $(SPWD)
