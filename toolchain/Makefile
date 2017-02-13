@@ -844,21 +844,15 @@ populate:
 
 	-@mkdir -p $(SPWD)/src/
 	-@mkdir -p $(SPWD)/patches/ 
-	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_NCURSES).$(OM_SFX)
+	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_NCURSES).$(OM_SFX) 
 	
 	
 	
 	
-	@cd src && test -e $(OM_PERL_CROSS).$(OM_SFX) || wget $(OM_PERL_CROSS_MRR)/$(OM_PERL_CROSS).$(OM_SFX)
-	@cd src && test -e $(OM_BASH).$(OM_SFX) || wget $(GNU_MRR)/bash/$(OM_BASH).$(OM_SFX)
-	@cd src && test -e $(OM_BISON).$(OM_SFX) || wget $(GNU_MRR)/bison/$(OM_BISON).$(OM_SFX)
-	@cd src && test -e $(OM_GIT).$(OM_SFX) || wget $(GNU_MRR)/git/old//$(OM_GIT).$(OM_SFX)
-	@cd src && test -e $(OM_OCRAD).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_OCRAD).$(OM_SFX)
-	@cd src && test -e $(OM_XORRISO).$(OM_SFX) || wget $(GNU_MRR)/xorriso/$(OM_XORRISO).$(OM_SFX)
-	@cd src && test -e $(OM_NANO).$(OM_SFX) || wget $(GNU_MRR)/nano/$(OM_NANO).$(OM_SFX)
-	@cd src && test -e $(OM_GROFF).$(OM_SFX) || wget $(GNU_MRR)/groff/$(OM_GROFF).$(OM_SFX)
-	@cd src && test -e $(OM_BC).$(OM_SFX) || wget $(GNU_MRR)/bc/$(OM_BC).$(OM_SFX)
-	@cd src && test -e $(OM_CPIO).$(OM_SFX) || wget $(GNU_MRR)/cpio/$(OM_CPIO).$(OM_SFX)
+
+	
+	
+	
 	@cd src && test -e $(OM_RSYNC).$(OM_SFX) || wget $(OM_RSYNC_MRR)/$(OM_RSYNC).$(OM_SFX) 
 	@cd src && test -e $(OM_LIBICONV).$(OM_SFX) || wget $(GNU_MRR)/libiconv/$(OM_LIBICONV).$(OM_SFX)
 	@cd src && test -e $(OM_LIBUNISTRING).$(OM_SFX) || wget $(GNU_MRR)/libunistring/$(OM_LIBUNISTRING).$(OM_SFX)
@@ -1273,10 +1267,11 @@ perl_target: install_path
 
 	# this must be built at -j1
 	@cd src && test -e $(OM_PERL).$(OM_SFX) || wget $(OM_PERL_MRR)/$(OM_PERL).$(OM_SFX)
+	#@cd src && test -e $(OM_PERL_CROSS).$(OM_SFX) || wget $(OM_PERL_CROSS_MRR)/$(OM_PERL_CROSS).$(OM_SFX)
 	-rm -rf $(OM_PERL)
 	-mkdir -p $(OM_PERL)
 	@tar -xf $(OM_SRC)/$(OM_PERL).$(OM_SFX) -C $(SPWD)
-	@tar -xf $(OM_SRC)/$(OM_PERL_CROSS).$(OM_SFX) -C $(SPWD)
+	#@tar -xf $(OM_SRC)/$(OM_PERL_CROSS).$(OM_SFX) -C $(SPWD)
 
 	-cd $(SPWD)/$(OM_PERL) && $(INACROSS) $(SPWD)/$(OM_PERL)/configure \
 	--target=$(OM_SUBTARG)
@@ -1287,6 +1282,7 @@ perl_target: install_path
 
 bash_target: install_path
 
+	@cd src && test -e $(OM_BASH).$(OM_SFX) || wget $(GNU_MRR)/bash/$(OM_BASH).$(OM_SFX)
 	-rm -rf $(OM_BASH)
 	-mkdir -p $(OM_BASH)
 	@tar -xf $(OM_SRC)/$(OM_BASH).$(OM_SFX) -C $(SPWD) 
@@ -1300,6 +1296,7 @@ bash_target: install_path
 
 bison_target: install_path
 
+	@cd src && test -e $(OM_BISON).$(OM_SFX) || wget $(GNU_MRR)/bison/$(OM_BISON).$(OM_SFX)
 	-rm -rf $(OM_BISON)
 	-mkdir -p $(OM_BISON)
 	@tar -xf $(OM_SRC)/$(OM_BISON).$(OM_SFX) -C $(SPWD) 
@@ -1316,6 +1313,7 @@ bison_target: install_path
 
 git_target: install_path
 
+	@cd src && test -e $(OM_GIT).$(OM_SFX) || wget $(GNU_MRR)/git/old//$(OM_GIT).$(OM_SFX)
 	-rm -rf $(OM_GIT)
 	-mkdir -p $(OM_GIT)
 	@tar -xf $(OM_SRC)/$(OM_GIT).$(OM_SFX) -C $(SPWD) 
@@ -1329,6 +1327,7 @@ git_target: install_path
 
 ocrad_target: install_path
 
+	@cd src && test -e $(OM_OCRAD).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_OCRAD).$(OM_SFX)
 	-rm -rf $(OM_OCRAD)
 	-mkdir -p $(OM_OCRAD)
 	@tar -xf $(OM_SRC)/$(OM_OCRAD).$(OM_SFX) -C $(SPWD) 
@@ -1340,6 +1339,7 @@ ocrad_target: install_path
 
 xorriso_target: install_path
 
+	@cd src && test -e $(OM_XORRISO).$(OM_SFX) || wget $(GNU_MRR)/xorriso/$(OM_XORRISO).$(OM_SFX)
 	-rm -rf $(OM_XORRISO)
 	-mkdir -p $(OM_XORRISO)
 	@tar -xf $(OM_SRC)/$(OM_XORRISO).$(OM_SFX) -C $(SPWD) 
@@ -1353,6 +1353,7 @@ xorriso_target: install_path
 
 nano_target: install_path
 
+	@cd src && test -e $(OM_NANO).$(OM_SFX) || wget $(GNU_MRR)/nano/$(OM_NANO).$(OM_SFX)
 	-rm -rf $(OM_NANO)
 	-mkdir -p $(OM_NANO)
 	@tar -xf $(OM_SRC)/$(OM_NANO).$(OM_SFX) -C $(SPWD) 
@@ -1366,6 +1367,7 @@ nano_target: install_path
 
 groff_target: install_path
 
+	@cd src && test -e $(OM_GROFF).$(OM_SFX) || wget $(GNU_MRR)/groff/$(OM_GROFF).$(OM_SFX)
 	# build at -j1
 	-rm -rf $(OM_GROFF)
 	-mkdir -p $(OM_GROFF)
@@ -1380,6 +1382,7 @@ groff_target: install_path
 
 bc_target: install_path
 
+	@cd src && test -e $(OM_BC).$(OM_SFX) || wget $(GNU_MRR)/bc/$(OM_BC).$(OM_SFX)
 	-rm -rf $(OM_BC)
 	-mkdir -p $(OM_BC)
 	@tar -xf $(OM_SRC)/$(OM_BC).$(OM_SFX) -C $(SPWD) 
@@ -1393,6 +1396,7 @@ bc_target: install_path
 
 cpio_target: install_path
 
+	@cd src && test -e $(OM_CPIO).$(OM_SFX) || wget $(GNU_MRR)/cpio/$(OM_CPIO).$(OM_SFX)
 	-rm -rf $(OM_CPIO)
 	-mkdir -p $(OM_CPIO)
 	@tar -xf $(OM_SRC)/$(OM_CPIO).$(OM_SFX) -C $(SPWD) 
