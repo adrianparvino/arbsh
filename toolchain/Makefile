@@ -845,32 +845,11 @@ populate:
 	-@mkdir -p $(SPWD)/src/
 	-@mkdir -p $(SPWD)/patches/ 
 	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_NCURSES).$(OM_SFX) 
-	
-	
-	
-	
+	#@cd src && test -e $(OM_LIBATOMIC_OPS).$(OM_SFX) || wget $(OM_LIBATOMIC_OPS_MRR)/$(OM_LIBATOMIC_OPS).$(OM_SFX) 
+	#@cd src && test -e $(OM_EMACS).$(OM_SFX) || wget $(GNU_MRR)/emacs/$(OM_EMACS).$(OM_SFX) 
+	#@cd src && test -e $(OM_HURD).$(OM_SFX) || wget $(GNU_MRR)/hurd/$(OM_HURD).$(OM_SFX)
+	#@cd src && test -e $(OM_LIGHTNING).$(OM_SFX) || wget $(GNU_MRR)/lightning/$(OM_LIGHTNING).$(OM_SFX)
 
-	
-	
-	
-	@cd src && test -e $(OM_RSYNC).$(OM_SFX) || wget $(OM_RSYNC_MRR)/$(OM_RSYNC).$(OM_SFX) 
-	@cd src && test -e $(OM_LIBICONV).$(OM_SFX) || wget $(GNU_MRR)/libiconv/$(OM_LIBICONV).$(OM_SFX)
-	@cd src && test -e $(OM_LIBUNISTRING).$(OM_SFX) || wget $(GNU_MRR)/libunistring/$(OM_LIBUNISTRING).$(OM_SFX)
-	@cd src && test -e $(OM_LIBTOOL).$(OM_SFX) || wget $(GNU_MRR)/libtool/$(OM_LIBTOOL).$(OM_SFX)
-	@cd src && test -e $(OM_LIBGC).$(OM_SFX) || wget $(OM_LIBGC_MRR)/$(OM_LIBGC).$(OM_SFX)
-	@cd src && test -e $(OM_LIBATOMIC_OPS).$(OM_SFX) || wget $(OM_LIBATOMIC_OPS_MRR)/$(OM_LIBATOMIC_OPS).$(OM_SFX)
-	@cd src && test -e $(OM_LIBFFI).$(OM_SFX) || wget $(OM_LIBFFI_MRR)/$(OM_LIBFFI).$(OM_SFX)
-	@cd src && test -e $(OM_OPENSSL).$(OM_SFX) || wget $(OM_OPENSSL_MRR)/$(OM_OPENSSL).$(OM_SFX)
-	@cd src && test -e $(OM_LIBRESSL).$(OM_SFX) || wget $(OM_LIBRESSL_MRR)/$(OM_LIBRESSL).$(OM_SFX)
-	@cd src && test -e $(OM_EMACS).$(OM_SFX) || wget $(GNU_MRR)/emacs/$(OM_EMACS).$(OM_SFX)
-	@cd src && test -e $(OM_GAWK).$(OM_SFX) || wget $(GNU_MRR)/gawk/$(OM_GAWK).$(OM_SFX)
-	@cd src && test -e $(OM_GETTEXT).$(OM_SFX) || wget $(GNU_MRR)/gettext/$(OM_GETTEXT).$(OM_SFX)
-	@cd src && test -e $(OM_OCTAVE).$(OM_SFX) || wget $(GNU_MRR)/octave/$(OM_OCTAVE).$(OM_SFX)
-	@cd src && test -e $(OM_PCRE).$(OM_SFX) || wget $(OM_PCRE_MRR)/$(OM_PCRE).$(OM_SFX)
-	@cd src && test -e $(OM_OPENSSH).$(OM_SFX) || wget $(OM_OPENSSH_MRR)/$(OM_OPENSSH).$(OM_SFX)
-	@cd src && test -e $(OM_HURD).$(OM_SFX) || wget $(GNU_MRR)/hurd/$(OM_HURD).$(OM_SFX)
-	@cd src && test -e $(OM_LIGHTNING).$(OM_SFX) || wget $(GNU_MRR)/lightning/$(OM_LIGHTNING).$(OM_SFX)
-	@cd src && test -e $(OM_PATCH).$(OM_SFX) || wget $(GNU_MRR)/patch/$(OM_PATCH).$(OM_SFX)
 	@cd src && test -e $(OM_EXPAT).$(OM_SFX) || wget $(OM_EXPAT_MRR)/$(OM_EXPAT).$(OM_SFX)
 	@cd src && test -e $(OM_LIBXML2).$(OM_SFX) || wget $(OM_LIBXML2_MRR)/$(OM_LIBXML2).$(OM_SFX)
 	@cd src && test -e $(OM_IRSSI).$(OM_SFX) || wget $(OM_IRSSI_MRR)/$(OM_IRSSI).$(OM_SFX)
@@ -1410,6 +1389,7 @@ cpio_target: install_path
 
 rsync_target: install_path
 
+	@cd src && test -e $(OM_RSYNC).$(OM_SFX) || wget $(OM_RSYNC_MRR)/$(OM_RSYNC).$(OM_SFX) 
 	-rm -rf $(OM_RSYNC)
 	-mkdir -p $(OM_RSYNC)
 	@tar -xf $(OM_SRC)/$(OM_RSYNC).$(OM_SFX) -C $(SPWD) 
@@ -1423,6 +1403,7 @@ rsync_target: install_path
 
 libiconv_host: install_path
 
+	@cd src && test -e $(OM_LIBICONV).$(OM_SFX) || wget $(GNU_MRR)/libiconv/$(OM_LIBICONV).$(OM_SFX)
 	rm -rf $(OM_LIBICONV)
 	@tar -xf $(OM_SRC)/$(OM_LIBICONV).$(OM_SFX) -C $(SPWD)
 	cd $(SPWD)/$(OM_LIBICONV) && $(SPWD)/$(OM_LIBICONV)/configure \
@@ -1436,6 +1417,7 @@ libiconv_host: install_path
 
 libunistring_host: install_path
 
+	@cd src && test -e $(OM_LIBUNISTRING).$(OM_SFX) || wget $(GNU_MRR)/libunistring/$(OM_LIBUNISTRING).$(OM_SFX)
 	rm -rf $(OM_LIBUNISTRING)
 	@tar -xf $(OM_SRC)/$(OM_LIBUNISTRING).$(OM_SFX) -C $(SPWD)
 	cd $(SPWD)/$(OM_LIBUNISTRING) && $(SPWD)/$(OM_LIBUNISTRING)/configure \
@@ -1449,6 +1431,7 @@ libunistring_host: install_path
 
 libtool_host: install_path
 
+	@cd src && test -e $(OM_LIBTOOL).$(OM_SFX) || wget $(GNU_MRR)/libtool/$(OM_LIBTOOL).$(OM_SFX)
 	rm -rf $(OM_LIBTOOL)
 	@tar -xf $(OM_SRC)/$(OM_LIBTOOL).$(OM_SFX) -C $(SPWD)
 	cd $(SPWD)/$(OM_LIBTOOL) && $(SPWD)/$(OM_LIBTOOL)/configure \
@@ -1462,6 +1445,7 @@ libtool_host: install_path
 
 libgc_host: install_path
 
+	@cd src && test -e $(OM_LIBGC).$(OM_SFX) || wget $(OM_LIBGC_MRR)/$(OM_LIBGC).$(OM_SFX)
 	rm -rf $(OM_LIBGC)
 	@tar -xf $(OM_SRC)/$(OM_LIBGC).$(OM_SFX) -C $(SPWD)
 	@tar -xf $(OM_SRC)/$(OM_LIBATOMIC_OPS).$(OM_SFX) -C $(SPWD)/$(OM_LIBGC)
@@ -1480,6 +1464,7 @@ libgc_host: install_path
 
 libffi_host: install_path
 
+	@cd src && test -e $(OM_LIBFFI).$(OM_SFX) || wget $(OM_LIBFFI_MRR)/$(OM_LIBFFI).$(OM_SFX)
 	rm -rf $(OM_LIBFFI)
 	@tar -xf $(OM_SRC)/$(OM_LIBFFI).$(OM_SFX) -C $(SPWD)
 	cd $(SPWD)/$(OM_LIBFFI) && $(SPWD)/$(OM_LIBFFI)/configure \
@@ -1494,6 +1479,7 @@ libffi_host: install_path
 
 openssl_target: install_path
 
+	@cd src && test -e $(OM_OPENSSL).$(OM_SFX) || wget $(OM_OPENSSL_MRR)/$(OM_OPENSSL).$(OM_SFX)
 	-rm -rf $(OM_OPENSSL)
 	-mkdir -p $(OM_OPENSSL)
 	@tar -xf $(OM_SRC)/$(OM_OPENSSL).$(OM_SFX) -C $(SPWD) 
@@ -1511,6 +1497,7 @@ openssl_target: install_path
 
 gawk_target: install_path
 
+	@cd src && test -e $(OM_GAWK).$(OM_SFX) || wget $(GNU_MRR)/gawk/$(OM_GAWK).$(OM_SFX)
 	-rm -rf $(OM_GAWK)
 	-mkdir -p $(OM_GAWK)
 	@tar -xf $(OM_SRC)/$(OM_GAWK).$(OM_SFX) -C $(SPWD) 
@@ -1524,6 +1511,7 @@ gawk_target: install_path
 
 gettext_target: install_path
 
+	@cd src && test -e $(OM_GETTEXT).$(OM_SFX) || wget $(GNU_MRR)/gettext/$(OM_GETTEXT).$(OM_SFX)
 	-rm -rf $(OM_GETTEXT)
 	-mkdir -p $(OM_GETTEXT)
 	@tar -xf $(OM_SRC)/$(OM_GETTEXT).$(OM_SFX) -C $(SPWD) 
@@ -1537,6 +1525,7 @@ gettext_target: install_path
 
 octave_target: install_path
 
+	@cd src && test -e $(OM_OCTAVE).$(OM_SFX) || wget $(GNU_MRR)/octave/$(OM_OCTAVE).$(OM_SFX)
 	# requires fortran support
 	-rm -rf $(OM_OCTAVE)
 	-mkdir -p $(OM_OCTAVE)
@@ -1552,6 +1541,7 @@ octave_target: install_path
 
 pcre_host: install_path
 
+	@cd src && test -e $(OM_PCRE).$(OM_SFX) || wget $(OM_PCRE_MRR)/$(OM_PCRE).$(OM_SFX)
 	rm -rf $(OM_PCRE)
 	@tar -xf $(OM_SRC)/$(OM_PCRE).$(OM_SFX) -C $(SPWD)
 	cd $(SPWD)/$(OM_PCRE) && $(SPWD)/$(OM_PCRE)/configure \
@@ -1566,6 +1556,7 @@ pcre_host: install_path
 
 openssh_target: install_path
 
+	@cd src && test -e $(OM_OPENSSH).$(OM_SFX) || wget $(OM_OPENSSH_MRR)/$(OM_OPENSSH).$(OM_SFX)
 	-rm -rf $(OM_OPENSSH)
 	-mkdir -p $(OM_OPENSSH)
 	@tar -xf $(OM_SRC)/$(OM_OPENSSH).$(OM_SFX) -C $(SPWD) 
@@ -1594,6 +1585,7 @@ openssh_target: install_path
 
 libressl_host: install_path
 
+	@cd src && test -e $(OM_LIBRESSL).$(OM_SFX) || wget $(OM_LIBRESSL_MRR)/$(OM_LIBRESSL).$(OM_SFX)
 	# just need headers, but cross compile anyway, this is a hack
 	-rm -rf $(OM_LIBRESSL)
 	-mkdir -p $(OM_LIBRESSL)
@@ -1609,6 +1601,7 @@ libressl_host: install_path
 
 patch_target: install_path
 
+	@cd src && test -e $(OM_PATCH).$(OM_SFX) || wget $(GNU_MRR)/patch/$(OM_PATCH).$(OM_SFX)
 	-rm -rf $(OM_PATCH)
 	-mkdir -p $(OM_PATCH)
 	@tar -xf $(OM_SRC)/$(OM_PATCH).$(OM_SFX) -C $(SPWD) 
