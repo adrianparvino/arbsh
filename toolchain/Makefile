@@ -243,6 +243,7 @@ install_path: host_path
 
 binutils_stage_make: host_path
 
+	@cd src && test -e $(OM_BINUTILS).$(OM_SFX) || wget $(GNU_MRR)/binutils/$(OM_BINUTILS).$(OM_SFX)
 	@test -d $(OM_BINUTILS) || tar -xf $(OM_SRC)/$(OM_BINUTILS).$(OM_SFX) -C $(SPWD)
 	
 	@mkdir -p $(SPWD)/$(OM_BINUTILS)-build
@@ -258,8 +259,8 @@ binutils_stage_install: host_path
 
 linux_stage: host_path
 
+	@cd src && test -e $(OM_LINUX).$(OM_SFX) || wget $(KERNEL_MRR)/$(OM_LINUX).$(OM_SFX)
 	@test -d $(OM_LINUX) || tar -xf $(OM_SRC)/$(OM_LINUX).$(OM_SFX) -C $(SPWD)
-	
 	
 	$(MAKE) -C $(SPWD)/$(OM_LINUX) ARCH=$(OM_LINUXARCH) \
 	INSTALL_HDR_PATH=$(OM_PREF)/$(OM_TARG)/ \
@@ -267,6 +268,7 @@ linux_stage: host_path
 
 gcc_stage_make: host_path
 
+	@cd src && test -e $(OM_GCC).$(OM_SFX) || wget $(GNU_MRR)/gcc/$(OM_GCC)/$(OM_GCC).$(OM_SFX)
 	@test -d $(OM_GCC) || tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
 
 	@tar -xf $(OM_SRC)/$(OM_GMP).$(OM_SFX) -C $(SPWD)
@@ -389,6 +391,7 @@ uclibc_stage_three: install_path
 
 gnu_stage_one: install_path
 
+	@cd src && test -e $(OM_GLIBC).$(OM_SFX) || wget $(GNU_MRR)/glibc/$(OM_GLIBC).$(OM_SFX)
 	@rm -rf $(SPWD)/$(OM_GLIBC)-build/
 	@tar -xf $(OM_SRC)/$(OM_GLIBC).$(OM_SFX) -C $(SPWD)
 	-@mkdir -p $(SPWD)/$(OM_GLIBC)-build
@@ -453,7 +456,8 @@ ncurses_host: install_path
 
 htop_target: install_path 
 
-	#-$(MAKE) -i ncurses_host
+	@cd src && test -e $(OM_HTOP).$(OM_SFX) || wget $(OM_HTOP_MRR)/$(OM_HTOP).$(OM_SFX)
+	-$(MAKE) -i ncurses_host
 	rm -rf $(OM_HTOP)
 	tar -xf $(OM_SRC)/$(OM_HTOP).$(OM_SFX) -C $(SPWD)
 	mkdir -p $(OM_LIBROOT)
@@ -469,6 +473,7 @@ htop_target: install_path
 
 coreutils_target: install_path
 
+	@cd src && test -e $(OM_COREUTILS).$(OM_SFX) || wget $(OM_COREUTILS_MRR)/$(OM_COREUTILS).$(OM_SFX)
 	rm -rf $(OM_COREUTILS)
 	tar -xf $(OM_SRC)/$(OM_COREUTILS).$(OM_SFX) -C $(SPWD) 
 	mkdir -p $(OM_LIBROOT)
@@ -484,6 +489,7 @@ coreutils_target: install_path
 
 vim_target: install_path 
 
+	@cd src && test -e $(OM_VIM).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_VIM).$(OM_SFX)
 	-$(MAKE) -i ncurses_host
 	rm -rf $(OM_VIM)
 	tar -xf $(OM_SRC)/$(OM_VIM).$(OM_SFX) -C $(SPWD)
@@ -520,6 +526,7 @@ utillinux_target: install_path
 
 dhcp_target: install_path
 
+	@cd src && test -e $(OM_DHCP).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_DHCP).$(OM_SFX)
 	rm -rf $(OM_DHCP)
 	tar -xf $(OM_SRC)/$(OM_DHCP).$(OM_SFX) -C $(SPWD)
 	 mkdir -p $(OM_LIBROOT)
@@ -577,6 +584,7 @@ strace_target: install_path
 
 busybox_target: install_path
 
+	@cd src && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_BUSYBOX).$(OM_SFX)
 	-mkdir -p $(OM_LIBROOT)
 	-rm -rf $(OM_BUSYBOX)
 	-@tar -xf $(OM_SRC)/$(OM_BUSYBOX).$(OM_SFX) -C $(SPWD) 
@@ -609,6 +617,7 @@ dropbear_target: install_path
 
 gmp_host: install_path
 
+	@cd src && test -e $(OM_GMP).$(OM_SFX) || wget $(GNU_MRR)/gmp/$(OM_GMP).$(OM_SFX)
 	-@tar -xf $(OM_SRC)/$(OM_GMP).$(OM_SFX) -C $(SPWD) 
 	-cd $(SPWD)/$(OM_GMP) && $(INACROSS) $(SPWD)/$(OM_GMP)/configure \
 	--prefix=$(OM_PREF)/$(OM_TARG) \
@@ -618,6 +627,7 @@ gmp_host: install_path
 
 mpc_host: install_path
 
+	@cd src && test -e $(OM_MPC).$(OM_SFX) || wget $(GNU_MRR)/mpc/$(OM_MPC).$(OM_SFX)
 	-@tar -xf $(OM_SRC)/$(OM_MPC).$(OM_SFX) -C $(SPWD) 
 	-cd $(SPWD)/$(OM_MPC) && $(INACROSS) $(SPWD)/$(OM_MPC)/configure \
 	--prefix=$(OM_PREF)/$(OM_TARG) \
@@ -627,6 +637,7 @@ mpc_host: install_path
 
 mpfr_host: install_path
 
+	@cd src && test -e $(OM_MPFR).$(OM_SFX) || wget $(GNU_MRR)/mpfr/$(OM_MPFR).$(OM_SFX)
 	-@tar -xf $(OM_SRC)/$(OM_MPFR).$(OM_SFX) -C $(SPWD) 
 	-cd $(SPWD)/$(OM_MPFR) && $(INACROSS) $(SPWD)/$(OM_MPFR)/configure \
 	--prefix=$(OM_PREF)/$(OM_TARG) \
@@ -834,19 +845,17 @@ populate:
 	-@mkdir -p $(SPWD)/patches/
 	
 	
-	@cd src && test -e $(OM_GLIBC).$(OM_SFX) || wget $(GNU_MRR)/glibc/$(OM_GLIBC).$(OM_SFX)
-	@cd src && test -e $(OM_LINUX).$(OM_SFX) || wget $(KERNEL_MRR)/$(OM_LINUX).$(OM_SFX)
-	@cd src && test -e $(OM_GMP).$(OM_SFX) || wget $(GNU_MRR)/gmp/$(OM_GMP).$(OM_SFX)
-	@cd src && test -e $(OM_MPFR).$(OM_SFX) || wget $(GNU_MRR)/mpfr/$(OM_MPFR).$(OM_SFX)
-	@cd src && test -e $(OM_MPC).$(OM_SFX) || wget $(GNU_MRR)/mpc/$(OM_MPC).$(OM_SFX)
-	@cd src && test -e $(OM_GCC).$(OM_SFX) || wget $(GNU_MRR)/gcc/$(OM_GCC)/$(OM_GCC).$(OM_SFX)
-	@cd src && test -e $(OM_BINUTILS).$(OM_SFX) || wget $(GNU_MRR)/binutils/$(OM_BINUTILS).$(OM_SFX)
+	
+	
+	
+	
+	
 	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_NCURSES).$(OM_SFX)
-	@cd src && test -e $(OM_HTOP).$(OM_SFX) || wget $(OM_HTOP_MRR)/$(OM_HTOP).$(OM_SFX)
-	@cd src && test -e $(OM_COREUTILS).$(OM_SFX) || wget $(OM_COREUTILS_MRR)/$(OM_COREUTILS).$(OM_SFX)
-	@cd src && test -e $(OM_VIM).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_VIM).$(OM_SFX)
-	@cd src && test -e $(OM_DHCP).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_DHCP).$(OM_SFX)
-	@cd src && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_BUSYBOX).$(OM_SFX)
+	
+	
+	
+
+	
 	@cd src && test -e $(OM_PARTED).$(OM_SFX) || wget $(OM_PARTED_MRR)/$(OM_PARTED).$(OM_SFX)
 	@cd src && test -e $(OM_GRUB).$(OM_SFX) || wget $(GNU_MRR)/grub/$(OM_GRUB).$(OM_SFX)
 	@cd src && test -e $(OM_GDB).$(OM_SFX) || wget $(GNU_MRR)/gdb/$(OM_GDB).$(OM_SFX)
@@ -2051,6 +2060,7 @@ generate_host_tools:
 
 busybox_host:
 
+	@cd src && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_BUSYBOX).$(OM_SFX)
 	-rm -rf $(OM_BUSYBOX)
 	cd $(OM_SRC) && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(OM_BUSYBOX_MRR)/$(OM_BUSYBOX).$(OM_SFX)
 	@tar -xf $(OM_SRC)/$(OM_BUSYBOX).$(OM_SFX) -C $(SPWD)
@@ -2062,6 +2072,7 @@ busybox_host:
 
 coreutils_host:
 
+	@cd src && test -e $(OM_COREUTILS).$(OM_SFX) || wget $(OM_COREUTILS_MRR)/$(OM_COREUTILS).$(OM_SFX)
 	-rm -rf $(OM_COREUTILS)
 	cd $(OM_SRC) && test -e $(OM_COREUTILS).$(OM_SFX) || wget $(OM_COREUTILS_MRR)/$(OM_COREUTILS).$(OM_SFX)
 	@tar -xf $(OM_SRC)/$(OM_COREUTILS).$(OM_SFX) -C $(SPWD)
