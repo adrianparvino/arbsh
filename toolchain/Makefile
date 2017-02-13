@@ -268,6 +268,11 @@ linux_stage: host_path
 
 gcc_stage_make: host_path
 
+	@cd patches && test -e gcc-4.7.4-musl.diff || wget $(GENERIC_MRR)/gcc-4.7.4-musl.diff
+	@cd patches && test -e gcc-4.8.5-musl.diff || wget $(GENERIC_MRR)/gcc-4.8.5-musl.diff
+	@cd patches && test -e gcc-4.9.2-musl.diff || wget $(GENERIC_MRR)/gcc-4.9.2-musl.diff
+	@cd patches && test -e gcc-4.9.3-musl.diff || wget $(GENERIC_MRR)/gcc-4.9.3-musl.diff
+	@cd patches && test -e gcc-5.3.0-musl.diff || wget $(GENERIC_MRR)/gcc-5.3.0-musl.diff
 	@cd src && test -e $(OM_GCC).$(OM_SFX) || wget $(GNU_MRR)/gcc/$(OM_GCC)/$(OM_GCC).$(OM_SFX)
 	@test -d $(OM_GCC) || tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
 
@@ -585,6 +590,7 @@ strace_target: install_path
 
 busybox_target: install_path
 
+	@cd src && test -e omnicross-busybox-minimal.1 || wget $(GENERIC_MRR)/omnicross-busybox-minimal.1
 	@cd src && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_BUSYBOX).$(OM_SFX)
 	-mkdir -p $(OM_LIBROOT)
 	-rm -rf $(OM_BUSYBOX)
@@ -821,6 +827,7 @@ parted_target: install_path
 
 grub_target: install_path
 
+	@cd patches && test -e grub-2.00-musl.patch || wget $(GENERIC_MRR)/grub-2.00-musl.patch
 	@cd src && test -e $(OM_GRUB).$(OM_SFX) || wget $(GNU_MRR)/grub/$(OM_GRUB).$(OM_SFX)
 	rm -rf $(OM_GRUB)
 	mkdir -p $(OM_GRUB) 
@@ -844,38 +851,7 @@ endif
 populate:
 
 	-@mkdir -p $(SPWD)/src/
-	-@mkdir -p $(SPWD)/patches/ 
-	#@cd src && test -e $(OM_NCURSES).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_NCURSES).$(OM_SFX) 
-	#@cd src && test -e $(OM_LIBATOMIC_OPS).$(OM_SFX) || wget $(OM_LIBATOMIC_OPS_MRR)/$(OM_LIBATOMIC_OPS).$(OM_SFX) 
-	#@cd src && test -e $(OM_EMACS).$(OM_SFX) || wget $(GNU_MRR)/emacs/$(OM_EMACS).$(OM_SFX) 
-	#@cd src && test -e $(OM_HURD).$(OM_SFX) || wget $(GNU_MRR)/hurd/$(OM_HURD).$(OM_SFX)
-	#@cd src && test -e $(OM_LIGHTNING).$(OM_SFX) || wget $(GNU_MRR)/lightning/$(OM_LIGHTNING).$(OM_SFX) 
-	#@cd src && test -e $(OM_WICD).$(OM_SFX) || wget $(OM_WICD_MRR)/$(OM_WICD).$(OM_SFX) 
-	#@cd src && test -e $(OM_NETTLE).$(OM_SFX) || wget $(OM_NETTLE_MRR)/$(OM_NETTLE).$(OM_SFX) 
-	#@cd src && test -e $(OM_MPLAYER).$(OM_SFX) || wget $(OM_MPLAYER_MRR)/$(OM_MPLAYER).$(OM_SFX) 
-	#@cd src && test -e $(OM_YASM).$(OM_SFX) || wget $(OM_YASM_MRR)/$(OM_YASM).$(OM_SFX)
-	
-	
-	
-	
-	@cd src && test -e $(OM_PDKSH).$(OM_SFX) || wget $(OM_PDKSH_MRR)/$(OM_PDKSH).$(OM_SFX)
-	@cd src && test -e $(OM_PDCURSES).$(OM_SFX) || wget $(OM_PDCURSES_MRR)/$(OM_PDCURSES).$(OM_SFX)
-	#@cd src && test -e $(OM_NETBSDCURSES).$(OM_SFX) || wget $(OM_NETBSDCURSES_MRR)/$(OM_NETBSDCURSES).$(OM_SFX)
-	#@cd src && test -e $(OM_SLIBTOOL).$(OM_SFX) || wget $(OM_SLIBTOOL_MRR)/$(OM_SLIBTOOL).$(OM_SFX)
-	@cd src && test -e omnicross-busybox-minimal.1 || wget $(GENERIC_MRR)/omnicross-busybox-minimal.1
-	@cd patches && test -e gcc-4.7.4-musl.diff || wget $(GENERIC_MRR)/gcc-4.7.4-musl.diff
-	@cd patches && test -e gcc-4.8.5-musl.diff || wget $(GENERIC_MRR)/gcc-4.8.5-musl.diff
-	@cd patches && test -e gcc-4.9.2-musl.diff || wget $(GENERIC_MRR)/gcc-4.9.2-musl.diff
-	@cd patches && test -e gcc-4.9.3-musl.diff || wget $(GENERIC_MRR)/gcc-4.9.3-musl.diff
-	@cd patches && test -e gcc-5.3.0-musl.diff || wget $(GENERIC_MRR)/gcc-5.3.0-musl.diff
-	@cd patches && test -e grub-2.00-musl.patch || wget $(GENERIC_MRR)/grub-2.00-musl.patch
-	@cd patches && test -e $(OM_PYTHON)-xcompile_improvements.patch || \
-			wget $(GENERIC_MRR)/$(OM_PYTHON)-xcompile_improvements.patch
-	
-
-	@cd patches && test -e wireless_tools-xcompile.patch || wget $(GENERIC_MRR)/wireless_tools-xcompile.patch
-	@cd patches && test -e ircii-20151120-xcompile.patch || wget $(GENERIC_MRR)/ircii-20151120-xcompile.patch
-
+	-@mkdir -p $(SPWD)/patches/
 
 install: install_path 
 
@@ -1207,6 +1183,9 @@ pixman_host: install_path
 
 python_target: install_path
 
+	
+	@cd patches && test -e $(OM_PYTHON)-xcompile_improvements.patch || \
+			wget $(GENERIC_MRR)/$(OM_PYTHON)-xcompile_improvements.patch
 	-rm -rf $(OM_PYTHON)
 	-mkdir -p $(OM_PYTHON)
 	@tar -xf $(OM_SRC)/$(OM_PYTHON).$(OM_SFX) -C $(SPWD)
@@ -1740,6 +1719,7 @@ sudo_target: install_path
 
 wirelesstools_target: install_path
 
+	@cd patches && test -e wireless_tools-xcompile.patch || wget $(GENERIC_MRR)/wireless_tools-xcompile.patch
 	@cd src && test -e $(OM_WIRELESSTOOLS).$(OM_SFX) || wget $(OM_WIRELESSTOOLS_MRR)/$(OM_WIRELESSTOOLS).$(OM_SFX)
 	-rm -rf $(OM_WIRELESSTOOLS)
 	-mkdir -p $(OM_WIRELESSTOOLS)
@@ -1817,6 +1797,7 @@ gnucrypt_host: install_path
 
 ircii_target: install_path
 
+	@cd patches && test -e ircii-20151120-xcompile.patch || wget $(GENERIC_MRR)/ircii-20151120-xcompile.patch
 	@cd src && test -e $(OM_IRCII).$(OM_SFX) || wget $(OM_IRCII_MRR)/$(OM_IRCII).$(OM_SFX)
 	-rm -rf $(OM_IRCII)
 	-mkdir -p $(OM_IRCII)
@@ -1958,6 +1939,7 @@ popt_host: install_path
 
 pdksh_target: install_path
 
+	@cd src && test -e $(OM_PDKSH).$(OM_SFX) || wget $(OM_PDKSH_MRR)/$(OM_PDKSH).$(OM_SFX)
 	-rm -rf $(OM_PDKSH)
 	@tar -xf $(OM_SRC)/$(OM_PDKSH).$(OM_SFX) -C $(SPWD) 
 	-cd $(SPWD)/$(OM_PDKSH) && $(INACROSS) $(SPWD)/$(OM_PDKSH)/configure \
@@ -2051,6 +2033,7 @@ generate_host_tools:
 
 busybox_host:
 
+	@cd src && test -e omnicross-busybox-minimal.1 || wget $(GENERIC_MRR)/omnicross-busybox-minimal.1
 	@cd src && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_BUSYBOX).$(OM_SFX)
 	-rm -rf $(OM_BUSYBOX)
 	cd $(OM_SRC) && test -e $(OM_BUSYBOX).$(OM_SFX) || wget $(OM_BUSYBOX_MRR)/$(OM_BUSYBOX).$(OM_SFX)
