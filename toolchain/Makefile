@@ -848,15 +848,9 @@ populate:
 	#@cd src && test -e $(OM_LIBATOMIC_OPS).$(OM_SFX) || wget $(OM_LIBATOMIC_OPS_MRR)/$(OM_LIBATOMIC_OPS).$(OM_SFX) 
 	#@cd src && test -e $(OM_EMACS).$(OM_SFX) || wget $(GNU_MRR)/emacs/$(OM_EMACS).$(OM_SFX) 
 	#@cd src && test -e $(OM_HURD).$(OM_SFX) || wget $(GNU_MRR)/hurd/$(OM_HURD).$(OM_SFX)
-	#@cd src && test -e $(OM_LIGHTNING).$(OM_SFX) || wget $(GNU_MRR)/lightning/$(OM_LIGHTNING).$(OM_SFX)
-
-	@cd src && test -e $(OM_EXPAT).$(OM_SFX) || wget $(OM_EXPAT_MRR)/$(OM_EXPAT).$(OM_SFX)
-	@cd src && test -e $(OM_LIBXML2).$(OM_SFX) || wget $(OM_LIBXML2_MRR)/$(OM_LIBXML2).$(OM_SFX)
-	@cd src && test -e $(OM_IRSSI).$(OM_SFX) || wget $(OM_IRSSI_MRR)/$(OM_IRSSI).$(OM_SFX)
-	@cd src && test -e $(OM_SUDO).$(OM_SFX) || wget $(OM_SUDO_MRR)/$(OM_SUDO).$(OM_SFX)
-	@cd src && test -e $(OM_GLIB).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_GLIB).$(OM_SFX)
-	@cd src && test -e $(OM_WICD).$(OM_SFX) || wget $(OM_WICD_MRR)/$(OM_WICD).$(OM_SFX)
-	@cd src && test -e $(OM_WIRELESSTOOLS).$(OM_SFX) || wget $(OM_WIRELESSTOOLS_MRR)/$(OM_WIRELESSTOOLS).$(OM_SFX)
+	#@cd src && test -e $(OM_LIGHTNING).$(OM_SFX) || wget $(GNU_MRR)/lightning/$(OM_LIGHTNING).$(OM_SFX) 
+	#@cd src && test -e $(OM_WICD).$(OM_SFX) || wget $(OM_WICD_MRR)/$(OM_WICD).$(OM_SFX)
+	
 	@cd src && test -e $(OM_LIBPAM).$(OM_SFX) || wget $(OM_LIBPAM_MRR)/$(OM_LIBPAM).$(OM_SFX)
 	@cd src && test -e $(OM_NETTLE).$(OM_SFX) || wget $(OM_NETTLE_MRR)/$(OM_NETTLE).$(OM_SFX)
 	@cd src && test -e $(OM_WEECHAT).$(OM_SFX) || wget $(OM_WEECHAT_MRR)/$(OM_WEECHAT).$(OM_SFX)
@@ -1642,6 +1636,7 @@ wayland_host: install_path
 
 expat_host: install_path
 
+	@cd src && test -e $(OM_EXPAT).$(OM_SFX) || wget $(OM_EXPAT_MRR)/$(OM_EXPAT).$(OM_SFX)
 	rm -rf $(OM_EXPAT)
 	@tar -xf $(OM_SRC)/$(OM_EXPAT).$(OM_SFX) -C $(SPWD)
 	cd $(SPWD)/$(OM_EXPAT) && $(SPWD)/$(OM_EXPAT)/configure \
@@ -1655,6 +1650,7 @@ expat_host: install_path
 
 libxml2_target: install_path
 
+	@cd src && test -e $(OM_LIBXML2).$(OM_SFX) || wget $(OM_LIBXML2_MRR)/$(OM_LIBXML2).$(OM_SFX)
 	-rm -rf $(OM_LIBXML2)
 	-mkdir -p $(OM_LIBXML2)
 	@tar -xf $(OM_SRC)/$(OM_LIBXML2).$(OM_SFX) -C $(SPWD) 
@@ -1681,6 +1677,7 @@ libxml2_host: install_path
 
 irssi_target: install_path
 
+	@cd src && test -e $(OM_IRSSI).$(OM_SFX) || wget $(OM_IRSSI_MRR)/$(OM_IRSSI).$(OM_SFX)
 	-$(MAKE) glib_host
 	-rm -rf $(OM_IRSSI)
 	-mkdir -p $(OM_IRSSI)
@@ -1695,6 +1692,7 @@ irssi_target: install_path
 
 glib_host: install_path
 
+	@cd src && test -e $(OM_GLIB).$(OM_SFX) || wget $(GENERIC_MRR)/$(OM_GLIB).$(OM_SFX)
 	-$(MAKE) libffi_host
 	rm -rf $(OM_GLIB)
 	@tar -xf $(OM_SRC)/$(OM_GLIB).$(OM_SFX) -C $(SPWD)
@@ -1726,6 +1724,7 @@ glib_host: install_path
 
 sudo_target: install_path
 
+	@cd src && test -e $(OM_SUDO).$(OM_SFX) || wget $(OM_SUDO_MRR)/$(OM_SUDO).$(OM_SFX)
 	-rm -rf $(OM_SUDO)
 	-mkdir -p $(OM_SUDO)
 	@tar -xf $(OM_SRC)/$(OM_SUDO).$(OM_SFX) -C $(SPWD) 
@@ -1748,6 +1747,7 @@ sudo_target: install_path
 
 wirelesstools_target: install_path
 
+	@cd src && test -e $(OM_WIRELESSTOOLS).$(OM_SFX) || wget $(OM_WIRELESSTOOLS_MRR)/$(OM_WIRELESSTOOLS).$(OM_SFX)
 	-rm -rf $(OM_WIRELESSTOOLS)
 	-mkdir -p $(OM_WIRELESSTOOLS)
 	@tar -xf $(OM_SRC)/$(OM_WIRELESSTOOLS).$(OM_SFX) -C $(SPWD)
