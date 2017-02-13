@@ -17,7 +17,7 @@ int fastgetch()
 	read(0, s, 1); 
 	return s[0]; 
 }
-ZZ
+
 int ansigetch(void)
 {
 	static struct termios term, oterm;
