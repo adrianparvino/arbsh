@@ -1,5 +1,6 @@
 # Omnicross, Copyright, 2015-2016. see LICENSE for copying details
 
+LOGDIR = logdir/
 SHELL = /bin/sh
 STAGE0OPT = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 MAKEINFO = false
@@ -2159,4 +2160,31 @@ posinstall:
 	$(eval PATH=/usr/local/bin:/usr/bin:/bin/:sbin)
 	$(eval CC=gcc)
 	#make > logfile 2>&1 &
+
+
+
+trivtest:
+
+	# Some trivial compile time tests
+	-mkdir -p $(LOGDIR) 
+	-/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/pthreads-test.c -lpthread && \
+	/$(OM_PREF)/bin/$(OM_TARG)-gcc -v 2>&1 | grep posix && \
+	/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/testing.c && \
+		printf "%s\t--> %s  (pthreads, c" "$(OM_HOST)" "$(OM_TARG)" >> $(LOGDIR)/$(OM_HOST)-report || \
+		printf "%s\t--> %s  (failed" "$(OM_HOST)" "$(OM_TARG)" >> $(LOGDIR)/$(OM_HOST)-report
+	-/$(OM_PREF)/bin/$(OM_TARG)-g++ tests/testing.cpp && \
+		printf ", c++" >> $(LOGDIR)/$(OM_HOST)-report 
+	-/$(OM_PREF)/bin/$(OM_TARG)-gfortran tests/testing.f && \
+		printf ", fortran" >> $(LOGDIR)/$(OM_HOST)-report
+	-printf ")\n" >> $(LOGDIR)/$(OM_HOST)-report 
+	
+
+	
+
+
+
+
+
+
+
 
