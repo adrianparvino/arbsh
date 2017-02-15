@@ -2,21 +2,21 @@
 
 void arb_str_print_real(char *s, char *realname)
 {
-	if ( arb_str_verbosity == 0 )
-		return;
+	//if ( arb_str_verbosity == 0 )
+	//	return;
 	size_t i = 0;
-	gprintf("------------------------\n");
-	gprintf("name:      %s\n", realname);
-	gprintf("string:    %s\n", s);
-	gprintf("real nums: ");
+	printf("------------------------\n");
+	printf("name:      %s\n", realname);
+	printf("string:    %s\n", s);
+	printf("real nums: ");
 	
 	while (s[i] != '\0')
 	{
-		gprintf("|%d", s[i] - '0');
+		printf("|%d", s[i] - '0');
 		++i;
 	}
-	gprintf("|\n");
-	gprintf("------------------------\n");
+	printf("|\n");
+	printf("------------------------\n");
 }
 
 int arb_str_index(char *s, size_t idx)
