@@ -1,6 +1,8 @@
 #include "arb_str.h"
 
-int base = 10;
+int arb_str_base = 10;
+
+
 
 char *arb_str_divide(char *a, char *b, char *cc)
 {
@@ -10,11 +12,11 @@ char *arb_str_divide(char *a, char *b, char *cc)
 	size_t numer = gstrlen(a) + 1;
 	size_t denom = gstrlen(b) + 1;
 	int sum = 0;
-	int rec = 0;
+	int rec = 1;
 	size_t len = 0;
-	char *temp;
 	char *mir;
 	char *tmir;
+	char *temp;
 	setsign(cc);
 	if (*a == '-' && ++a) 
 	{
@@ -39,15 +41,16 @@ char *arb_str_divide(char *a, char *b, char *cc)
 	++cc;
 
 	len = numer + denom + 2;
-	temp = malloc(len + 3); 
-	tmir = malloc(len + 3); 
-	mir = malloc(len + 3); 
+	temp = malloc(len);
+	tmir = malloc(len);
+	mir = malloc(len);
 	gstrncpy(mir + 1, a, len);
 	gstrncpy(tmir + 1, a, len);
 	gstrncpy(temp + 1, b, len);
-	mir[0] = temp[0] = '0'; 
+	mir[0] = temp[0] = '0';
 	cc[numer + denom] = 0;
-
+	
+	//denom = gstrlen(b);
 	/* numerator / denominator  =  quotient */
 
 	for (cc[0] = '0'; z <numer ; cc[z+1] = '0' )
@@ -61,13 +64,13 @@ char *arb_str_divide(char *a, char *b, char *cc)
 			{ 
 				if ( j == z )
 				{ 
-					mir[j + 1] += ((mir[j]-'0') * base);
+					mir[j + 1] += ((mir[j]-'0') * arb_str_base);
 					++z;
 				}
 			 	else
 				{ 
 					mir[j - 1] -= 1 ;
-					mir[j] += base;
+					mir[j] += arb_str_base;
 				}
 				rec = 1;
 				break; 
