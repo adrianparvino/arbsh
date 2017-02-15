@@ -5,6 +5,10 @@
 #include "stdlib/stdlib.h"
 #include "arb_str_math/arb_str.h"
 /* functions */
+
+
+
+
 int main(int argc, char *argv[])
 {
 	int o = 0;
@@ -34,13 +38,16 @@ int main(int argc, char *argv[])
 	y = d = gmalloc(len);
 	z = mirror = gmalloc(len);
 	tmpmir = gmalloc(len);
+	//tmir = gmalloc(len);
+	//mir = gmalloc(len);
+	//temp = gmalloc(len);
 
 	printf("\n\n");
         printf("         %20s\n", a);
         printf("+,-,*,/  %20s\n", b);
 	printf("         %20s\n", "-------------------");
 
-	arb_str_verbosity = 1;
+
 
 	//d[0] = '+';
 	//d = arb_str_add(a, b, d);
