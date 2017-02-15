@@ -14,8 +14,8 @@ double myjn(int y, double x)
 	
 	/*   use trigonometric asymptotic aproximation for x >> y */
 	if ( x > ( y + 1 ) * 10000)
-		return sqrt(2/ (PI * x )) * mycos(x-(2 * y + 1) * (PI/4)); 
-	/*   sqrt(2/ (PI * x )) * cos(x-(2 * n + 1) * (PI/4)) */
+		return mysqrt(2/ (PI * x )) * mycos(x-(2 * y + 1) * (PI/4)); 
+	/*   mysqrt(2/ (PI * x )) * cos(x-(2 * n + 1) * (PI/4)) */
 
         if ( x == 0 && y == 0)
                 return 1.0;
@@ -42,7 +42,7 @@ double myjn(int y, double x)
                 n *= 10;
 	
 
-        if (!(j = malloc(sizeof(j) * (y + 5))))
+        if (!(j = gmalloc(sizeof(j) * (y + 5))))
                 return MYNAN;
 
         j[0] = 1.0;
@@ -76,7 +76,7 @@ double myjn(int y, double x)
 	if ( flip == 1 && y % 2 == 1) 
 		ret = -ret;
 
-        free(j);
+        gfree(j);
 
 
         return ret;
