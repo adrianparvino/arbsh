@@ -2,8 +2,8 @@
 
 void arb_str_print_real(char *s, char *realname)
 {
-	//if ( arb_str_verbosity == 0 )
-	//	return;
+	if ( arb_str_verbosity == 0 )
+		return;
 	size_t i = 0;
 	printf("------------------------\n");
 	printf("name:      %s\n", realname);
