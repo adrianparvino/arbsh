@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include "stdlib/stdlib.h"
 #include "arb_str_math/arb_str.h"
 /* functions */
 int main(int argc, char *argv[])
@@ -24,16 +24,16 @@ int main(int argc, char *argv[])
 	if ( argc < 2) 
 		arb_str_die("Please provide two numbers\n"); 
 
-	char *a = strdup(argv[0]);
-	char *b = strdup(argv[1]);
-	size_t len = (strlen(a) + strlen(b) + 10);
+	char *a = gstrdup(argv[0]);
+	char *b = gstrdup(argv[1]);
+	size_t len = (gstrlen(a) + gstrlen(b) + 10);
 	char *d;
 	char *z;
 	char *y;
 
-	y = d = malloc(len);
-	z = mirror = malloc(len);
-	tmpmir = malloc(len);
+	y = d = gmalloc(len);
+	z = mirror = gmalloc(len);
+	tmpmir = gmalloc(len);
 
 	printf("\n\n");
         printf("         %20s\n", a);
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 	printf("result(div) = %s\n", d);
 	printf("answer      = %lf (division) \n", strtod(a, 0) / strtod(b, 0));
 
-	free(d = y);
-	free(mirror = z);
-	free(tmpmir);
+	gfree(d = y);
+	gfree(mirror = z);
+	gfree(tmpmir);
 } 
