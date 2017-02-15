@@ -6,7 +6,7 @@ static int readchar(void)
 	str[0] = 0;
 	if ((tcgetattr(0, &oterm)) != 0)
 		return -1;
-	memcpy(&term, &oterm, sizeof(term));
+	gmemcpy(&term, &oterm, sizeof(term));
 	term.c_lflag &= ~(ICANON | ECHO); 
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
