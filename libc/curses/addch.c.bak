@@ -1,0 +1,10 @@
+
+
+#include "curses.h" 
+int ansiwaddch(int ch, int position)
+{
+	/* ansiwaddch adds a char into the current cursor position on screen */ 
+	ANSIWINDOW[ansiglb.c].ansiwinbuf[position] = ch;
+	return 0;
+} 
+
