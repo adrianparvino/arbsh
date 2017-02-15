@@ -1,4 +1,5 @@
-#include <sys/mman.h>
+//#include <sys/mman.h>
+#include <sys/syscall.h>
 #define NALLOC 	10024 
 #include "../stddef/stddef.h"
 #include "../ctype/ctype.h"
@@ -22,3 +23,4 @@ void *gmalloc(size_t);
 Header *morecore(unsigned);
 void gfree(void *);
 void *grealloc(void *, size_t);
+void *gsbrk(long);
