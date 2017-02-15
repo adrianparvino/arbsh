@@ -4,9 +4,9 @@
 
 
 GFILE _iob[OPEN_MAX] = {
-	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
-	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
-	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
+	{ 0, GGNULL, GGNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
+	{ 0, GGNULL, GGNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
+	{ 0, GGNULL, GGNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
 }; 
 
 /* single char io  */
@@ -40,13 +40,13 @@ int gfileno(GFILE *fp)
 /* Printf family (variadic and formatted) */
 int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt, va_list ap)
 {
-	char *p = NULL;
+	char *p = GNULL;
 	char *out;
 	
 	size_t i = 0;
 	/* data types */
 	int cval = 0;
-	char *sval = NULL;
+	char *sval = GNULL;
 	size_t zuval = 0; 
 	int dval = 0; 
 	long lval = 0;
@@ -139,9 +139,9 @@ int gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt,
 
 	out[i] = '\0'; 
 
-	if (fp == NULL && flag == 0 )
+	if (fp == GNULL && flag == 0 )
 		i = write(fd, out, i); /* if writing to an fd, then redefine the ret */
-	else if ( fp != NULL )
+	else if ( fp != GNULL )
 		i = gfwrite(out, 1, i, fp);
 	if ( flag == 0 )
 		gfree(out);
@@ -154,7 +154,7 @@ int gprintf(char *fmt, ...)
 	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(gstdout, 1, NULL, 0, 0, fmt, argptr);
+	ret = gprintf_inter(gstdout, 1, GNULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
@@ -164,7 +164,7 @@ int gsprintf(char *str, char *fmt, ...)
 	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(NULL, 1, str, 0, 1, fmt, argptr);
+	ret = gprintf_inter(GNULL, 1, str, 0, 1, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
@@ -174,7 +174,7 @@ int gsnprintf(char *str, size_t lim, char *fmt, ...)
 	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(NULL, 1, str, lim, 2, fmt, argptr);
+	ret = gprintf_inter(GNULL, 1, str, lim, 2, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
@@ -184,7 +184,7 @@ int gdprintf(int fd, char *fmt, ...)
 	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(NULL, fd, NULL, 0, 0, fmt, argptr);
+	ret = gprintf_inter(GNULL, fd, GNULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 } 
@@ -192,7 +192,7 @@ int gdprintf(int fd, char *fmt, ...)
 int gvprintf(char *fmt, va_list argptr)
 {
 	int ret = 0;
-	ret = gprintf_inter(gstdout, 1, NULL, 0, 0, fmt, argptr);
+	ret = gprintf_inter(gstdout, 1, GNULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 }
@@ -200,7 +200,7 @@ int gvprintf(char *fmt, va_list argptr)
 int gvsprintf(char *str, char *fmt, va_list argptr)
 {
 	int ret = 0;
-	ret = gprintf_inter(NULL, 1, str, 0, 1, fmt, argptr);
+	ret = gprintf_inter(GNULL, 1, str, 0, 1, fmt, argptr);
 	va_end(argptr);
 	return ret;
 }
@@ -208,7 +208,7 @@ int gvsprintf(char *str, char *fmt, va_list argptr)
 int gvsnprintf(char *str, size_t lim, char *fmt, va_list argptr)
 {
 	int ret = 0;
-	ret = gprintf_inter(NULL, 1, str, lim, 2, fmt, argptr);
+	ret = gprintf_inter(GNULL, 1, str, lim, 2, fmt, argptr);
 	va_end(argptr);
 	return ret;
 }
@@ -216,7 +216,7 @@ int gvsnprintf(char *str, size_t lim, char *fmt, va_list argptr)
 int gvdprintf(int fd, char *fmt, va_list argptr)
 {
 	int ret = 0;
-	ret = gprintf_inter(NULL, fd, NULL, 0, 0, fmt, argptr);
+	ret = gprintf_inter(GNULL, fd, GNULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 }
@@ -226,7 +226,7 @@ int gfprintf(GFILE *stream, char *fmt, ...)
 	int ret = 0;
 	va_list argptr;
 	va_start(argptr, fmt);
-	ret = gprintf_inter(stream, 1, NULL, 0, 0, fmt, argptr);
+	ret = gprintf_inter(stream, 1, GNULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 }
@@ -234,7 +234,7 @@ int gfprintf(GFILE *stream, char *fmt, ...)
 int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
 {
 	int ret = 0;
-	ret = gprintf_inter(stream, 1, NULL, 0, 0, fmt, argptr);
+	ret = gprintf_inter(stream, 1, GNULL, 0, 0, fmt, argptr);
 	va_end(argptr);
 	return ret;
 }
@@ -243,7 +243,7 @@ int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
 GFILE *gfopen(char *file, char *mode)
 {
 	int fd = -1;
-	GFILE *fp = GNULL;
+	GFILE *fp = GGNULL;
 	int oflags = 4242;
 	int seek = -1;
 	
@@ -254,7 +254,7 @@ GFILE *gfopen(char *file, char *mode)
 
 	/* no gfree slots */
 	if (fp >= _iob + OPEN_MAX)
-		return GNULL; 
+		return GGNULL; 
 
 	/* init */
 	fp->unbuf = 0;
@@ -303,13 +303,13 @@ GFILE *gfopen(char *file, char *mode)
 			break;
 		default:
 			if ( oflags == 4242 )
-				return GNULL;
+				return GGNULL;
 			break;
 	}
 
 	/* open the file */
 	if ((fd = open(file, oflags, 0)) == -1)
-		return GNULL;
+		return GGNULL;
 
 	/* and lseek to the end of it if in append mode */
 	if ( seek == SEEK_END)
@@ -318,7 +318,7 @@ GFILE *gfopen(char *file, char *mode)
 	/* initialize the new GFILE */
 	fp->fd = fd;
 	fp->cnt = 0;
-	fp->base = GNULL;
+	fp->base = GGNULL;
 	fp->flag = 1;
 	return fp;
 } 
@@ -332,7 +332,7 @@ int ggetc_inter(GFILE *fp)
 
 	if (!(fp->base))
 	{
-		if ((fp->base = gmalloc(GBUFSIZ)) == GNULL) 
+		if ((fp->base = gmalloc(GBUFSIZ)) == GGNULL) 
 			fp->unbuf = 1;
 		fp->ptr = fp->base;
 	}
@@ -384,7 +384,7 @@ int gfflush(GFILE *fp)
 	int ret = 0;
 	int i; 
 	
-	if (fp == GNULL) 
+	if (fp == GGNULL) 
 		for (i = 0; i < OPEN_MAX; i++) 
 			if ((gfflush(&_iob[i]) == -1))
 				ret = -1; 
@@ -397,13 +397,13 @@ int gfflush(GFILE *fp)
 int gfclose(GFILE *fp)
 {
 	int fd;
-	if (fp == GNULL)
+	if (fp == GGNULL)
 		return -1;
 	fd = fp->fd;
 	gfflush(fp);
-	if (fp->base != GNULL)
+	if (fp->base != GGNULL)
 		gfree(fp->base);
-	fp->ptr = fp->base = GNULL;
+	fp->ptr = fp->base = GGNULL;
 	fp->fd = -1;
 	fp->flag = fp->cnt = fp->append = fp->read = fp->write = fp->unbuf = 0;
 	return close(fd);
@@ -427,7 +427,7 @@ size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *fp)
 ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 {
 	size_t len = 0;
-	char *pos = GNULL;
+	char *pos = GGNULL;
 	ssize_t ret = -1;
 	size_t chunk = GBUFSIZ;
 	int c = 0;

@@ -4,8 +4,8 @@
 
 char *gstrcat(char *s, const char *t)
 {
-	size_t len = strlen(s);
-        strcpy(s+len, t);
+	size_t len = gstrlen(s);
+        gstrcpy(s+len, t);
         return s;
 }
 
