@@ -41,16 +41,16 @@ char *arb_str_divide(char *a, char *b, char *cc)
 	++cc;
 
 	len = numer + denom + 2;
-	temp = malloc(len);
-	tmir = malloc(len);
-	mir = malloc(len);
+	temp = gmalloc(len);
+	tmir = gmalloc(len);
+	mir = gmalloc(len);
 	gstrncpy(mir + 1, a, len);
 	gstrncpy(tmir + 1, a, len);
 	gstrncpy(temp + 1, b, len);
 	mir[0] = temp[0] = '0';
 	cc[numer + denom] = 0;
 	
-	//denom = gstrlen(b);
+
 	/* numerator / denominator  =  quotient */
 
 	for (cc[0] = '0'; z <numer ; cc[z+1] = '0' )
@@ -85,9 +85,9 @@ char *arb_str_divide(char *a, char *b, char *cc)
 			cc[z] += 1;
 		} 
 	} 
-	free(temp);
-	free(tmir);
-	free(mir);
+	gfree(temp);
+	gfree(tmir);
+	gfree(mir);
 	cc[numer - denom + 1] = 0;
 	--cc; 
 	return cc;
