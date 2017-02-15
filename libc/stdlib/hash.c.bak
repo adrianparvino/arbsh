@@ -48,37 +48,37 @@ unsigned ihash(int s)
 struct snlist *slookup(char *s)
 {
 	struct snlist *np;
-	for (np = shashtab[shash(s)]; np != NULL; np = np->next)
+	for (np = shashtab[shash(s)]; np != GNULL; np = np->next)
 		if (gstrcmp(s, np->name) == 0)
 			return np;
-	return NULL;
+	return GNULL;
 }
 
 struct inlist *ilookup(int s)
 {
 	struct inlist *np;
-	for (np = ihashtab[ihash(s)]; np != NULL; np = np->next)
+	for (np = ihashtab[ihash(s)]; np != GNULL; np = np->next)
 		if ( s == np->name )
 			return np;
-	return NULL;
+	return GNULL;
 } 
 
 struct snlist *sinstall(char *name, char *defn)
 {
 	struct snlist *np;
 	unsigned hashval;
-	if ((np = slookup(name)) == NULL)
+	if ((np = slookup(name)) == GNULL)
 	{
 		np = malloc(sizeof(*np));
-		if (np == NULL || (np->name = gstrdup(name)) == NULL)
-			return NULL;
+		if (np == GNULL || (np->name = gstrdup(name)) == GNULL)
+			return GNULL;
 		hashval = shash(name);
 		np->next = shashtab[hashval];
 		shashtab[hashval] = np;
 	} else
 		free(np->defn);
-	if ((np->defn = gstrdup(defn)) == NULL)
-		return NULL;
+	if ((np->defn = gstrdup(defn)) == GNULL)
+		return GNULL;
 	return np;
 } 
 
@@ -86,13 +86,13 @@ struct inlist *iinstall(int name, int defn)
 {
 	struct inlist *np;
 	unsigned hashval;
-	if ((np = ilookup(name)) == NULL)
+	if ((np = ilookup(name)) == GNULL)
 	{
 		np = malloc(sizeof(*np));
-		if (np == NULL || (np->name = name) == 0 )
-			return NULL; 
-		if (np == NULL )
-			return NULL;
+		if (np == GNULL || (np->name = name) == 0 )
+			return GNULL; 
+		if (np == GNULL )
+			return GNULL;
 		np->name = name;
 		hashval = ihash(name);
 		np->next = ihashtab[hashval];

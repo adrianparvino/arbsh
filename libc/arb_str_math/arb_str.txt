@@ -56,8 +56,8 @@ RETURN VALUE
 	All functions return the final result as a pointer to a string 
 	(char *).
 
-BUGS:
-	Leading zeroes on some division combinations.
-	Division dpends on having 1 leading zero;
+
+
+
 
 
