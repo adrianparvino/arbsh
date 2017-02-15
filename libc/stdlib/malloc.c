@@ -45,8 +45,8 @@ Header *morecore(unsigned nu)
 	Header *up;
 	if (nu < NALLOC)
 		nu = NALLOC;
-	cp = gsbrk(nu * sizeof(Header)); 
-	//cp = mmap( 0, nu* sizeof(Header), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
+	//cp = gsbrk(nu * sizeof(Header)); 
+	cp = mmap( 0, nu* sizeof(Header), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
 	//cp = mmap( 0, nu* sizeof(Header), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS| MAP_FIXED, 0, 0 );
 	if (cp == (char *) -1)
 		return GNULL;
