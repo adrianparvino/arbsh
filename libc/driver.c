@@ -4,10 +4,13 @@
 #include "string/string.h"
 #include "stdio/stdio.h"
 
+
+
 #include "stdlib/stdlib.h"
-#include "arb_str_math/arb_str.h"
 //#include "curses/curses.h"
 #include "math/math.h"
+
+#include "arb_str_math/arb_str.h"
 int main (int argc, char *argv[])
 {
 	char *some = gmalloc(100); 
