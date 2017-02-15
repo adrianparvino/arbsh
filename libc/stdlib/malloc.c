@@ -1,10 +1,8 @@
 #include "stdlib.h"
 /* malloc family */
 
-
-
-static Header base;
-static Header *gfreep = NULL;
+static Header base; 
+static Header *gfreep = GNULL;
 
 void* gmalloc(size_t nbytes) 
 {
@@ -14,7 +12,7 @@ void* gmalloc(size_t nbytes)
 
 	nunits = (nbytes+sizeof(Header)-1)/sizeof(Header) + 1; 
 
-	if ((prevp = gfreep) == NULL) 
+	if ((prevp = gfreep) == GNULL) 
 	{
 		base.s.ptr = gfreep = prevp = &base;
 		base.s.size = 0;	
@@ -34,8 +32,8 @@ void* gmalloc(size_t nbytes)
 			return (void*) (p+1);
 		}
 		if ( p == gfreep)
-			if ((p = morecore(nunits)) == NULL)
-				return NULL;
+			if ((p = morecore(nunits)) == GNULL)
+				return GNULL;
 	}
 } 
 
@@ -50,7 +48,7 @@ Header *morecore(unsigned nu)
 	/* cp = sbrk(nu * sizeof(Header)); */
 	cp = mmap( 0, nu* sizeof(Header), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
 	if (cp == (char *) -1)
-		return NULL;
+		return GNULL;
 	up = (Header*) cp;
 	up->s.size = nu;
 	gfree((void*)(up+1));
@@ -90,15 +88,15 @@ void *grealloc(void *old_ptr, size_t nbytes)
 	void *new_ptr;
 	size_t old_nbytes = 0;
 
-	if (old_ptr == NULL)
+	if (old_ptr == GNULL)
 		return gmalloc(nbytes);
 
 	bp = (Header *) old_ptr - 1;
 	
 	old_nbytes = sizeof(Header) * (bp->s.size -1);
 	
-	if ((new_ptr = gmalloc(nbytes)) == NULL)
-		return NULL;
+	if ((new_ptr = gmalloc(nbytes)) == GNULL)
+		return GNULL;
 
 	if (old_nbytes <= nbytes) 
 		gmemcpy(new_ptr, old_ptr, old_nbytes);
