@@ -23,26 +23,21 @@ char *arb_str_divide(char *a, char *b, char *cc)
 	else if (*b == '+')
 		++b; 
 	++cc;
+
 	len = numer + denom +1;
 	gmemset(cc, '0' , len + 1);
 	gmemset(mirror, 0, len + 1);
-	gmemset(tmpmir, 0, len + 1);
-
-
+	gmemset(tmpmir, 0, len + 1); 
 	gstrcpy(mirror + 1, a); 
 	mirror[0] = '0';
 	gstrcpy(tmpmir, mirror); 
 
-	
-
-	
 	char *temp = malloc(len + 10);
 	strcpy(temp + 1, b);
-	temp[0] = '0';
-	
+	temp[0] = '0'; 
 	
 	numer = gstrlen(mirror);
-	denom = gstrlen(b); 
+	
 	denom = gstrlen(temp); 
 	cc[numer + denom] = 0;
 	/* numerator / denominator  =  quotient */
@@ -58,15 +53,13 @@ char *arb_str_divide(char *a, char *b, char *cc)
 			{ 
 				if ( j == z )
 				{ 
-					mirror[j + 1] += ((mirror[j]-'0') * base); 
-					//arb_str_print_real(mirror, "mirror 1 \n");
+					mirror[j + 1] += ((mirror[j]-'0') * base);
 					++z;
 				}
 			 	else
 				{ 
 					mirror[j - 1] -= 1 ;
-					mirror[j] += base; 
-					//arb_str_print_real(mirror, "mirror 2 \n");
+					mirror[j] += base;
 				}
 				rec = 1;
 				break; 
