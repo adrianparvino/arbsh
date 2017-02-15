@@ -2,7 +2,7 @@
 #include "../stdio/stdio.h"
 #include "../curses/termcap.h"
 #include "../string/string.h"
-
+#include "../stdlib/stdlib.h"
 /*
 	2017 (C) Copyright, readline.h, CM Graff
 */
