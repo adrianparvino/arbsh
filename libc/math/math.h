@@ -1,5 +1,5 @@
 //#include <math.h>   /* for comparative testing */ 
-
+#include "../stdlib/stdlib.h"
 #define PI 3.14159265358979323846264
 #define EULER 2.718281828459045
 #define EPS 0.00000000001 
