@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
         printf("+,-,*,/  %20s\n", b);
 	printf("         %20s\n", "-------------------");
 
-
+	arb_str_verbosity = 1;
 
 	//d[0] = '+';
 	//d = arb_str_add(a, b, d);
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
 	//d[0] = '+';
 	
-d[0] = '0';
+	d[0] = '0';
 	d = arb_str_divide(a, b, d);
 	printf("result(div) = %s\n", d);
 	printf("answer      = %lf (division) \n", strtod(a, 0) / strtod(b, 0));
