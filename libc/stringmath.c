@@ -37,10 +37,7 @@ int main(int argc, char *argv[])
 
 	y = d = gmalloc(len);
 	z = mirror = gmalloc(len);
-	tmpmir = gmalloc(len);
-	//tmir = gmalloc(len);
-	//mir = gmalloc(len);
-	//temp = gmalloc(len);
+	tmpmir = gmalloc(len); 
 
 	printf("\n\n");
         printf("         %20s\n", a);
@@ -49,27 +46,25 @@ int main(int argc, char *argv[])
 
 
 
-	//d[0] = '+';
-	//d = arb_str_add(a, b, d);
-	//printf("result(add) = %20s\n", d); 
-	//printf("answer      = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10)); 
+	d[0] = 0;
+	d = arb_str_add(a, b, d);
+	printf("result(add) = %20s\n", d); 
+	printf("answer      = %20ld (addition) \n", strtol(a, 0, 10) + strtol(b, 0, 10)); 
 
-	//d[0] = '+';
-	//d = arb_str_subtract(a, b, d);
-	//printf("result(sub) = %20s\n", d);
-	//printf("answer      = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10)); 
+	d[0] =  0;
+	d = arb_str_subtract(a, b, d);
+	printf("result(sub) = %20s\n", d);
+	printf("answer      = %20ld (subtraction) \n", strtol(a, 0, 10) - strtol(b, 0, 10)); 
 
-	//d[0] = '+';
-	//d = arb_str_multiply(a, b, d);
-	//printf("result(mul) = %20s\n", d);
-	//printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10));
-
-	//d[0] = '+';
+	d[0] = 0;
+	d = arb_str_multiply(a, b, d);
+	printf("result(mul) = %20s\n", d);
+	printf("answer      = %20ld (multiplication) \n", strtol(a, 0, 10) * strtol(b, 0, 10)); 
 	
-	d[0] = '0';
+	d[0] = 0;
 	d = arb_str_divide(a, b, d);
-	printf("result(div) = %s\n", d);
-	printf("answer      = %lf (division) \n", strtod(a, 0) / strtod(b, 0));
+	printf("result(div) = %20s\n", d);
+	printf("answer      = %20lf (division) \n", strtod(a, 0) / strtod(b, 0));
 
 	gfree(d = y);
 	gfree(mirror = z);
