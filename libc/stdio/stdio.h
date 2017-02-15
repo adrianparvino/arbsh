@@ -7,7 +7,7 @@
 
 /* defines */
 /* ------- */
-#define GNULL		0
+#define GGNULL		0
 #define GEOF		(-1)
 #define GBUFSIZ		4096
 #define GBUFSIZEE	4096
