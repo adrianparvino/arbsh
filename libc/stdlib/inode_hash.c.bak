@@ -12,7 +12,7 @@ int populatetab(size_t inode)
 {
         size_t *np;
 
-        for ( np = hashtab[hash(inode)] ; np != NULL ; free(np), np = NULL)
+        for ( np = hashtab[hash(inode)] ; np != GNULL ; free(np), np = GNULL)
                 if ( inode == *np )
                         return 0;
 
@@ -28,7 +28,7 @@ void destroytab()
         while ( i < HASH || hashtab[i] )
         {
                 free(hashtab[i]);
-                hashtab[i] = NULL;
+                hashtab[i] = GNULL;
                 ++i;
         }
 }

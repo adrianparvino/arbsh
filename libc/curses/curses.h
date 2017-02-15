@@ -23,7 +23,7 @@ struct ANSIWINDOW{
 	char *cpairs[GBUFSIZ];
 	int colordlen[GBUFSIZ];
 	char *colorlast[GBUFSIZ];
-}ANSIWINDOW[15] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
+}ANSIWINDOW[15] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
 
 /* fumction prototypes */ 
 int fastgetch(void);

@@ -12,11 +12,11 @@ char *gstrtok(char *s, const char *delim)
         int c;
         int hold;
 
-        if (s == NULL)
+        if (s == GNULL)
         {
                 s = last;
-                if (s == NULL)
-                        return NULL;
+                if (s == GNULL)
+                        return GNULL;
         }
 
 
@@ -32,7 +32,7 @@ char *gstrtok(char *s, const char *delim)
         }
 
         if (c == 0)
-                return (last = NULL);
+                return (last = GNULL);
 
         token = s - 1;
 
@@ -44,7 +44,7 @@ char *gstrtok(char *s, const char *delim)
                         if ((hold = *span++) == c)
                         {
                                 if (c == 0)
-                                        s = NULL;
+                                        s = GNULL;
                                 else
                                         s[-1] = 0;
                                 last = s;
