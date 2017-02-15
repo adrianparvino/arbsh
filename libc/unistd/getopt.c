@@ -12,13 +12,13 @@
 #include "unistd.h"
 char *optarg; 			/* Global argument pointer. */
 int optind = 0;			/* Global argv index. */ 
-static char *scan = NULL;	/* Private scan pointer. */
+static char *scan = GNULL;	/* Private scan pointer. */
 int ggetopt(int argc, char *argv[], char *optstring)
 {
 	char c;
 	char *place;
 
-	optarg = NULL;
+	optarg = GNULL;
 
 	if (!scan || *scan == '\0') 
 	{
@@ -48,7 +48,7 @@ int ggetopt(int argc, char *argv[], char *optstring)
 	if (*place == ':') {
 		if (*scan != '\0') {
 			optarg = scan;
-			scan = NULL;
+			scan = GNULL;
 		} else if( optind < argc ) {
 			optarg = argv[optind];
 			optind++;
