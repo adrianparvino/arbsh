@@ -1,10 +1,8 @@
 #include "../stddef/stddef.h"
-#include "../string/string.h"
 
 static int arb_str_verbosity = 0;
 char *mirror;
-char *tmpmir;
-
+char *tmpmir; 
 char *arb_str_add(char *, char *, char *);
 char *arb_str_addition(char *, char *, char *);
 void arb_str_die(char *);
