@@ -1,23 +1,23 @@
 
-#include "stddef/stddef.h"
-#include "ctype/ctype.h"
-#include "string/string.h"
-#include "stdio/stdio.h"
+#include "../libc/stddef/stddef.h"
+#include "../libc/ctype/ctype.h"
+#include "../libc/string/string.h"
+#include "../libc/stdio/stdio.h"
 
 
 
-#include "stdlib/stdlib.h"
+#include "../libc/stdlib/stdlib.h"
 //#include "curses/curses.h"
-#include "math/math.h"
+#include "../libc/math/math.h"
 
-#include "arb_str_math/arb_str.h"
+#include "../libc/arb_str_math/arb_str.h"
 int main (int argc, char *argv[])
 {
 	char *some = gmalloc(100); 
 
-	int c = 'EOF';
+	
 
-	giscntrl(c);
+	giscntrl(3);
 	
 	gstrcpy(some, argv[0]); 
 	
