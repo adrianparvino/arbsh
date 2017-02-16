@@ -6,7 +6,7 @@ static int readchar(void)
 	str[0] = 0;
 	if ((tcgetattr(0, &oterm)) != 0)
 		return -1;
-	gmemcpy(&term, &oterm, sizeof(term));
+	memcpy(&term, &oterm, sizeof(term));
 	term.c_lflag &= ~(ICANON | ECHO); 
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
@@ -137,7 +137,7 @@ size_t greadgetch(char *l)
 				if ( hglb.c > 0 )
 				{
 					--hglb.c;
-					gstrcpy(l, hist[hglb.c].line);
+					strcpy(l, hist[hglb.c].line);
 					len = hist[hglb.c].len;
 					hglb.laro = 0;
 				}
@@ -146,7 +146,7 @@ size_t greadgetch(char *l)
 				if ( hglb.c < hglb.t )
 				{
 					++hglb.c;
-					gstrcpy(l, hist[hglb.c].line);
+					strcpy(l, hist[hglb.c].line);
 					len = hist[hglb.c].len;
 					hglb.laro = 0;
 				}
@@ -188,7 +188,7 @@ size_t greadgetch(char *l)
 		if ( hglb.laro ) 
 		{
 			z = (len - hglb.laro);
-                        gmemmove(l + z - 1, l + z, hglb.laro);
+                        memmove(l + z - 1, l + z, hglb.laro);
 		}
 
 		l[--len] = '\0';
@@ -198,7 +198,7 @@ size_t greadgetch(char *l)
 		if ( hglb.laro )
 		{
 			z = (len - hglb.laro);
-			gmemmove(l + z + 1, l + z, hglb.laro);
+			memmove(l + z + 1, l + z, hglb.laro);
 			l[z] = c; 
 	}
 		else { 
@@ -264,9 +264,9 @@ int gread_history(char *l, size_t len)
 {
 	if ( len > 1)
         { 
-		if (!(hist = grealloc(hist, sizeof(struct hist) * ( hglb.t + 1))))
+		if (!(hist = realloc(hist, sizeof(struct hist) * ( hglb.t + 1))))
                 	return 0; // This _must_ be changed to a fatal error 
-        	gstrcpy(hist[hglb.t].line, l);
+        	strcpy(hist[hglb.t].line, l);
 		hist[hglb.t].len = len;
         	++hglb.t;
         }
