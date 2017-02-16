@@ -1,8 +1,8 @@
-#include "../stddef/stddef.h"
-#include "../stdio/stdio.h"
-#include "../curses/termcap.h"
-#include "../string/string.h"
-#include "../stdlib/stdlib.h"
+#include "../libc/stddef/stddef.h"
+#include "../libc/stdio/stdio.h"
+#include "../termcap/termcap.h"
+#include "../libc/string/string.h"
+#include "../libc/stdlib/stdlib.h"
 /*
 	2017 (C) Copyright, readline.h, CM Graff
 */
@@ -18,7 +18,7 @@ void greadprint(char *, size_t, char *, size_t);
 int gread_history(char *, size_t);
 
 /* structures */
-struct hglb {		/* globals	*/
+static struct hglb {		/* globals	*/
 	size_t t;	/* Total	*/
 	size_t c;	/* Current	*/
 	int r;		/* Runstate	*/
