@@ -1,3 +1,0 @@
-infocmp "${TERM}" > "${TERM}".ti ; tic "${TERM}".ti -o ~/.terminfo
-
-
