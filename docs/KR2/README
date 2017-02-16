@@ -1,7 +1,3 @@
 
-Exercizes and/or functions from K&R2
-
-To avoid namespace collision functions are prefixed
-with 'kr2'.
-
+Functions from K&R2
 
