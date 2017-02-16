@@ -52,12 +52,12 @@ dynamic_link:
 
 static_create: 
 
-	$(CC) -o static_driver driver.c $(STATLIB) $(LDFLAGS)
+	$(CC) -o static_driver ../tests/driver.c $(STATLIB) $(LDFLAGS)
 
 
 dynamic_create:
 
-	$(CC) driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS)
+	$(CC) ../tests/driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS)
 
 
 exec_dyn:
