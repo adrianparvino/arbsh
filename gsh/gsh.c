@@ -18,8 +18,8 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <stdint.h>
-#include "../lib/hexen.h"
-#include "../lib/readline.h"
+#include "../termcap/termcap.h"
+#include "../readline/readline.h"
 
 
 /*
