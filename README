@@ -27,42 +27,56 @@ HIER:
 		to subsets of POSIX specifications.
 
 	lib/
-		Standard C library components and helper libraries, (native)
-		
-		Readline line editing. An editline/readline like implementation.
-		This library is used to supply line editing and history to
-		the graff shell (Gsh) and grafland irc client. The latter
-		is supplied with a unique ircline() function (native).  
+		Helper functions for the utilities in bin.
 
-		Hexen, a minimal curses / conio style library. Hexen supplies
-		grafland's terminal capabilities and ultimately powers grafland's
-		readline/editline/ircline implementation, editor, irc client
-		and system monitor.
+	libc/
+		Standard C library components.
 
-	math/
-		Arbitrary precision string and bigint / bignum functions in C.
+	
+	libc/arb_str_math/
+		Arbitrary precision string functions in C.
 			-A bignum data type implementations.
 
+	libc/math/
 		Transcendental mathematics functions written in C (native).
 			-Operate on and tranform double precision types.
 			-sqrt, atan, sin, jn, log and many more such math.h
 			 function implementations. This library covers most of
 			 the math.h / libm normative cases.
+
+	readline/
+		Readline line editing. An editline/readline like implementation.
+		This library is used to supply line editing and history to
+		the graff shell (Gsh) and grafland irc client. The latter
+		is supplied with a unique ircline() function (native).
+
+	termcap/
+		Hexen, a minimal curses / conio style library. Hexen supplies
+		grafland's terminal capabilities and ultimately powers grafland's
+		readline/editline/ircline implementation, editor, irc client
+		and system monitor.  
+
 	docs/
 		Whitepages written specifically for grafland, but which document
 		outside software and operating systems. This directory contains
 		dozens of unique documents on building micro sized unix systems.
+
 	editor/
 		A native editor.
+
 	wm/
 		A rewrite of dwm.
+
 	gsh/
 		A native shell.
+
 	irc/
 		A native irc client and library.
+
 	libsh/
 		Userland applications and libraries written in POSIX shell 
 		(native).
+
 	toolchain/
 		A cross compiling toolchain and build system. Similiar to 
 		buildroot but with much simpler code,
