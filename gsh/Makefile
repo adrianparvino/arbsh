@@ -4,10 +4,13 @@ PREFIX ?= /bin
 
 CFLAGS += -Wall -Wextra
 
+HERE = $(PWD)
+
 all:
 
-	$(CC) gsh.c -o gsh $(CFLAGS) $(LDFLAGS)
-	$(CC) gsh-testing.c -o gsh-testing $(CFLAGS) $(LDFLAGS)
+	cd ../readline && $(MAKE) 
+	$(CC) gsh.c -o gsh ../readline/libreadline.a $(CFLAGS) $(LDFLAGS)
+	#$(CC) gsh-testing.c -o gsh-testing $(CFLAGS) $(LDFLAGS)
 
 install:
 
