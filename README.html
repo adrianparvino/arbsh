@@ -8,7 +8,8 @@
 	compiling toolchains, math libraries, arbitrary precision 
 	math libraries, terminal rendering libraries, standard C 
 	libraries, readline line editing libraries, an irc client, 
-	a shell, shell libraries, an editor and a cross build system.
+	a shell, shell libraries, an editor and a cross build system
+	to build outside software for toolchain and internal testing.
 	
 	Each subdirectory has a README which documents its usage. 
 	Navigating to a subdiurectory of grafland and inspecting
@@ -94,9 +95,9 @@
 
 	Because grafland has its own gcc based cross compiling
 	toolchain system, it can easily build itself or other
-	other outside software. Indeed the toolchain/Makefile
-	has links to build nearly 100 target packages. Grafland
-	uses these packages internally to test its own toolchain
+	other outside software. The toolchain/Makefile has links 
+	to build nearly 50 target packages. Grafland uses these 
+	packages internally to test its own toolchain
 	effectiveness.
 
 	The cross toolchain build system located inside of
