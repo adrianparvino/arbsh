@@ -4,10 +4,25 @@ PREFIX ?= /bin
 
 CFLAGS += -Wall -Wextra
 
-all:
+	
 
-	$(CC) editor.c -o editor $(CFLAGS) $(LDFLAGS)
-	$(CC) editor-testing.c -o editor-testing $(CFLAGS) $(LDFLAGS)
+all: 
+
+	$(MAKE) termcap
+	$(MAKE) libc
+	$(CC) editor.c -o editor ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
+
+
+# DEPENDS: 
+
+termcap:
+
+	cd ../termcap && $(MAKE)
+
+libc:
+
+	cd ../libc && $(MAKE)
+
 
 install:
 
