@@ -6,8 +6,14 @@
 #include "curses.h"
 
 /* globals */
-//int dothink = 0;
-//int hardadd = 0; /* this should be added as a 4th function arg */
+dothink = 0;
+hardadd = 0; /* this should be added as a 4th function arg */
+//Dstruct ansiglb ansiglb = { 0, 0, 0, 0};
+struct ansiglb ansiglb;
+
+//struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
+struct ANSIWINDOW ANSIWINDOW[10];
+
 
 /* functions */
 int fastgetch() 
