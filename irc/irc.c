@@ -17,12 +17,18 @@
 #include <stdint.h>
 
 /* local libraries */
-#include "../lib/string.h"
-#include "../lib/hexen.h"
-#include "../lib/dial.h"
-#include "../lib/readline.h"
-#include "../lib/date.h"
 
+#include "../libc/string/string.h"
+//#include "../libc/stdio/stdio.h"
+#include "../termcap/termcap.h"
+#include "../termcap/curses.h"
+
+
+#include "../readline/readline.h"
+
+
+#include "../legacy/lib/dial.h"
+#include "../legacy/lib/date.h"
 /* 
         2016-2017 (C) Copyright, `Irc', CM Graff
         See LICENSE for copying details.
