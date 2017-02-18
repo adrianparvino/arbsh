@@ -54,12 +54,7 @@ HIER:
 		Hexen, a minimal curses / conio style library. Hexen supplies
 		grafland's terminal capabilities and ultimately powers grafland's
 		readline/editline/ircline implementation, editor, irc client
-		and system monitor.  
-
-	docs/
-		Whitepages written specifically for grafland, but which document
-		outside software and operating systems. This directory contains
-		dozens of unique documents on building micro sized unix systems.
+		and system monitor.
 
 	editor/
 		A native editor.
