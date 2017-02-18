@@ -20,14 +20,14 @@ DESCRIPTION:
 HIER:
 -----
 
-	bin/
+	posix/
 		Userland applications written in C (native)
 
 		cp, ls, fetch, dd, find and many more, implemented from scratch
-		to subsets of POSIX specifications.
+		to subsets of POSIX specifications. 
 
-	lib/
-		Helper functions for the utilities in bin.
+	legacy/lib/
+		Helper functions for the utilities in posix/.
 
 	libc/
 		Standard C library components.
@@ -57,10 +57,7 @@ HIER:
 		and system monitor.
 
 	editor/
-		A native editor.
-
-	wm/
-		A rewrite of dwm.
+		A native editor. 
 
 	gsh/
 		A native shell.
@@ -68,7 +65,7 @@ HIER:
 	irc/
 		A native irc client and library.
 
-	libsh/
+	legacy/libsh/
 		Userland applications and libraries written in POSIX shell 
 		(native).
 
@@ -148,7 +145,7 @@ IMAGES:
 
 	irc/irc.png
 	editor/editor.png
-	sysmon/sysmon.png
+	gtop/sysmon.png
 	grafland.png
 
 
