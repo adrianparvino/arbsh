@@ -6,7 +6,7 @@ CFLAGS += -Wall -Wextra
 
 all:
 
-	$(CC) procsysmon.c -o procsysmon $(CFLAGS) $(LDFLAGS)
+	$(CC) procsysmon.c -o procsysmon ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
 
 install:
 
