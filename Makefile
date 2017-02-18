@@ -13,34 +13,38 @@ SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/
 
 all:
 
-	-$(MAKE) -C bin 
+	-$(MAKE) -C libc
+	-$(MAKE) -C readline clean
+	-$(MAKE) -C termcap clean
+	-$(MAKE) -C posix
+	-$(MAKE) -C linux
 	-$(MAKE) -C irc
 	-$(MAKE) -C gsh
-	-$(MAKE) -s -C libsh
 	-$(MAKE) -C editor
-	-$(MAKE) -C sysmon
-	-$(MAKE) -C math
+	-$(MAKE) -C gtop
+	
 
 clean:
 
-	$(MAKE) -C bin clean 
+	$(MAKE) -C readline clean
+	$(MAKE) -C termcap clean
+	$(MAKE) -C libc clean
+	$(MAKE) -C posix clean 
+	$(MAKE) -C linux clean 
 	$(MAKE) -C irc clean
 	$(MAKE) -C gsh clean
-	$(MAKE) -C libsh clean
 	$(MAKE) -C editor clean
-	$(MAKE) -C sysmon clean
-	$(MAKE) -C math clean
+	$(MAKE) -C gtop clean
 
 
 install:
 
-	-$(MAKE) -C bin install 
+	-$(MAKE) -C posix install 
+	-$(MAKE) -C linux install 
 	-$(MAKE) -C irc install
-	-$(MAKE) -C gsh install
-	-$(MAKE) -C libsh install 
+	-$(MAKE) -C gsh install 
 	-$(MAKE) -C editor install
-	-$(MAKE) -C sysmon install
-	-$(MAKE) -C math install
+	-$(MAKE) -C gtop install 
 	# Install toolchain last if it exists
 	-$(MAKE) -C toolchain install
 
@@ -50,10 +54,8 @@ uninstall:
 	-$(MAKE) -C bin uninstall 
 	-$(MAKE) -C irc uninstall
 	-$(MAKE) -C gsh uninstall
-	-$(MAKE) -C libsh uninstall 
 	-$(MAKE) -C editor uninstall
 	-$(MAKE) -C sysmon uninstall
-	#-$(MAKE) -C math uninstall 
 	#-$(MAKE) -C toolchain uninstall
 
 toolchain:
