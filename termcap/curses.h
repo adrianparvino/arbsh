@@ -4,9 +4,12 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 #include "termcap.h"
-#include "../string/string.h"
-#include "../stdio/stdio.h"
-#include "../stdlib/stdlib.h"
+#include "../libc/string/string.h"
+#include "../libc/stdio/stdio.h"
+#include "../libc/stdlib/stdlib.h"
+
+int dothink = 0;
+int hardadd = 0;
 
 struct ansiglb{
 	size_t row;	/* global rows    */
