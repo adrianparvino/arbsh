@@ -23,8 +23,14 @@
 #include <stdint.h>
 
 /* local libraries */
-#include "../lib/hexen.h"
-#include "../lib/date.h"
+#include "../termcap/termcap.h"
+#include "../termcap/curses.h"
+struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
+struct ansiglb ansiglb = { 0, 0, 0, 0};
+
+//#include "../lib/hexen.h"
+#include "../libc/string/string.h"
+#include "../legacy/lib/date.h"
 
 /* defines */ 
 #define BUF_MAX 1024
