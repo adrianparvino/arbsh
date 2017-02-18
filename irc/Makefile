@@ -6,7 +6,22 @@ CFLAGS += -Wall -Wextra
 
 all:
 
-	$(CC) irc.c -o irc $(CFLAGS) $(LDFLAGS)
+	$(MAKE) libc
+	$(MAKE) termcap
+	$(MAKE) readline
+
+	$(CC) irc.c -o irc ../readline/libreadline.a ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
+
+# DEPENDS:
+
+libc:
+	cd ../libc && $(MAKE)
+
+termcap:
+	cd ../termcap && $(MAKE)
+
+readline:
+	cd ../readline && $(MAKE)
 
 install:
 
