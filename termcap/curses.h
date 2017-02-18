@@ -8,15 +8,15 @@
 #include "../libc/stdio/stdio.h"
 #include "../libc/stdlib/stdlib.h"
 
-int dothink = 0;
-int hardadd = 0;
+int dothink;
+int hardadd;
 
 struct ansiglb{
 	size_t row;	/* global rows    */
 	size_t col;	/* global columns */
 	size_t t;	/* total windows  */
 	size_t c;	/* current window */
-}ansiglb = { 0, 0, 0, 0};
+};//ansiglb;// = { 0, 0, 0, 0};
 
 struct ANSIWINDOW{
 	size_t len;		/* length of primary buffer 	*/
@@ -26,7 +26,7 @@ struct ANSIWINDOW{
 	char *cpairs[GBUFSIZ];
 	int colordlen[GBUFSIZ];
 	char *colorlast[GBUFSIZ];
-}ANSIWINDOW[15] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
+};//ANSIWINDOW;//[15] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
 
 /* fumction prototypes */ 
 int fastgetch(void);
