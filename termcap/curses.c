@@ -6,8 +6,8 @@
 #include "curses.h"
 
 /* globals */
-int dothink = 0;
-int hardadd = 0; /* this should be added as a 4th function arg */
+//int dothink = 0;
+//int hardadd = 0; /* this should be added as a 4th function arg */
 
 /* functions */
 int fastgetch() 
