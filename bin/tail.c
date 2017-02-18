@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <fcntl.h> 
 #include <unistd.h> 
-#include "../lib/cutils.h"
+#include "../legacy/lib/cutils.h"
 
 
 /* Copyright 2015, C. Graff  "tail" */ 
