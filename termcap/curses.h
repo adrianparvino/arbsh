@@ -4,10 +4,12 @@
 #include <termios.h>
 #include <sys/ioctl.h>
 #include "termcap.h"
+#include "../libc/stddef/stddef.h"
 #include "../libc/string/string.h"
-#include "../libc/stdio/stdio.h"
+//#include "../libc/stdio/stdio.h"
 #include "../libc/stdlib/stdlib.h"
 
+#define GBUFSIZ 4096
 int dothink;
 int hardadd;
 
