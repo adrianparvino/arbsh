@@ -17,11 +17,11 @@ all:
 
 termcap:
 
-	cd ../termcap && $(MAKE)
+	cd ../termcap && test -e libterminal.a || $(MAKE)
 
 libc:
 
-	cd ../libc && $(MAKE)
+	cd ../libc && test -e libgc.a || $(MAKE)
 
 
 install:
