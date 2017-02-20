@@ -14,8 +14,8 @@ SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/
 all:
 
 	-$(MAKE) -C libc
-	-$(MAKE) -C readline clean
-	-$(MAKE) -C termcap clean
+	-$(MAKE) -C readline
+	-$(MAKE) -C termcap
 	-$(MAKE) -C posix
 	-$(MAKE) -C linux
 	-$(MAKE) -C irc

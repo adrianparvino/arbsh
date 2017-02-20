@@ -6,6 +6,8 @@ CFLAGS += -Wall -Wextra
 
 all:
 
+	$(MAKE) -C ../libc && test -e libgc.a || $(MAKE)
+	$(MAKE) -C ../termcap && test -e libterminal.a || $(MAKE)
 	$(CC) procsysmon.c -o procsysmon ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
 
 install:
