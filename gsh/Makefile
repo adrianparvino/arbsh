@@ -8,7 +8,7 @@ HERE = $(PWD)
 
 all:
 
-	cd ../readline && $(MAKE) 
+	cd ../readline && test -e libreadline.a || $(MAKE) 
 	$(CC) gsh.c -o gsh ../readline/libreadline.a $(CFLAGS) $(LDFLAGS)
 	#$(CC) gsh-testing.c -o gsh-testing $(CFLAGS) $(LDFLAGS)
 
