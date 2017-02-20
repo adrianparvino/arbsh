@@ -15,13 +15,13 @@ all:
 # DEPENDS:
 
 libc:
-	cd ../libc && $(MAKE)
+	cd ../libc && test -e libgc.a || $(MAKE)
 
 termcap:
-	cd ../termcap && $(MAKE)
+	cd ../termcap && test -e libterminal.a || $(MAKE)
 
 readline:
-	cd ../readline && $(MAKE)
+	cd ../readline && test -e libreadline.a || $(MAKE)
 
 install:
 
