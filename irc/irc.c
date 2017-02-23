@@ -17,7 +17,7 @@
 #include <stdint.h>
 
 /* local libraries */
-
+#define HASLIBM
 #include "../libc/string/string.h"
 //#include "../libc/stdio/stdio.h"
 #include "../termcap/termcap.h"
@@ -44,6 +44,8 @@
 #define MAXCHANS	100
 #define DATEFMT		"%H:%M"
 #define ID_DELAY	100000
+
+
 
 /* structs */
 struct chan {
@@ -74,6 +76,11 @@ struct glb {
 	size_t h;
 	int runstate;
 } glb = { {}, NULL, 0, 0, 0, 1};
+
+
+//static struct hglb 
+
+//hglb = { .t = 0, .c =0, .r =0, .laro = 0, .w = 0, .h = 0 };
 
 /* globals */ 
 unsigned short port = 0;
@@ -113,6 +120,8 @@ int main(int argc, char *argv[])
 	size_t z = 0; 
 	
 	sck[sckno] = -1; 
+
+	hglb.t = hglb.c = hglb.r = hglb.laro = hglb.w = hglb.h = 0;
 
         if ( argc > 1 && strcmp(argv[1], "-h") == 0)
         {
@@ -556,10 +565,14 @@ size_t ircfastgetch(char *l)
                                 }
                                 break;
                         case 'C': /* right arrow */
+				dprintf(2, "r arrow %d\n", hglb.laro);
+	
                                 if ( hglb.laro > 0 )
                                         --hglb.laro;
                                 break;
                         case 'D': /* left arrow */
+
+				dprintf(2, "l arrow %d\n", hglb.laro);
                                 if ( hglb.laro < len )
                                         ++hglb.laro;
                                 break;
