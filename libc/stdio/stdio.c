@@ -4,9 +4,9 @@
 
 
 GFILE _iob[OPEN_MAX] = {
-	{ 0, GGNULL, GGNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
-	{ 0, GGNULL, GGNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
-	{ 0, GGNULL, GGNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
+	{ 0, GNULL, GNULL, 1, 0, 0, 1, 0, 0},	/* stdin */
+	{ 0, GNULL, GNULL, 1, 1, 1, 0, 0, 0},	/* stdout */
+	{ 0, GNULL, GNULL, 1, 2, 1, 0, 0, 1}	/* stderr */ 
 }; 
 
 /* single char io  */
@@ -243,7 +243,7 @@ int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
 GFILE *gfopen(char *file, char *mode)
 {
 	int fd = -1;
-	GFILE *fp = GGNULL;
+	GFILE *fp = GNULL;
 	int oflags = 4242;
 	int seek = -1;
 	
@@ -254,7 +254,7 @@ GFILE *gfopen(char *file, char *mode)
 
 	/* no gfree slots */
 	if (fp >= _iob + OPEN_MAX)
-		return GGNULL; 
+		return GNULL; 
 
 	/* init */
 	fp->unbuf = 0;
@@ -303,13 +303,13 @@ GFILE *gfopen(char *file, char *mode)
 			break;
 		default:
 			if ( oflags == 4242 )
-				return GGNULL;
+				return GNULL;
 			break;
 	}
 
 	/* open the file */
 	if ((fd = open(file, oflags, 0)) == -1)
-		return GGNULL;
+		return GNULL;
 
 	/* and lseek to the end of it if in append mode */
 	if ( seek == SEEK_END)
@@ -318,7 +318,7 @@ GFILE *gfopen(char *file, char *mode)
 	/* initialize the new GFILE */
 	fp->fd = fd;
 	fp->cnt = 0;
-	fp->base = GGNULL;
+	fp->base = GNULL;
 	fp->flag = 1;
 	return fp;
 } 
@@ -332,7 +332,7 @@ int ggetc_inter(GFILE *fp)
 
 	if (!(fp->base))
 	{
-		if ((fp->base = gmalloc(GBUFSIZ)) == GGNULL) 
+		if ((fp->base = gmalloc(GBUFSIZ)) == GNULL) 
 			fp->unbuf = 1;
 		fp->ptr = fp->base;
 	}
@@ -384,7 +384,7 @@ int gfflush(GFILE *fp)
 	int ret = 0;
 	int i; 
 	
-	if (fp == GGNULL) 
+	if (fp == GNULL) 
 		for (i = 0; i < OPEN_MAX; i++) 
 			if ((gfflush(&_iob[i]) == -1))
 				ret = -1; 
@@ -397,13 +397,13 @@ int gfflush(GFILE *fp)
 int gfclose(GFILE *fp)
 {
 	int fd;
-	if (fp == GGNULL)
+	if (fp == GNULL)
 		return -1;
 	fd = fp->fd;
 	gfflush(fp);
-	if (fp->base != GGNULL)
+	if (fp->base != GNULL)
 		gfree(fp->base);
-	fp->ptr = fp->base = GGNULL;
+	fp->ptr = fp->base = GNULL;
 	fp->fd = -1;
 	fp->flag = fp->cnt = fp->append = fp->read = fp->write = fp->unbuf = 0;
 	return close(fd);
@@ -427,7 +427,7 @@ size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *fp)
 ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 {
 	size_t len = 0;
-	char *pos = GGNULL;
+	char *pos = GNULL;
 	ssize_t ret = -1;
 	size_t chunk = GBUFSIZ;
 	int c = 0;
