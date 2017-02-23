@@ -4,8 +4,6 @@
 #include <unistd.h> 
 #include <limits.h>
 
-
-
 /* Copyright 2015, C. Graff  "which" */
 void which(char *, int);
 
@@ -33,7 +31,6 @@ int main (int argc, char *argv[])
 
 	return 0;
 }
-
 
 void which(char *argv, int all)
 {
