@@ -7,8 +7,8 @@
 #include <regex.h> 
 #include <ctype.h>
 #include <limits.h>
-#include "../lib/string.h"
-#include "../lib/unistd.h"
+//#include "../lib/string.h"
+//#include "../lib/unistd.h"
 
 
 
@@ -16,7 +16,7 @@
 
 
 struct opt {
-        int o[12]; // EFcefilnqsvx + 1 so we do not go crazy
+        int o[12]; // EFcefilnqsvx + 1
 } opt = {{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0  }}; 
 
 void grep_exit(char *, int);
@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 	FILE *fp;
 	char line[PATH_MAX + 1];
 
-	while ((o = ggetopt (argc, argv, "EFce:f:ilnqsvxh")) != -1)
+	while ((o = getopt (argc, argv, "EFce:f:ilnqsvxh")) != -1)
                 switch (o) { 
                         case 'E': /* Extended regex */ 
 				cflags |= REG_EXTENDED; 
