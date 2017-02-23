@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
-#include "../dirwalk.h"
+#include "../legacy/lib/dirwalk.h"
 
 int find_pattern(char *, size_t, size_t);
 
