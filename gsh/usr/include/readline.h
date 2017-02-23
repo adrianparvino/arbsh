@@ -1,8 +1,9 @@
-#include "../libc/stddef/stddef.h"
-#include "../libc/stdio/stdio.h"
-#include "../termcap/termcap.h"
-#include "../libc/string/string.h"
-#include "../libc/stdlib/stdlib.h"
+#include <stddef.h>
+#include <gstdio.h>
+#include <termcap.h>
+#include <gstring.h>
+
+#include <stdlib.h>
 /*
 	2017 (C) Copyright, readline.h, CM Graff
 */
