@@ -111,6 +111,7 @@ static void sigwinch(int sig)
 
 int main()
 {
+
 	signal(SIGWINCH, sigwinch);
 	parseproc();
 	return 0;

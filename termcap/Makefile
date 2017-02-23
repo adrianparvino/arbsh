@@ -45,7 +45,7 @@ static_link:
 
 dynamic_link:
 
-	$(CC) -shared -Wl,-soname,libgc.so -o $(DYNLIB) $(OBJ)
+	$(CC) -shared -Wl,-soname,$(DYNLIB) -o $(DYNLIB) $(OBJ)
 
 
 cleanobj:

@@ -1,14 +1,16 @@
 #include <math.h>
 #include <string.h> 
 #include <stdio.h>
+#include "../libc/string/strcpy.c"
+//#include "../libc/stdio/stdio.h"
+#include "../libc/stdio/dtoa.c"
 
-#include "../dtoa.h"
 
 int main(void)
 {
 
 	int i;
-	char s[7];
+	char s[10];
 	double d[] = {
 		0.0,
 		42.0,
