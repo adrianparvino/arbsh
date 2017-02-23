@@ -1,9 +1,9 @@
 #include <stdarg.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "../stddef/stddef.h"
-#include "../fcntl/fcntl.h"
-#include "../string/string.h"
+#include <stddef.h>
+#include <fcntl.h>
+#include <string.h>
 
 /* defines */
 /* ------- */
