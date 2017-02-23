@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define HASLIBM
-#include "../stdio.h"
+#include "../libc/stdio/stdio.h"
 
 void testgvprintf(char *fmt, ...)
 {
