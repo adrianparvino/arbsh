@@ -11,6 +11,7 @@ all:
 	$(MAKE) termcap
 	$(MAKE) libc
 	$(CC) editor.c -o editor ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
+	$(CC) editor-colorized.c -o editor-colorized ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
 
 
 # DEPENDS: 
@@ -37,6 +38,6 @@ uninstall:
 
 clean:
 
-	$(RM) editor editor-testing
+	$(RM) editor editor-colorized
 	$(RM) uninstall
 

@@ -1,10 +1,5 @@
 #include "stdlib.h"
 
-
-
-
-
-
 /* malloc */
 union header {
 	struct {
@@ -12,22 +7,10 @@ union header {
 		unsigned 	size;	
 	} s;
 	long x;
-	
 };
 
-typedef union header Header; 
-
-
-
-
-
-
-
-
-
-/* malloc family */
-
-static Header base; 
+typedef union header Header;
+static Header base;
 static Header *gfreep = GNULL;
 
 void* gmalloc(size_t nbytes) 
@@ -73,7 +56,6 @@ Header *morecore(unsigned nu)
 		nu = NALLOC;
 	//cp = gsbrk(nu * sizeof(Header)); 
 	cp = mmap( 0, nu* sizeof(Header), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, 0, 0 );
-	//cp = mmap( 0, nu* sizeof(Header), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS| MAP_FIXED, 0, 0 );
 	if (cp == (char *) -1)
 		return GNULL;
 	up = (Header*) cp;
@@ -99,13 +81,13 @@ void gfree(void *ap)
 	}
 	else
 		bp->s.ptr = p->s.ptr;
-		if ( p + p->s.size == bp ) 
-		{
-
-			p->s.size += bp->s.size;
-			p->s.ptr = bp->s.ptr;
-		} else
-			p->s.ptr = bp;
+	if ( p + p->s.size == bp ) 
+	{
+		p->s.size += bp->s.size;
+		p->s.ptr = bp->s.ptr;
+	}
+	else
+		p->s.ptr = bp;
 	gfreep = p;
 }
 

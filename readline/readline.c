@@ -1,4 +1,5 @@
 #include "readline.h"
+
 static int readchar(void)
 {
 	static struct termios term, oterm;
@@ -59,6 +60,8 @@ void ircprint(char *l, size_t len, char *prompt, size_t plen)
 	/* write the prompt out */
 	write(1, prompt, plen);
 	
+	//dprintf(2, "irc print laro %d\n", hglb.laro);
+
 	if ( len )
 	{
 		if (hglb.laro >= half) 
