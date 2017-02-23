@@ -1,4 +1,4 @@
-CFLAGS := -Wall -Wextra -c -lm
+CFLAGS := -Wall -Wextra -c -lm -I usr/include -L usr/include
 
 LDFLAGS := -lm
 
@@ -45,7 +45,7 @@ static_link:
 
 dynamic_link:
 
-	$(CC) -shared -Wl,-soname,libgc.so -o $(DYNLIB) $(OBJ)
+	$(CC) -shared -Wl,-soname,$(DYNLIB) -o $(DYNLIB) $(OBJ)
 
 
 cleanobj:
