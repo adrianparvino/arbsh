@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
-#include "../ctype.h"
+#include "../libc/ctype/ctype.h"
 
 int main()
 {
@@ -53,10 +53,10 @@ int main()
 			printf("gisupper\n");
 		if (isupper(i))
 			printf("isupper\n");
-		if (gisxdigit(i))
-			printf("gisxdigit\n");
-		if (isxdigit(i))
-			printf("isxdigit\n");
+	//	if (gisxdigit(i))
+	//		printf("gisxdigit\n");
+	//	if (isxdigit(i))
+	//		printf("isxdigit\n");
 		
 		
 		if (gisascii(i))

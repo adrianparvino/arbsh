@@ -2,7 +2,7 @@
 #include <string.h>
 #include <libgen.h>
 #include <stdio.h>
-#include "../lib/libgen.h"
+#include <libgen.h>
 
 /*
 	Copyright 2017, C. Graff  "basename" 
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	hold = gbasename(argv[1]);
+	hold = basename(argv[1]);
 	i = len = strlen(hold);
 
 	if (!hold || !len)
