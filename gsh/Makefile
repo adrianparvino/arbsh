@@ -2,7 +2,7 @@
 
 PREFIX ?= /bin
 
-CFLAGS += -Wall -Wextra
+CFLAGS += -Wall -Wextra -I usr/include
 
 HERE = $(PWD)
 

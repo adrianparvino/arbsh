@@ -10,7 +10,7 @@ all:
 	$(MAKE) termcap
 	$(MAKE) readline
 
-	$(CC) irc.c -o irc ../readline/libreadline.a ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
+	$(CC) irc.c -o irc ../readline/libreadline.a ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS) -lm
 
 # DEPENDS:
 

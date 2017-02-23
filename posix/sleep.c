@@ -1,7 +1,5 @@
 #include <time.h>
-
-#include "../lib/stdlib.h"
-
+#include <stdlib.h> 
 /*
 	Copyright, C. Graff, `sleep'
 */
@@ -14,7 +12,7 @@ int main(int argc, char *argv[])
 
 	while ( *++argv && argc ) 
 	{
-		j = (gatof(*argv) * 1000000000);
+		j = (atof(*argv) * 1000000000);
 		while ( **argv != '\0' ) 
 			++*argv; 
 
