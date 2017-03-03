@@ -1,0 +1,51 @@
+
+all: 
+
+	gcc ctype-driver.c -o system-ctype-driver
+	gcc ctype-driver.c libc.a -o scc-ctype-driver
+
+	gcc atoi-driver.c -o system-atoi-driver
+	gcc atoi-driver.c libc.a -o scc-atoi-driver
+	
+	gcc string-driver.c -o system-string-driver
+	gcc string-driver.c libc.a -o scc-string-driver
+	
+	-gcc getchar-driver.c -o system-getchar-driver
+	-gcc getchar-driver.c libc.a -o scc-getchar-driver
+	
+	-gcc fread-driver.c -o system-fread-driver
+	-gcc fread-driver.c libc.a -o scc-fread-driver
+
+clean:
+
+	$(RM) scc-*
+	$(RM) system-*
+	$(RM) test1 test2
+	$(RM) libc.a
+
+	
+test:
+
+	./system-ctype-driver > test1
+	./scc-ctype-driver > test2
+	-diff test1 test2 && echo "ctype passed" || echo "ctype failed"
+
+	./system-atoi-driver > test1
+	./scc-atoi-driver > test2
+	-diff test1 test2 && echo "atoi passed" || echo "atoi failed"
+
+	./system-string-driver /usr > test1
+	./scc-string-driver /usr > test2
+	-diff test1 test2 && echo "strings passed" || echo "strings failed"
+
+	
+	
+build:
+
+	$(MAKE) -C ../scc/libc/src/ CFLAGS='-I../include -I../include/bits/i386-sysv/ -I/usr/include'
+	cp ../scc/libc/src/libc.a .
+	
+	$(MAKE) -C ../scc/libc/src/ clean
+
+
+
