@@ -43,7 +43,7 @@ enum _flags {
 	_WRITE = 002,
 	_UNBUF = 004,
 	_EOF   = 010,
-	_ERR   = 020, 
+	_ERR   = 020,
 };
 
 char *gfgets(char *s, int n, GFILE *iop);
@@ -81,9 +81,9 @@ int gfileno(GFILE *);
 
 
 char *gdtoa(char *, double);
-size_t uintostrbase(char *, size_t, int);
-size_t intostrbase_inter(char *, int, int); 
-size_t intostrbase(char *, int, int);
+size_t uint2str(char *, size_t, int);
+size_t int2str_inter(char *, int, int); 
+size_t int2str(char *, int, int);
 
 
 #define gstdin  (&_IO_stream[0])
@@ -240,7 +240,7 @@ int _flushbuf(int x, GFILE *fp)
 }
 
 int gfflush(GFILE *fp)
-{ 
+{
 	int ret = 0; 
 	size_t i = 0;
 	
@@ -353,7 +353,7 @@ int _gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt
 				break;
 			case 'd':
 				dval = va_arg(ap, int);
-				convlen = intostrbase(converted, dval, 10);
+				convlen = int2str(converted, dval, 10);
 				for ( j = 0 ; j < convlen ; ++j)
 					i = _flagger(i, converted[j], flag, str++, fp);
 				break;
@@ -362,7 +362,7 @@ int _gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt
 				{
 					case 'd':
 						lval = va_arg(ap, long);
-						convlen = intostrbase(converted, lval, 10);
+						convlen = int2str(converted, lval, 10);
 						for ( j = 0 ; j < convlen ; ++j)
 							i = _flagger(i, converted[j], flag, str++, fp);
 						break;
@@ -375,7 +375,7 @@ int _gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt
 				{
 					case 'u':
 						zuval = va_arg(ap, size_t);
-						convlen = uintostrbase(converted, zuval, 10);
+						convlen = uint2str(converted, zuval, 10);
 						for ( j = 0 ; j < convlen ; ++j)
 							i = _flagger(i, converted[j], flag, str++, fp);
 					default:
@@ -501,7 +501,7 @@ size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *fp)
 	return ret / size;
 }
 
-size_t uintostrbase(char *s, size_t n, int base)
+size_t uint2str(char *s, size_t n, int base)
 {
         static size_t i = 0; 
         if ( n == 0 )
@@ -512,7 +512,7 @@ size_t uintostrbase(char *s, size_t n, int base)
         if (n / base )
         {
                 i = 0;
-                uintostrbase(s, n / base, base);
+                uint2str(s, n / base, base);
         } 
         if (n % base + '0' > '9')
                 s[i] = (n % base + '0' + 39);
@@ -521,39 +521,34 @@ size_t uintostrbase(char *s, size_t n, int base)
         return ++i;
 }
 
-size_t intostrbase_inter(char *s, int n, int base)
+size_t int2str(char *s, int n, int base)
 {
-        static size_t i = 0; 
+        static size_t i = 0;
+	static int toggle = 0;
         if ( n == 0 )
         {
                 s[i] = '0';
                 return 1;
-        } 
+        }
+	if ( n < 0 && i == 0 )
+	{
+		n = -n;
+		s[0] = '-';
+		toggle = 1;
+		i = toggle;
+		int2str(s + toggle, n, base); 
+	}
         if (n / base )
         {
-               i = 0;
-               intostrbase_inter(s, n / base, base); 
+               i = toggle;
+               int2str(s, n / base, base); 
         } 
         if (n % base + '0' > '9')
                 s[i] = (n % base + '0' + 39);
         else
                 s[i] = (n % base + '0'); 
         return ++i;
-} 
-
-size_t intostrbase(char *s, int n, int base)
-{
-        size_t ret = 0;
-	int toggle = 0; 
-	if ( n < 0 )
-	{
-		n = -n;
-		s[0] = '-'; 
-		toggle = 1;
-	}
-	ret = intostrbase_inter(s + toggle, n, base); 
-	return ret + toggle;
-} 
+}
 
 void simplecat(GFILE *fp)
 {
@@ -566,7 +561,7 @@ int main(int argc, char *argv[])
 {
 	char string[3046];
 	//gfprintf(gstdout, "%s %d\n", "hello!", -1234);
-	gsprintf(string, "//%s//%zu", argv[1], 1237912469);
+	gsprintf(string, "//%s//%zu//%d", argv[1], 1237912469, -9871234);
 
 	//gprintf("%s\n", string);
 	gdprintf(1, "%s\n", string);
