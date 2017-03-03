@@ -1,6 +1,7 @@
 #include "fcntl.h" 
 #include <unistd.h>
 #include <stdarg.h>
+#include <stdlib.h>
 
 #ifndef NULL
 #define NULL ((void *) 0)
@@ -208,7 +209,9 @@ int _flushbuf(int x, GFILE *fp)
 
 	if (fp->buf == NULL)
 	{ 
-		fp->buf = buffer; 
+		fp->buf = malloc(bufsize);
+		//fp->buf = buffer; 
+		//memset(buffer, 0, BUFSIZ);
 		fp->lp = fp->rp = fp->buf;
 	}
 	/*
@@ -227,7 +230,7 @@ int _flushbuf(int x, GFILE *fp)
 		}
 	}else 
 	*/
-	if (write(fp->fd, fp->buf, fp->rp - fp->buf) < 0)
+	else if (write(fp->fd, fp->buf, fp->rp - fp->buf) < 0)
 	{ 
 		fp->flags |= _ERR;
 		return EOF; 
@@ -235,7 +238,10 @@ int _flushbuf(int x, GFILE *fp)
 
 	fp->rp = fp->buf;
 	fp->len = bufsize - 1; 
+	if ( x != EOF )
 	*fp->rp++ = (char) x;
+	//fp->len = bufsize; 
+	//*fp->rp = (char) x;
 	return x;
 }
 
@@ -243,19 +249,30 @@ int gfflush(GFILE *fp)
 {
 	int ret = 0; 
 	size_t i = 0;
+	GFILE *orig;
 	
 	/* fflush(NULL) flushes all fd */
 	if ( fp == NULL )
 	{
 		for ( fp = gstdout; i < FOPEN_MAX ; ++fp, ++i) 
 			if ( fp->buf != NULL )
+			{
 				ret = _flushbuf(EOF, fp); 
+	
+				
+
+
+				//if ( ret) 
+				//	break;
+			}
 	}
 	else if (fp->flags & _WRITE)
 		ret = _flushbuf(EOF, fp);
 
+
 	fp->rp = fp->buf;
 	fp->len = (fp->flags & _UNBUF) ? 1 : BUFSIZ; 
+	fp->buf = NULL;
 	return ret;
 }
 
@@ -315,6 +332,7 @@ int _gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt
 	char *p = NULL;
 	size_t i = 0;
 	size_t bound = BUFSIZ;
+	int base = 10;
 
 	/* Hold comverted numerical strings */
 	char converted[BUFSIZ] = { 0 };
@@ -328,8 +346,8 @@ int _gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt
 	int dval = 0;
 	long lval = 0;
 
-	if (fd)
-		fp = gstdout + fd;
+	//if (fd)
+		//fp = gstdout + fd;
 
 	if ( flag == 2 ) 	/* snprintf */
 		bound = lim;
@@ -339,6 +357,7 @@ int _gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt
 		if (*p != '%')
 		{
 			i = _flagger(i, *p, flag, str++, fp);
+			
 			continue;
 		}
 		switch (*++p)
@@ -348,15 +367,24 @@ int _gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt
 				i = _flagger(i, cval, flag, str++, fp);
 				break;
 			case 's':
-				for (sval = va_arg(ap, char *); *sval; sval++) 
-					i = _flagger(i, *sval, flag, str++, fp);
+				for (sval = va_arg(ap, char *); *sval; sval++, ++i) 
+					//i = _flagger(i, *sval, flag, str++, fp);
+				break;
+			case 'x':
+				base = 16;
+				goto wasint;
+				break;
+			case 'o':
+				base = 8;
+				goto wasint; 
 				break;
 			case 'd':
+				wasint:
 				dval = va_arg(ap, int);
-				convlen = int2str(converted, dval, 10);
+				convlen = int2str(converted, dval, base);
 				for ( j = 0 ; j < convlen ; ++j)
 					i = _flagger(i, converted[j], flag, str++, fp);
-				break;
+				break; 
 			case 'l':
 				switch (*++p)
 				{
@@ -381,19 +409,20 @@ int _gprintf_inter(GFILE *fp, int fd, char *str, size_t lim, int flag, char *fmt
 					default:
 						break;
 				}
-				break;
+				break; 
 			default: 
 				i = _flagger(i, *p, flag, str++, fp);
+				
 				break;
 		}
 	}
 
 	if ( flag > 0 )
 		_flagger(i, '\0', flag, str, fp); /* don't incr for '\0' */
-	
+
 	if (flag == 0)
 		gfflush(NULL);
-
+	//write(2, "Thog was here 1\n" , 16);
 	return i;
 }
 
@@ -561,10 +590,16 @@ int main(int argc, char *argv[])
 {
 	char string[3046];
 	//gfprintf(gstdout, "%s %d\n", "hello!", -1234);
-	gsprintf(string, "//%s//%zu//%d", argv[1], 1237912469, -9871234);
-
-	//gprintf("%s\n", string);
-	gdprintf(1, "%s\n", string);
+	//gsprintf(string, "//%s//%zu//%x", argv[1], 1237912469, 987654);
+	gfprintf(gstdout, "decval %d\n", 987654);
+	//gfflush(gstdout);
+	gfprintf(gstdout, "octalval %o\n", 987654);
+	//gfflush(gstdout);
+	gfprintf(gstdout, "hexval %x\n", 987654);
+	//gfflush(gstdout);
+	//gprintf("//%s//%d//%x", argv[1], 1237, 987654);
+	//gfprintf(gstdout, "%s\n", string);
+	//gdprintf(1, "%s\n", string);
 	return 0;
 	if ( argc > 1 )
 	{
