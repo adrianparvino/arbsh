@@ -590,7 +590,7 @@ size_t int2str(char *s, long long n, int base)
 
 size_t flt2str(char *s, double n) 
 {
-	static double PRECISION = 0.00000000000001; 
+	static double precision = 0.00000000000001;
 	size_t i = 0;
 	
 	int digit, m, m1;
@@ -616,7 +616,7 @@ size_t flt2str(char *s, double n)
 			m = 0;
 		}
 
-		while (n > PRECISION || m >= 0)
+		while (n > precision || m >= 0)
 		{
 			weight = pow(10.0, m);
 			if (weight > 0 && !isinf(weight)) {
@@ -663,6 +663,62 @@ void testgvprintf(char *fmt, ...)
 	va_end(args);
 }
 
+ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
+{
+        size_t len = 0;
+        char *pos = NULL;
+        ssize_t ret = -1;
+        size_t chunk = BUFSIZ;
+        int c = 0;
+
+        if (!*lineptr)
+        {
+                *n = chunk;
+                if (!(*lineptr = malloc (chunk)))
+                        return -1;
+        }
+
+        len = *n;
+        pos = *lineptr;
+
+        for ( ; c != delim ;len--, pos++)
+        {
+                read (fp->fd, &c, 1);
+                if (c == 0 || c == -1)
+                        c = EOF;
+
+                if (len == 0)
+                {
+                        *n += chunk;
+                        len = chunk;
+                        if (!(*lineptr = realloc (*lineptr, *n)))
+                                return ret;
+                        pos = *lineptr;
+                }
+
+                if (c == EOF )
+                {
+                        if (pos == *lineptr)
+                                return ret;
+                        else
+                                break;
+                }
+                *pos = c;
+        }
+
+        *pos = '\0';
+
+        ret = pos - (*lineptr);
+        return ret;
+}
+
+
+ssize_t ggetline(char **lineptr, size_t *n, GFILE *fp)
+{
+        return ggetdelim(lineptr, n, '\n', fp);
+}
+
+
 int main(int argc, char *argv[])
 {
 	
@@ -694,7 +750,7 @@ int main(int argc, char *argv[])
 		gdprintf(1, "The string literal \"987654\"     %s\n", "987654");
 		gdprintf(1, "decimal value of -987654        %d\n", -987654);
 
-	
+
 		gprintf("gfprintf:\n");
 		gfprintf(gstderr, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2);
 
