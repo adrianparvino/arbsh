@@ -2,36 +2,31 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <stdlib.h>
+#include <math.h>
 
 #ifndef NULL
 #define NULL ((void *) 0)
 #endif
 
-#define EOF            -1 
-
-
+#define EOF	    -1
 
 #ifndef SEEK_CUR
-#define SEEK_CUR        0
+#define SEEK_CUR	0
+#define SEEK_END	1
+#define SEEK_SET	2
 #endif
-#ifndef SEEK_END
-#define SEEK_END        1
-#endif
-#ifndef SEEK_SET
-#define SEEK_SET        2
-#endif 
 
 #define BUFSIZ		1024
 #define FOPEN_MAX	20
-#define PERMS 		0666
+
 
 typedef struct {
-        int fd;
-        char flags;
-        char *buf;
+	int fd;
+	char flags;
+	char *buf;
 	char *rp;
-        char *lp;
-        int len;
+	char *lp;
+	int len;
 } GFILE;
 
 GFILE _IO_stream[FOPEN_MAX];
@@ -77,17 +72,15 @@ int gfeof(GFILE *);
 int gferror(GFILE *);
 int gfileno(GFILE *);
 
-
-char *gdtoa(char *, double);
 size_t uint2str(char *, size_t, int);
-size_t int2str_inter(char *, long long, int); 
+size_t flt2str(char *, double);
 size_t int2str(char *, long long, int);
+size_t int2str_inter(char *, long long, int); 
 
 
 #define gstdin  (&_IO_stream[0])
 #define gstdout (&_IO_stream[1])
-#define gstderr (&_IO_stream[2]) 
-
+#define gstderr (&_IO_stream[2])
 
 GFILE _IO_stream[FOPEN_MAX] = {
 	{ 0, _READ, NULL, NULL, NULL, 0},
@@ -142,21 +135,22 @@ GFILE *gfopen(const char * restrict name, const char * restrict mode)
 {
 	int fd;
 	GFILE *fp;
+	int perms = 0666;
 
 	if (*mode != 'r' && *mode != 'w' && *mode != 'a')
-		return NULL; 
+		return NULL;
 
 	for (fp = _IO_stream; fp < _IO_stream + FOPEN_MAX; fp++)
 		if ((fp->flags & (_READ | _WRITE)) == 0)
 			break;
 	if (fp >= _IO_stream + FOPEN_MAX)
-		return NULL; 
+		return NULL;
 
 	if (*mode == 'w')
-		fd = creat(name, PERMS);
+		fd = creat(name, perms);
 	else if (*mode == 'a') {
 		if ((fd = open(name, O_WRONLY, 0)) == -1)
-			fd = creat(name, PERMS);
+			fd = creat(name, perms);
 		lseek(fd, 0L, 2);
 	} else
 		fd = open(name, O_RDONLY, 0); 
@@ -324,6 +318,7 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 	char *sval = NULL;
 	size_t zuval = 0;
 	long long lval = 0;
+	long double fval = 0;
 
 	if ( flag == 2 ) 	/* snprintf */
 		bound = lim;
@@ -337,64 +332,51 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 		}
 		switch (*++p)
 		{ 
-			case 'f':
-				goto wasflt;
-				break;
 			case 'c':
-				cval = va_arg(ap, int); 
-				i = _populate(i, cval, flag, str++, fp);
-				break;
+				cval = va_arg(ap, int);
+				goto character; 
 			case 's':
-				for (sval = va_arg(ap, char *); *sval; sval++, ++i) 
-					i = _populate(i, *sval, flag, str++, fp);
-				break;
+				sval = va_arg(ap, char *);
+				goto string; 
 			case 'o':
 				base = 8;
 				lval = va_arg(ap, int);
-				goto integer;
-				break;
+				goto integer; 
 			case 'd':
-				base = 10;
-				lval = va_arg(ap, int); 
+				lval = va_arg(ap, int);
 				goto integer;
-				break;
 			case 'x':
 				base = 16;
-				lval = va_arg(ap, int); 
+				lval = va_arg(ap, int);
 				goto integer;
-				break;
+			case 'f':
+				fval = va_arg(ap, double);
+				goto floating;
 			case 'L':
 				switch (*++p)
-				{ 
-					case 'f': // process long doubles here
-						break;
-					default:
-						break;
+				{
+					case 'f':
+						fval = va_arg(ap, long double);
+						goto floating;
 				}
 				break;
 			case 'l':
 				switch (*++p)
 				{
 					case 'd':
-						base = 10;
 						lval = va_arg(ap, long);
-						goto integer; 
-						break;
+						goto integer;
 					case 'l':
 						switch (*++p)
 						{
 							case 'd':
-								base = 10;
 								lval = va_arg(ap, long long);
 								goto integer;
-								break;
-							default:
-								break;
 						}
 						break;
 					case 'f':
-						wasflt: // process doubles here
-						break;
+						fval = va_arg(ap, double);
+						goto floating;
 					default:
 						break;
 				}
@@ -403,25 +385,40 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 				switch (*++p)
 				{
 					case 'u':
-						base = 10;
 						zuval = va_arg(ap, size_t);
 						goto uinteger;
-					default:
-						break;
 				}
 				break;
 			default:
 				i = _populate(i, *p, flag, str++, fp);
-				break; 
+				break;
+			string:
+				for (; *sval; sval++, ++i)
+					i = _populate(i, *sval, flag, str++, fp);
+				break;
+			character:
+				i = _populate(i, cval, flag, str++, fp);
+				break;
 			integer:
 				convlen = int2str(converted, lval, base);
 				for ( j = 0 ; j < convlen ; ++j)
 					i = _populate(i, converted[j], flag, str++, fp);
+				base = 10;
 				break;
 			uinteger:
 				convlen = uint2str(converted, zuval, base);
 				for ( j = 0 ; j < convlen ; ++j)
 					i = _populate(i, converted[j], flag, str++, fp);
+				break;
+			floating: 
+				convlen = flt2str(converted, fval);
+				for ( j = 0 ; convlen-- ; ++j)
+				{
+					if (converted[j] == '.')
+						if ( convlen > 6)
+							convlen = 6;
+					i = _populate(i, converted[j], flag, str++, fp);
+				}
 				break;
 		}
 	}
@@ -431,6 +428,7 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 
 	if (flag == 0)
 		gfflush(NULL);
+
 	return i;
 }
 
@@ -540,55 +538,102 @@ size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *fp)
 
 size_t uint2str(char *s, size_t n, int base)
 {
-        static size_t i = 0; 
-        if ( n == 0 )
-        {
-                s[i] = '0';
-                return 1;
-        } 
-        if (n / base )
-        {
-                i = 0;
-                uint2str(s, n / base, base);
-        } 
-        if (n % base + '0' > '9')
-                s[i] = (n % base + '0' + 39);
-        else 
-                s[i] = (n % base + '0'); 
-        return ++i;
+	static size_t i = 0; 
+	if ( n == 0 )
+	{
+		s[i] = '0';
+		return 1;
+	} 
+	if (n / base )
+	{
+		i = 0;
+		uint2str(s, n / base, base);
+	} 
+	if (n % base + '0' > '9')
+		s[i] = (n % base + '0' + 39);
+	else 
+		s[i] = (n % base + '0'); 
+	return ++i;
 }
 
 size_t __int2str(char *s, long long n, int base)
 {
-        static size_t i = 0;
-        if ( n == 0 )
-        {
-                s[i] = '0';
-                return 1;
-        }
-        if (n / base )
-        {
-               i = 0;
-               int2str(s, n / base, base);
-        }
-        if (n % base + '0' > '9')
-                s[i] = (n % base + '0' + 39);
-        else
-                s[i] = (n % base + '0'); 
-        return ++i;
+	static size_t i = 0;
+	if ( n == 0 )
+	{
+		s[i] = '0';
+		return 1;
+	}
+	if (n / base )
+	{
+	       i = 0;
+	       int2str(s, n / base, base);
+	}
+	if (n % base + '0' > '9')
+		s[i] = (n % base + '0' + 39);
+	else
+		s[i] = (n % base + '0'); 
+	return ++i;
 }
 
 size_t int2str(char *s, long long n, int base)
 { 
-        int toggle = 0; 
-        if ( n < 0 )
-        {
-                n = -n;
-                s[0] = '-';
-                toggle = 1;
-        }
-        return  __int2str(s + toggle, n, base) + toggle;
+	int toggle = 0; 
+	if ( n < 0 )
+	{
+		n = -n;
+		s[0] = '-';
+		toggle = 1;
+	}
+	return  __int2str(s + toggle, n, base) + toggle;
 }
+
+size_t flt2str(char *s, double n) 
+{
+	static double PRECISION = 0.00000000000001; 
+	size_t i = 0;
+	
+	int digit, m, m1;
+	char *c = s;
+	int neg = (n < 0);
+	double weight = 0;
+
+	if (n == 0.0) {
+		s[i++] = '0';
+		s[i++] = 0;
+	} else {
+		if (neg)
+			n = -n;
+	
+		m = log10(n);
+		
+		if (neg)
+		{
+			*(c++) = '-';
+			i++;
+		} 
+		if (m < 1.0) {
+			m = 0;
+		}
+
+		while (n > PRECISION || m >= 0)
+		{
+			weight = pow(10.0, m);
+			if (weight > 0 && !isinf(weight)) {
+				digit = floor(n / weight);
+				n -= (digit * weight);
+				*(c++) = '0' + digit;
+				i++;
+			}
+			if (m == 0 && n > 0)
+				*(c++) = '.';
+			m--;
+		}
+		*(c) = '\0';
+	}
+	return i;
+}
+
 
 void simple_copy(char *src, char *dest)
 {
@@ -610,26 +655,64 @@ void simplecat(char *file)
 	gfclose(fp);
 }
 
+void testgvprintf(char *fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+	gvprintf(fmt, args);
+	va_end(args);
+}
+
 int main(int argc, char *argv[])
 {
+	
+	char string[10] = { 'h', 'e', 'l', 'l', 'o', '\0' };
+	size_t zutest = 1234567;
+	int dtest = -9879871;
+	char string1[1000] = { 0 };
+	long ltest = 23459999;
+	double ftest = 3123.21317892345;
+	double ftest2 = 0.202309823709099;
+	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f==%lf\n";
+
 	if ( argc == 2 ) 
 		simplecat(argv[1]); 
 	else if ( argc == 3) 
 		simple_copy(argv[1], argv[2]); 
 	else {
-		gfprintf(gstdout, "decimal value of 987654        %d\n", 987654); 
-		gfprintf(gstdout, "octal value of 987654          %o\n", 987654); 
-		gfprintf(gstdout, "hexadecimal value of 987654    %x\n", 987654); 
-		gfprintf(gstdout, "The string literal \"987654\"    %s\n", "987654"); 
-		gfprintf(gstdout, "decimal value of -987654       %d\n", -987654); 
+
+		gfprintf(gstdout, "decimal value of 987654         %d\n", 987654);
+		gfprintf(gstdout, "octal value of 987654           %o\n", 987654);
+		gfprintf(gstdout, "hexadecimal value of 987654     %x\n", 987654);
+		gfprintf(gstdout, "The string literal \"987654\"     %s\n", "987654");
+		gfprintf(gstdout, "decimal value of -987654        %d\n", -987654);
 
 		
-		gdprintf(1, "decimal value of 987654        %d\n", 987654); 
-		gdprintf(1, "octal value of 987654          %o\n", 987654); 
-		gdprintf(1, "hexadecimal value of 987654    %x\n", 987654); 
-		gdprintf(1, "The string literal \"987654\"    %s\n", "987654"); 
-		gdprintf(1, "decimal value of -987654       %d\n", -987654); 
+		gdprintf(1, "decimal value of 987654         %d\n", 987654);
+		gdprintf(1, "octal value of 987654           %o\n", 987654);
+		gdprintf(1, "hexadecimal value of 987654     %x\n", 987654);
+		gdprintf(1, "The string literal \"987654\"     %s\n", "987654");
+		gdprintf(1, "decimal value of -987654        %d\n", -987654);
+
+	
+		gprintf("gfprintf:\n");
+		gfprintf(gstderr, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2);
+
+		gprintf("gdprintf:\n");
+		gdprintf(2, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2);
+		gprintf("gprintf:\n");
+		gprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2);
+		gprintf("gsprintf:\n");
+		gsprintf(string1, format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2);
+
+		gprintf("gvprintf:\n");
+		testgvprintf(format, zutest, dtest, string, zutest, dtest, string, 'a', 'b', 'c', 'd', ltest, ftest, ftest2);
+
 	}
 	return 0;
 }
+
+
+
+
 
