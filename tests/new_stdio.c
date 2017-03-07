@@ -468,6 +468,7 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 				i = _populate(i, cval, flag, str++, fp);
 				break;
 			integer:
+				memset(converted, 0, 100);
 				convlen = int2str(converted, lval, base);
 				for ( j = 0 ; j < convlen ; ++j)
 					i = _populate(i, converted[j], flag, str++, fp);
@@ -492,8 +493,8 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 		}
 	}
 
-	//if ( flag > 0 )
-	//	_populate(i, '\0', flag, str, fp); /* don't incr for '\0' */
+	if ( flag > 0 )
+		_populate(i, '\0', flag, str, fp); /* don't incr for '\0' */
 
 	if (flag == 0)
 		gfflush(NULL);
@@ -605,18 +606,19 @@ size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *fp)
 	return ret / size;
 }
 
-size_t uint2str(char *s, size_t n, int base)
+size_t __uint2str(char *s, size_t n, int base)
 {
 	static size_t i = 0; 
-	if ( n == 0 )
-	{
-		s[i] = '0';
-		return 1;
-	} 
+	
+//	if ( n == 0 )
+//	{
+//		s[i] = '0';
+	//	return 1;
+	//} 
 	if (n / base )
 	{
 		i = 0;
-		uint2str(s, n / base, base);
+		__uint2str(s, n / base, base);
 	} 
 	if (n % base + '0' > '9')
 		s[i] = (n % base + '0' + 39);
@@ -624,38 +626,66 @@ size_t uint2str(char *s, size_t n, int base)
 		s[i] = (n % base + '0'); 
 	return ++i;
 }
+size_t uint2str(char *s, size_t n, int base)
+{
+	int convtab[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+	if ( n < 10 )
+	{
+		s[0] = convtab[n];
+		return 1;
+	}
+	
+	return __uint2str(s, n / base, base);
+}
 
 size_t __int2str(char *s, long long n, int base)
 {
 	static size_t i = 0;
-	if ( n == 0 )
-	{
-		s[i] = '0';
+//	if ( n == 0 && i == 0)
+//	{
+//		s[i] = '0';
 		//s[i] = 0;
-		return 2;
-	}
+//		return 1;
+//	} 
+
 	if (n / base )
 	{
-	       i = 0;
-	       int2str(s, n / base, base);
+	      i = 0;
+	       __int2str(s, n / base, base);
+		//return 
 	}
 	if (n % base + '0' > '9')
 		s[i] = (n % base + '0' + 39);
 	else
 		s[i] = (n % base + '0'); 
+	size_t j = 0;
 	return ++i;
 }
 
 size_t int2str(char *s, long long n, int base)
 { 
 	int toggle = 0; 
+	size_t j = 0;
+	int convtab[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 	if ( n < 0 )
 	{
 		n = -n;
 		s[0] = '-';
 		toggle = 1;
 	}
-	return  __int2str(s + toggle, n, base) + toggle;
+	if ( n <10 )
+	{
+		s[toggle] = convtab[n];
+		return toggle + 1;
+	}
+	
+	size_t ret = __int2str(s + toggle, n, base) + toggle;
+	
+	//while (isdigit( s[j]) == 0 )
+	//	++j;
+	//memmove(s, s+j, ret - j);
+
+	return ret;
 }
 
 size_t flt2str(char *s, double flt)
@@ -669,8 +699,10 @@ size_t flt2str(char *s, double flt)
 	//s[0] = 0; 
 	if ( real != 0)
 	{
-		i = int2str(s, real, 10);
-		//++i;
+		//if ( real < 10 )
+		//	s[i++] = convtab[real];
+		//else 
+			i = int2str(s, real, 10);
 	}
 	else
 		s[i++] = '0';
@@ -691,7 +723,7 @@ size_t flt2str(char *s, double flt)
 	}
 	else 
 	{
-		++i;
+		//++i;
 		memset(s + i, '0', 20);
 		i += 20;
 	}
@@ -831,11 +863,18 @@ int main(int argc, char *argv[])
 
 	
 		gprintf("%f\n", 43.6565123987324987132479183478173408712409710471249999);
-		gprintf("%f\n", 1.111111111111111111111111111111111111111111111111111111);
+		gprintf("%f\n", 21.111111111111111111111111111111111111111111111111111111);
 
-		//gprintf("%f\n", 0.12);
-		//gprintf("%d\n", 0);
+		gprintf("%f\n", 3.1);
+		//gprintf("%s\n", "a");
 
+		gprintf("P\n");
+
+		double two = 2;
+		gprintf("%f\n", two);
+
+		gprintf("%zu\n", 0);
+		gprintf("%zu\n", 9);
 	}
 	return 0;
 }
