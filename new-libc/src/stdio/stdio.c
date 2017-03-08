@@ -1,98 +1,10 @@
-#include "fcntl.h" 
-#include <unistd.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <string.h>
 
-#ifndef NULL
-#define NULL ((void *) 0)
-#endif
-
-#define EOF	    -1
-
-#ifndef SEEK_CUR
-#define SEEK_CUR	0
-#define SEEK_END	1
-#define SEEK_SET	2
-#endif
-
-#define BUFSIZ		1024
-#define FOPEN_MAX	20
-
-#define _PRINTF_NAN -(0./0.)
-
-typedef struct {
-	int fd;
-	char flags;
-	char *buf;
-	char *rp;
-	char *lp;
-	int len;
-} GFILE;
-
-GFILE _IO_stream[FOPEN_MAX];
-
-enum _flags {
-	_READ  = 001,
-	_WRITE = 002,
-	_UNBUF = 004,
-	_EOF   = 010,
-	_ERR   = 020,
-};
-
-char *gfgets(char *s, int n, GFILE *iop);
-int gfputs(char *s, GFILE *iop);
-int _fillbuf(GFILE *);
-int _flushbuf(int, GFILE *);
-int gfflush(GFILE *);
-GFILE *gfopen(const char *, const char *);
-int gfclose(GFILE *);
-int _populate(int, int, int, char *, GFILE *);
-
-
-int ggetchar(void);
-int gputchar(char);
-int ggetc(GFILE *);
-int gfgetc(GFILE *);
-int gputc(int, GFILE *); 
-int gfputc(int, GFILE *); 
-ssize_t ggetline (char **, size_t *, GFILE *);
-ssize_t ggetdelim(char **, size_t *, char, GFILE *);
-int _gprintf_inter(GFILE *, char *, size_t, int, char *, va_list);
-int gprintf(char *, ...);
-int gsprintf(char *, char *, ...);
-int gsnprintf(char *, size_t, char *, ...);
-int gdprintf(int, char *, ...);
-int gfprintf(GFILE *, char *, ...);
-int gvprintf(char *, va_list);
-int gvsprintf(char *, char *, va_list);
-int gvsnprintf(char *, size_t, char *, va_list);
-int gvdprintf(int, char *, va_list);
-int gvfprintf(GFILE *, char *, va_list);
-size_t gfread(void *, size_t, size_t, GFILE *);
-size_t gfwrite(const void *, size_t, size_t, GFILE *);
-int gfeof(GFILE *);
-int gferror(GFILE *);
-int gfileno(GFILE *);
-
-size_t uint2str(char *, size_t, int);
-size_t flt2str(char *, double);
-size_t int2str(char *, long long, int);
-size_t int2str_inter(char *, long long, int); 
-
-size_t flt2str(char *, double);
-
-
-#define gstdin  (&_IO_stream[0])
-#define gstdout (&_IO_stream[1])
-#define gstderr (&_IO_stream[2])
-
+#include <gstdio.h> 
 GFILE _IO_stream[FOPEN_MAX] = {
-	{ 0, _READ, NULL, NULL, NULL, 0},
-	{ 1, _WRITE, NULL, NULL, NULL, 0},
-	{ 2, _WRITE | _UNBUF, NULL, NULL, NULL, 0}
+        { 0, _READ, NULL, NULL, NULL, 0},
+        { 1, _WRITE, NULL, NULL, NULL, 0},
+        { 2, _WRITE | _UNBUF, NULL, NULL, NULL, 0}
 };
-
 int gferror(GFILE *fp)
 {
 	if ( (fp->flags & _ERR) != 0 )
