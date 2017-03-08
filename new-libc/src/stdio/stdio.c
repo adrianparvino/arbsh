@@ -384,7 +384,7 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 	//int precision = 6;
 	int precision = 40;
 
-	long long real;
+	
 
 	if ( flag == 2 ) 	/* snprintf */
 		bound = lim;
@@ -627,46 +627,29 @@ size_t __uint2str(char *s, size_t n, int base)
 	return ++i;
 }
 size_t uint2str(char *s, size_t n, int base)
-{
-	int convtab[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-	//if ( n < 10 )
-	//{
-	//	s[0] = convtab[n];
-	//	return 1;
-	//}
-	
+{ 
 	return __uint2str(s, n / base, base);
 }
 
 size_t __int2str(char *s, long long n, int base)
 {
-	static size_t i = 0;
-//	if ( n == 0 && i == 0)
-//	{
-//		s[i] = '0';
-		//s[i] = 0;
-//		return 1;
-//	} 
-	
-
+	static size_t i = 0; 
 	if (n / base )
 	{
 	      i = 0;
-	       __int2str(s, n / base, base);
-		//return 
+	       __int2str(s, n / base, base); 
 	}
 	if (n % base + '0' > '9')
 		s[i] = (n % base + '0' + 39);
 	else
 		s[i] = (n % base + '0'); 
-	size_t j = 0;
+
 	return ++i;
 }
 
 size_t int2str(char *s, long long n, int base)
 { 
-	int toggle = 0; 
-	size_t j = 0;
+	int toggle = 0;
 	int convtab[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 	if ( n < 0 )
 	{
