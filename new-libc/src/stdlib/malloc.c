@@ -1,4 +1,4 @@
-#include <gmalloc.h>
+#include <gstdlib.h>
 #include <gstddef.h>
 #include <gstring.h>
 
