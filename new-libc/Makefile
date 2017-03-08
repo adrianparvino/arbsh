@@ -54,12 +54,13 @@ dynamic_link:
 
 static_create: 
 
-	$(CC) -o static_driver driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o static_driver tests/driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o gprintf tests/gprintf.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 
 
 dynamic_create:
 
-	$(CC) driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS) $(CFLAGS)
+	$(CC) tests/driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS) $(CFLAGS)
 
 
 exec_dyn:
@@ -74,5 +75,5 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
-	$(RM) *driver log stringmath
+	$(RM) *driver log gprintf
 
