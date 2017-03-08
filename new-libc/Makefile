@@ -27,6 +27,7 @@ all:
 static: $(OBJ)
 
 	$(MAKE) static_link
+	$(MAKE) static_create
 
 
 
@@ -37,6 +38,7 @@ dynamic:
 
 	$(MAKE) $(DYNCC) dynwrap
 	$(MAKE) dynamic_link
+	$(MAKE) dynamic_create
 
 
 
@@ -52,12 +54,12 @@ dynamic_link:
 
 static_create: 
 
-	$(CC) -o static_driver ../tests/driver.c $(STATLIB) $(LDFLAGS)
+	$(CC) -o static_driver driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 
 
 dynamic_create:
 
-	$(CC) ../tests/driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS)
+	$(CC) driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS) $(CFLAGS)
 
 
 exec_dyn:
