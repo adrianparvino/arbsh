@@ -2,7 +2,7 @@
 
 #include <gstring.h>
 
-#include <gmalloc.h>
+#include <gstdlib.h>
 
 char *gstrdup(const char *s)
 {
