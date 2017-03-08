@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	double ftest = 3123.21317892345;
 	double ftest2 = 0.202309823709099;
 	char *format = "%zu/%d/%s==%zu / %d / %s%c-%c-%c-%ctt%ld==%f==%lf\n";
-	double one = 0.01;
+	
 
 	if ( argc == 2 ) 
 		simplecat(argv[1]); 
