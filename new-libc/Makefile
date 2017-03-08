@@ -8,7 +8,7 @@ OBJ = $(shell for i in src/*/*.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
-LIBNAME = ccc
+LIBNAME = gc
 
 STATLIB = lib$(LIBNAME).a
 
