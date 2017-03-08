@@ -56,6 +56,7 @@ static_create:
 
 	$(CC) -o static_driver tests/driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o gprintf tests/gprintf.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o malloc-driver tests/malloc-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 
 
 dynamic_create:
