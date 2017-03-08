@@ -1,17 +1,6 @@
-#include <string.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <dirent.h>
-#include <unistd.h>
-#include <inttypes.h>
-#include <sys/syscall.h>
-#define NALLOC 10000
-
-
-void gfree(void *);
-void *gmalloc(size_t);
-void *grealloc(void *, size_t);
-void *gcalloc(size_t, size_t);
+#include <gmalloc.h>
+#include <gstddef.h>
+#include <gstring.h>
 
 #define _ALIGNTYPE long
 
@@ -133,7 +122,7 @@ grealloc(void *old_ptr, size_t nbytes)
 	if ((new_ptr = gmalloc(nbytes)) == NULL)
 		return NULL;
 
-	memcpy(new_ptr, old_ptr, (old_nbytes > nbytes) ? nbytes : old_nbytes);
+	gmemcpy(new_ptr, old_ptr, (old_nbytes > nbytes) ? nbytes : old_nbytes);
 
 	gfree(old_ptr);
 	return new_ptr;
@@ -150,59 +139,7 @@ gcalloc(size_t nmemb, size_t size)
 		
 	request = nmemb * size;
 	if ((ret = gmalloc(request)) != NULL)
-		memset(ret, 0, request); 
+		gmemset(ret, 0, request); 
 	
 	return ret;
 }
-
-int find_pattern(char *, size_t, size_t);
-
-int main(int argc, char *argv[])
-{
-	//char *string = gcalloc (1000, 1000);
-
-	//write(1, string, 1000);
-
-	if (argc > 1)
-		find_pattern(argv[1], strlen(argv[1]), 0);
-	else
-		find_pattern(".", 1, 0);
-	return 0;
-}
-
-int find_pattern(char *path, size_t tot, size_t last)
-{ 
-	DIR *dir;
-	struct dirent *d; 
-	char *spath = NULL;
-	size_t dlen = 0; 
-	
-	if ( ( dir = opendir(path) ) ) 
-	{
-		d = readdir(dir); 
-		while (d) 
-		{ 
-			dlen = strlen(d->d_name);
-			last = (tot + dlen + 2);
-			spath = grealloc(spath, last); 
-			tot = sprintf(spath, "%s/%s", path, d->d_name);
-			if ( strcmp( ".", d->d_name) && 
-			   ( strcmp( "..", d->d_name)) )
-			{
-				printf("%s\n", spath);
-			}
-
-			if ( d->d_type == DT_DIR &&
-			   ( strcmp( ".", d->d_name)) &&
-			   ( strcmp( "..", d->d_name))) 
-				find_pattern(spath, tot, last); 
-			d = readdir(dir); 
-		}
-		
-	}
-	if ( spath)
-		gfree(spath);
-	closedir(dir);
-	return 0;
-}
-
