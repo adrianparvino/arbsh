@@ -10,7 +10,7 @@
 #include <pwd.h>
 #include <grp.h>
 
-#include <gmalloc.h>
+#include <gstdlib.h>
 
 #include <gstring.h>
 
