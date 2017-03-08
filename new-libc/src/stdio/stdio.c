@@ -1,58 +1,5 @@
 #include <gstdio.h> 
 
-int gferror(GFILE *fp)
-{
-	if ( (fp->flags & _ERR) != 0 )
-		return 0;
-	return 1;
-} 
-
-int gfeof(GFILE *fp)
-{
-	if ( (fp->flags & _EOF) != 0 )
-		return 0;
-	return 1;
-}
-
-int gfileno(GFILE *fp)
-{
-	return fp->fd;
-}
-
-int ggetc(GFILE *fp)
-{
-	if ((--(fp)->len >= 0))
-		return (unsigned char) *(fp)->rp++;
-	return _fillbuf(fp);
-}
-
-int gfgetc(GFILE *fp)
-{
-	return ggetc(fp);
-}
-
-int gputc(int x, GFILE *fp)
-{
-	if ((--(fp)->len >= 0))
-		return *(fp)->rp++ = x;
-	return _flushbuf(x, fp);
-}
-
-int gfputc(int x, GFILE *fp)
-{
-	return gputc(x, fp);
-}
-
-int getchar(void)
-{
-	return ggetc(gstdin);
-}
-
-int putchar(int x)
-{
-	return gputc(x, gstdout);
-}
-
 int _fillbuf(GFILE *fp)
 {
 	int bufsize = 0;
@@ -114,63 +61,6 @@ int _flushbuf(int x, GFILE *fp)
 	if (x != EOF)
 		*fp->rp++ = (char) x;
 	return x;
-}
-
-int gfflush(GFILE *fp)
-{
-	int ret = 0; 
-	size_t i = 0; 
-	/* fflush(NULL) flushes all fd */
-	if ( fp == NULL )
-	{
-		for ( fp = gstdout; i < FOPEN_MAX ; ++fp, ++i) 
-			if ( fp->buf != NULL ) 
-				ret = _flushbuf(EOF, fp); 
-		
-	}
-	else if (fp->flags & _WRITE)
-		ret = _flushbuf(EOF, fp);
-
-	fp->rp = fp->buf;
-	fp->len = (fp->flags & _UNBUF) ? 1 : BUFSIZ; 
-	fp->buf = NULL;
-	return ret;
-}
-
-int gfclose(GFILE *fp)
-{
-	int ret = 0;
-	if (fp != NULL )
-	{
-		if ((ret = gfflush(fp)) != EOF)
-		{
-			fp->rp = fp->buf = NULL;
-			fp->len = 0;
-			fp->flags &= ~(_READ | _WRITE);
-			close(fp->fd);
-		}
-	}
-	return ret;
-}
-
-char *gfgets(char * restrict s, int n, GFILE * restrict iop)
-{
-	register int c;
-	register char *cs;
-	cs = s;
-	while (--n > 0 && (c = ggetc(iop)) != EOF)
-		if ((*cs++ = c) == '\n')
-			break;
-	*cs = '\0';
-	return (c == EOF && cs == s) ? NULL : s;
-}
-
-int gfputs(char * restrict s, GFILE * restrict iop)
-{
-	int c;
-	while ((c = *s++))
-		gputc(c, iop);
-	return gferror(iop) ? EOF : 0;
 }
 
 /* Printf family (variadic and formatted) */
@@ -422,8 +312,7 @@ size_t __uint2str(char *s, size_t n, int base)
 {
 	static size_t i = 0; 
 	if (n / base )
-	{
-		
+	{ 
 		__uint2str(s, n / base, base);
 	} 
 	if (n % base + '0' > '9')
@@ -467,14 +356,8 @@ size_t int2str(char *s, long long n, int base)
 	{
 		s[toggle] = convtab[n];
 		return toggle + 1;
-	}
-	
-	size_t ret = __int2str(s + toggle, n, base) + toggle;
-	
-	//while (isdigit( s[j]) == 0 )
-	//	++j;
-	//memmove(s, s+j, ret - j);
-
+	} 
+	size_t ret = __int2str(s + toggle, n, base) + toggle; 
 	return ret;
 }
 
@@ -484,8 +367,7 @@ size_t flt2str(char *s, double flt)
 	long long real = flt;
 	double imag = flt - real; 
 	int prec = 20;
-	int convtab[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
-	
+	int convtab[10] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' }; 
 	
 	if ( real != 0) 
 		i = int2str(s, real, 10); 
