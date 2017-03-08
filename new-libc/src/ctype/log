@@ -1,0 +1,115 @@
+execve("/usr/bin/make", ["make", "CFLAGS=../../include"], [/* 45 vars */]) = 0
+brk(NULL)                               = 0x1a48000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f04cdd26000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=87035, ...}) = 0
+mmap(NULL, 87035, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f04cdd10000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/x86_64-linux-gnu/libdl.so.2", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\240\r\0\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0644, st_size=14608, ...}) = 0
+mmap(NULL, 2109680, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f04cd8ff000
+mprotect(0x7f04cd902000, 2093056, PROT_NONE) = 0
+mmap(0x7f04cdb01000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x2000) = 0x7f04cdb01000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0P\t\2\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=1864888, ...}) = 0
+mmap(NULL, 3967392, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f04cd536000
+mprotect(0x7f04cd6f5000, 2097152, PROT_NONE) = 0
+mmap(0x7f04cd8f5000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1bf000) = 0x7f04cd8f5000
+mmap(0x7f04cd8fb000, 14752, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f04cd8fb000
+close(3)                                = 0
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f04cdd0f000
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f04cdd0e000
+mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f04cdd0d000
+arch_prctl(ARCH_SET_FS, 0x7f04cdd0e700) = 0
+mprotect(0x7f04cd8f5000, 16384, PROT_READ) = 0
+mprotect(0x7f04cdb01000, 4096, PROT_READ) = 0
+mprotect(0x630000, 4096, PROT_READ)     = 0
+mprotect(0x7f04cdd28000, 4096, PROT_READ) = 0
+munmap(0x7f04cdd10000, 87035)           = 0
+getrlimit(RLIMIT_STACK, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+setrlimit(RLIMIT_STACK, {rlim_cur=RLIM64_INFINITY, rlim_max=RLIM64_INFINITY}) = 0
+brk(NULL)                               = 0x1a48000
+brk(0x1a69000)                          = 0x1a69000
+open("/usr/lib/locale/locale-archive", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=2981280, ...}) = 0
+mmap(NULL, 2981280, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f04cd25e000
+close(3)                                = 0
+rt_sigaction(SIGHUP, {0x409b80, [HUP], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [], 0}, 8) = 0
+rt_sigaction(SIGQUIT, {0x409b80, [QUIT], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [], 0}, 8) = 0
+rt_sigaction(SIGINT, {0x409b80, [INT], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [], 0}, 8) = 0
+rt_sigaction(SIGTERM, {0x409b80, [TERM], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [], 0}, 8) = 0
+rt_sigaction(SIGXCPU, {0x409b80, [XCPU], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [], 0}, 8) = 0
+rt_sigaction(SIGXFSZ, {0x409b80, [XFSZ], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [], 0}, 8) = 0
+rt_sigaction(SIGCHLD, {SIG_DFL, [CHLD], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [], 0}, 8) = 0
+fcntl(1, F_GETFL)                       = 0x8402 (flags O_RDWR|O_APPEND|O_LARGEFILE)
+fcntl(1, F_SETFL, O_RDWR|O_APPEND|O_LARGEFILE) = 0
+fcntl(2, F_GETFL)                       = 0x8001 (flags O_WRONLY|O_LARGEFILE)
+fcntl(2, F_SETFL, O_WRONLY|O_APPEND|O_LARGEFILE) = 0
+getcwd("/home/cgraff1/grafland/new-libc/src/ctype", 4096) = 42
+ioctl(1, TCGETS, {B38400 opost isig icanon echo ...}) = 0
+ioctl(1, TCGETS, {B38400 opost isig icanon echo ...}) = 0
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 0), ...}) = 0
+readlink("/proc/self/fd/1", "/dev/pts/0", 4095) = 10
+stat("/dev/pts/0", {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 0), ...}) = 0
+ioctl(2, TCGETS, 0x7fff0a2f11e0)        = -1 ENOTTY (Inappropriate ioctl for device)
+stat("/usr/ncludeinclude", {st_mode=S_IFDIR|0755, st_size=16384, ...}) = 0
+stat("/usr/gnu/include", 0x7fff0a2f1150) = -1 ENOENT (No such file or directory)
+stat("/usr/local/include", {st_mode=S_IFDIR|0755, st_size=4096, ...}) = 0
+stat("/usr/include", {st_mode=S_IFDIR|0755, st_size=16384, ...}) = 0
+rt_sigaction(SIGCHLD, {0x412dd0, [CHLD], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [CHLD], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, 8) = 0
+rt_sigaction(SIGUSR1, {0x4165c0, [USR1], SA_RESTORER|SA_RESTART, 0x7f04cd56b4b0}, {SIG_DFL, [], 0}, 8) = 0
+brk(0x1a8a000)                          = 0x1a8a000
+stat(".", {st_mode=S_IFDIR|0775, st_size=4096, ...}) = 0
+open(".", O_RDONLY|O_NONBLOCK|O_DIRECTORY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFDIR|0775, st_size=4096, ...}) = 0
+getdents(3, /* 19 entries */, 32768)    = 584
+getdents(3, /* 0 entries */, 32768)     = 0
+close(3)                                = 0
+open("Makefile", O_RDONLY)              = 3
+fcntl(3, F_SETFD, FD_CLOEXEC)           = 0
+fstat(3, {st_mode=S_IFREG|0664, st_size=51, ...}) = 0
+read(3, "\n\n\nall:\n\t$(CC) -c isspace.c -o i"..., 4096) = 51
+read(3, "", 4096)                       = 0
+close(3)                                = 0
+stat("RCS", 0x7fff0a2f1100)             = -1 ENOENT (No such file or directory)
+stat("SCCS", 0x7fff0a2f1100)            = -1 ENOENT (No such file or directory)
+stat("Makefile", {st_mode=S_IFREG|0664, st_size=51, ...}) = 0
+stat("all", 0x7fff0a2eef10)             = -1 ENOENT (No such file or directory)
+fstat(1, {st_mode=S_IFCHR|0620, st_rdev=makedev(136, 0), ...}) = 0
+write(1, "cc -c isspace.c -o isspace.o ../"..., 43) = 43
+pipe([3, 4])                            = 0
+close(4)                                = 0
+fcntl(3, F_SETFD, FD_CLOEXEC)           = 0
+rt_sigprocmask(SIG_BLOCK, [HUP INT QUIT TERM XCPU XFSZ], NULL, 8) = 0
+clone(child_stack=0, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7f04cdd0e9d0) = 4940
+rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+wait4(-1, isspace.c:1:20: fatal error: gctype.h: No such file or directory
+compilation terminated.
+[{WIFEXITED(s) && WEXITSTATUS(s) == 1}], 0, NULL) = 4940
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=4940, si_uid=1000, si_status=1, si_utime=0, si_stime=0} ---
+rt_sigreturn({mask=[]})                 = 4940
+open("/usr/share/locale/locale.alias", O_RDONLY|O_CLOEXEC) = 4
+fstat(4, {st_mode=S_IFREG|0644, st_size=2995, ...}) = 0
+read(4, "# Locale name alias data base.\n#"..., 4096) = 2995
+read(4, "", 4096)                       = 0
+close(4)                                = 0
+open("/usr/share/locale/en_US/LC_MESSAGES/make.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+open("/usr/share/locale/en/LC_MESSAGES/make.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+open("/usr/share/locale-langpack/en_US/LC_MESSAGES/make.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+open("/usr/share/locale-langpack/en/LC_MESSAGES/make.mo", O_RDONLY) = -1 ENOENT (No such file or directory)
+write(1, "Makefile:5: recipe for target 'a"..., 43) = 43
+write(2, "make: *** [all] Error 1\n", 24make: *** [all] Error 1
+) = 24
+rt_sigprocmask(SIG_BLOCK, [HUP INT QUIT TERM XCPU XFSZ], NULL, 8) = 0
+rt_sigprocmask(SIG_SETMASK, [], NULL, 8) = 0
+chdir("/home/cgraff1/grafland/new-libc/src/ctype") = 0
+close(1)                                = 0
+exit_group(2)                           = ?
++++ exited with 2 +++
