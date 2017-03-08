@@ -1,4 +1,5 @@
 #include <gstdio.h> 
+#include <gstdlib.h>
 
 ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
 {
@@ -11,7 +12,7 @@ ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
         if (!*lineptr)
         {
                 *n = chunk;
-                if (!(*lineptr = malloc (chunk)))
+                if (!(*lineptr = gmalloc (chunk)))
                         return -1;
         }
 
@@ -28,7 +29,7 @@ ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
                 {
                         *n += chunk;
                         len = chunk;
-                        if (!(*lineptr = realloc (*lineptr, *n)))
+                        if (!(*lineptr = grealloc (*lineptr, *n)))
                                 return ret;
                         pos = *lineptr;
                 }
