@@ -34,7 +34,7 @@ GFILE *gfopen(const char * restrict name, const char * restrict mode)
 				}
 				break;
 			case 'w':
-				oflags = O_TRUNC | O_CREAT;
+				oflags = O_RDWR;
 				iflags = _WRITE;
 				switch (*p)
 				{
