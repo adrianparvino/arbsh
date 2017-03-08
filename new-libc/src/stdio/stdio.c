@@ -1,12 +1,5 @@
-
 #include <gstdio.h> 
-/*
-GFILE _IO_stream[FOPEN_MAX] = {
-        { 0, _READ, NULL, NULL, NULL, 0},
-        { 1, _WRITE, NULL, NULL, NULL, 0},
-        { 2, _WRITE | _UNBUF, NULL, NULL, NULL, 0}
-};
-*/
+
 int gferror(GFILE *fp)
 {
 	if ( (fp->flags & _ERR) != 0 )
@@ -58,87 +51,6 @@ int getchar(void)
 int putchar(int x)
 {
 	return gputc(x, gstdout);
-}
-
-GFILE *gfopen(const char * restrict name, const char * restrict mode)
-{
-	int fd;
-	GFILE *fp;
-	int perms = 0; //  not yet used
-	const char *p = mode;
-	int oflags = 4242;
-	int iflags = 4242;
-	int seek = -1;
-	
-	for (fp = _IO_stream; fp < _IO_stream + FOPEN_MAX; fp++)
-		if ((fp->flags & (_READ | _WRITE)) == 0)
-			break;
-	if (fp >= _IO_stream + FOPEN_MAX)
-		return NULL;
-
-	while (*p)
-	{
-		switch (*p++)
-		{
-			case 'r': 
-				oflags = O_RDONLY;
-				iflags = _READ;
-				switch (*p)
-				{
-					case '+':
-						oflags = O_RDWR;
-						iflags = _READ | _WRITE;
-						break;
-					default:
-						break;
-				}
-				break;
-			case 'w':
-				oflags = O_TRUNC | O_CREAT;
-				iflags = _WRITE;
-				switch (*p)
-				{
-					case '+':
-						oflags = O_TRUNC | O_CREAT | O_RDWR;
-						iflags = _WRITE;			
-						break;
-					default:
-						break;
-				}
-				break;
-			case 'a':
-				oflags = O_CREAT | O_APPEND;
-				iflags = _WRITE;
-				switch (*p)
-				{
-					case '+':
-						oflags = O_CREAT | O_APPEND | O_RDWR;
-						iflags = _READ | _WRITE;
-						break;
-					default:
-						break;
-				}
-				seek = SEEK_END;
-				break;
-			default:
-				if ( iflags == 4242 || oflags == 4242 )
-					return NULL;
-				break;
-		}
-	} 
-
-	if ((fd = open(name, oflags, perms)) == -1)
-		return NULL;
-
-	if (seek == SEEK_END)
-		lseek(fd, 0L, seek);
-	
-	fp->len = 0;
-	fp->rp = fp->buf = NULL;
-	fp->flags = iflags;
-	fp->fd = fd;
-
-	return fp;
 }
 
 int _fillbuf(GFILE *fp)
@@ -506,32 +418,12 @@ int gvfprintf(GFILE *stream, char *fmt, va_list argptr)
 	return ret;
 }
 
-size_t gfread(void *ptr, size_t size, size_t nmemb, GFILE *fp)
-{
-	size_t request = size * nmemb;
-	size_t ret = read(fp->fd, ptr, request);
-	return ret / size;
-}
-
-size_t gfwrite(const void *ptr, size_t size, size_t nmemb, GFILE *fp)
-{
-	size_t request = size * nmemb;
-	size_t ret = write(fp->fd, ptr, request);
-	return ret / size;
-}
-
 size_t __uint2str(char *s, size_t n, int base)
 {
 	static size_t i = 0; 
-	
-//	if ( n == 0 )
-//	{
-//		s[i] = '0';
-	//	return 1;
-	//} 
 	if (n / base )
 	{
-		//i = 0;
+		
 		__uint2str(s, n / base, base);
 	} 
 	if (n % base + '0' > '9')
@@ -619,58 +511,4 @@ size_t flt2str(char *s, double flt)
 		i += 20;
 	}
 	return i;
-}
-
-ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
-{
-        size_t len = 0;
-        char *pos = NULL;
-        ssize_t ret = -1;
-        size_t chunk = BUFSIZ;
-        int c = 0;
-
-        if (!*lineptr)
-        {
-                *n = chunk;
-                if (!(*lineptr = malloc (chunk)))
-                        return -1;
-        }
-
-        len = *n;
-        pos = *lineptr;
-
-        for ( ; c != delim ;len--, pos++)
-        {
-                read (fp->fd, &c, 1);
-                if (c == 0 || c == -1)
-                        c = EOF;
-
-                if (len == 0)
-                {
-                        *n += chunk;
-                        len = chunk;
-                        if (!(*lineptr = realloc (*lineptr, *n)))
-                                return ret;
-                        pos = *lineptr;
-                }
-
-                if (c == EOF )
-                {
-                        if (pos == *lineptr)
-                                return ret;
-                        else
-                                break;
-                }
-                *pos = c;
-        }
-
-        *pos = '\0';
-
-        ret = pos - (*lineptr);
-        return ret;
-}
-
-ssize_t ggetline(char **lineptr, size_t *n, GFILE *fp)
-{
-        return ggetdelim(lineptr, n, '\n', fp);
 }
