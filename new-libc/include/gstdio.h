@@ -7,17 +7,24 @@
 #ifndef NULL
 #define NULL ((void *) 0)
 #endif
-
+#ifndef EOF
 #define EOF	    -1
-
+#endif
 #ifndef SEEK_CUR
 #define SEEK_CUR	0
+#endif
+#ifndef SEEK_END
 #define SEEK_END	1
+#endif
+#ifndef SEEK_SET
 #define SEEK_SET	2
 #endif
-
+#ifndef BUFSIZ
 #define BUFSIZ		1024
+#endif
+#ifndef FOPEN_MAX
 #define FOPEN_MAX	20
+#endif
 
 #define _PRINTF_NAN -(0./0.)
 
