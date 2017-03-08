@@ -2,7 +2,7 @@
 
 #include <gstring.h>
 
-#include <gmalloc.h>
+#include <gstdlib.h>
 
 char *gstrndup(const char *s, size_t lim)
 {
