@@ -1,6 +1,3 @@
-#include <sys/types.h>
-#include <inttypes.h>
-#include <sys/syscall.h>
 #include <unistd.h>
 #define NALLOC 10000
 
