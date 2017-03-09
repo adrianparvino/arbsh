@@ -1,6 +1,6 @@
 #include <gstdio.h> 
 
-int gfputs(char * restrict s, GFILE * restrict iop)
+int gfputs(char *  s, GFILE *  iop)
 {
 	int c;
 	while ((c = *s++))
