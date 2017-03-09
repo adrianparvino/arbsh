@@ -5,7 +5,7 @@
 int main()
 {
 	int i = 0;
-	for ( ; i < 130 ; i++)
+	for ( ; i < 127 ; i++)
 	{ 
 		if (isalnum(i))
 			printf("isalnum\n"); 

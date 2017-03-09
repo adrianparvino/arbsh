@@ -50,7 +50,3 @@ ssize_t ggetdelim(char **lineptr, size_t *n, char delim, GFILE *fp)
         return ret;
 }
 
-ssize_t ggetline(char **lineptr, size_t *n, GFILE *fp)
-{
-        return ggetdelim(lineptr, n, '\n', fp);
-}
