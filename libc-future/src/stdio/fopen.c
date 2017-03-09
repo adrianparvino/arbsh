@@ -1,6 +1,6 @@
 #include <gstdio.h> 
 
-GFILE *gfopen(const char * restrict name, const char * restrict mode)
+GFILE *gfopen(const char *  name, const char *  mode)
 {
 	int fd;
 	GFILE *fp;
