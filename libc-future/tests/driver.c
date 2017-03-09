@@ -2,5 +2,6 @@
 
 int main()
 {
-	gprintf("hello!\n", 1);
+	gprintf("hello world!\n");
+	return 0;
 }
