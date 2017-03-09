@@ -11,10 +11,9 @@
 
 
 /* 
-	GNULL should be a cast to type void * according to POSIX 2008,
+	NULL should be a cast to type void * according to POSIX 2008,
 	however the C standard leaves it implementation defined.
 */ 
-//#define GNULL	0
 #ifndef NULL
 #define NULL ((void *) 0)
 #endif
