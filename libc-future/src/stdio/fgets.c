@@ -1,6 +1,6 @@
 #include <gstdio.h> 
 
-char *gfgets(char * restrict s, int n, GFILE * restrict iop)
+char *gfgets(char *  s, int n, GFILE *  iop)
 {
 	register int c;
 	register char *cs;
