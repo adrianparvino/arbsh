@@ -1,21 +1,4 @@
 #include <gstdio.h> 
-size_t __uint2str(char *s, size_t n, int base)
-{
-	static size_t i = 0; 
-	if (n / base )
-	{ 
-		__uint2str(s, n / base, base);
-	} 
-	if (n % base + '0' > '9')
-		s[i] = (n % base + '0' + 39);
-	else 
-		s[i++] = (n % base + '0'); 
-	return ++i;
-}
-size_t uint2str(char *s, size_t n, int base)
-{ 
-	return __uint2str(s, n / base, base);
-}
 
 size_t __int2str(char *s, long long n, int base)
 {
@@ -85,13 +68,9 @@ size_t flt2str(char *s, double flt)
 	}
 	return i;
 }
-/* Printf family (variadic and formatted) */
+
 int _populate(int incr, int x, int flag, char *s, GFILE *fp)
 {
-	/* flag == 1 == sprintf */
-	/* flag == 2 == snprintf */
-	/* flag == 0 == printf, vprintf, dprintf etc  */
-
 	if ( flag > 0 )
 		*s = x;
 	else
@@ -101,6 +80,11 @@ int _populate(int incr, int x, int flag, char *s, GFILE *fp)
 
 int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_list ap)
 {
+	
+	/* flag == 1 == sprintf */
+	/* flag == 2 == snprintf */
+	/* flag == 0 == printf, vprintf, dprintf etc  */
+
 	char *p = NULL;
 	size_t i = 0;
 	size_t bound = BUFSIZ;
@@ -108,8 +92,8 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 
 	/* Hold comverted numerical strings */
 	char converted[BUFSIZ] = { 0 };
-	int convlen = 0;
-	int j = 0;
+	size_t convlen = 0;
+	size_t j = 0;
 
 	/* data types */
 	int cval = 0;
@@ -118,11 +102,8 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 	long long lval = 0;
 	long double fval = 0;
 
-	/* float precision */
-	//int precision = 6;
-	int precision = 40;
-
-	
+	/* float precision */ 
+	size_t precision = 6; 
 
 	if ( flag == 2 ) 	/* snprintf */
 		bound = lim;
@@ -226,7 +207,6 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 							convlen = precision;
 					i = _populate(i, converted[j], flag, str++, fp);
 				}
-				//memset(converted, 0, 100);
 				break;
 		}
 	}
@@ -239,3 +219,4 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 
 	return i;
 }
+
