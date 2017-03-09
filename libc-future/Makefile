@@ -20,8 +20,8 @@ DYNCC = CC="$(CC) -fpic"
 all:
 
 	$(MAKE) static
-	#$(MAKE) cleanobj
-	#$(MAKE) dynamic
+	$(MAKE) cleanobj
+	$(MAKE) dynamic
 
 
 static: $(OBJ)
@@ -58,6 +58,7 @@ static_create:
 	$(CC) -o gprintf-driver tests/gprintf-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o malloc-driver tests/malloc-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o ctype-driver tests/ctype-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o fwrite-driver tests/fwrite-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 
 
 dynamic_create:
