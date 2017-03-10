@@ -1,10 +1,10 @@
-CFLAGS := -Wall -Wextra -c -lm
+CFLAGS := -I./include/ -Wall -Wextra -Werror
 
-LDFLAGS := -lm
+LDFLAGS := 
 
 CC := gcc
 
-OBJ = $(shell for i in */*.c ; do echo $${i%.c}.o ; done )
+OBJ = $(shell for i in src/*/*.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
@@ -15,6 +15,8 @@ STATLIB = lib$(LIBNAME).a
 DYNLIB = lib$(LIBNAME).so
 
 DYNCC = CC="$(CC) -fpic"
+
+DESTDIR := ../
 
 
 all:
@@ -30,6 +32,7 @@ static: $(OBJ)
 	$(MAKE) static_create
 
 
+
 dynwrap: $(OBJ)
 
 	
@@ -37,7 +40,8 @@ dynamic:
 
 	$(MAKE) $(DYNCC) dynwrap
 	$(MAKE) dynamic_link
-	$(MAKE) dynamic_create 
+	$(MAKE) dynamic_create
+
 
 
 static_link:
@@ -52,12 +56,16 @@ dynamic_link:
 
 static_create: 
 
-	$(CC) -o static_driver ../tests/driver.c $(STATLIB) $(LDFLAGS)
+	$(CC) -o static_driver tests/driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o gprintf-driver tests/gprintf-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o malloc-driver tests/malloc-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o ctype-driver tests/ctype-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o fwrite-driver tests/fwrite-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 
 
 dynamic_create:
 
-	$(CC) ../tests/driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS)
+	$(CC) tests/driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS) $(CFLAGS)
 
 
 exec_dyn:
@@ -72,5 +80,13 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
-	$(RM) *driver log stringmath
+	$(RM) *driver
 
+install:
+
+	mkdir -p $(DESTDIR)/lib/
+	mkdir -p $(DESTDIR)/include/
+	cp $(STATLIB) $(DESTDIR)/lib/
+	cp $(DYNLIB) $(DESTDIR)/lib/
+	cp -r include/* $(DESTDIR)/include/
+	
