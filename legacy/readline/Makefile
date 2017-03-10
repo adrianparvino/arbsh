@@ -1,4 +1,4 @@
-CFLAGS := -Wall -Wextra -c -lm -Iinclude -I../include
+CFLAGS := -Wall -Wextra -c -lm -I usr/include -L usr/include
 
 LDFLAGS := -lm
 
@@ -16,7 +16,6 @@ DYNLIB = lib$(LIBNAME).so
 
 DYNCC = CC="$(CC) -fpic"
 
-DESTDIR := ../
 
 all:
 
@@ -58,12 +57,4 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB)
 	$(RM) $(STATLIB)
-
-install:
-
-	-mkdir -p $(DESTDIR)/lib/
-	-mkdir -p $(DESTDIR)/include/
-	cp -r $(STATLIB) $(DESTDIR)/lib/
-	cp -r $(DYNLIB) $(DESTDIR)/lib/
-	cp -r include/readline/ $(DESTDIR)/include/
 
