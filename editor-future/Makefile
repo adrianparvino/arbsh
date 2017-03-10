@@ -10,7 +10,7 @@ all:
 
 	$(MAKE) curses
 	$(MAKE) libc
-	$(CC) editor.c -o editor ../curses-future/libterminal.a ../libc-future/libgc.a $(CFLAGS) $(LDFLAGS)
+	$(CC) editor.c -o editor ../lib/libcurses.a ../lib/libgc.a $(CFLAGS) $(LDFLAGS)
 	#$(CC) editor-colorized.c -o editor-colorized ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
 
 
