@@ -1,21 +1,20 @@
 
-DESTDIR=/usr/include/
 
-DESTDIR=../include
+
+DESTDIR=../
 
 
 all:
 
 	@echo "Nothing to be made"
 	@echo "Try: make install DESTDIR=/path/to/headers/"
-	@echo "Or:  make link DESTDIR=/path/to/headers/"
 
 install:
 
-	-mkdir -p $(DESTDIR)/
-	cp -r include/termcap $(DESTDIR)/
+	-mkdir -p $(DESTDIR)/include
+	-cp -r include/termcap $(DESTDIR)/include/
 
 
-link:
 
-	ln include/termcap/ $(DESTDIR)/
+
+
