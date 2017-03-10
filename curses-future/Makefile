@@ -1,4 +1,4 @@
-CFLAGS := -Wall -Wextra -c -lm -I../include
+CFLAGS := -Wall -Wextra -c -lm -Iinclude -I../include
 
 LDFLAGS := -lm
 
@@ -8,7 +8,7 @@ OBJ = $(shell for i in *.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
-LIBNAME = terminal
+LIBNAME = curses
 
 STATLIB = lib$(LIBNAME).a
 
@@ -16,6 +16,7 @@ DYNLIB = lib$(LIBNAME).so
 
 DYNCC = CC="$(CC) -fpic"
 
+DESTDIR=../
 
 all:
 
@@ -57,4 +58,12 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB)
 	$(RM) $(STATLIB)
+
+install:
+
+	-mkdir -p $(DESTDIR)/lib/
+	-mkdir -p $(DESTDIR)/include/
+	cp -r $(STATLIB) $(DESTDIR)/lib/
+	cp -r $(DYNLIB) $(DESTDIR)/lib/
+	cp -r include/curses/ $(DESTDIR)/include/
 
