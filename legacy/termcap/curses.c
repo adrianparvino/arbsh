@@ -3,7 +3,7 @@
 */ 
 
 
-#include <curses/gcurses.h>
+#include "curses.h"
 
 /* globals */
 dothink = 0;
