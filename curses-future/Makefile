@@ -8,7 +8,7 @@ OBJ = $(shell for i in *.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
-LIBNAME = readline
+LIBNAME = terminal
 
 STATLIB = lib$(LIBNAME).a
 
