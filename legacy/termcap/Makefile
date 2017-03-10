@@ -1,4 +1,4 @@
-CFLAGS := -Wall -Wextra -c -lm -Iinclude -I../include
+CFLAGS := -Wall -Wextra -c -lm
 
 LDFLAGS := -lm
 
@@ -8,7 +8,7 @@ OBJ = $(shell for i in *.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
-LIBNAME = readline
+LIBNAME = terminal
 
 STATLIB = lib$(LIBNAME).a
 
@@ -16,7 +16,6 @@ DYNLIB = lib$(LIBNAME).so
 
 DYNCC = CC="$(CC) -fpic"
 
-DESTDIR := ../
 
 all:
 
@@ -58,12 +57,4 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB)
 	$(RM) $(STATLIB)
-
-install:
-
-	-mkdir -p $(DESTDIR)/lib/
-	-mkdir -p $(DESTDIR)/include/
-	cp -r $(STATLIB) $(DESTDIR)/lib/
-	cp -r $(DYNLIB) $(DESTDIR)/lib/
-	cp -r include/readline/ $(DESTDIR)/include/
 

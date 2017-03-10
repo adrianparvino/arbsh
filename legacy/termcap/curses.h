@@ -3,21 +3,11 @@
 */
 #include <termios.h>
 #include <sys/ioctl.h>
-//#include "termcap.h"
-//#include "../libc/stddef/stddef.h"
-//#include "../libc/string/string.h"
+#include "termcap.h"
+#include "../libc/stddef/stddef.h"
+#include "../libc/string/string.h"
 //#include "../libc/stdio/stdio.h"
-//#include "../libc/stdlib/stdlib.h"
-#include <stddef.h>
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <gstdio.h>
-#include <gstring.h>
-
-#include <termcap/vt100.h>
-
-#include <gstdlib.h>
+#include "../libc/stdlib/stdlib.h"
 
 #define GBUFSIZ 4096
 int dothink;
