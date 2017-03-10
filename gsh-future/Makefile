@@ -9,8 +9,8 @@ HERE = $(PWD)
 all:
 
 	
-	$(CC) gsh.c -o gsh ../readline-future/libreadline.a $(CFLAGS) $(LDFLAGS)
-	$(CC) gsh-testing.c -o gsh-testing ../readline-future/libreadline.a $(CFLAGS) $(LDFLAGS)
+	$(CC) gsh.c -o gsh ../lib/libreadline.a $(CFLAGS) $(LDFLAGS)
+	$(CC) gsh-testing.c -o gsh-testing ../lib/libreadline.a $(CFLAGS) $(LDFLAGS)
 	
 
 install:
