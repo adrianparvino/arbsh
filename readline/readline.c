@@ -1,4 +1,4 @@
-#include "readline.h"
+#include <readline/greadline.h>
 
 static int readchar(void)
 {

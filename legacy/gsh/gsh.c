@@ -18,8 +18,8 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <stdint.h>
-#include <termcap/vt100.h>
-#include <readline/greadline.h>
+#include <termcap.h>
+#include <readline.h>
 //#include "../termcap/termcap.h"
 //#include "../readline/readline.h.bak"
 

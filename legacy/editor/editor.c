@@ -16,11 +16,9 @@
 #include <signal.h> 
 #include <sys/types.h>
 //#include "../lib/hexen.h" 
-//#include "../termcap/termcap.h"
-//#include "../termcap/curses.h"
-#include <termcap/vt100.h>
-#include <curses/gcurses.h>
-struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
+#include "../termcap/termcap.h"
+#include "../termcap/curses.h"
+struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
 struct ansiglb ansiglb = { 0, 0, 0, 0};
 
 
