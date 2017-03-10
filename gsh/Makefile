@@ -2,15 +2,16 @@
 
 PREFIX ?= /bin
 
-CFLAGS += -Wall -Wextra -I usr/include
+CFLAGS += -Wall -Wextra -I../include
 
 HERE = $(PWD)
 
 all:
 
-	cd ../readline && test -e libreadline.a || $(MAKE) 
-	$(CC) gsh.c -o gsh ../readline/libreadline.a $(CFLAGS) $(LDFLAGS)
-	#$(CC) gsh-testing.c -o gsh-testing $(CFLAGS) $(LDFLAGS)
+	
+	$(CC) gsh.c -o gsh ../lib/libreadline.a $(CFLAGS) $(LDFLAGS)
+	$(CC) gsh-testing.c -o gsh-testing ../lib/libreadline.a $(CFLAGS) $(LDFLAGS)
+	
 
 install:
 
