@@ -14,13 +14,17 @@ SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/
 all:
 
 	-$(MAKE) -C libc
+	-$(MAKE) -C libc install
+	-$(MAKE) -C termcap install
 	-$(MAKE) -C readline
-	-$(MAKE) -C termcap
+	-$(MAKE) -C readline install
+	-$(MAKE) -C curses
+	-$(MAKE) -C curses install
+	-$(MAKE) -C gsh
+	-$(MAKE) -C editor
 	-$(MAKE) -C posix
 	-$(MAKE) -C linux
 	-$(MAKE) -C irc
-	-$(MAKE) -C gsh
-	-$(MAKE) -C editor
 	-$(MAKE) -C gtop
 	
 
