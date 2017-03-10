@@ -16,6 +16,8 @@ DYNLIB = lib$(LIBNAME).so
 
 DYNCC = CC="$(CC) -fpic"
 
+DESTDIR := ../
+
 
 all:
 
@@ -80,3 +82,11 @@ clean:
 	$(RM) $(STATLIB) 
 	$(RM) *driver
 
+install:
+
+	mkdir -p $(DESTDIR)/lib/
+	mkdir -p $(DESTDIR)/include/
+	cp $(STATLIB) $(DESTDIR)/lib/
+	cp $(DYNLIB) $(DESTDIR)/lib/
+	cp -r include/* $(DESTDIR)/include/
+	
