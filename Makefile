@@ -79,7 +79,8 @@ release:
 	-rm README.html
 	-printf "\t$(WEBSITE)/$(RELEASE)\n" >> README
 	-printf "\n" >> README
-	./libsh/text_to_html.sh README
+	-chmod +x legacy/libsh/text_to_html.sh README
+	./legacy/libsh/text_to_html.sh README
 	-git add *
 	-git commit -m $(RELEASE)
 	-git push origin master

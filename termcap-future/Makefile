@@ -1,60 +1,21 @@
-CFLAGS := -Wall -Wextra -c -lm
 
-LDFLAGS := -lm
+DESTDIR=/usr/include/
 
-CC := gcc
-
-OBJ = $(shell for i in *.c ; do echo $${i%.c}.o ; done )
-
-AR := ar
-
-LIBNAME = terminal
-
-STATLIB = lib$(LIBNAME).a
-
-DYNLIB = lib$(LIBNAME).so
-
-DYNCC = CC="$(CC) -fpic"
+DESTDIR=../include
 
 
 all:
 
-	$(MAKE) static
-	$(MAKE) cleanobj
-	$(MAKE) dynamic
+	@echo "Nothing to be made"
+	@echo "Try: make install DESTDIR=/path/to/headers/"
+	@echo "Or:  make link DESTDIR=/path/to/headers/"
+
+install:
+
+	-mkdir -p $(DESTDIR)/
+	cp -r include/termcap $(DESTDIR)/
 
 
-static: $(OBJ)
+link:
 
-	$(MAKE) static_link
-
-
-dynwrap: $(OBJ)
-
-	
-dynamic:
-
-	$(MAKE) $(DYNCC) dynwrap
-	$(MAKE) dynamic_link
-
-
-static_link:
-
-	$(AR) -cvq $(STATLIB) $(OBJ)
-
-
-dynamic_link:
-
-	$(CC) -shared -Wl,-soname,$(DYNLIB) -o $(DYNLIB) $(OBJ)
-
-
-cleanobj:
-
-	$(RM) $(OBJ)
-
-
-clean:
-	$(MAKE) cleanobj
-	$(RM) $(DYNLIB)
-	$(RM) $(STATLIB)
-
+	ln include/termcap/ $(DESTDIR)/
