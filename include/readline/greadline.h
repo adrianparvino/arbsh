@@ -1,8 +1,9 @@
-#include "../libc/stddef/stddef.h"
-#include "../libc/stdio/stdio.h"
-#include "../termcap/termcap.h"
-#include "../libc/string/string.h"
-#include "../libc/stdlib/stdlib.h"
+#include <stdio.h>
+#include <stddef.h>
+#include <string.h>
+#include <stdlib.h> 
+#include <termcap/vt100.h>
+
 /*
 	2017 (C) Copyright, readline.h, CM Graff
 */
@@ -29,7 +30,7 @@ struct hglb {		/* globals	*/
 
 
 struct hist {			/* history lines	*/
-	char line[GBUFSIZ];	/* lines		*/ 
+	char line[BUFSIZ];	/* lines		*/ 
 	size_t len;		/* line length		*/
 }*hist;
 
