@@ -8,8 +8,6 @@ CFLAGS += -Wall -Wextra -I../include
 
 all: 
 
-	$(MAKE) curses
-	$(MAKE) libc
 	$(CC) editor.c -o editor ../lib/libcurses.a ../lib/libgc.a $(CFLAGS) $(LDFLAGS)
 	#$(CC) editor-colorized.c -o editor-colorized ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
 
