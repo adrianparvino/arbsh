@@ -30,15 +30,17 @@ all:
 
 clean:
 
-	$(MAKE) -C readline clean
-	$(MAKE) -C termcap clean
-	$(MAKE) -C libc clean
-	$(MAKE) -C posix clean 
-	$(MAKE) -C linux clean 
-	$(MAKE) -C irc clean
-	$(MAKE) -C gsh clean
-	$(MAKE) -C editor clean
-	$(MAKE) -C gtop clean
+	-$(MAKE) -C readline clean
+	-$(MAKE) -C termcap clean
+	-$(MAKE) -C libc clean
+	-$(MAKE) -C curses clean
+	-$(MAKE) -C posix clean 
+	-$(MAKE) -C linux clean 
+	-$(MAKE) -C irc clean
+	-$(MAKE) -C gsh clean
+	-$(MAKE) -C editor clean
+	-$(MAKE) -C gtop clean
+	-$(RM) -r include lib
 
 
 install:
