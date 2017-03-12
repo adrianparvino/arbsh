@@ -1,6 +1,6 @@
-#include "../stddef/stddef.h"
-#include "../string/string.h"
-#include "../stdlib/stdlib.h"
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
 static int arb_str_verbosity = 0;
 char *mirror;
