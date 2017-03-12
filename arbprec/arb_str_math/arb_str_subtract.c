@@ -1,4 +1,4 @@
-#include "arb_str.h" 
+#include <arb_str/arb_str.h> 
 char *arb_str_subtraction(char *a, char *b, char *c)
 { 
 	size_t i = 0;
@@ -7,8 +7,8 @@ char *arb_str_subtraction(char *a, char *b, char *c)
 	int mir = 0;
 	int borrow = 0;
 	int carry = -1;
-	size_t wa = gstrlen(a); 
-	size_t wb = gstrlen(b);
+	size_t wa = strlen(a); 
+	size_t wb = strlen(b);
 
 	if ( wa > wb ) width = wa;
 	else width = wb;
