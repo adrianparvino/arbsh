@@ -31,8 +31,7 @@ size_t int2str(char *s, long long n, int base)
 		s[toggle] = convtab[n];
 		return toggle + 1;
 	} 
-	size_t ret = __int2str(s + toggle, n, base) + toggle; 
-	return ret;
+	return __int2str(s + toggle, n, base) + toggle;
 }
 
 size_t flt2str(char *s, double flt)
