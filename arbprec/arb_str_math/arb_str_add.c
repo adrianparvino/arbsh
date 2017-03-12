@@ -1,4 +1,4 @@
-#include "arb_str.h"
+#include <arb_str/arb_str.h>
 
 char *arb_str_addition(char *a, char *b, char *c)
 {
@@ -6,8 +6,8 @@ char *arb_str_addition(char *a, char *b, char *c)
 	size_t width = 0;
 	int sum = 0;
 	int carry = 0;
-	size_t wa = gstrlen(a); 
-	size_t wb = gstrlen(b); 
+	size_t wa = strlen(a); 
+	size_t wb = strlen(b); 
 
 	if ( wa > wb ) width = wa;
 	else width = wb;
