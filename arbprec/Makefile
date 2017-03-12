@@ -1,14 +1,14 @@
-CFLAGS := -I./include/ -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -I./include/
 
 LDFLAGS := 
 
 CC := gcc
 
-OBJ = $(shell for i in src/*/*.c ; do echo $${i%.c}.o ; done )
+OBJ = $(shell for i in arb_str_math/*.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
-LIBNAME = gc
+LIBNAME = arbstr
 
 STATLIB = lib$(LIBNAME).a
 
@@ -28,8 +28,8 @@ INCLUDES_TARG =  $(shell for i in include/*.h ; do echo $(DESTDIR)/$$i ; done )
 all:
 
 	$(MAKE) static
-	$(MAKE) cleanobj
-	$(MAKE) dynamic
+	#$(MAKE) cleanobj
+	#$(MAKE) dynamic
 
 
 static: $(OBJ)
@@ -41,12 +41,12 @@ static: $(OBJ)
 
 dynwrap: $(OBJ)
 
-	
+
 dynamic: 
 
 	$(MAKE) $(DYNCC) dynwrap
 	$(MAKE) dynamic_link
-	$(MAKE) dynamic_create
+	#$(MAKE) dynamic_create
 
 
 
@@ -62,11 +62,11 @@ dynamic_link:
 
 static_create: 
 
-	$(CC) -o static_driver tests/driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o gprintf-driver tests/gprintf-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o malloc-driver tests/malloc-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o ctype-driver tests/ctype-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o fwrite-driver tests/fwrite-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o stringmath tests/stringmath.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	
+
+
+
 
 
 dynamic_create:
@@ -86,7 +86,7 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
-	$(RM) *driver
+	$(RM) *driver stringmath
 
 install:
 
