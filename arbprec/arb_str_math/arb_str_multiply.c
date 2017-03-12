@@ -1,4 +1,4 @@
-#include "arb_str.h" 
+#include <arb_str/arb_str.h> 
 
 char *arb_str_multiply(char *a, char *b, char *c)
 {
@@ -23,17 +23,17 @@ char *arb_str_multiply(char *a, char *b, char *c)
 	++c;
 	
 	/* either is zero, return c "0" */
-	if (!gstrcmp(a, "0") || !gstrcmp(b, "0"))
+	if (!strcmp(a, "0") || !strcmp(b, "0"))
 	{ 
 		c[0] = '0';
 		c[1] = '\0';
 		return c - 1;
 	}
  
-	la = gstrlen(a);
-	lb = gstrlen(b);
+	la = strlen(a);
+	lb = strlen(b);
 	
-	gmemset(c, '0', la + lb);
+	memset(c, '0', la + lb);
 	c[la + lb] = '\0'; 
 
 	for ( i = la - 1; i >= 0 ; i--)
