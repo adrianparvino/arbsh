@@ -1,4 +1,4 @@
-#include "arb_str.h" 
+#include <arb_str/arb_str.h> 
 
 void arb_str_print_real(char *s, char *realname)
 {
@@ -21,7 +21,7 @@ void arb_str_print_real(char *s, char *realname)
 
 int arb_str_index(char *s, size_t idx)
 { 
-	size_t len = gstrlen(s);
+	size_t len = strlen(s);
         if (idx < len)
         	return s[len - idx - 1] - 48;
         return 0;
@@ -29,7 +29,7 @@ int arb_str_index(char *s, size_t idx)
 void *arb_str_malloc(size_t len)
 {
 	void *ret;
-	if(!(ret = gmalloc(len)))
+	if(!(ret = malloc(len)))
 		arb_str_die("malloc failed\n"); 
 	return ret;
 } 
@@ -37,7 +37,7 @@ void *arb_str_malloc(size_t len)
 void arb_str_die(char *message)
 {
 	//gfprintf(gstdout, "%s", message);
-	gprintf("%s", message);
+	printf("%s", message);
 	//exit(1);
 }
 
@@ -47,7 +47,7 @@ size_t arb_str_rev(char *x)
 {
         size_t i = 0;
         char swap = 0;
-        size_t lim = gstrlen(x);
+        size_t lim = strlen(x);
         size_t half = lim / 2;
 
         for ( ; i < half ; i++)
