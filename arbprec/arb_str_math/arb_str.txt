@@ -3,7 +3,7 @@ NAME
 	APSA (Arbitrary precision string arithmetic)
 
 SYNOPSIS
-	#include "arb_str.h"
+	#include <arb_str/arb_str.h>
 	
 	char *arb_str_add(char *x, char *y, char *result);
 	char *arb_str_subtract(char *x, char *y, char *result);
