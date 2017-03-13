@@ -9,7 +9,7 @@ CFLAGS += -Wall -Wextra -I../include
 all: 
 
 	$(CC) editor.c -o editor ../lib/libcurses.a ../lib/libgc.a $(CFLAGS) $(LDFLAGS)
-	#$(CC) editor-colorized.c -o editor-colorized ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
+	$(CC) editor-colorized.c -o editor-colorized ../lib/libcurses.a ../lib/libgc.a $(CFLAGS) $(LDFLAGS)
 
 
 # DEPENDS: 
