@@ -12,7 +12,7 @@ int concatenate(int);
 int main(int argc, char *argv[])
 {
 	if ( argc == 1 ) 
-		concatenate(1); 
+		concatenate(0); 
         while  (*++argv) 
 		concatenate(open(*argv, O_RDONLY)); 
 	return 0; 

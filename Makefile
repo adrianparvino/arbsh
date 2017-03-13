@@ -57,7 +57,8 @@ install:
 
 uninstall:
 
-	-$(MAKE) -C bin uninstall 
+	-$(MAKE) -C posix uninstall 
+	-$(MAKE) -C linux uninstall 
 	-$(MAKE) -C irc uninstall
 	-$(MAKE) -C gsh uninstall
 	-$(MAKE) -C editor uninstall
