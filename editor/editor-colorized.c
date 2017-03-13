@@ -20,8 +20,12 @@
 #include <signal.h> 
 #include <sys/types.h> 
 #include <regex.h> 
-#include "../termcap/termcap.h"
-#include "../termcap/curses.h"
+//#include "../termcap/termcap.h"
+//#include "../termcap/curses.h"
+
+#include <readline/greadline.h>
+
+#include <termcap/vt100.h>
 struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
 struct ansiglb ansiglb = { 0, 0, 0, 0};
 
