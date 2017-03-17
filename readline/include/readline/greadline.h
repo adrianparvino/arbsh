@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdlib.h> 
+#include <unistd.h> 
 #include <termcap/vt100.h>
 
 /*
@@ -12,7 +13,7 @@
 size_t ircline(char *, char *, size_t);
 void ircprint(char *, size_t, char *, size_t); 
 void determinewin(void); 
-static int readchar(void);
+int readchar(void);
 size_t greadline(char *, char *, size_t);
 size_t greadgetch(char *);
 void greadprint(char *, size_t, char *, size_t);

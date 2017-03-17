@@ -29,10 +29,9 @@ char *arb_str_addition(char *a, char *b, char *c)
         c[i] = '\0';
         arb_str_rev(c--);
 	return c;
-} 
+}
 
-
-char * arb_str_add(char *x, char *y, char *c)
+char *arb_str_add(char *x, char *y, char *c)
 { 
 	if (x[0] == '+')
 		++x; 
@@ -41,19 +40,19 @@ char * arb_str_add(char *x, char *y, char *c)
 
 	if ( x[0] == '-' && y[0] == '-' )
 	{
-		setsign(c);
-		return c = arb_str_addition(x + 1, y + 1, c); 
+		setsign(c); 
+		return c = arb_str_addition(x + 1, y + 1, c);
 	}
 	else if (x[0] == '-')
 	{
 		setsign(c);
-		setsign(c); 
+		setsign(c);
 		return c = arb_str_subtraction(y, x + 1, c);
 	}
 	else if (y[0] == '-')
 	{
 		return c = arb_str_subtraction(x, y + 1, c);
 	} else c = arb_str_addition(x, y, c);
-	
+
 	return c; 
 }
