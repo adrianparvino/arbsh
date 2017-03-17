@@ -18,14 +18,15 @@
 
 /* local libraries */
 #define HASLIBM
-#include "../libc/string/string.h"
+//#include "../libc/string/string.h"
 //#include "../libc/stdio/stdio.h"
-#include "../termcap/termcap.h"
-#include "../termcap/curses.h"
-
-
-#include "../readline/readline.h"
-
+//#include "../termcap/termcap.h"
+//#include "../termcap/curses.h"
+#include <gstring.h>
+//#include <gstdio.h>
+#include <termcap/vt100.h>
+#include <curses/gcurses.h>
+#include <readline/greadline.h> 
 
 #include "../legacy/lib/dial.h"
 #include "../legacy/lib/date.h"
@@ -564,15 +565,11 @@ size_t ircfastgetch(char *l)
                                         hglb.laro = 0;
                                 }
                                 break;
-                        case 'C': /* right arrow */
-				dprintf(2, "r arrow %d\n", hglb.laro);
-	
+                        case 'C': /* right arrow */ 
                                 if ( hglb.laro > 0 )
                                         --hglb.laro;
                                 break;
                         case 'D': /* left arrow */
-
-				dprintf(2, "l arrow %d\n", hglb.laro);
                                 if ( hglb.laro < len )
                                         ++hglb.laro;
                                 break;
