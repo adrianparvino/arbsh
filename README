@@ -31,7 +31,7 @@ HIER:
 		Standard C library components.
 
 	
-	libc/arb_str_math/
+	arbprec/
 		Arbitrary precision string functions in C.
 			-A bignum data type implementations.
 

@@ -23,13 +23,15 @@
 #include <stdint.h>
 
 /* local libraries */
-#include "../termcap/termcap.h"
-#include "../termcap/curses.h"
-struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
+//##include "../termcap/termcap.h"
+//#include "../termcap/curses.h"
+#include <curses/gcurses.h>
+#include <termcap/vt100.h>
+struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
 struct ansiglb ansiglb = { 0, 0, 0, 0};
 
 //#include "../lib/hexen.h"
-#include "../libc/string/string.h"
+//#include "../libc/string/string.h"
 #include "../legacy/lib/date.h"
 
 /* defines */ 
