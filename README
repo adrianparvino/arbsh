@@ -11,7 +11,7 @@ DESCRIPTION:
 	to build outside software for toolchain and internal testing.
 	
 	Each subdirectory has a README which documents its usage. 
-	Navigating to a subdiurectory of grafland and inspecting
+	Navigating to a subdirectory of grafland and inspecting
 	the README will reveal more about what the project contains.
 	
 
