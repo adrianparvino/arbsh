@@ -1,33 +1,26 @@
 .PHONY: uninstall
 
-PREFIX ?= /bin
+PREFIX ?= /bin/
 
-CFLAGS += -Wall -Wextra -I../include
+DESTDIR ?= ../
 
-	
+CFLAGS += -Wall -Wextra -I../include -static
 
-all: 
+LDFLAGS += -L../lib 
 
-	$(CC) editor.c -o editor ../lib/libcurses.a ../lib/libgc.a $(CFLAGS) $(LDFLAGS)
-	$(CC) editor-colorized.c -o editor-colorized ../lib/libcurses.a ../lib/libgc.a $(CFLAGS) $(LDFLAGS)
+LDLIBS += -lreadline -lcurses -lgc
 
+OBJ = $(shell for i in *.c; do echo $${i%%.c} ; done)
 
-# DEPENDS: 
+OBJ_TARG =  $(shell for i in *.c; do echo $(DESTDIR)/$(PREFIX)/$${i%%.c} ; done)
 
-curses:
-
-	cd ../curses-future && test -e libterminal.a || $(MAKE)
-
-libc:
-
-	cd ../libc-future && test -e libgc.a || $(MAKE)
-
+all: $(OBJ)
 
 install:
 
 	-@mkdir -p $(DESTDIR)/$(PREFIX)/
-	-@cp -a editor $(DESTDIR)/$(PREFIX)/
-	-echo "rm $(DESTDIR)/$(PREFIX)/editor" > uninstall
+	-@cp -a $(OBJ) $(DESTDIR)/$(PREFIX)/
+	-echo "rm $(OBJ_TARG)" > uninstall
 
 uninstall:
 
@@ -36,6 +29,6 @@ uninstall:
 
 clean:
 
-	$(RM) editor editor-colorized
+	$(RM) $(OBJ)
 	$(RM) uninstall
 
