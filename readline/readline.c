@@ -1,6 +1,6 @@
 #include <readline/greadline.h>
 
-static int readchar(void)
+int readchar(void)
 {
 	static struct termios term, oterm;
 	char str[1];

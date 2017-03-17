@@ -2,32 +2,25 @@
 
 PREFIX ?= /bin
 
-CFLAGS += -Wall -Wextra
+DESTDIR ?= ../
 
-all:
+CFLAGS += -Wall -Wextra -I../include
 
-	$(MAKE) libc
-	$(MAKE) termcap
-	$(MAKE) readline
+LDFLAGS += -L../lib
 
-	$(CC) irc.c -o irc ../readline/libreadline.a ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS) -lm
+LDLIBS += -lreadline -lcurses -lgc
 
-# DEPENDS:
+OBJ = $(shell for i in *.c; do echo $${i%%.c} ; done)
 
-libc:
-	cd ../libc && test -e libgc.a || $(MAKE)
+OBJ_TARG =  $(shell for i in *.c; do echo $(DESTDIR)/$(PREFIX)/$${i%%.c} ; done)
 
-termcap:
-	cd ../termcap && test -e libterminal.a || $(MAKE)
-
-readline:
-	cd ../readline && test -e libreadline.a || $(MAKE)
+all: $(OBJ)
 
 install:
 
 	-@mkdir -p $(DESTDIR)/$(PREFIX)/
-	-@cp -a irc $(DESTDIR)/$(PREFIX)/
-	-echo "rm $(DESTDIR)/$(PREFIX)/irc" > uninstall
+	-@cp -a $(OBJ) $(DESTDIR)/$(PREFIX)/
+	-echo "rm $(OBJ_TARG)" > uninstall
 
 uninstall:
 
@@ -36,6 +29,6 @@ uninstall:
 
 clean:
 
-	$(RM) irc
+	$(RM) $(OBJ)
 	$(RM) uninstall
 
