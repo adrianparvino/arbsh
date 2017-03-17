@@ -1,6 +1,4 @@
 
-#
-
 
 /* vt52 Compatible Mode */
 
@@ -35,4 +33,6 @@
 
 /* 
 	TODO: cursor address 	ESC Y l c 
+	"\0334412" ?
+	
 */ 
