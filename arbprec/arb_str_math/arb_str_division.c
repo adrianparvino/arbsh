@@ -17,7 +17,9 @@ char *arb_str_divide(char *a, char *b, char *cc)
 	char *mir;
 	char *tmir;
 	char *temp;
+
 	setsign(cc);
+
 	if (*a == '-' && ++a) 
 	{
 		setsign(cc);
@@ -30,20 +32,20 @@ char *arb_str_divide(char *a, char *b, char *cc)
 	}
 	if (*b == '-' && ++b) 
 	{
-		setsign(cc); 
+		setsign(cc);
 		--denom;
 	}
 	else if (*b == '+')
 	{
-		++b; 
+		++b;
 		--denom;
 	}
 	++cc;
 
 	len = numer + denom + 2;
-	temp = malloc(len + 10 );
-	tmir = malloc(len + 10);
-	mir = malloc(len + 10);
+	temp = arb_str_malloc(len + 1);
+	tmir = arb_str_malloc(len + 1);
+	mir = arb_str_malloc(len + 1);
 	strncpy(mir + 1, a, len);
 	strncpy(tmir + 1, a, len);
 	strncpy(temp + 1, b, len);
@@ -52,39 +54,35 @@ char *arb_str_divide(char *a, char *b, char *cc)
 	
 
 	/* numerator / denominator  =  quotient */
-
-	for (cc[0] = '0'; z <numer ; cc[z+1] = '0' )
-	{ 
-		
+	for (cc[0] = '0'; z < numer ; cc[z+1] = '0' )
+	{
 		strcpy(tmir, mir); 
 		for (rec = 0, i = 0, j = z; i < denom ; ++i, ++j) 
 		{ 
-			sum = (mir[j] - '0' ) - (temp[i]- '0'); 
-			if ( sum < 0 )
-			{ 
-				if ( j == z )
-				{ 
+			sum = (mir[j] - '0') - (temp[i]- '0'); 
+			if (sum < 0)
+			{
+				if (j == z)
+				{
 					mir[j + 1] += ((mir[j]-'0') * arb_str_base);
 					++z;
 				}
 			 	else
-				{ 
-					mir[j - 1] -= 1 ;
+				{
+					mir[j - 1] -= 1;
 					mir[j] += arb_str_base;
 				}
 				rec = 1;
-				break; 
+				break;
 			}
-			
-			tmir[j] = sum + '0'; 
-		} 
-		
-		if ( rec == 0 )
-		{ 
-			strcpy(mir, tmir); 
+			tmir[j] = sum + '0';
+		}
+		if (rec == 0)
+		{
+			strcpy(mir, tmir);
 			cc[z] += 1;
-		} 
-	} 
+		}
+	}
 	free(temp);
 	free(tmir);
 	free(mir);
