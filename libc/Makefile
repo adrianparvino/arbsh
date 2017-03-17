@@ -86,7 +86,7 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
-	$(RM) *driver
+	$(RM) *driver uninstall
 
 install:
 

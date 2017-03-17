@@ -1,9 +1,7 @@
-#include <arb_str/arb_str.h> 
+#include <arb_str/arb_str.h>
 
 void arb_str_print_real(char *s, char *realname)
 {
-	if ( arb_str_verbosity == 0 )
-		return;
 	size_t i = 0;
 	printf("------------------------\n");
 	printf("name:      %s\n", realname);
@@ -25,7 +23,8 @@ int arb_str_index(char *s, size_t idx)
         if (idx < len)
         	return s[len - idx - 1] - 48;
         return 0;
-} 
+}
+
 void *arb_str_malloc(size_t len)
 {
 	void *ret;
@@ -36,12 +35,9 @@ void *arb_str_malloc(size_t len)
 
 void arb_str_die(char *message)
 {
-	//gfprintf(gstdout, "%s", message);
-	printf("%s", message);
-	//exit(1);
+	dprintf(2, "%s", message);
+	exit(1);
 }
-
-
 
 size_t arb_str_rev(char *x)
 {
