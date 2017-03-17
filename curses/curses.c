@@ -6,8 +6,8 @@
 #include <curses/gcurses.h>
 
 /* globals */
-dothink = 0;
-hardadd = 0; /* this should be added as a 4th function arg */
+int dothink = 0;
+int hardadd = 0; /* this should be added as a 4th function arg */
 //Dstruct ansiglb ansiglb = { 0, 0, 0, 0};
 struct ansiglb ansiglb;
 

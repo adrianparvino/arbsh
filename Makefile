@@ -20,6 +20,8 @@ all:
 	-$(MAKE) -C readline install
 	-$(MAKE) -C curses
 	-$(MAKE) -C curses install
+	-$(MAKE) -C arbprec
+	-$(MAKE) -C arbprec install
 	-$(MAKE) -C gsh
 	-$(MAKE) -C editor
 	-$(MAKE) -C posix
@@ -52,7 +54,7 @@ install:
 	-$(MAKE) -C editor install
 	-$(MAKE) -C gtop install 
 	# Install toolchain last if it exists
-	-$(MAKE) -C toolchain install
+	#-$(MAKE) -C toolchain install
 
 
 uninstall:
@@ -62,7 +64,7 @@ uninstall:
 	-$(MAKE) -C irc uninstall
 	-$(MAKE) -C gsh uninstall
 	-$(MAKE) -C editor uninstall
-	-$(MAKE) -C sysmon uninstall
+	-$(MAKE) -C gtop uninstall
 	#-$(MAKE) -C toolchain uninstall
 
 toolchain:

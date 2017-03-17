@@ -20,6 +20,7 @@ DESTDIR := ../
 
 all:
 
+	-test -e ../include/termcap/vt100.h || $(MAKE) -C ../termcap install
 	$(MAKE) static
 	$(MAKE) cleanobj
 	$(MAKE) dynamic
