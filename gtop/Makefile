@@ -1,20 +1,26 @@
 .PHONY: uninstall
 
-PREFIX ?= /bin
+PREFIX ?= /bin/
 
-CFLAGS += -Wall -Wextra
+DESTDIR ?= ../
 
-all:
+CFLAGS += -Wall -Wextra -I../include -static
 
-	cd ../libc && test -e libgc.a || $(MAKE)
-	cd ../termcap && test -e libterminal.a || $(MAKE)
-	$(CC) procsysmon.c -o procsysmon ../termcap/libterminal.a ../libc/libgc.a $(CFLAGS) $(LDFLAGS)
+LDFLAGS += -L../lib 
+
+LDLIBS += -lreadline -lcurses -lgc
+
+OBJ = $(shell for i in *.c; do echo $${i%%.c} ; done)
+
+OBJ_TARG =  $(shell for i in *.c; do echo $(DESTDIR)/$(PREFIX)/$${i%%.c} ; done)
+
+all: $(OBJ)
 
 install:
 
 	-@mkdir -p $(DESTDIR)/$(PREFIX)/
-	-@cp -a procsysmon $(DESTDIR)/$(PREFIX)/
-	-echo "rm $(DESTDIR)/$(PREFIX)/procsysmon" > uninstall
+	-@cp -a $(OBJ) $(DESTDIR)/$(PREFIX)/
+	-echo "rm $(OBJ_TARG)" > uninstall
 
 uninstall:
 
@@ -23,6 +29,6 @@ uninstall:
 
 clean:
 
-	$(RM) procsysmon
+	$(RM) $(OBJ)
 	$(RM) uninstall
 

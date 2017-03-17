@@ -1,23 +1,26 @@
 .PHONY: uninstall
 
-PREFIX ?= /bin
+PREFIX ?= /bin/
 
-CFLAGS += -Wall -Wextra -I../include
+DESTDIR ?= ../
 
-HERE = $(PWD)
+CFLAGS += -Wall -Wextra -I../include -static
 
-all:
+LDFLAGS += -L../lib 
 
-	
-	$(CC) gsh.c -o gsh ../lib/libreadline.a $(CFLAGS) $(LDFLAGS)
-	$(CC) gsh-testing.c -o gsh-testing ../lib/libreadline.a $(CFLAGS) $(LDFLAGS)
-	
+LDLIBS += -lreadline
+
+OBJ = $(shell for i in *.c; do echo $${i%%.c} ; done)
+
+OBJ_TARG =  $(shell for i in *.c; do echo $(DESTDIR)/$(PREFIX)/$${i%%.c} ; done)
+
+all: $(OBJ)
 
 install:
 
 	-@mkdir -p $(DESTDIR)/$(PREFIX)/
-	-@cp -a gsh $(DESTDIR)/$(PREFIX)/
-	-echo "rm $(DESTDIR)/$(PREFIX)/gsh" > uninstall
+	-@cp -a $(OBJ) $(DESTDIR)/$(PREFIX)/
+	-echo "rm $(OBJ_TARG)" > uninstall
 
 uninstall:
 
@@ -26,7 +29,6 @@ uninstall:
 
 clean:
 
-	$(RM) gsh
-	$(RM) gsh-testing
+	$(RM) $(OBJ)
 	$(RM) uninstall
 
