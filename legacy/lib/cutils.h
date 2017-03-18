@@ -17,18 +17,18 @@ void * cutilmalloc(size_t len)
 
 void *cutilcalloc(size_t nmemb, size_t size)
 {
-        void *ret;
-        if(!(ret = calloc(nmemb, size)))
-                cutilerror("cutilcalloc failed\n", 1);
-        return ret;
+	void *ret;
+	if(!(ret = calloc(nmemb, size)))
+		cutilerror("cutilcalloc failed\n", 1);
+	return ret;
 }
 
 void *cutilrealloc(void *ptr, size_t size)
 {
-        void *ret;
-        if(!(ret = realloc(ptr, size)))
-        	cutilerror("cutilrealloc failed\n", 1); 
-        return ret;
+	void *ret;
+	if(!(ret = realloc(ptr, size)))
+		cutilerror("cutilrealloc failed\n", 1); 
+	return ret;
 }
 
 void cutilfree(void *ptr)
