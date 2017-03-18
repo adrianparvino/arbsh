@@ -1,34 +1,30 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h> 
-#include <unistd.h> 
+#include <stdlib.h>
+#include <unistd.h>
 #include <fcntl.h>
 #include <locale.h>
-#include <sys/ioctl.h> 
-#include <sys/types.h> 
+#include <sys/ioctl.h>
+#include <sys/types.h>
 #include <termios.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h> 
-#include <signal.h> 
+#include <fcntl.h>
+#include <signal.h>
 #include <sys/types.h>
-//#include "../lib/hexen.h" 
-//#include "../termcap/termcap.h"
-//#include "../termcap/curses.h"
+
 #include <termcap/vt100.h>
 #include <curses/gcurses.h>
+
 struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
 struct ansiglb ansiglb = { 0, 0, 0, 0};
 
-
-
 /*
 	See LICENSE file for copyright and license details. 
-*/ 
-
+*/
 
 /* structs */
 struct Line {		/** The internal representation of a line of text */
@@ -54,6 +50,7 @@ struct Line *scrline;	/* First line seen on screen */
 struct filepos fsel;	/* Selection point on file   */
 struct filepos fcur;	/* Insert position on file, cursor, current position */
 int ch = 0;		/* Used to store input */
+char cb[7] = { 0 };	/* Used to store input */ 
 
 char *fname = NULL;
 int cols = 0;
@@ -67,7 +64,6 @@ int tabstop = 8;
 #define	FALSE	0
 #define	LINSIZ	128 
 #define DELIM	0
-char cb[7] = { DELIM };	/* Used to store input */ 
 
 /* function prototypes */
 void *ecalloc(size_t, size_t);
@@ -155,8 +151,7 @@ void f_insert(void)
 		fsel = newcur;
 
 	fcur = fsel = newcur; 
-} 
-
+}
 
 /* Add text at pos, return the position after the inserted text */
 struct filepos i_addtext(char *buf, struct filepos pos)
@@ -352,7 +347,6 @@ void i_sortpos(struct filepos * pos0, struct filepos * pos1)
 	}
 }
 
-	
 /* Repaint screen */ 
 void i_update(void)
 {
