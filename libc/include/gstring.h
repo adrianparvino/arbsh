@@ -13,3 +13,6 @@ void* gmemcpy(void*, const void*, size_t) ;
 void *gmemmove(void *, const void *, size_t);
 char *gstrdup(const char *);
 char *gstrndup(const char *, size_t);
+void *gmemchr(const void *, int, size_t);
+char *gstrchrnul(const char *, int);
+
