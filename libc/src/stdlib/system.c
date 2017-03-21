@@ -1,5 +1,6 @@
 #include <gstddef.h>
-#include <gsignal.h>
+#include <gstdlib.h>
+//#include <gsignal.h>
 #include <gerrno.h>
 
 int gsystem(const char *cmd)
