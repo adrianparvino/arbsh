@@ -2,7 +2,8 @@
 
 size_t gstrlen(const char *); 
 size_t gstrnlen(const char *, size_t); 
-int gstrcmp(char *, char *);
+int gstrcmp(const char *, const char *);
+int gstrncmp(const char *, const char *, size_t);
 char *gstrchr(const char *, int); 
 char *gstrcpy(char *, const char *);
 char *gstrncpy(char *, const char *, size_t);
