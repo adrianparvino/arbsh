@@ -2,13 +2,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-struct nlist {     /* table entry: */
-        struct nlist *next;   /* next entry in chain */
-        char *name;                /* defined name */
-        char *defn;                /* replacement text */
+#define HASHSIZE 1000 
+
+struct nlist {     		/* table entry: */
+        struct nlist *next;   	/* next entry in chain */
+        char *name;             /* defined name */
+        char *defn;             /* replacement text */
 };
-#define HASHSIZE 1000
+
 static struct nlist *hashtab[HASHSIZE]; /* pointer table */
+
+struct nlist *lookup(char *);
+struct nlist *install(char *, char *);
+unsigned hash(char *);
 
 unsigned hash(char *s)
 {
@@ -28,7 +34,7 @@ struct nlist *lookup(char *s)
                         return np;       /* found */
         return NULL;               /* not found */
 }
-struct nlist *lookup(char *);
+
 
 
 struct nlist *install(char *name, char *defn)
@@ -37,14 +43,14 @@ struct nlist *install(char *name, char *defn)
         struct nlist *np;
         unsigned hashval;
         if ((np = lookup(name)) == NULL) { /* not found */
-                np = (struct nlist *) malloc(sizeof(*np));
+                np = malloc(sizeof(*np));
                 if (np == NULL || (np->name = strdup(name)) == NULL)
                         return NULL;
                 hashval = hash(name);
                 np->next = hashtab[hashval];
                 hashtab[hashval] = np;
         } else     /* already there */
-                free((void *) np->defn);   /*free previous defn */
+                free(np->defn);   /*free previous defn */
         if ((np->defn = strdup(defn)) == NULL)
                 return NULL;
         return np;
