@@ -1,6 +1,4 @@
-#include "../stddef/stddef.h"
-
-#include "string.h"
+#include <gstring.h>
 
 int gstrcmp(const char *s, const char *t)
 {
