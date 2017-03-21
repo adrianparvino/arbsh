@@ -67,6 +67,7 @@ static_create:
 	$(CC) -o malloc-driver tests/malloc-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o ctype-driver tests/ctype-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o fwrite-driver tests/fwrite-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o hash-table-driver tests/hash_table.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 
 
 dynamic_create:
