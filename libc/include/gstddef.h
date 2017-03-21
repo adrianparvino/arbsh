@@ -40,12 +40,14 @@ typedef unsigned long size_t;
 
 
 
-/* puttting ssize_t here is not part of POSIX */
+/* putting ssize_t here is not part of POSIX */
 typedef long ssize_t;
 
 #define SEEK_SET	0
 #define SEEK_CUR	1
 #define SEEK_END	2
 
+/* putting pid_t here is not POSIX */
 
+//typedef size_t pid_t;
 
