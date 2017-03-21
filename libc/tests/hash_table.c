@@ -181,7 +181,9 @@ int durecurse(char *path, size_t len, int *opt)
 					lstat(spath, &sb);
                                 
 				//if ( populatetab(sb.st_ino) ) 
-				if ( 0 )
+				char temp[4096] = { 0 };
+				sprintf(temp, "%zu", sb.st_ino);
+				if ( install(temp, temp))
 				{ 
 					i = ( sb.st_blocks * 512 ) / hold.block; 
 
