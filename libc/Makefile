@@ -64,6 +64,7 @@ static_create:
 
 	$(CC) -o static_driver tests/driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o gprintf-driver tests/gprintf-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o printf-driver tests/printf-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o malloc-driver tests/malloc-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o ctype-driver tests/ctype-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 	$(CC) -o fwrite-driver tests/fwrite-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
