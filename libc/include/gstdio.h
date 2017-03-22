@@ -43,6 +43,7 @@ enum _flags {
 	_READ  = 001,
 	_WRITE = 002,
 	_UNBUF = 004,
+	_LNBUF = 006,
 	_EOF   = 010,
 	_ERR   = 020,
 };
