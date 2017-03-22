@@ -54,6 +54,17 @@ struct nlist *install(char *name, char *defn)
         return np;
 }
 
+void destroytab()
+{
+        size_t i = 0;
+        while ( i < HASHSIZE || hashtab[i] )
+        {
+                free(hashtab[i]);
+                hashtab[i] = NULL;
+                ++i;
+        }
+}
+
 
 /* start of driver code */
 
@@ -111,7 +122,6 @@ int main (int argc, char *argv[])
 				opt[6] = 1; 
 				break; 
 			default: 
-				//cutilerror("Usage: du -aHkLsxl\n", 0);
 				break;
 		} 
         argv += optind;
