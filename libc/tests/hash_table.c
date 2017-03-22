@@ -139,8 +139,6 @@ int main (int argc, char *argv[])
 		} 
         argv += optind;
         argc -= optind; 
-
-
 	
 	while(*argv) 
 	{
@@ -182,11 +180,8 @@ int durecurse(char *path, size_t len, int *opt)
 			dlen = strlen(dentry->d_name);
 			spath = realloc(spath, dlen + len + 2);
 			if (!(spath))
-				return -1;
-
+				return -1; 
                         len = sprintf(spath, "%s/%s", path, dentry->d_name); 
-	
-
                         if ( strcmp( ".", dentry->d_name) &&
                             strcmp( "..", dentry->d_name) )
                         { 
@@ -224,18 +219,15 @@ int durecurse(char *path, size_t len, int *opt)
 					}
                                	        hold.level[hold.depth] = 0; 
 					--hold.depth; 
-				}
-			
+				} 
 				c = hold.depth;
 				while ( c <= 35 ) 
                                		hold.level[++c] = 0; 
-				
 			} 
                         dentry = readdir(dir); 
                 } 
                 closedir(dir);
-		free(spath);
-
+		free(spath); 
         }
         else
 	{ 
