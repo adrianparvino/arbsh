@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <ctype.h>
+#include <gctype.h>
 
 
 int main()
@@ -7,37 +7,37 @@ int main()
 	int i = 0;
 	for ( ; i < 127 ; i++)
 	{ 
-		if (isalnum(i))
+		if (gisalnum(i))
 			printf("isalnum\n"); 
-		if (isalpha(i))
+		if (gisalpha(i))
 			printf("isalpha\n"); 
-		if (isblank(i))
+		if (gisblank(i))
 			printf("isblank\n"); 
-		if (iscntrl(i))
+		if (giscntrl(i))
 			printf("iscntrl\n"); 
-		if (isdigit(i))
+		if (gisdigit(i))
 			printf("isdigit\n"); 
-		if (isgraph(i))
+		if (gisgraph(i))
 			printf("isgraph\n"); 
-		if (islower(i))
+		if (gislower(i))
 			printf("islower\n"); 
-		if (isprint(i))
+		if (gisprint(i))
 			printf("isprint\n"); 
-		if (ispunct(i))
+		if (gispunct(i))
 			printf("ispunct\n"); 
-		if (isspace(i))
+		if (gisspace(i))
 			printf("isspace\n"); 
-		if (isupper(i))
+		if (gisupper(i))
 			printf("isupper\n"); 
-		if (isxdigit(i))
+		if (gisxdigit(i))
 			printf("isxdigit\n"); 
-		if (isascii(i))
+		if (gisascii(i))
 			printf("isascii\n"); 
-		//printf("\n\n");
-		//printf("tolower %c\n", tolower(i));
-		//printf("toupper %c\n", toupper(i));
+		//gprintf("\n\n");
+		//gprintf("gtolower %c\n", gtolower(i));
+		//gprintf("gtoupper %c\n", gtoupper(i));
 
-		//printf("%c --actual char\n", i); 
+		//gprintf("%c --actual char\n", i); 
 	}
 
 	return 0;
