@@ -24,6 +24,9 @@ INCLUDES =  $(shell for i in include/*.h ; do echo $$i ; done )
 
 INCLUDES_TARG =  $(shell for i in include/*.h ; do echo $(DESTDIR)/$$i ; done )
 
+TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
+
+LDLIBS = -L. -l$(LIBNAME)
 
 all:
 
@@ -46,7 +49,7 @@ dynamic:
 
 	$(MAKE) $(DYNCC) dynwrap
 	$(MAKE) dynamic_link
-	$(MAKE) dynamic_create
+	#$(MAKE) dynamic_create
 
 
 
@@ -60,26 +63,13 @@ dynamic_link:
 	$(CC) -shared -Wl,-soname,$(DYNLIB) -o $(DYNLIB) $(OBJ)
 
 
-static_create: 
+static_create: $(TEST_OBJ)
 
-	$(CC) -o static_driver tests/driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o gprintf-driver tests/gprintf-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o printf-driver tests/printf-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o malloc-driver tests/malloc-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o ctype-driver tests/ctype-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o fwrite-driver tests/fwrite-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o hash-table-driver tests/hash_table.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-	$(CC) -o gsystem-driver tests/gsystem-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
-
-
-dynamic_create:
-
-	$(CC) tests/driver.c -L. -l$(LIBNAME) -o dynamic_driver $(LDFLAGS) $(CFLAGS)
-
+dynamic_create: $(TEST_OBJ)
 
 exec_dyn:
 
-	LD_LIBRARY_PATH=. ./dynamic_driver
+	LD_LIBRARY_PATH=. ./tests/driver
 
 cleanobj:
 
@@ -87,9 +77,9 @@ cleanobj:
 
 clean:
 	$(MAKE) cleanobj
-	$(RM) $(DYNLIB) 
-	$(RM) $(STATLIB) 
-	$(RM) *driver uninstall
+	$(RM) $(DYNLIB)
+	$(RM) $(STATLIB)
+	$(RM) $(TEST_OBJ) uninstall
 
 install:
 
