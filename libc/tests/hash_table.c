@@ -178,9 +178,8 @@ int durecurse(char *path, size_t len, int *opt)
 				if ( opt[3] == 1 ) // -L 
 					stat(spath, &sb); 
 				else
-					lstat(spath, &sb);
-                                
-				//if ( populatetab(sb.st_ino) ) 
+					lstat(spath, &sb); 
+			
 				char temp[4096] = { 0 };
 				sprintf(temp, "%zu", sb.st_ino);
 				if ( install(temp, temp))
