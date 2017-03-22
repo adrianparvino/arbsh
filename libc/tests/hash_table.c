@@ -56,11 +56,24 @@ struct nlist *install(char *name, char *defn)
 
 void destroytab()
 {
-        size_t i = 0;
-        while ( i < HASHSIZE || hashtab[i] )
-        {
-                free(hashtab[i]);
-                hashtab[i] = NULL;
+	
+        struct nlist *np;
+	struct nlist *last[HASHSIZE];
+	size_t i = 0;
+	size_t j = 0;
+        while ( i < HASHSIZE )
+        { 
+		if (hashtab[i])
+		{ 
+			for (j=0, np = hashtab[i]; np != NULL; np = np->next, ++j)
+			{ 
+				free(np->name);
+				free(np->defn);
+				last[j] = np; 
+			} 
+			while ( j-- )
+				free(last[j]);
+		}
                 ++i;
         }
 }
@@ -138,7 +151,7 @@ int main (int argc, char *argv[])
 		if ( durecurse(*argv, strlen(*argv), opt) ) 
 		{
 			printf("%-5zu\t%s\n", hold.level[1] + 4, *argv); 
-			//destroytab(); 
+			destroytab(); 
 		}
 		++argv; 
 	} 
@@ -192,7 +205,7 @@ int durecurse(char *path, size_t len, int *opt)
 			
 				char temp[4096] = { 0 };
 				sprintf(temp, "%zu", sb.st_ino);
-				if ( install(temp, temp))
+				if (install(temp, temp))
 				{ 
 					i = ( sb.st_blocks * 512 ) / hold.block; 
 
