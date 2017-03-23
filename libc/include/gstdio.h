@@ -43,29 +43,33 @@ enum _flags {
 	_READ  = 001,
 	_WRITE = 002,
 	_UNBUF = 004,
-	_LNBUF = 006,
+	_LNBUF = 030,
 	_EOF   = 010,
 	_ERR   = 020,
 };
-
+/* file handling */
+GFILE *gfopen(const char *, const char *);
+int gfclose(GFILE *);
+int gfeof(GFILE *);
+int gferror(GFILE *);
+int gfileno(GFILE *);
+/* single char io */
 char *gfgets(char *s, int n, GFILE *iop);
 int gfputs(char *s, GFILE *iop);
 int _fillbuf(GFILE *);
 int _flushbuf(int, GFILE *);
 int gfflush(GFILE *);
-GFILE *gfopen(const char *, const char *);
-int gfclose(GFILE *);
 int _populate(int, int, int, char *, GFILE *);
-
-
 int ggetchar(void);
 int gputchar(char);
 int ggetc(GFILE *);
 int gfgetc(GFILE *);
 int gputc(int, GFILE *); 
 int gfputc(int, GFILE *); 
+/* getline */
 ssize_t ggetline (char **, size_t *, GFILE *);
 ssize_t ggetdelim(char **, size_t *, char, GFILE *);
+/* printf */
 int _gprintf_inter(GFILE *, char *, size_t, int, char *, va_list);
 int gprintf(char *, ...);
 int gsprintf(char *, char *, ...);
@@ -77,18 +81,20 @@ int gvsprintf(char *, char *, va_list);
 int gvsnprintf(char *, size_t, char *, va_list);
 int gvdprintf(int, char *, va_list);
 int gvfprintf(GFILE *, char *, va_list);
+/* fwrite */
 size_t gfread(void *, size_t, size_t, GFILE *);
 size_t gfwrite(const void *, size_t, size_t, GFILE *);
-int gfeof(GFILE *);
-int gferror(GFILE *);
-int gfileno(GFILE *);
-
+/* number conversion */
 size_t uint2str(char *, size_t, int);
 size_t flt2str(char *, double);
 size_t int2str(char *, long long, int);
 size_t int2str_inter(char *, long long, int); 
-
-size_t flt2str(char *, double);
+size_t flt2str(char *, double); 
+/* setbuf ( not implemented ) */
+void gsetbuf(GFILE *, char *);
+void gsetbuffer(GFILE *, char *, size_t);
+void gsetlinebuf(GFILE *);
+int gsetvbuf(GFILE *, char *, int, size_t);
 
 
 #define gstdin  (&_IO_stream[0])
