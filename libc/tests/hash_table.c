@@ -27,12 +27,11 @@ unsigned hash(char *s)
 
 struct nlist *lookup(char *s)
 {
-        /* lookup: look for s in hashtab */
         struct nlist *np;
         for (np = hashtab[hash(s)]; np != NULL; np = np->next)
                 if (strcmp(s, np->name) == 0)
-                        return np;       /* found */
-        return NULL;               /* not found */
+                        return np;
+        return NULL;
 }
 
 struct nlist *install(char *name, char *defn)
@@ -56,7 +55,6 @@ struct nlist *install(char *name, char *defn)
 
 void destroytab()
 {
-	
         struct nlist *np;
 	struct nlist *last[HASHSIZE];
 	size_t i = 0;
