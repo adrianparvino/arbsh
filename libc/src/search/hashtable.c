@@ -1,6 +1,7 @@
 #include "hashtable.h"
 
 htable_t *htable_create(int size){
+	int i = 0;
 	htable_t *htable_v = NULL;
 	if(size <= 0)
 		return NULL;
@@ -8,7 +9,7 @@ htable_t *htable_create(int size){
 		return NULL;
 	if( ( htable_v->table = malloc( sizeof( kv_pair_t * ) * size ) ) == NULL ) 
 		return NULL;
-	for(int i = 0; i < size; i++){
+	for(i = 0; i < size; i++){
 		htable_v->table[i] = NULL;
 	}
 	htable_v->size = size;
