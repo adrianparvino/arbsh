@@ -31,8 +31,8 @@ unsigned hash(char *);
 void initialize_table(size_t);
 
 void initialize_table(size_t i)
-{
-	hashtab = malloc(sizeof(struct nlist) * i);
+{ 
+	hashtab = calloc(1000, sizeof(struct nlist) * i); 
 }
 
 unsigned hash(char *s)
@@ -79,9 +79,9 @@ void destroytab()
 	size_t i = 0;
 	size_t j = 0;
         while ( i < hbuckets )
-        { 
+        {
 		if (hashtab[i])
-		{ 
+		{
 			for (j=0, np = hashtab[i]; np != NULL; np = np->next, ++j)
 			{ 
 				free(np->name);
