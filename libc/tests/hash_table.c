@@ -29,10 +29,16 @@ struct nlist *lookup(char *);
 struct nlist *install(char *, char *);
 unsigned hash(char *);
 void initialize_table(size_t);
+void destroy_table(void);
 
 void initialize_table(size_t i)
 { 
 	hashtab = calloc(1000, sizeof(struct nlist) * i); 
+}
+
+void destroy_table(void)
+{ 
+	free(hashtab);
 }
 
 unsigned hash(char *s)
@@ -253,7 +259,7 @@ int durecurse(char *path, size_t len, int *opt)
 		printf("%-5zu\t%s\n", (sb.st_blocks * 512 ) /hold.block, path); 
 		return 0;
 	} 
-	
+	destroy_table();
         return 1; 
 }
 
