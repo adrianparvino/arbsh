@@ -2,7 +2,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define HASHSIZE 1000 
+size_t hbuckets = 1000;
+
+size_t primes[9] = {
+        31,
+        62,
+        237,
+        251,
+        65521,
+        131071,
+        262139,
+        524287,
+        1327144009
+};
 
 struct nlist {     		/* table entry: */
         struct nlist *next;   	/* next entry in chain */
@@ -10,19 +22,26 @@ struct nlist {     		/* table entry: */
         char *defn;             /* replacement text */
 };
 
-static struct nlist *hashtab[HASHSIZE]; /* pointer table */
+//static struct nlist *hashtab[hbuckets]; /* pointer table */
+static struct nlist **hashtab; /* dynamically allocated pointer table */
 
 struct nlist *lookup(char *);
 struct nlist *install(char *, char *);
 unsigned hash(char *);
+void initialize_table(size_t);
+
+void initialize_table(size_t i)
+{
+	hashtab = malloc(sizeof(struct nlist) * i);
+}
 
 unsigned hash(char *s)
 {
         /* hash: form hash value for string s */
         unsigned hashval;
         for (hashval = 0; *s != '\0'; s++)
-                hashval = *s + 31 * hashval;
-        return hashval % HASHSIZE;
+                hashval = *s + primes[0] * hashval;
+        return hashval % hbuckets;
 }
 
 struct nlist *lookup(char *s)
@@ -56,10 +75,10 @@ struct nlist *install(char *name, char *defn)
 void destroytab()
 {
         struct nlist *np;
-	struct nlist *last[HASHSIZE];
+	struct nlist *last[hbuckets];
 	size_t i = 0;
 	size_t j = 0;
-        while ( i < HASHSIZE )
+        while ( i < hbuckets )
         { 
 		if (hashtab[i])
 		{ 
@@ -138,6 +157,7 @@ int main (int argc, char *argv[])
         argv += optind;
         argc -= optind; 
 	
+	initialize_table(1000);
 	while(*argv) 
 	{
 		lstat(*argv, &sb); 
