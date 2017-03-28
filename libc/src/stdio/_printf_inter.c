@@ -214,7 +214,9 @@ int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_lis
 		_populate(i, '\0', flag, str, fp); /* don't incr for '\0' */
 
 	if (flag == 0)
-		gfflush(NULL);
+		_flushbuf(EOF, fp);
+		//gfflush(NULL);
+		//gfflush(fp);
 
 	return i;
 }
