@@ -2,7 +2,8 @@
 
 GFILE *gpopen(const char *command, const char *type)
 {
-	GFILE *ret = gstdout;
+	GFILE *ret = gfopen(NULL, "r");
+	
 	int pipefd[2] = { 0 };
         ssize_t len = 0;
         size_t total = 0;
@@ -16,7 +17,7 @@ GFILE *gpopen(const char *command, const char *type)
 
 	ret->pid = fork();
 	ret->fd = pipefd[0];
-	close(pipefd[1]);
+	//close(pipefd[1]);
 
         if (ret->pid == 0)
         {
@@ -31,7 +32,7 @@ GFILE *gpopen(const char *command, const char *type)
         }
         else
         {
-                //close(pipefd[1]);
+                close(pipefd[1]);
 		
 		/*
                 while ((len = read(pipefd[0], buffer + total, PIPE_BUF)))
