@@ -1,4 +1,5 @@
 #include <gstdio.h>
+#include <stdio.h>
 
 
 
@@ -8,17 +9,14 @@ int main(void)
 	int status;
 	char path[4096];
 
-
 	fp = gpopen("ls -la", "r");
 	if (fp == NULL)
 		;
+	 
+	while (gfgets(path, 4096, fp) != NULL) 
+		gprintf("%s", path); 
 
-
-	while (gfgets(path, 4096, fp) != NULL)
-		gprintf("%s", path);
-
-
-//	status = pclose(fp);
+	status = gpclose(fp);
 }
 
 
