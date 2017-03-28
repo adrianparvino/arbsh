@@ -2,32 +2,37 @@
 
 GFILE *gpopen(const char *command, const char *type)
 {
-	GFILE *ret;
+	GFILE *ret = gstdout;
 	int pipefd[2] = { 0 };
         ssize_t len = 0;
         size_t total = 0;
         char *buffer;
-	size_t bufsize = 4096;
+	size_t bufsize = 4096; 
 	
 
         if (!(buffer = malloc(bufsize)))
                 return 0;
         pipe(pipefd);
 
-        if (fork() == 0)
+	ret->pid = fork();
+	ret->fd = pipefd[0];
+	close(pipefd[1]);
+
+        if (ret->pid == 0)
         {
-		const char *argv[4] = { "/bin/sh", "-c", NULL, NULL};
+		char *argv[] = { "/bin/sh", "-c", NULL, NULL};
 		argv[2] = command;
                 close(pipefd[0]);
                 dup2(pipefd[1], 1);
                 close(pipefd[1]);
                 dup2(pipefd[1], 2);
-                execvp(argv[0], argv + 1);
+                execvp(argv[0], argv);
                 _exit(1);
         }
         else
         {
-                close(pipefd[1]);
+                //close(pipefd[1]);
+		
 		/*
                 while ((len = read(pipefd[0], buffer + total, PIPE_BUF)))
                 {
@@ -42,10 +47,12 @@ GFILE *gpopen(const char *command, const char *type)
 	return ret;
 }
 
-int gpcloe(GFILE *fp)
+int gpclose(GFILE *fp)
 {
 	int ret = 0;
+	
 	/* needs to call wait4 */
-	gflose(fp);
+	fp->pid = 0;
+	gfclose(fp);
 	return ret;
 }
