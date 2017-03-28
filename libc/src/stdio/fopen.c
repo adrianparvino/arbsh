@@ -1,10 +1,10 @@
 #include <gstdio.h> 
 
-GFILE *gfopen(const char *  name, const char *  mode)
+GFILE *gfopen(const char *name, const char *mode)
 {
 	int fd;
 	GFILE *fp;
-	int perms = 0; //  not yet used
+	int perms = 0; // not yet used
 	const char *p = mode;
 	int oflags = 4242;
 	int iflags = 4242;
@@ -67,8 +67,9 @@ GFILE *gfopen(const char *  name, const char *  mode)
 		}
 	} 
 
-	if ((fd = open(name, oflags, perms)) == -1)
-		return NULL;
+	if ( name != NULL )
+		if ((fd = open(name, oflags, perms)) == -1)
+			return NULL;
 
 	if (seek == SEEK_END)
 		lseek(fd, 0L, seek);
