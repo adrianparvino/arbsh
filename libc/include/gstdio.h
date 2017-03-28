@@ -35,6 +35,7 @@ typedef struct {
 	char *rp;
 	char *lp;
 	int len;
+	size_t pid; /* for popen */
 } GFILE;
 
 extern GFILE _IO_stream[FOPEN_MAX];
@@ -95,6 +96,8 @@ void gsetbuf(GFILE *, char *);
 void gsetbuffer(GFILE *, char *, size_t);
 void gsetlinebuf(GFILE *);
 int gsetvbuf(GFILE *, char *, int, size_t);
+/* popen */
+GFILE *gpopen(const char *, const char *);
 
 
 #define gstdin  (&_IO_stream[0])
