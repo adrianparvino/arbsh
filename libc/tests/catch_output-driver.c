@@ -3,7 +3,7 @@
 #include <limits.h>
 #include <stdio.h>
 
-int new_gpopen(char *argv[])
+int catch_output(char *argv[])
 {
 	int pipefd[2] = { 0 };
 	ssize_t len = 0;
@@ -11,7 +11,7 @@ int new_gpopen(char *argv[])
 	char *buffer;
 
 	if (!(buffer = malloc(PIPE_BUF)))
-		return 0;
+		return 1;
 	pipe(pipefd); 
 
 	if (fork() == 0)
@@ -30,7 +30,7 @@ int new_gpopen(char *argv[])
 		{
 			total +=len;
 			if (!(buffer = realloc(buffer, total + PIPE_BUF + 1)))
-				return 0;
+				return 1;
 		}
 
 		write(1, buffer, total);
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 	/* Usage: ./catch_output ls -la */
 	if (argc > 1)
 	{
-		new_gpopen(argv);
+		catch_output(argv);
 	}
 
 	return 0;
