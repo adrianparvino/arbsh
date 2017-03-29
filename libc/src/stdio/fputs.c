@@ -1,10 +1,6 @@
 #include <gstdio.h> 
 
-int gfputs(char *  s, GFILE *  iop)
+int gfputs(char *s, GFILE *fp)
 {
-	int c;
-	while ((c = *s++))
-		gputc(c, iop);
-	return gferror(iop) ? EOF : 0;
+	__puts_inter(s, fp, 0);
 }
-
