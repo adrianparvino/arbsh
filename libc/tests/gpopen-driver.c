@@ -9,14 +9,13 @@ int main(void)
 	int status;
 	char path[4096];
 
-	fp = gpopen("ls -la", "r");
-	if (fp == NULL)
-		;
+	if ((fp = gpopen("ls -la", "r")) == NULL)
+		return 1;
 	 
 	while (gfgets(path, 4096, fp) != NULL) 
 		gprintf("%s", path); 
 
-	status = gpclose(fp);
+	return status = gpclose(fp);
 }
 
 
