@@ -3,9 +3,8 @@
 #include <limits.h>
 #include <stdio.h>
 
-FILE *new_gpopen(char *argv[], const char *fopenmode)
+int new_gpopen(char *argv[])
 {
-	FILE *fd;
 	int pipefd[2] = { 0 };
 	ssize_t len = 0;
 	size_t total = 0; 
@@ -36,6 +35,7 @@ FILE *new_gpopen(char *argv[], const char *fopenmode)
 
 		write(1, buffer, total);
 	}
+	return 0;
 }
 
 
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 	/* Usage: ./catch_output ls -la */
 	if (argc > 1)
 	{
-		new_gpopen(argv, "r");
+		new_gpopen(argv);
 	}
 
 	return 0;
