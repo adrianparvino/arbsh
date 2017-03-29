@@ -2,6 +2,6 @@
 
 int gputs(char *s)
 {
-	__puts_inter(s, gstdout, '\n');
+	return __puts_inter(s, gstdout, '\n');
 }
 
