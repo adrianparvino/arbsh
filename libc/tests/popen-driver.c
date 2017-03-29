@@ -6,14 +6,13 @@ int main(void)
 	int status;
 	char path[4096];
 
-	fp = popen("ls -la", "r");
-	if (fp == NULL)
-		;
+	if (( fp = popen("ls -la", "r")) == NULL)
+		return 1;
 
 	while (fgets(path, 4096, fp) != NULL)
 		printf("%s", path); 
 
-	status = pclose(fp);
+	return status = pclose(fp);
 }
 
 
