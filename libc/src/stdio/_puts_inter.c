@@ -1,0 +1,11 @@
+#include <gstdio.h> 
+
+__puts_inter(char *s, GFILE *fp, int append)
+{
+	int c;
+	while ((c = *s++))
+		gputc(c, fp);
+	if (append)
+		gputc(append, fp);
+	return gferror(fp) ? EOF : 0;
+}
