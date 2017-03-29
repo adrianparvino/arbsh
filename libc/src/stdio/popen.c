@@ -14,7 +14,7 @@ GFILE *gpopen(const char *command, const char *type)
         if (ret->pid == 0)
         {
 		char *argv[] = { "/bin/sh", "-c", NULL, NULL};
-		argv[2] = command;
+		argv[2] = (char *)command;
                 close(pipefd[0]);
                 dup2(pipefd[1], 1);
                 close(pipefd[1]);
