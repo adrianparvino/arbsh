@@ -56,7 +56,7 @@ int gferror(GFILE *);
 int gfileno(GFILE *);
 /* single char io */
 char *gfgets(char *s, int n, GFILE *iop);
-int gfputs(char *s, GFILE *iop);
+
 int _fillbuf(GFILE *);
 int _flushbuf(int, GFILE *);
 int gfflush(GFILE *);
@@ -98,7 +98,11 @@ void gsetlinebuf(GFILE *);
 int gsetvbuf(GFILE *, char *, int, size_t);
 /* popen */
 GFILE *gpopen(const char *, const char *);
-
+int gpclose(GFILE *);
+/* puts */
+int gfputs(char *, GFILE *);
+int gputs(char *);
+int __puts_inter(char *, GFILE *, int);
 
 #define gstdin  (&_IO_stream[0])
 #define gstdout (&_IO_stream[1])
