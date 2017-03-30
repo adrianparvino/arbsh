@@ -2,7 +2,7 @@
 
 int gfeof(GFILE *fp)
 {
-	if ( (fp->flags & _EOF) != 0 )
+	if ((fp->flags & _EOF) != 0)
 		return 0;
 	return 1;
 }
