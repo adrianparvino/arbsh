@@ -1,6 +1,6 @@
 #include <gstdio.h> 
 
-int gputs(char *s)
+int gputs(const char *s)
 {
 	return __puts_inter(s, gstdout, '\n');
 }
