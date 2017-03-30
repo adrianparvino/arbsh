@@ -1,6 +1,6 @@
 #include <gstdio.h> 
 
-int __puts_inter(char *s, GFILE *fp, int append)
+int __puts_inter(const char *s, GFILE *fp, int append)
 {
 	int c;
 	while ((c = *s++))
