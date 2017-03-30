@@ -103,6 +103,8 @@ int gpclose(GFILE *);
 int gfputs(const char *, GFILE *);
 int gputs(const char *);
 int __puts_inter(const char *, GFILE *, int);
+/* fseek */
+int gfseek(GFILE *, long, int);
 
 #define gstdin  (&_IO_stream[0])
 #define gstdout (&_IO_stream[1])
