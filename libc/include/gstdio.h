@@ -100,9 +100,9 @@ int gsetvbuf(GFILE *, char *, int, size_t);
 GFILE *gpopen(const char *, const char *);
 int gpclose(GFILE *);
 /* puts */
-int gfputs(char *, GFILE *);
-int gputs(char *);
-int __puts_inter(char *, GFILE *, int);
+int gfputs(const char *, GFILE *);
+int gputs(const char *);
+int __puts_inter(const char *, GFILE *, int);
 
 #define gstdin  (&_IO_stream[0])
 #define gstdout (&_IO_stream[1])
