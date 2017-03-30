@@ -10,7 +10,7 @@ int gfclose(GFILE *fp)
 			fp->rp = fp->buf = NULL;
 			fp->len = 0;
 			fp->flags &= ~(_READ | _WRITE);
-			if (fp->pid != 0 )
+			if (fp->pid == 0 )
 				close(fp->fd);
 			fp->pid = 0;
 		}
