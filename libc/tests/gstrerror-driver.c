@@ -1,4 +1,5 @@
 #include <gstring.h>
+#include <gstdio.h>
 #include <unistd.h>
 #include <gerrno.h>
 
