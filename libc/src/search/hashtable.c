@@ -14,19 +14,20 @@ htable_t *htable_create(int size){
 	}
 	htable_v->size = size;
 	return htable_v;
-};
+}
 
 
 int htable_hash(htable_t *htable_v, char *key){
 	unsigned long int hval;
-	int i = 0;
-	while(hval < ULONG_MAX && i < strlen(key)){
+	size_t i = 0;
+	size_t len = strlen(key);
+	while(hval < ULONG_MAX && i < len){
 		hval = hval << 8;
 		hval += key[i];
 		i++;
 	}
 	return hval % htable_v->size;
-};
+}
 
 kv_pair_t *htable_newpair(char *key, char *value){
 	kv_pair_t *newpair = NULL;
@@ -38,18 +39,22 @@ kv_pair_t *htable_newpair(char *key, char *value){
 		return NULL;
 	newpair->next = NULL;
 	return newpair;
-};
+}
 
 void htable_set(htable_t *htable_v,char *key,char *value){
+	value = value;
+	key = key;
+	htable_v = htable_v;
 	//TODO: finish up the htable_set method that actually allows us to populate the damn thing
-};
+}
 char *htable_get(htable_t *htable_v,char *key){
-	int bin = 0;
+	htable_v = htable_v;
+	//int bin = 0;
 	kv_pair_t *pair;
 
-	bin = htable_hash(htable_v,key);
+	//bin = htable_hash(htable_v,key);
 
-	pair = htable_v->table[bin];
+	//pair = htable_v->table[bin];
 	while(pair != NULL && pair->key != NULL && strcmp(key,pair->key) > 0){
 		pair = pair->next;
 	}
@@ -57,5 +62,5 @@ char *htable_get(htable_t *htable_v,char *key){
 		return NULL;
 	else
 		return pair->value;
-};
+}
 
