@@ -78,7 +78,7 @@ ssize_t ggetdelim(char **, size_t *, char, GFILE *);
 /* printf */
 int _gprintf_inter(GFILE *, char *, size_t, int, const char *, va_list);
 int gprintf(const char *, ...);
-int gsprintf(char *, char *, ...);
+int gsprintf(char *, const char *, ...);
 int gsnprintf(char *, size_t, char *, ...);
 int gdprintf(int, char *, ...);
 int gfprintf(GFILE *, char *, ...);
