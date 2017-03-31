@@ -76,8 +76,8 @@ int gfputc(int, GFILE *);
 ssize_t ggetline (char **, size_t *, GFILE *);
 ssize_t ggetdelim(char **, size_t *, char, GFILE *);
 /* printf */
-int _gprintf_inter(GFILE *, char *, size_t, int, char *, va_list);
-int gprintf(char *, ...);
+int _gprintf_inter(GFILE *, char *, size_t, int, const char *, va_list);
+int gprintf(const char *, ...);
 int gsprintf(char *, char *, ...);
 int gsnprintf(char *, size_t, char *, ...);
 int gdprintf(int, char *, ...);
