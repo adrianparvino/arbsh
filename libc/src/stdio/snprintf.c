@@ -1,6 +1,6 @@
 #include <gstdio.h> 
 
-int gsnprintf(char *str, size_t lim, char *fmt, ...)
+int gsnprintf(char *str, size_t lim, const char *fmt, ...)
 {
 	int ret = 0;
 	va_list argptr;
