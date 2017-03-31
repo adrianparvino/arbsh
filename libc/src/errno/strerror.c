@@ -30,16 +30,16 @@ char _messages[1000][100] = {
 	"Too many open files.\0",		/* EMFILE	24	*/
 	"Inappropriate I/O control operation.\0",/*ENOTTY	25	*/
 	"Text file busy.\0",			/* ETXTBSY	26	*/
-	"File too large.\0",
-	"No space left on device.\0",
-	"Invalid seek.\0",
-	"Read-only file system.\0",
-	"Too many links.\0",
-	"Broken pipe.\0",
-	"Mathematics argument out of doma.\0",
-	"Result too large.\0",
-	"\0"
-	"Filename too long.\0",
+	"File too large.\0",			/* EFBIG	27	*/
+	"No space left on device.\0",		/* ENOSPC	28	*/
+	"Invalid seek.\0",			/* ESPIPE	29	*/
+	"Read-only file system.\0",		/* EROFS	30	*/
+	"Too many links.\0",			/* EMLINK	31	*/
+	"Broken pipe.\0",			/* EPIPE	32	*/
+	"Mathematics argument out of doma.\0",	/* EDOM		33	*/
+	"Result too large.\0",			/* ERANGE	34	*/
+	"\0"					/* ?		35	*/
+	"Filename too long.\0",			/* ENAMETOOLONG	36	*/
 	"No locks available.\0",
 	"Function not supported.\0",
 	"Directory not empty.\0",
