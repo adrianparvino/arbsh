@@ -4,6 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* popen / pclose */
+#include <sys/types.h>
+#include <sys/wait.h>
+
+
 #ifndef NULL
 #define NULL ((void *) 0)
 #endif
