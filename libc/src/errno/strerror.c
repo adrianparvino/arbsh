@@ -1,8 +1,7 @@
 #include <gerrno.h>
 
-
 /* x86 ( incomplete )  */
-char _messages[1000][100] = { 
+char _messages[125][80] = { 
 	"\0",					/* (not used)	0	*/
 	"Operation not permitted.\0",		/* EPERM	1	*/
 	"No such file or directory.\0",		/* ENOENT	2	*/
@@ -40,21 +39,40 @@ char _messages[1000][100] = {
 	"Result too large.\0",			/* ERANGE	34	*/
 	"\0"					/* ?		35	*/
 	"Filename too long.\0",			/* ENAMETOOLONG	36	*/
-	"No locks available.\0",
-	"Function not supported.\0",
-	"Directory not empty.\0",
-	"Too many levels of symbolic links.\0",
-	"\0",
-	"No message of the desired type.\0",
-	"Identifier removed.\0",
-	"\0",
-	"\0",
-	"\0",
-	"\0",
-	"\0",
-	"\0",
-	"\0",
-	"\0",
+	"No locks available.\0",		/* ENOLCK	37	*/
+	"Function not supported.\0",		/* ENOSYS	38	*/
+	"Directory not empty.\0",		/* ENOTEMPTY	39	*/
+	"Too many levels of symbolic links.\0",	/* ELOOP	40	*/
+	"\0",					/* ?		41	*/
+	"No message of the desired type.\0",	/* ENOMSG	42	*/
+	"Identifier removed.\0",		/* EIDRM	43	*/ 
+	"\0",					/* ? 		44	*/
+	"\0",					/* ? 		45	*/
+	"\0",					/* ? 		46	*/
+	"\0",					/* ?		47	*/
+	"\0",					/* ? 		48	*/
+	"\0",					/* ?		49	*/
+	"\0",					/* ?		50	*/
+	"\0",					/* ? 		51	*/
+	"\0",					/* ?		52	*/
+	"\0",					/* ? 		53	*/
+	"\0",					/* ?		54	*/
+	"\0",					/* ? 		55	*/
+	"Not a STREAM.\0",			/* ENOSTR	60	*/
+	"No msg is avail on STREAM head.",	/* ENODATA	61	*/
+	"Stream ioctl() timeout.",		/* ETIME	62	*/
+	"No STREAM resources.",			/* ENOSR	63	*/
+	"\0",					/* ?		64	*/
+	"\0",					/* ?		65	*/
+	"\0",					/* ? 		66	*/
+	"Reserved.",				/* ENOLINK	67	*/
+	"\0",					/* ?		68	*/
+	"\0",					/* ? 		69	*/
+	"\0",					/* ?		70	*/
+	"Protocol error.",			/* EPROTO	71	*/
+
+	
+
 };
 
 
