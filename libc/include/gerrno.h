@@ -14,7 +14,7 @@ int *error(void);
 #define ENOEXEC 	8  	/* "Executable file format error."	*/
 
 #define ECHILD 		10  	/* "No child processes."		*/
-#define EAGAIN 		11  	/* "Resource unavailable, try again ."	*/
+#define EAGAIN 		11  	/* "Resource unavailable, try again."	*/
 #define ENOMEM 		12  	/* "Not enough space."			*/
 #define EACCES 		13  	/* "Permission denied."			*/
 #define EFAULT 		14  	/* "Bad address." 			*/
@@ -28,69 +28,69 @@ int *error(void);
 #define EINVAL 		22  	/* "Invalid argument."			*/
 #define ENFILE 		23  	/* "Too many files open in system." 	*/
 #define EMFILE 		24  	/* "Too many open files."		*/
-#define ENOTTY 		25  	/* Inappropriate I/O control operation. */
-#define ETXTBSY 	26  	/* Text file busy.			*/
-#define EFBIG 		27  	/* File too large. 			*/
-#define ENOSPC 		28  	/* No space left on device.		*/
-#define ESPIPE 		29  	/* Invalid seek.			*/
-#define EROFS 		30  	/* Read-only file system.		*/
-#define EMLINK 		31  	/* Too many links.			*/
-#define EPIPE 		32  	/* Broken pipe.				*/
-#define EDOM 		33  	/* Mathematics argument out of doma ... */
-#define ERANGE 		34  	/* Result too large.			*/
+#define ENOTTY 		25  	/* "Inappropriate I/O control operation." */
+#define ETXTBSY 	26  	/* "Text file busy."			*/
+#define EFBIG 		27  	/* "File too large." 			*/
+#define ENOSPC 		28  	/* "No space left on device."		*/
+#define ESPIPE 		29  	/* "Invalid seek."			*/
+#define EROFS 		30  	/* "Read-only file system."		*/
+#define EMLINK 		31  	/* "Too many links."			*/
+#define EPIPE 		32  	/* "Broken pipe."				*/
+#define EDOM 		33  	/* "Mathematics argument out of doma ." */
+#define ERANGE 		34  	/* "Result too large."			*/
 
-#define ENAMETOOLONG 	36  	/* Filename too long.			*/
-#define ENOLCK 		37  	/* No locks available.			*/
-#define ENOSYS 		38  	/* Function not supported.		*/
-#define ENOTEMPTY 	39  	/* Directory not empty.			*/
-#define ELOOP 		40  	/* Too many levels of symbolic links. 	*/
+#define ENAMETOOLONG 	36  	/* "Filename too long."			*/
+#define ENOLCK 		37  	/* "No locks available."			*/
+#define ENOSYS 		38  	/* "Function not supported."		*/
+#define ENOTEMPTY 	39  	/* "Directory not empty."			*/
+#define ELOOP 		40  	/* "Too many levels of symbolic links." 	*/
 
-#define ENOMSG 		42  	/* No message of the desired type. 	*/
-#define EIDRM 		43  	/* Identifier removed. 			*/ 
-
-
-#define ENOSTR 		60  	/* Not a STREAM.			*/ 
-#define ENODATA 	61  	/* No msg is avail on  STREAM head .... */ 
-#define ETIME 		62  	/* Stream ioctl() timeout.		*/
-#define ENOSR 		63  	/* No STREAM resources.			*/ 
+#define ENOMSG 		42  	/* "No message of the desired type." 	*/
+#define EIDRM 		43  	/* "Identifier removed." 			*/ 
 
 
-#define ENOLINK 	67  	/* Reserved.				*/ 
+#define ENOSTR 		60  	/* "Not a STREAM."			*/ 
+#define ENODATA 	61  	/* "No msg is avail on  STREAM head ."  */ 
+#define ETIME 		62  	/* "Stream ioctl() timeout."		*/
+#define ENOSR 		63  	/* "No STREAM resources."			*/ 
 
 
-#define EPROTO 		71  	/* Protocol error.			*/
-#define EMULTIHOP 	72  	/* Reserved.				*/
-#define EBADMSG 	74  	/* Bad message. 			*/
-#define EOVERFLOW 	75  	/* Val too large to be stored in data type. */
+#define ENOLINK 	67  	/* "Reserved."				*/ 
 
 
-#define EILSEQ 		84  	/* Illegal byte sequence.		*/
+#define EPROTO 		71  	/* "Protocol error."			*/
+#define EMULTIHOP 	72  	/* "Reserved."				*/
+#define EBADMSG 	74  	/* "Bad message." 			*/
+#define EOVERFLOW 	75  	/* "Val too large to be stored in data type." */
 
 
-#define ENOTSOCK 	88  	/* Not a socket.			*/
-#define EDESTADDRREQ 	89  	/* Destination address required. 	*/
-#define EMSGSIZE 	90  	/* Message too large.			*/
-#define EPROTOTYPE 	91  	/* Protocol wrong type for socket. 	*/
-#define ENOPROTOOPT 	92  	/* Protocol not available.		*/
-#define EPROTONOSUPPORT 93  	/* Protocol not supported.		*/
-
-#define EOPNOTSUPP 	95  	/* Operation not supported on socket. 	*/
-
-#define EAFNOSUPPORT 	97  	/* Address family not supported. 	*/
-#define EADDRINUSE 	98  	/* Address in use. 			*/
-#define EADDRNOTAVAIL 	99  	/* Address not available. 		*/
-#define ENETDOWN 	100  	/* Network is down.			*/
-#define ENETUNREACH 	101  	/* Network unreachable.			*/
-#define ENETRESET 	102  	/* Connection aborted by network. 	*/
-#define ECONNABORTED 	103  	/* Connection aborted. 			*/
-#define ECONNRESET 	104  	/* Connection reset. 			*/
-#define ENOBUFS 	105  	/* No buffer space available.		*/ 
-#define EISCONN 	106  	/* Socket is connected.			*/ 
-#define ENOTCONN 	107  	/* The socket is not connected.		*/
+#define EILSEQ 		84  	/* "Illegal byte sequence."		*/
 
 
-#define ETIMEDOUT 	110  	/* Connection timed out.		*/
-#define ECONNREFUSED 	111  	/* Connection refused. 			*/
+#define ENOTSOCK 	88  	/* "Not a socket."			*/
+#define EDESTADDRREQ 	89  	/* "Destination address required." 	*/
+#define EMSGSIZE 	90  	/* "Message too large."			*/
+#define EPROTOTYPE 	91  	/* "Protocol wrong type for socket." 	*/
+#define ENOPROTOOPT 	92  	/* "Protocol not available."		*/
+#define EPROTONOSUPPORT 93  	/* "Protocol not supported."		*/
+
+#define EOPNOTSUPP 	95  	/* "Operation not supported on socket." 	*/
+
+#define EAFNOSUPPORT 	97  	/* "Address family not supported." 	*/
+#define EADDRINUSE 	98  	/* "Address in use." 			*/
+#define EADDRNOTAVAIL 	99  	/* "Address not available." 		*/
+#define ENETDOWN 	100  	/* "Network is down."			*/
+#define ENETUNREACH 	101  	/* "Network unreachable."			*/
+#define ENETRESET 	102  	/* "Connection aborted by network." 	*/
+#define ECONNABORTED 	103  	/* "Connection aborted." 			*/
+#define ECONNRESET 	104  	/* "Connection reset." 			*/
+#define ENOBUFS 	105  	/* "No buffer space available."		*/ 
+#define EISCONN 	106  	/* "Socket is connected."			*/ 
+#define ENOTCONN 	107  	/* "The socket is not connected."		*/
+
+
+#define ETIMEDOUT 	110  	/* "Connection timed out."		*/
+#define ECONNREFUSED 	111  	/* "Connection refused." 			*/
 #define EHOSTUNREACH 	113  	/* Host is unreachable. 		*/
 #define EALREADY 	114  	/* Connection already in progress. 	*/
 #define EINPROGRESS 	115  	/* Operation in progress.		*/
