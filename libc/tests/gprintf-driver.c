@@ -87,9 +87,9 @@ int main(int argc, char *argv[])
 		double two = 2;
 		gprintf("%f\n", two);
 
-		gprintf("%ld\n", 10);
-		gprintf("%d\n", 0);
-		gprintf("%zu\n", 11);
+		//gprintf("%ld\n", 10);
+		//gprintf("%d\n", 0);
+		//gprintf("%zu\n", 11);
 
 	}
 	return 0;
