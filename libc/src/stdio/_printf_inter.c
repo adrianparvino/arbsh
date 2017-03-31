@@ -77,14 +77,14 @@ int _populate(int incr, int x, int flag, char *s, GFILE *fp)
 	return incr + 1;
 }
 
-int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, char *fmt, va_list ap)
+int _gprintf_inter(GFILE *fp, char *str, size_t lim, int flag, const char *fmt, va_list ap)
 {
 	
 	/* flag == 1 == sprintf */
 	/* flag == 2 == snprintf */
 	/* flag == 0 == printf, vprintf, dprintf etc  */
 
-	char *p = NULL;
+	const char *p = NULL;
 	size_t i = 0;
 	size_t bound = BUFSIZ;
 	int base = 10;
