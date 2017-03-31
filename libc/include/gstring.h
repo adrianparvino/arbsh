@@ -17,3 +17,6 @@ char *gstrndup(const char *, size_t);
 void *gmemchr(const void *, int, size_t);
 char *gstrchrnul(const char *, int);
 
+/* strerror */
+char gsterror(int);
+
