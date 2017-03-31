@@ -85,8 +85,8 @@ int gfprintf(GFILE *, const char *, ...);
 int gvprintf(const char *, va_list);
 int gvsprintf(char *, const char *, va_list);
 int gvsnprintf(char *, size_t, const char *, va_list);
-int gvdprintf(int, char *, va_list);
-int gvfprintf(GFILE *, char *, va_list);
+int gvdprintf(int, const char *, va_list); /* not implemented */
+int gvfprintf(GFILE *, const char *, va_list);
 /* fwrite */
 size_t gfread(void *, size_t, size_t, GFILE *);
 size_t gfwrite(const void *, size_t, size_t, GFILE *);
