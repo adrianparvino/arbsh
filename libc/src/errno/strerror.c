@@ -1,7 +1,7 @@
 #include <gerrno.h>
 
 /* x86 ( incomplete )  */
-char _messages[125][80] = { 
+char *_messages[125] = {
 	"\0",					/* (not used)	0	*/
 	"Operation not permitted.\0",		/* EPERM	1	*/
 	"No such file or directory.\0",		/* ENOENT	2	*/
@@ -73,9 +73,25 @@ char _messages[125][80] = {
 	"Reserved.",				/* EMULTIHOP	72	*/
 	"\0",					/* ?		73	*/
 	"Bad message.",				/* EBADMSG	74	*/
-
+	"Val too large to be stored in data type.",/* EOVERFLOW	75	*/
+	"\0",					/* ?		76	*/
+	"\0",					/* ?		77	*/
+	"\0",					/* ? 		78	*/
+	"\0",					/* ?		79	*/
+	"\0",					/* ? 		80	*/
+	"\0",					/* ?		81	*/
+	"\0",					/* ?		82	*/
+	"\0",					/* ? 		83	*/
+	"Illegal byte sequence.",		/* EILSEQ	84	*/
+	"\0",					/* ?		85	*/
+	"\0",					/* ?		86	*/
+	"\0",					/* ?		87	*/
+	"Not a socket.",			/* ENOTSOCK	88	*/
+	"Destination address required.",	/* EDESTADDRREQ	89	*/
+	"Message too large.",			/* EMSGSIZE	90	*/
+	"Protocol wrong type for socket.",	/* EPROTOTYPE	91	*/
+	"Protocol not available.",		/* ENOPROTOOPT	92	*/
 	
-
 };
 
 
