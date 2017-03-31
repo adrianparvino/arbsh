@@ -1,0 +1,63 @@
+
+
+Grafland libc
+
+
+Building:
+---------
+
+	make static
+
+
+Testing:
+--------
+
+	./tests/gprintf-driver
+	./tests/gpopen-drivef
+	./tests/...
+
+
+Installation:
+-------------
+
+	make install DESTDIR=/path/to/installation/
+
+
+Clean:
+------
+
+	make clean
+
+
+Irc:
+----
+
+	#grafland on irc.freenode.net
+
+
+References:
+-----------
+
+	http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2086.htm
+
+	http://www.iso-9899.info
+
+	http://www.iso-9899.info/wiki/Books
+
+
+About:
+------
+
+	This libc is in its fledgling stages, here are some differences
+	between it and a fully functional libc:
+
+		* All standard library functions have been renamed by prexifing
+		  them
+		* Header files have been renamed by prefixing them
+		* Printf numerical accuracy is limited. 
+		* Relies on the host libc for system calls and system call
+		  wrappers.
+		* Only about 80 standard C functions implemented.
+
+
+ 
