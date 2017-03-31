@@ -60,8 +60,7 @@ int gfeof(GFILE *);
 int gferror(GFILE *);
 int gfileno(GFILE *);
 /* single char io */
-char *gfgets(char *s, int n, GFILE *iop);
-
+char *gfgets(char *, int, GFILE *);
 int _fillbuf(GFILE *);
 int _flushbuf(int, GFILE *);
 int gfflush(GFILE *);
