@@ -121,7 +121,7 @@ struct hold {
 	int depth; 
 	off_t block;
 	size_t lastd; 
-} hold = { {}, 0, 1024, 0};  // this should be 512 for posix compat
+} hold = { {0}, 0, 1024, 0};  // this should be 512 for posix compat
 
 
 int durecurse(char *, size_t, int *);
