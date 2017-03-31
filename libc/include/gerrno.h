@@ -13,21 +13,21 @@ int *error(void);
 #define E2BIG 		7  	/* "Argument list too long."		*/
 #define ENOEXEC 	8  	/* "Executable file format error."	*/
 
-#define ECHILD 		10  	/* No child processes. 			*/
-#define EAGAIN 		11  	/* Resource unavailable, try again .... */
-#define ENOMEM 		12  	/* Not enough space.			*/
-#define EACCES 		13  	/* Permission denied.			*/
-#define EFAULT 		14  	/* Bad address. 			*/
+#define ECHILD 		10  	/* "No child processes."		*/
+#define EAGAIN 		11  	/* "Resource unavailable, try again ."	*/
+#define ENOMEM 		12  	/* "Not enough space."			*/
+#define EACCES 		13  	/* "Permission denied."			*/
+#define EFAULT 		14  	/* "Bad address." 			*/
 
-#define EBUSY 		16  	/* Device or resource busy. 		*/
-#define EEXIST 		17  	/* File exists. 			*/
-#define EXDEV 		18  	/* Cross-device link.			*/
-#define ENODEV 		19  	/* No such device.			*/
-#define ENOTDIR 	20  	/* Not a directory.			*/
-#define EISDIR 		21  	/* Is a directory.			*/
-#define EINVAL 		22  	/* Invalid argument.			*/
-#define ENFILE 		23  	/* Too many files open in system. 	*/
-#define EMFILE 		24  	/* Too many open files.			*/
+#define EBUSY 		16  	/* "Device or resource busy." 		*/
+#define EEXIST 		17  	/* "File exists." 			*/
+#define EXDEV 		18  	/* "Cross-device link."			*/
+#define ENODEV 		19  	/* "No such device."			*/
+#define ENOTDIR 	20  	/* "Not a directory."			*/
+#define EISDIR 		21  	/* "Is a directory."			*/
+#define EINVAL 		22  	/* "Invalid argument."			*/
+#define ENFILE 		23  	/* "Too many files open in system." 	*/
+#define EMFILE 		24  	/* "Too many open files."		*/
 #define ENOTTY 		25  	/* Inappropriate I/O control operation. */
 #define ETXTBSY 	26  	/* Text file busy.			*/
 #define EFBIG 		27  	/* File too large. 			*/
