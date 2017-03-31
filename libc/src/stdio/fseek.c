@@ -8,6 +8,6 @@ int gfseek(GFILE *fp, long offset, int whence)
 	_flushbuf(EOF, fp);
 	if ((lseek(fp->fd, offset, whence)) == -1)
 		ret = -1;
-	return 0;
+	return ret;
 }
 
