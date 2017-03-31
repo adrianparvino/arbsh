@@ -80,7 +80,7 @@ int _gprintf_inter(GFILE *, char *, size_t, int, const char *, va_list);
 int gprintf(const char *, ...);
 int gsprintf(char *, const char *, ...);
 int gsnprintf(char *, size_t, const char *, ...);
-int gdprintf(int, char *, ...);
+int gdprintf(int, const char *, ...);
 int gfprintf(GFILE *, char *, ...);
 int gvprintf(char *, va_list);
 int gvsprintf(char *, char *, va_list);
