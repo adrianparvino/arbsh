@@ -70,6 +70,9 @@ char _messages[125][80] = {
 	"\0",					/* ? 		69	*/
 	"\0",					/* ?		70	*/
 	"Protocol error.",			/* EPROTO	71	*/
+	"Reserved.",				/* EMULTIHOP	72	*/
+	"\0",					/* ?		73	*/
+	"Bad message.",				/* EBADMSG	74	*/
 
 	
 
