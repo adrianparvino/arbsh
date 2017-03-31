@@ -1,6 +1,6 @@
 #include <gstdio.h> 
 
-int gfprintf(GFILE *stream, char *fmt, ...)
+int gfprintf(GFILE *stream, const char *fmt, ...)
 {
 	int ret = 0;
 	va_list argptr;
