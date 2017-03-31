@@ -58,7 +58,7 @@ char _messages[1000][100] = {
 };
 
 
-char *gstrerror(errnum)
+char *gstrerror(int errnum)
 {
 	return _messages[errnum];
 }
