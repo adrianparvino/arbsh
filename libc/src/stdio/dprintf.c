@@ -1,6 +1,6 @@
 #include <gstdio.h> 
 
-int gdprintf(int fd, char *fmt, ...)
+int gdprintf(int fd, const char *fmt, ...)
 {
 	int ret = 0;
 	va_list argptr;
