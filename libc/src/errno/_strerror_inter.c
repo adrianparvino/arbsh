@@ -10,14 +10,14 @@ char _messages[1000][100] = {
 	"No such device or address.",	/* ENXTA	6	*/
 	"Argument list too long.",	/* E2BIG	7	*/
 	"Executable file format error.",/* ENOEXEC	8	*/
-	"",				/*		9	*/
+	"",				/* ?		9	*/
 	"No child processes.",		/* ECHILD	10	*/
-	"Resource unavailable, try again.",
-	"Not enough space.",
-	"Permission denied."
-	"Bad address.",
-	"",
-	"Device or resource busy.",
+	"Resource unavailable, try again.", /* EAGAIN	11	*/
+	"Not enough space.", 		/* ENOMEM	12	*/
+	"Permission denied.",		/* EACCESS	13	*/
+	"Bad address.",			/* EFAULT	14	*/
+	"",				/* ?		15	*/
+	"Device or resource busy.",	/* EBUSY	16	*/
 	"File exists.",
 	"Cross-device link.",
 	"No such device.",
