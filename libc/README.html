@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>
+
+
+<br clear="left"/></pre><dl>Grafland libc</dl><pre>
+
+
+<br clear="left"/></pre><dl>Building:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	make static
+
+
+<br clear="left"/></pre><dl>Testing:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	./tests/gprintf-driver
+	./tests/gpopen-drivef
+	./tests/...
+
+
+<br clear="left"/></pre><dl>Installation:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	make install DESTDIR=<a href="/path/to/installation/">/path/to/installation/</a>
+
+
+<br clear="left"/></pre><dl>Clean:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	make clean
+
+
+<br clear="left"/></pre><dl>Irc:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	#grafland on irc.freenode.net
+
+
+<br clear="left"/></pre><dl>References:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	<a href="http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2086.htm">http://www.open-std.org/jtc1/sc22/wg14/www/docs/n2086.htm</a>
+
+	<a href="http://www.iso-9899.info">http://www.iso-9899.info</a>
+
+	<a href="http://www.iso-9899.info/wiki/Books">http://www.iso-9899.info/wiki/Books</a>
+
+
+<br clear="left"/></pre><dl>About:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	This libc is in its fledgling stages, here are some differences
+	between it and a fully functional libc:
+
+		* All standard library functions have been renamed by prexifing
+		  them
+		* Header files have been renamed by prefixing them
+		* Printf numerical accuracy is limited. 
+		* Relies on the host libc for system calls and system call
+		  wrappers.
+		* Only about 80 standard C functions implemented.
+
+
+ 
+</pre>
