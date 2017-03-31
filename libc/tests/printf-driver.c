@@ -88,9 +88,9 @@ int main(int argc, char *argv[])
 		double two = 2;
 		printf("%f\n", two);
 
-		printf("%ld\n", 10);
-		printf("%d\n", 0);
-		printf("%zu\n", 11);
+		//printf("%ld\n", 10);
+		//printf("%d\n", 0);
+		//printf("%zu\n", 11);
 
 	}
 	return 0;
