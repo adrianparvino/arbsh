@@ -4,16 +4,21 @@ GFILE *gpopen(const char *command, const char *type)
 {
 	GFILE *ret;
 	int pipefd[2] = { 0 };
+	char *argv[] = { "/bin/sh", "-c", NULL, NULL};
 
 	if ((ret = gfopen(NULL, type)) == NULL)
-		return ret;
+		return NULL;
+	if (command == NULL)
+		return NULL;
+        if ((pipe(pipefd)) == -1)
+		goto error;
+	if ((ret->pid = fork()) == -1)
+		goto error;
 
-        pipe(pipefd);
-	ret->pid = fork();
 	ret->fd = pipefd[0];
+
         if (ret->pid == 0)
         {
-		char *argv[] = { "/bin/sh", "-c", NULL, NULL};
 		argv[2] = (char *)command;
                 close(pipefd[0]);
                 dup2(pipefd[1], 1);
@@ -24,8 +29,12 @@ GFILE *gpopen(const char *command, const char *type)
         }
         else
         {
-                close(pipefd[1]); 
+                close(pipefd[1]);
         }
 	
 	return ret;
-}
+
+	error:
+		gpclose(NULL);
+		return NULL;
+}		
