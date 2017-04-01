@@ -33,7 +33,7 @@ GFILE *gpopen(const char *command, const char *type)
 	}
 	else
 	{
-		if (close(pipefd[1]);
+		close(pipefd[1]);
 	}
 	
 	return ret;
