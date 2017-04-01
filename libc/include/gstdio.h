@@ -40,7 +40,7 @@ typedef struct {
 	char *rp;
 	char *lp;
 	int len;
-	size_t pid; /* for popen */
+	ssize_t pid; /* for popen */
 } GFILE;
 
 extern GFILE _IO_stream[FOPEN_MAX];
