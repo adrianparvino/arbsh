@@ -21,13 +21,10 @@
 /* 
 	Implementations must potentially support ptrdiff_t, size_t and wchar_t 
 	being no larger than type long if determined by confstr().
-*/
+*/ 
 
-#undef ptrdiff_t
 typedef long ptrdiff_t;
 
-
-#undef size_t
 typedef unsigned long size_t;
 
 /* 
@@ -45,9 +42,8 @@ typedef unsigned long size_t;
 
 
 /* putting ssize_t here is not part of POSIX */
-
-#undef ssize_t
 typedef long ssize_t;
+
 
 #define SEEK_SET	0
 #define SEEK_CUR	1
