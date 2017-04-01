@@ -91,6 +91,13 @@ char *_messages[125] = {
 	"Message too large.",			/* EMSGSIZE	90	*/
 	"Protocol wrong type for socket.",	/* EPROTOTYPE	91	*/
 	"Protocol not available.",		/* ENOPROTOOPT	92	*/
+	"Protocol not supported.", 	/* EPROTONOSUPPORT	93	*/
+	"\0",					/* ?		94	*/
+	"Operation not supported on socket.",	/* EOPNOTSUPP	95	*/
+	"Address family not supported.",	/* EAFNOSUPPORT	97	*/
+	"Address in use.",			/* EADDRINUSE	98	*/
+	"Address not available.",	/* EADDRNOTAVAIL	99	*/
+	"Network is down.",			/* ENETDOWN	100	*/
 	
 };
 
