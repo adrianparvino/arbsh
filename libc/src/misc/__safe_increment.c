@@ -1,14 +1,18 @@
 #include <gstddef.h>
 
+// i = _safe_*(i, request, SIZE_MAX);
 
-size_t __safe_increment(size_t i, size_t request, size_t limit)
+size_t _safe_add(size_t i, size_t request, size_t limit)
 {
-	/*
-		Usage:
-		i = __safe_increment(i, request, SIZE_MAX);
-	*/
 	if ((limit - i) >= request )
 		return i + request;
+	return limit;
+}
+
+size_t _safe_mul(size_t i, size_t request, size_t limit)
+{
+	if ((limit / request) <= i)
+		return i * request; 
 	return limit;
 }
 
