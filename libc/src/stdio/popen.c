@@ -10,31 +10,35 @@ GFILE *gpopen(const char *command, const char *type)
 		return NULL;
 	if (command == NULL)
 		return NULL;
-        if ((pipe(pipefd)) == -1)
+	if ((pipe(pipefd)) == -1)
 		goto error;
 	if ((ret->pid = fork()) == -1)
 		goto error;
 
 	ret->fd = pipefd[0];
 
-        if (ret->pid == 0)
-        {
+	if (ret->pid == 0)
+	{
 		argv[2] = (char *)command;
-                close(pipefd[0]);
-                dup2(pipefd[1], 1);
-                close(pipefd[1]);
-                dup2(pipefd[1], 2);
-                execvp(argv[0], argv);
-                _exit(1);
-        }
-        else
-        {
-                close(pipefd[1]);
-        }
+		if ((close(pipefd[0])) == -1)
+			goto error;
+		if ((dup2(pipefd[1], 1)) == -1)
+			goto error;
+		if ((close(pipefd[1])) == -1)
+			goto error;
+		if ((dup2(pipefd[1], 2)) == -1)
+			goto error;
+		execvp(argv[0], argv);
+		_exit(1);
+	}
+	else
+	{
+		if (close(pipefd[1]);
+	}
 	
 	return ret;
 
 	error:
-		gpclose(NULL);
+		gfclose(ret);
 		return NULL;
 }		
