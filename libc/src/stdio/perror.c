@@ -8,7 +8,7 @@ void gperror(const char *interject)
 	const char *delim = "";
 
 	if ((message = strerror(errno)) == NULL)
-		return NULL;
+		return;
 
 	if (interject)
 	{
