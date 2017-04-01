@@ -20,3 +20,5 @@ char *gstrchrnul(const char *, int);
 /* strerror */
 char *gstrerror(int);
 
+extern char **_messages;
+
