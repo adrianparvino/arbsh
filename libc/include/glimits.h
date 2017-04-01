@@ -1,9 +1,10 @@
 /* constants */
 #define CHAR_BITS    8
 
-/* Gnerated automatically by ./tests/compute_limits-driver: */
+/* Gnerated automatically by ./a.out: */
+#define SIZE_MAX     (18446744073709551615UL)
 #define SIZE_MIN     0
-#define SSIZE_MAX    9223372036854775808
+#define SSIZE_MAX    9223372036854775807
 #define SSIZE_MIN    -9223372036854775808
 #define UCHAR_MAX    255
 #define UCHAR_MIN    0
