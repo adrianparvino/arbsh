@@ -50,7 +50,7 @@ int *error(void);
 
 
 #define ENOSTR 		60  	/* "Not a STREAM."			*/ 
-#define ENODATA 	61  	/* "No msg is avail on  STREAM head ."  */ 
+#define ENODATA 	61  	/* "No msg is avail on STREAM head."	*/ 
 #define ETIME 		62  	/* "Stream ioctl() timeout."		*/
 #define ENOSR 		63  	/* "No STREAM resources."			*/ 
 
@@ -60,6 +60,7 @@ int *error(void);
 
 #define EPROTO 		71  	/* "Protocol error."			*/
 #define EMULTIHOP 	72  	/* "Reserved."				*/
+
 #define EBADMSG 	74  	/* "Bad message." 			*/
 #define EOVERFLOW 	75  	/* "Val too large to be stored in data type." */
 
@@ -91,15 +92,15 @@ int *error(void);
 
 #define ETIMEDOUT 	110  	/* "Connection timed out."		*/
 #define ECONNREFUSED 	111  	/* "Connection refused." 			*/
-#define EHOSTUNREACH 	113  	/* Host is unreachable. 		*/
-#define EALREADY 	114  	/* Connection already in progress. 	*/
-#define EINPROGRESS 	115  	/* Operation in progress.		*/
-#define ESTALE 		116  	/* Reserved.				*/
+#define EHOSTUNREACH 	113  	/* "Host is unreachable." 		*/
+#define EALREADY 	114  	/* "Connection already in progress." 	*/
+#define EINPROGRESS 	115  	/* "Operation in progress."		*/
+#define ESTALE 		116  	/* "Reserved."				*/
 
 
-#define EDQUOT 		122  	/* Reserved. 				*/ 
+#define EDQUOT 		122  	/* "Reserved." 				*/ 
 
-#define EWOULDBLOCK EAGAIN 	/* Operation would block (EAGAIN) ..... */
+#define EWOULDBLOCK EAGAIN 	/* "Operation would block (EAGAIN) ..." */
 /* missing */
 /* #define EBADF *//* Bad file descriptor.				*/ 
 /* #define ECANCELED  */  	/* Operation canceled.			*/ 
