@@ -3,5 +3,7 @@
 
 char *gstrerror(int errnum)
 {
-	return _messages[errnum];
+	if (errnum > 0 && errnum < 128)
+		return _messages[errnum];
+	return _messages[0];
 }
