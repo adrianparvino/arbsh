@@ -1,6 +1,8 @@
 #include <gstdlib.h>
 #include <gstddef.h>
 #include <gstring.h>
+#include <glimits.h>
+#include <libc_impl.h>
 
 #define _ALIGNTYPE long
 
@@ -133,8 +135,9 @@ gcalloc(size_t nmemb, size_t size)
 { 
 	size_t request;
 	void *ret;
-		
-	request = nmemb * size;
+	
+	request = _safe_mul(nmemb, size, SIZE_MAX);
+
 	if ((ret = gmalloc(request)) != NULL)
 		gmemset(ret, 0, request); 
 	
