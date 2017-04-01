@@ -3,12 +3,19 @@
 
 void gperror(const char *interject)
 {
-	const char *message = strerror(errno);
+	const char *message;
+	const char *str = "";
+	const char *delim = "";
+
+	if ((message = strerror(errno)) == NULL)
+		return NULL;
 
 	if (interject)
-		gfprintf(gstderr, "%s: %s\n", interject, message);
-	else
-		gfprintf(gstderr, "%s\n", message);
+	{
+		str = interject;
+		delim = ": ";
+	}
+	gfprintf(gstderr, "%s%s%s\n", str, delim, message);
 }
 
 
