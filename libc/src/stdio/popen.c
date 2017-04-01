@@ -2,10 +2,10 @@
 
 GFILE *gpopen(const char *command, const char *type)
 {
-	GFILE *ret = gfopen(NULL, type);
+	GFILE *ret;
 	int pipefd[2] = { 0 };
 
-	if (ret == NULL)
+	if ((ret = gfopen(NULL, type)) == NULL)
 		return ret;
 
         pipe(pipefd);
