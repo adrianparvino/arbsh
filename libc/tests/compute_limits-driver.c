@@ -16,8 +16,10 @@ int main(int argc, char *argv[])
 	printf("#define CHAR_BITS    8\n\n");
 
 	printf("/* Gnerated automatically by %s: */\n", argv[0]);
+
+	printf("#define %sSIZE_MAX     (%lluUL)\n", p, MAX_OF(size_t)); 
 	printf("#define %sSIZE_MIN     %lld\n", p, MIN_OF(size_t)); 
-	printf("#define %sSSIZE_MAX    %llu\n", p, MIN_OF(ssize_t));
+	printf("#define %sSSIZE_MAX    %llu\n", p, MAX_OF(ssize_t));
 	printf("#define %sSSIZE_MIN    %lld\n", p, MIN_OF(ssize_t)); 
 	printf("#define %sUCHAR_MAX    %llu\n", p, MAX_OF(unsigned char));
 	printf("#define %sUCHAR_MIN    %lld\n", p, MIN_OF(unsigned char)); 
