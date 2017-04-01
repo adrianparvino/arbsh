@@ -133,9 +133,6 @@ gcalloc(size_t nmemb, size_t size)
 { 
 	size_t request;
 	void *ret;
-
-	if (size && nmemb > (size_t)-1/size)
-                return NULL;
 		
 	request = nmemb * size;
 	if ((ret = gmalloc(request)) != NULL)
