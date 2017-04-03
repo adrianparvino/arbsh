@@ -136,8 +136,7 @@ gcalloc(size_t nmemb, size_t size)
 	size_t request;
 	void *ret;
 	
-	//request = _safe_mul(nmemb, size, SIZE_MAX);
-	request = nmemb * size;
+	request = _safe_mul(nmemb, size, GSIZE_MAX);
 
 	if ((ret = gmalloc(request)) != NULL)
 		gmemset(ret, 0, request); 
