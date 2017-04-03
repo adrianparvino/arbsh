@@ -1,11 +1,16 @@
 #include <gunistd.h>
 
-void gswab(void *from, void *to, ssize_t n) {
-	char *fromm = from;
+void gswab(const void *from, void *to, ssize_t n)
+{
+	size_t i = 0;
+	const char *fromm = from;
+	char tmp;
+	char tmpp;
 	char *too = to;
-	for (int i = 0; i < n; i += 2) {
-		char tmp = *(fromm + i);
-		char tmpp = *(fromm + i + 1);
+	for (i = 0; i < n; i += 2)
+	{
+		tmp = *(fromm + i);
+		tmpp = *(fromm + i + 1);
 		*(too + i) = tmpp;
 		*(too + i + 1) = tmp;
 	}
