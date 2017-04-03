@@ -4,21 +4,23 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <termcap/vt100.h>
 
+/* limits */
 #define CURSES_MAX 10
 #define CURSES_BUFSIZ 512
+
+/* data types */
+typedef char chtype;
 
 typedef struct{ 
 	int fd;
 	char flags;
-	char *buf;
 	char *rp;
-	char *lp;
-	ssize_t pid;
-        size_t counter;
-        char *ansiwinbuf;
-        char *ansilastmap;
+        size_t len;
+        char *buf;
+        char *last;
         char *cpairs[CURSES_BUFSIZ];
         int colordlen[CURSES_BUFSIZ];
         char *colorlast[CURSES_BUFSIZ];
@@ -26,6 +28,7 @@ typedef struct{
 
 extern WINDOW _IO_canon[CURSES_MAX];
 
+/* bit masks */
 enum _canons {
 	_BLACK  = 001,
 	_RED_ = 002,
@@ -35,6 +38,7 @@ enum _canons {
 	_BLUE  = 020,
 };
 
+/* global structures */
 struct ansiglb{
         size_t row;     /* global rows    */
         size_t col;     /* global columns */
@@ -42,16 +46,28 @@ struct ansiglb{
         size_t c;       /* current window */
 }ansiglb;
 
-
+/* macros */
 #define stdscr  (&_IO_canon[0])
 
+/** functions **/
+
+/* cursor moving */
 int wmove(WINDOW *, size_t, size_t);
 int move(size_t, size_t);
+/* initialize */
 WINDOW *initscr(void);
+/* character io */
+int addch(chtype); 				/* not implemented */
+int waddch(WINDOW *, const chtype); 		/* not implemented */
+int mvaddch(int, int, const chtype); 		/* not implemented */
+int mvwaddch(WINDOW *, int, int, const chtype); /* not implemented */
+int echochar(const chtype); 			/* not implemented */
+int wechochar(WINDOW *, const chtype); 		/* not implemented */
+/* colorization */
+int start_color(void); 				/* not implemented */
+bool has_colors(void);				/* not implemented */
+bool can_change_color(void);			/* not implemented */
+int init_pair(short pair, short f, short b);	/* not implemented */
+int init_color(short color, short r, short g, short b);	/* not implemented */
 
-int addch(const char);
-int waddch(WINDOW *, const char);
-int mvaddch(int, int, const char);
-int mvwaddch(WINDOW *, int, int, const char);
-int echochar(const char);
-int wechochar(WINDOW *, const char);
+
