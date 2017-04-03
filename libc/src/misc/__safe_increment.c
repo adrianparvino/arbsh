@@ -1,7 +1,5 @@
 #include <gstddef.h>
 
-// i = _safe_*(i, request, SIZE_MAX);
-
 size_t _safe_add(size_t i, size_t request, size_t limit)
 {
 	if ((limit - i) >= request )
