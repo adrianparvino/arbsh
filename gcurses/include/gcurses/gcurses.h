@@ -70,4 +70,9 @@ bool can_change_color(void);			/* not implemented */
 int init_pair(short pair, short f, short b);	/* not implemented */
 int init_color(short color, short r, short g, short b);	/* not implemented */
 
+/* echo */
+int noecho(void);
 
+
+/* internal */
+int _termcatch(int, int);
