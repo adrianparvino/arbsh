@@ -23,7 +23,7 @@ typedef struct{
         int colordlen[CURSES_BUFSIZ];
         char *colorlast[CURSES_BUFSIZ];
 } WINDOW;
-// = { 0, 0, NULL, NULL, NULL, 0, 0, NULL. NULL, {{ 0 }}, {0}, {{ 0 }}}; 
+
 extern WINDOW _IO_canon[CURSES_MAX];
 
 enum _canons {
@@ -42,8 +42,12 @@ struct ansiglb{
         size_t c;       /* current window */
 }ansiglb;
 
+
 #define stdscr  (&_IO_canon[0])
 
+int wmove(WINDOW *, size_t, size_t);
+int move(size_t, size_t);
+WINDOW *initscr(void);
 
 int addch(const char);
 int waddch(WINDOW *, const char);
