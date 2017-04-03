@@ -2,7 +2,7 @@
 
 void gswab(const void *from, void *to, ssize_t n)
 {
-	size_t i = 0;
+	ssize_t i = 0;
 	const char *fromm = from;
 	char tmp;
 	char tmpp;
