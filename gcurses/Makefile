@@ -8,7 +8,7 @@ OBJ = $(shell for i in src/*/*.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
-LIBNAME = curses
+LIBNAME = gcurses
 
 STATLIB = lib$(LIBNAME).a
 
@@ -65,5 +65,5 @@ install:
 	-mkdir -p $(DESTDIR)/include/
 	cp -r $(STATLIB) $(DESTDIR)/lib/
 	cp -r $(DYNLIB) $(DESTDIR)/lib/
-	cp -r include/curses/ $(DESTDIR)/include/
+	cp -r include/$(LIBNAME)/ $(DESTDIR)/include/
 
