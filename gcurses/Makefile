@@ -4,7 +4,7 @@ LDFLAGS := -lm
 
 CC := gcc
 
-OBJ = $(shell for i in *.c ; do echo $${i%.c}.o ; done )
+OBJ = $(shell for i in src/*/*.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
