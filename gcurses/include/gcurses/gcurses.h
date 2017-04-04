@@ -68,15 +68,12 @@ int start_color(void); 				/* not implemented */
 bool has_colors(void);				/* not implemented */
 bool can_change_color(void);			/* not implemented */
 int init_pair(short pair, short f, short b);	/* not implemented */
-int init_color(short color, short r, short g, short b);	/* not implemented */
-
+int init_color(short color, short r, short g, short b);	/* not implemented */ 
 /* echo */
 int noecho(void);
-
-
+int echo(void);
 /* internal */
 int _termcatch(int, int);
-
 /* refresh */
 int refresh(void);
 int wrefresh(WINDOW *win);
