@@ -5,7 +5,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <termcap/vt100.h>
+#include <sys/ioctl.h>
+#include <termios.h>
+#include <gtermcap/vt100.h>
 
 /* limits */
 #define CURSES_MAX 10
@@ -44,7 +46,11 @@ struct ansiglb{
         size_t col;     /* global columns */
         size_t t;       /* total windows  */
         size_t c;       /* current window */
-}ansiglb;
+	char *t_eraseall;	/* terminal capability */
+	char *t_insertreset;	/* terminal capability */
+	char *t_gohome;		/* terminal capability */
+	char *t_clrcur2bot;	/* terminal capability */
+} ansiglb;
 
 /* macros */
 #define stdscr  (&_IO_canon[0])
