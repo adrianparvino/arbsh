@@ -1,12 +1,8 @@
-CFLAGS := -I./include/ -I../include -Wall -Wextra
+CFLAGS += -I./include/ -Wall -Wextra
 
-LDFLAGS := 
-
-CC := gcc
+LDFLAGS +=
 
 OBJ = $(shell for i in src/*/*.c ; do echo $${i%.c}.o ; done )
-
-AR := ar
 
 LIBNAME = gcurses
 
@@ -16,17 +12,17 @@ DYNLIB = lib$(LIBNAME).so
 
 DYNCC = CC="$(CC) -fpic"
 
-DESTDIR := ../
+DESTDIR ?= ../
 
 .PHONY: uninstall
 
-INCLUDES =  $(shell for i in include/*.h ; do echo $$i ; done )
+INCLUDES = $(shell for i in include/*.h ; do echo $$i ; done )
 
 INCLUDES_TARG =  $(shell for i in include/*.h ; do echo $(DESTDIR)/$$i ; done )
 
 TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
 
-LDLIBS = -L. -l$(LIBNAME)
+LDLIBS += -L. -l$(LIBNAME)
 
 all:
 
