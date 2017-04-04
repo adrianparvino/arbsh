@@ -5,6 +5,9 @@ int main(void)
 	WINDOW *new_window = NULL;
 	new_window = new_window;
 	initscr();
+	noecho();
 	move(10, 10);
-	
+	write(1, "hello", 5);
+	move(12, 12);
+	echo();
 }
