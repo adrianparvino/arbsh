@@ -13,5 +13,6 @@ WINDOW *initscr(void)
 
 	write(1, T_ERASEALL, T_ERASEALL_SZ);
 	write(1,T_INSERTRESET, T_INSERTRESET_SZ);
+	move(1, 1);
 	return win;
 }
