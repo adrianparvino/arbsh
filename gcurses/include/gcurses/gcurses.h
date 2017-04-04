@@ -76,3 +76,8 @@ int noecho(void);
 
 /* internal */
 int _termcatch(int, int);
+
+/* refresh */
+int refresh(void);
+int wrefresh(WINDOW *win);
+
