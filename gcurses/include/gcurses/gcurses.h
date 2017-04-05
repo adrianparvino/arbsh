@@ -26,6 +26,8 @@ typedef struct{
         char *cpairs[CURSES_BUFSIZ];
         int colordlen[CURSES_BUFSIZ];
         char *colorlast[CURSES_BUFSIZ];
+	size_t x;				/* dimensions */
+	size_t y;				/* dimensions */
 } WINDOW;
 
 extern WINDOW _IO_canon[CURSES_MAX];
