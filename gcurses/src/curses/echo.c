@@ -6,5 +6,3 @@ int echo(void)
 	return 0;
 }
 
-
-
