@@ -83,4 +83,12 @@ int _termcatch(int, int);
 /* refresh */
 int refresh(void);
 int wrefresh(WINDOW *win);
-
+/* erase */
+int erase(void);				/* not implemented */
+int werase(WINDOW *);				/* not implemented */
+int clear(void);				/* not implemented */
+int wclear(WINDOW *);				/* not implemented */
+int clrtobot(void);				/* not implemented */
+int wclrtobot(WINDOW *);			/* not implemented */
+int clrtoeol(void);				/* not implemented */
+int wclrtoeol(WINDOW *);			/* not implemented */
