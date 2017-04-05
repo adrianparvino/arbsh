@@ -1,5 +1,7 @@
 #include <gcurses/gcurses.h>
 
+// TODO: Load values into ansiglb at run time from terminfo 
+
 WINDOW *initscr(void)
 {
 	int ret = 0;
@@ -10,14 +12,17 @@ WINDOW *initscr(void)
 
 	if ((ret = ioctl(0, TIOCGWINSZ, &w)) == -1)
 		return NULL;
+
 	ansiglb.col = w.ws_col;
 	ansiglb.row = w.ws_row;
 	ansiglb.t_eraseall = T_ERASEALL;
 	ansiglb.t_insertreset = T_INSERTRESET;
 	ansiglb.t_gohome = T_GOHOME;
 	ansiglb.t_clrcur2bot = T_CLRCUR2BOT;
+	ansiglb.t_clrtoeol = T_CLRCUR2END;
 	len = sprintf(buf, "%s%s", ansiglb.t_eraseall, ansiglb.t_insertreset);
 	write(1, buf, len);
 	move(1, 1);
 	return win;
 }
+
