@@ -4,19 +4,17 @@
 #include <fcntl.h> 
 
 /*
-	Copyright 2015, "head.c", C. Graff
+	Copyright 2015-2017, "head.c", Christopher M. Graff
 */
 
-void cathead(int, size_t);
+void cathead(int, size_t, int);
 
 int main(int argc, char *argv[])
 { 
 	int o;
-	size_t lines;
+	size_t lines = 10;
 
-	lines = 10;
-
-        while ((o = getopt (argc, argv, "n:")) != -1)
+        while ((o = getopt(argc, argv, "n:")) != -1)
                 switch (o) {
                         case 'n':
                                 lines = strtod(optarg, NULL);
@@ -28,48 +26,41 @@ int main(int argc, char *argv[])
         argv += optind;
         argc -= optind; 
 
-	if ( argc == 0 )
-                cathead(STDIN_FILENO, lines);
+	if (argc == 0)
+                cathead(STDIN_FILENO, lines, 0);
 
-        while ( *(argv) ) 
-		cathead(open(*argv++, O_RDONLY), lines); 
+        while (*(argv)) 
+		cathead(open(*argv++, O_RDONLY), lines, 1);
 
 	return 0; 
-}
+} 
 
-
-void cathead(int source, size_t end)
+void cathead(int source, size_t end, int opened)
 {
+        size_t i, j; 
+	ssize_t ret = 0;
+	char buf[4096];
 
-        size_t i, j, k; 
-	size_t len;
-	char *buf; 
-     
-	len = BUFSIZ;
-
-	if (!(buf = malloc(sizeof(char) * len)))
-		return;
-
-	i = j = k = 0;
-
-        if ( source == -1 )
+        if (source == -1)
                 return;
 
-        while ((i = read(source, buf, len)) > 0)
+        for (i = 0, j=0; (ret = read(source, buf, 4096)) > 0;)
         {
-		j = 0;
-                while (j < i)
+		i = 0;
+                while (i < (size_t)ret)
                 {
-                        if ( buf[j] == '\n' )
-                                ++k;
-			++j; 
-                        if ( k == end  )
+			
+                        if (buf[i] == '\n')
+                                ++j;
+			++i; 
+                        if (j == end)
 				break; 
                 }
-		write (STDOUT_FILENO, buf, j);
+		write(STDOUT_FILENO, buf, ret);
         }
-	
-	free(buf);
-        close(source);
+	if (ret == -1)
+		write(2, "head error.\n", 12);
+	if (opened == 1)
+        	close(source);
 }
 
