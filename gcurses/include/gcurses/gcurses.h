@@ -28,6 +28,7 @@ typedef struct{
         char *colorlast[CURSES_BUFSIZ];
 	size_t x;				/* dimensions */
 	size_t y;				/* dimensions */
+	bool clearok;
 } WINDOW;
 
 extern WINDOW _IO_canon[CURSES_MAX];
