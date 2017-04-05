@@ -57,6 +57,7 @@ struct ansiglb{
 
 /* macros */
 #define stdscr  (&_IO_canon[0])
+#define curscr  (&_IO_canon[CURSES_MAX])
 
 /** functions **/
 
