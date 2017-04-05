@@ -9,9 +9,3 @@ int wclrtobot(WINDOW *win)
 	return 1;
 }
 
-
-
-
-	
-
-
