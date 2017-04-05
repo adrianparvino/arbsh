@@ -96,3 +96,15 @@ int clrtobot(void);				/* not implemented */
 int wclrtobot(WINDOW *);			/* not implemented */
 int clrtoeol(void);				/* not implemented */
 int wclrtoeol(WINDOW *);			/* not implemented */
+/* clearok */
+int clearok(WINDOW *, bool);			/* not implemented */
+int idlok(WINDOW *, bool);			/* not implemented */
+void idcok(WINDOW *, bool);			/* not implemented */
+void immedok(WINDOW *, bool);			/* not implemented */
+int leaveok(WINDOW *, bool);			/* not implemented */
+int setscrreg(int, int);			/* not implemented */
+int wsetscrreg(WINDOW *, int, int);		/* not implemented */
+int scrollok(WINDOW *, bool);			/* not implemented */
+int nl(void);					/* not implemented */
+int nonl(void);					/* not implemented */
+
