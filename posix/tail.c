@@ -5,7 +5,9 @@
 #include "../legacy/lib/cutils.h"
 
 
-/* Copyright 2015, C. Graff  "tail" */ 
+/* 
+	Copyright 2015-2017, "tail.c", Christopher M. Graff
+*/ 
 
 void cattail(int, unsigned int *);
 
@@ -61,12 +63,9 @@ int main(int argc, char *argv[])
 }
 
 void cattail(int source, unsigned int *opt)
-{
-
-	//int i, j, n, z, seekto;
+{ 
 	size_t i, j, n, z, seekto;
 	char buf[BUFSIZ];
-	//int loci[100000]; 
 	int *loci = cutilmalloc(sizeof(int));
 	int compensate = 0;
 
