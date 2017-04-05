@@ -50,6 +50,7 @@ struct ansiglb{
 	char *t_insertreset;	/* terminal capability */
 	char *t_gohome;		/* terminal capability */
 	char *t_clrcur2bot;	/* terminal capability */
+	char *t_clrtoeol;	/* terminal capability */
 } ansiglb;
 
 /* macros */
