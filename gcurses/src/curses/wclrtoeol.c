@@ -9,9 +9,3 @@ int wclrtoeol(WINDOW *win)
 	return 1;
 }
 
-
-
-
-	
-
-
