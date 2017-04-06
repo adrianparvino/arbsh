@@ -1,5 +1,4 @@
-#include <string.h>
-#include <strings.h>
+#include <gstring.h>
 
 char *index (const char *s, int c) {
 	size_t i = 0;
