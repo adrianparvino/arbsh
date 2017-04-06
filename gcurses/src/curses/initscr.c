@@ -22,6 +22,7 @@ WINDOW *initscr(void)
 	ansiglb.t_gohome = T_GOHOME;
 	ansiglb.t_clrcur2bot = T_CLRCUR2BOT;
 	ansiglb.t_clrtoeol = T_CLRCUR2END;
+	ansiglb.t_eraseall = T_ERASEALL;
 
 	/* populate stdscr */
 	win->x = ansiglb.col;
