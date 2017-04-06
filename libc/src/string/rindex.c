@@ -1,5 +1,4 @@
-#include <string.h>
-#include <strings.h>
+#include <gstring.h>
 
 char *rindex (const char *s, int c) {
 	int i = 0;
