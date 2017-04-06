@@ -108,4 +108,11 @@ int wsetscrreg(WINDOW *, int, int);		/* not implemented */
 int scrollok(WINDOW *, bool);			/* not implemented */
 int nl(void);					/* not implemented */
 int nonl(void);					/* not implemented */
+/* getch */
+int getch(void);				/* not implemented */
+int wgetch(WINDOW *win);			/* not implemented */
+int mvgetch(int y, int x);			/* not implemented */
+int mvwgetch(WINDOW *win, int y, int x);	/* not implemented */
+int ungetch(int ch);				/* not implemented */
+int has_key(int ch);				/* not implemented */
 
