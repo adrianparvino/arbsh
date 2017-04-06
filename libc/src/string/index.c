@@ -1,6 +1,7 @@
 #include <gstring.h>
 
-char *index (const char *s, int c) {
+char *gindex(const char *s, int c)
+{
 	size_t i = 0;
 	while (s[i] != c && s[i] != '\0') {
 		++i;
@@ -9,3 +10,4 @@ char *index (const char *s, int c) {
 		return NULL;
 	return i + s;
 }
+
