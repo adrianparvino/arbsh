@@ -2,8 +2,12 @@
 
 int wrefresh(WINDOW *win)
 {
-	if ( win->clearok == 1)
-		;// 
-	win = win;// draw
+	char buf[32];
+	size_t len = 0;
+	if (win->clearok == 1)
+	{
+		len = sprintf(buf, "%s", ansiglb.t_eraseall);
+		write(win->fd, buf, len);
+	}
 	return 0;
 }
