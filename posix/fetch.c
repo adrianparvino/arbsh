@@ -26,11 +26,6 @@ void writeout(int, int);
 
 int main (int argc, char *argv[])
 { 
-	
-	/* 
-		main() --> parseurl() --> fetch() --> writeout()
-	*/ 
-
 	if ( argc == 1 )
 		cutilerror("Usage: fetch http://www.gnu.org/index.html\n", -1); 
 	++argv;
@@ -41,11 +36,7 @@ int main (int argc, char *argv[])
 }
 
 void parseurl(char *argv)
-{ 
-	/* 
-		parseurl() --> fetch() --> writeout()
-	*/
-
+{
 	char *host;
 	char *type;
 	char *page;
@@ -66,21 +57,13 @@ void parseurl(char *argv)
 }
 
 void fetch(char *type, char *host, char *page) 
-{
-	/*
-		fetch() --> writeout()
-	*/
-
+{ 
 	struct addrinfo hints, *res;    
 	int sck;			
 	int output;			
 	char message[4096];		
-	size_t len = 0;
-
-	
-	memset(&hints, 0, sizeof(hints));
-	
-	
+	size_t len = 0; 
+	memset(&hints, 0, sizeof(hints)); 
 	if ( strcmp(type, "http") == 0)
 	{
 		
@@ -89,51 +72,38 @@ void fetch(char *type, char *host, char *page)
 			cutilerror("User argument length is not sane", 0);
 	}
 	else
-		cutilerror("Protocol not supported", 0);
-	
+		cutilerror("Protocol not supported", 0); 
 	
 	hints.ai_family = PF_UNSPEC;
-	hints.ai_socktype = SOCK_STREAM;
-
+	hints.ai_socktype = SOCK_STREAM; 
 	
 	if ((getaddrinfo(host, type, &hints, &res)) != 0)
-		cutilerror("getaddrinfo() failed", 1);
-
+		cutilerror("getaddrinfo() failed", 1); 
 	
 	if ((sck = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1)
-		cutilerror("socket() failed", 1);
-
+		cutilerror("socket() failed", 1); 
 	
 	if ((connect(sck, res->ai_addr, res->ai_addrlen)) == -1)
-		cutilerror("connect() failed", 1);
-
+		cutilerror("connect() failed", 1); 
 	
 	write(sck, message, strlen(message)); 
-
 	
 	if ((output = open(basename(page), O_CREAT|O_RDWR, S_IRUSR|S_IWUSR)) == -1 )
-		cutilerror("open() failed", 1);
-
+		cutilerror("open() failed", 1); 
 	
-	writeout(sck, output);
-
+	writeout(sck, output); 
 	
 	freeaddrinfo(res);
 	close(sck);
 }
 
 void writeout(int sck, int output)
-{
-	/*
-		This function writes data to the user's file after
-		stripping the http header at "\n\r"  
-	*/
+{ 
 	size_t i;
 	size_t n; 
 	int lever; 
     	char buf[4096];
 	char *luf;
-   
 	
 	i = n = lever = 0;
 
@@ -141,19 +111,16 @@ void writeout(int sck, int output)
 	{
 		i = 0;
 		if (lever == 0)
-		{
-			
+		{ 
 			if ((luf = strstr(buf, "\n\r")))
 			{
-				
 				i = (luf - buf); 
 				i += 3;
 			}
 			lever = 1;
-		} 
-		
+		}
 		write(output, buf + i, n - i);
-	} 
+	}
 }
 
 
