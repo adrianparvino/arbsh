@@ -2,10 +2,9 @@
 
 int waddch(WINDOW *win, chtype ch)
 {
-	chtype ret = 0;
-	if ( win->buf == NULL )
+	if (win->buf == NULL)
 	{
-		win->len =(win->x * win->y);
+		win->len = (win->x * win->y);
 		if ((win->buf = malloc(sizeof(char) * win->len)) == NULL)
 		{
 			win->len = 0;
@@ -13,12 +12,18 @@ int waddch(WINDOW *win, chtype ch)
 		}
 		win->buf = win->rp;
 	}
-	if ( win->len > 0 )
-	{
+	if (win->len > 0)
 		win->len--;
-	}
+
 	*win->rp = ch;
-	ret = ch;
-	*win->rp++;
-	return ret;
+	
+	if (win->len == 0)
+	{
+		wrefresh(win);
+		win->buf = win->rp;
+		win->len = (win->x * win->y);
+		return ch;
+	}
+	return *win->rp++;
 }
+
