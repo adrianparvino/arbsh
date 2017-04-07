@@ -1,21 +1,19 @@
 #include <stdio.h>
-#include <string.h> 
+#include <string.h>
 #include <stdlib.h>
-#include <unistd.h> 
-#include <netdb.h> 
-#include <fnmatch.h> 
+#include <unistd.h>
+#include <netdb.h>
+#include <fnmatch.h>
 #include <sys/types.h>
-#include <sys/socket.h> 
-#include <limits.h> 
-#include <libgen.h> 
+#include <sys/socket.h>
+#include <limits.h>
+#include <libgen.h>
 #include <fcntl.h>
-#include <limits.h> 
+#include <limits.h>
 #include <fcntl.h>
-
-//#include <linux/limits.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "../legacy/lib/cutils.h" 
+#include "../legacy/lib/cutils.h"
 
 /* 
 	Copyright 2015, C. Graff  "fetch"
@@ -53,7 +51,7 @@ void parseurl(char *argv)
 
 	type = host = page = argv;
 	/* break apart the user's arg string and get the various parts */
-	if ( (host = strstr(argv, "://")))
+	if ((host = strstr(argv, "://")))
 	{
 		*host = '\0';
 		host += 3;
