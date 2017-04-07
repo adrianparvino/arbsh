@@ -1,6 +1,6 @@
 #include <string.h>
 
-void *gmemcppy(void *dest, const void *src, int c, size_t n)
+void *gmemccpy(void *dest, const void *src, int c, size_t n)
 {
 	const char *source = src;
 	char *destination = dest;
