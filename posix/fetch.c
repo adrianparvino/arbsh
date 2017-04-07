@@ -89,6 +89,7 @@ void fetch(char *type, char *host, char *page)
 	
 	/* ensure that the user is actually requesting http */
 	if ( strcmp(type, "http") == 0)
+		/* create the message we will send to the remote server */
 		sprintf(message, "GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n", page, host); 
 	else
 		cutilerror("Protocol not supported", 0);
@@ -119,6 +120,7 @@ void fetch(char *type, char *host, char *page)
 	/* write all of the data into the output file */
 	writeout(sck, output);
 
+	/* free up any unneeded resources */
 	freeaddrinfo(res);
 	close(sck);
 	free(message);
@@ -132,7 +134,7 @@ void writeout(int sck, int output)
 	*/
 	size_t i;
 	size_t n; 
-	int http; 
+	int lever; 
     	char *buf;
 	char *luf;
 
@@ -140,20 +142,21 @@ void writeout(int sck, int output)
 		cutilerror("Insufficient memory", -1);
    
 	/* override */
-	i = n = http = 0;
+	i = n = lever = 0;
 
 	while ( (n = read(sck, buf, BUFSIZ)) > 0 )
 	{
-		i = 0; 
-		if ( http == 0 )
+		i = 0;
+		if (lever == 0)
 		{
 			/* detect the http header */
 			if ((luf = strstr(buf, "\n\r")))
 			{
-				i = ( luf - buf ); 
+				/* strip the http header off */
+				i = (luf - buf); 
 				i += 3;
 			}
-			http = 1;
+			lever = 1;
 		} 
 		/* actually write the data out to the file */
 		write(output, buf + i, n - i);
