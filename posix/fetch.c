@@ -71,13 +71,11 @@ void fetch(char *type, char *host, char *page)
 		fetch() --> writeout()
 	*/
 
-	struct addrinfo hints, *res; 
-	int sck;
-	int output;
-	char message[4096];
+	struct addrinfo hints, *res;    /* The networking data structure for getaddrinfo */
+	int sck;			/* The network file descriptor */
+	int output;			/* File descriptor for file being created */
+	char message[4096];		/* message to request a page */
 	size_t len = 0;
-
-	output = STDOUT_FILENO;
 
 	/* initialise the addrinfo networking structure */
 	memset(&hints, 0, sizeof(hints));
@@ -106,7 +104,7 @@ void fetch(char *type, char *host, char *page)
 		cutilerror("socket() failed", 1);
 
 	/* perform the actual connection */
-	if ( (connect(sck, res->ai_addr, res->ai_addrlen) ) == -1 )
+	if ((connect(sck, res->ai_addr, res->ai_addrlen)) == -1)
 		cutilerror("connect() failed", 1);
 
 	/* communicate our request to the remote server */
