@@ -10,7 +10,10 @@ char *gstrncpy(char *, const char *, size_t);
 char *gstrtok(char *, const char *);
 size_t gstrspn(const char *, const char *);
 void* gmemset(void *, int, size_t);
-void* gmemcpy(void*, const void*, size_t) ;
+/* memcpy*/
+void* gmemcpy(void*, const void*, size_t);
+void *gmemccpy(void *, const void *, int, size_t);
+/* memmove */
 void *gmemmove(void *, const void *, size_t);
 char *gstrdup(const char *);
 char *gstrndup(const char *, size_t);
