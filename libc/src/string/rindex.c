@@ -1,6 +1,7 @@
 #include <gstring.h>
 
-char *rindex (const char *s, int c) {
+char *grindex(const char *s, int c)
+{
 	int i = 0;
 	while (s[i] != '\0')
 		++i;
