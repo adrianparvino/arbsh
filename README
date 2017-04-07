@@ -33,7 +33,7 @@ HIER:
 	
 	arbprec/
 		Arbitrary precision string functions in C.
-			-A bignum data type implementations.
+			-A bignum data type implementation.
 
 	libc/math/
 		Transcendental mathematics functions written in C (native).
