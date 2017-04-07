@@ -16,7 +16,7 @@
 #include "../legacy/lib/cutils.h"
 
 /* 
-	Copyright 2015, C. Graff  "fetch"
+	Copyright 2015-2017, "fetch.c", Christopher M. Graff
 	Usage: fetch http://www.gnu.org/index.html
 */
 
