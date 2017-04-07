@@ -8,11 +8,13 @@ char *gstrchr(const char *, int);
 char *gstrcpy(char *, const char *);
 char *gstrncpy(char *, const char *, size_t);
 char *gstrtok(char *, const char *);
-size_t gstrspn(const char *, const char *);
 void* gmemset(void *, int, size_t);
 /* memcpy*/
 void* gmemcpy(void*, const void*, size_t);
 void *gmemccpy(void *, const void *, int, size_t);
+/* strspn, strcspn */
+size_t gstrspn(const char *, const char *);
+size_t gstrcspn(const char *, const char *);
 /* memmove */
 void *gmemmove(void *, const void *, size_t);
 char *gstrdup(const char *);
