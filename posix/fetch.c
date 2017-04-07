@@ -32,13 +32,14 @@ int main (int argc, char *argv[])
 	*/ 
 
 	if ( argc == 1 )
-		cutilerror("Usage: fetch http://www.some.org/index.html\n", -1); 
+		cutilerror("Usage: fetch http://www.gnu.org/index.html\n", -1); 
 	++argv;
 	while (*argv) 
 		parseurl(*argv++); 
 
 	return 0;
 }
+
 void parseurl(char *argv)
 { 
 	/* 
@@ -73,22 +74,22 @@ void fetch(char *type, char *host, char *page)
 	struct addrinfo hints, *res; 
 	int sck;
 	int output;
-	char *message; 
-
+	char message[4096];
+	size_t len = 0;
 
 	output = STDOUT_FILENO;
-
-	/* allocate memory for the message */
-	if (!( message = malloc(PATH_MAX * 2)))
-		cutilerror("Insufficient memory", 1);
 
 	/* initialise the addrinfo networking structure */
 	memset(&hints, 0, sizeof(hints));
 	
 	/* ensure that the user is actually requesting http */
 	if ( strcmp(type, "http") == 0)
+	{
 		/* create the message we will send to the remote server */
-		sprintf(message, "GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n", page, host); 
+		len = snprintf(message, 4096, "GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n", page, host);
+		if (len == 4096)
+			cutilerror("User argument length is not sane", 0);
+	}
 	else
 		cutilerror("Protocol not supported", 0);
 	
@@ -121,7 +122,6 @@ void fetch(char *type, char *host, char *page)
 	/* free up any unneeded resources */
 	freeaddrinfo(res);
 	close(sck);
-	free(message);
 }
 
 void writeout(int sck, int output)
@@ -133,16 +133,13 @@ void writeout(int sck, int output)
 	size_t i;
 	size_t n; 
 	int lever; 
-    	char *buf;
+    	char buf[4096];
 	char *luf;
-
-	if (!(buf = malloc(BUFSIZ) ))
-		cutilerror("Insufficient memory", -1);
    
 	/* override */
 	i = n = lever = 0;
 
-	while ( (n = read(sck, buf, BUFSIZ)) > 0 )
+	while ((n = read(sck, buf, 4096)) > 0)
 	{
 		i = 0;
 		if (lever == 0)
@@ -158,8 +155,7 @@ void writeout(int sck, int output)
 		} 
 		/* actually write the data out to the file */
 		write(output, buf + i, n - i);
-	}
-	free(buf);
+	} 
 }
 
 
