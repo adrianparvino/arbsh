@@ -126,7 +126,10 @@ void fetch(char *type, char *host, char *page)
 
 void writeout(int sck, int output)
 {
-	
+	/*
+		This function writes data to the user's file after
+		stripping the http header at "\n\r"  
+	*/
 	size_t i;
 	size_t n; 
 	int http; 
@@ -144,6 +147,7 @@ void writeout(int sck, int output)
 		i = 0; 
 		if ( http == 0 )
 		{
+			/* detect the http header */
 			if ((luf = strstr(buf, "\n\r")))
 			{
 				i = ( luf - buf ); 
@@ -151,6 +155,7 @@ void writeout(int sck, int output)
 			}
 			http = 1;
 		} 
+		/* actually write the data out to the file */
 		write(output, buf + i, n - i);
 	}
 	free(buf);
