@@ -1,10 +1,13 @@
 #include <string.h>
 
-void *memcppy(void *dest, const void *src, int c, size_t n) {
-	char *source = src;
+void *gmemcppy(void *dest, const void *src, int c, size_t n)
+{
+	const char *source = src;
 	char *destination = dest;
-	int i;
-	for (i = 0; i < n; ++i) {
+	size_t i;
+
+	for (i = 0; i < n; ++i)
+	{
 		if (source[i] != c)
 			destination[i] = source[i];
 		else
@@ -12,6 +15,6 @@ void *memcppy(void *dest, const void *src, int c, size_t n) {
 	}
 	if (n == ++i)
 		return NULL;
-	else
-		return destination + i;
+
+	return destination + i;
 }
