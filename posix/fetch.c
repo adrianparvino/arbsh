@@ -51,7 +51,7 @@ void parseurl(char *argv)
 	char *page;
 
 	type = host = page = argv;
-	/* break apart the user's arg string and get the various parts */
+	
 	if ((host = strstr(argv, "://")))
 	{
 		*host = '\0';
@@ -71,19 +71,19 @@ void fetch(char *type, char *host, char *page)
 		fetch() --> writeout()
 	*/
 
-	struct addrinfo hints, *res;    /* The networking data structure for getaddrinfo */
-	int sck;			/* The network file descriptor */
-	int output;			/* File descriptor for file being created */
-	char message[4096];		/* message to request a page */
+	struct addrinfo hints, *res;    
+	int sck;			
+	int output;			
+	char message[4096];		
 	size_t len = 0;
 
-	/* initialise the addrinfo networking structure */
+	
 	memset(&hints, 0, sizeof(hints));
 	
-	/* ensure that the user is actually requesting http */
+	
 	if ( strcmp(type, "http") == 0)
 	{
-		/* create the message we will send to the remote server */
+		
 		len = snprintf(message, 4096, "GET /%s HTTP/1.0\r\nHost: %s\r\n\r\n", page, host);
 		if (len == 4096)
 			cutilerror("User argument length is not sane", 0);
@@ -91,33 +91,33 @@ void fetch(char *type, char *host, char *page)
 	else
 		cutilerror("Protocol not supported", 0);
 	
-	/* set some addrinfo networking structure values */
+	
 	hints.ai_family = PF_UNSPEC;
 	hints.ai_socktype = SOCK_STREAM;
 
-	/* invoke getaddrinfo() and pass the network structure in */
+	
 	if ((getaddrinfo(host, type, &hints, &res)) != 0)
 		cutilerror("getaddrinfo() failed", 1);
 
-	/* create the socket over which we will communicate */
+	
 	if ((sck = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1)
 		cutilerror("socket() failed", 1);
 
-	/* perform the actual connection */
+	
 	if ((connect(sck, res->ai_addr, res->ai_addrlen)) == -1)
 		cutilerror("connect() failed", 1);
 
-	/* communicate our request to the remote server */
+	
 	write(sck, message, strlen(message)); 
 
-	/* create the output file on the host */
+	
 	if ((output = open(basename(page), O_CREAT|O_RDWR, S_IRUSR|S_IWUSR)) == -1 )
 		cutilerror("open() failed", 1);
 
-	/* write all of the data into the output file */
+	
 	writeout(sck, output);
 
-	/* free up any unneeded resources */
+	
 	freeaddrinfo(res);
 	close(sck);
 }
@@ -134,7 +134,7 @@ void writeout(int sck, int output)
     	char buf[4096];
 	char *luf;
    
-	/* override */
+	
 	i = n = lever = 0;
 
 	while ((n = read(sck, buf, 4096)) > 0)
@@ -142,16 +142,16 @@ void writeout(int sck, int output)
 		i = 0;
 		if (lever == 0)
 		{
-			/* detect the http header */
+			
 			if ((luf = strstr(buf, "\n\r")))
 			{
-				/* strip the http header off */
+				
 				i = (luf - buf); 
 				i += 3;
 			}
 			lever = 1;
 		} 
-		/* actually write the data out to the file */
+		
 		write(output, buf + i, n - i);
 	} 
 }
