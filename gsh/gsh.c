@@ -293,11 +293,11 @@ int execute()
 			if ( cmds[k].argv[0] )
 			{
 				execvp(cmds[k].argv[0], cmds[k].argv);
-               			write(2, "Gsh: ", 6);
+               			write(2, "gsh: ", 6);
 				write(2, cmds[k].argv[0], strlen(cmds[k].argv[0]));
 			}
 			else
-				write(2, "Gsh: ", 6);
+				write(2, "gsh: ", 6);
 			write(2, " not found\n", 11);
                         
                         _exit(1); 
