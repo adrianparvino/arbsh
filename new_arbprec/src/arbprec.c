@@ -4,10 +4,6 @@
 #include <unistd.h>
 #include <limits.h>
 
-
-/* TODO: Short multiplication and division may work with floats given a few simple
-	 modifications */
-
 /* Function protoypes */
 void addition(int *, int *);		/* Add integer arrays together */
 int *addition_r(int *, int *, int *);	/* Add two arrays */
@@ -29,15 +25,12 @@ int *subtraction_r(int *, int *, int *);/* Subtract two arrays */
 int *str2ints(char *, int *);		/* Convert a string into an integer array */ 
 void printarray(int *, size_t len);	/* Print an array of integers */
 int getcharval(int *, size_t);		/* Return an indice position if it exists, if not, return 0 */
-void verbosity(int *, char *);  /* Verbosity function */
+void verbosity(int *, char *, int);  /* Verbosity function */
 void *strallocate(size_t);	/* Memory allocater with error */
 
 /* Globals */
 size_t cardinal;		/* All array functions must have the same length (cardinality) */
-int *bigint1;			/* Copy of argument 1 */
-int *bigint2;			/* Copy of argument 2 */
 int base = 10;			/* Default to base 10 */
-int verbose = 0;		/* Verbosity boolean */
 int *mirror;
 int *result;
 int *tmpmir;
@@ -51,13 +44,15 @@ int main(int argc, char **argv)
 	double b = 0;
 	int o = 0;
 	size_t carda;
-	size_t cardb;
+	size_t cardb; 
+	int *bigint1;			/* Copy of argument 1 */
+	int *bigint2;			/* Copy of argument 2 */
 	
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
 			case 'v':
-				verbose = 1;
+				verbosity(NULL, NULL, 1);
 				break;
 			case 'b': /* Override base */
 				base = strtoul(optarg, 0, 10);
@@ -198,8 +193,11 @@ int *str2ints(char *a, int *b)
 	return b;
 }
 
-void verbosity(int *array, char *message)
+void verbosity(int *array, char *message, int on)
 {
+	static int verbose = 0;
+	if ( on == 1 )
+		verbose = 1;
 	if ( verbose == 0 )
 		return;
 	printf("Verbosity message: %s\n", message);
@@ -420,7 +418,7 @@ void subtract(int *answer, int *decrem)
 	}
 	if ( isneg == 1 )
 	{
-		verbosity(mirror, "was negative");
+		verbosity(mirror, "was negative", 0);
 		copyarray(answer, mirror);
 	}
 }
