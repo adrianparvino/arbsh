@@ -4,7 +4,7 @@ LDFLAGS :=
 
 CC := gcc
 
-OBJ = $(shell for i in arb_str_math/*.c ; do echo $${i%.c}.o ; done )
+OBJ = $(shell for i in src/*.c ; do echo $${i%.c}.o ; done )
 
 AR := ar
 
@@ -35,7 +35,7 @@ all:
 static: $(OBJ)
 
 	$(MAKE) static_link
-	#$(MAKE) static_create
+	$(MAKE) static_create
 
 dynwrap: $(OBJ)
 
@@ -55,7 +55,7 @@ dynamic_link:
 
 static_create: 
 
-	$(CC) -o static_stringmath tests/stringmath.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
+	$(CC) -o arbprec tests/arbprec-driver.c $(STATLIB) $(LDFLAGS) $(CFLAGS)
 
 dynamic_create:
 
@@ -73,7 +73,7 @@ clean:
 	$(MAKE) cleanobj
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
-	$(RM) *driver static_stringmath dynamic_stringmath
+	$(RM) *driver static_stringmath dynamic_stringmath arbprec
 
 install:
 
