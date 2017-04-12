@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
+#include <arbprec/arbprec.h>
 
 /* Functions */
 void addition(int *a, int *b) 
