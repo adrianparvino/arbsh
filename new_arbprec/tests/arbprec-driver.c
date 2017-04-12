@@ -18,8 +18,6 @@ int main(int argc, char **argv)
 	size_t cardb; 
 	int *bigint1;			/* Copy of argument 1 */
 	int *bigint2;			/* Copy of argument 2 */
-	
-	//base = 10;
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
