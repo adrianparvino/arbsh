@@ -25,8 +25,8 @@ void verbosity(int *, char *, int);  /* Verbosity function */
 void *strallocate(size_t);	/* Memory allocater with error */
 
 /* Globals */
-size_t cardinal;		/* All array functions must have the same length (cardinality) */
-int base = 10;			/* Default to base 10 */
+extern size_t cardinal;         /* All array functions must have the same length (cardinality) */
+extern int base;                   /* Default to base 10 */
 int *mirror;
 int *result;
 int *tmpmir;
