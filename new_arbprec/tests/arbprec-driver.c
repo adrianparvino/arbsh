@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "arbprec.c"
+#include "../include/arbprec/arbprec.h"
 
 int main(int argc, char **argv)
 {
