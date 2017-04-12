@@ -20,12 +20,9 @@
 #include <stdint.h>
 #include <termcap/vt100.h>
 #include <readline/greadline.h>
-//#include "../termcap/termcap.h"
-//#include "../readline/readline.h.bak"
-
 
 /*
-	(Copyright) 2014-2016, "shell.c", CM Graff
+	(Copyright) 2014-2017, "shell.c", CM Graff
 */
 
 
@@ -240,7 +237,6 @@ int execute()
 		{ 
 			if((cmds[k].out = open(cmds[k].outfp, cmds[k].outflags, mode)) == -1)
                 	{
-                        	//fprintf(stderr," Permission denied?\n");
 				write(2, " Permission denied?\n", 20);
                         	return 0;
                 	} 
@@ -533,7 +529,7 @@ int parse(char *l)
         }
 	glb.count += c;
 
-	/* An exception could ve added here to check for NULL ultimate args */
+	/* An exception could be added here to check for NULL ultimate args */
 	
 	if ( glb.cmode )
 		++glb.count;
