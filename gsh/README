@@ -8,7 +8,7 @@ DESCRIPTION:
 	at a later date.
 
 
-	(Copyright) 2014-2016, "shell.c", CM Graff
+	(Copyright) 2014-2017, "shell.c", CM Graff
 
 	Gsh (the Graff shell)
 
@@ -52,7 +52,7 @@ EXPLANATION OF INTERNAL STRUCTURE:
 	grammar
 
 		Gsh has its own line editing library located within grafland at
-	../readline/gshline.h. For Gsh's line editing capabilities see
+	../readline/gshline.h. For gsh's line editing capabilities see
 	gshline()'s documentation at ../readline/README.
 
 	Everything below this pooint is dedicated to documenting the graff
