@@ -1,5 +1,11 @@
 #include <stdio.h>
-#include "../include/arbprec/arbprec.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <arbprec/arbprec.h>
+
+size_t cardinal;         /* All array functions must have the same length (cardinality) */
+int base = 10;                   /* Default to base 10 */
 
 int main(int argc, char **argv)
 {
@@ -12,7 +18,6 @@ int main(int argc, char **argv)
 	size_t cardb; 
 	int *bigint1;			/* Copy of argument 1 */
 	int *bigint2;			/* Copy of argument 2 */
-	
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
