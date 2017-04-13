@@ -6,21 +6,19 @@
 #ifndef _arbprec_h_
 #define _arbprec_h_
 
-
+/* Macros */
 #define MAX(a,b) ((a) > (b) ? a : b)
 
-
 /* Function protoypes */
-
 int *addition(int *, int *, int *);	/* Add two arrays */
 size_t arraylen(int *, int);		/* Similiar to strlen except it searches for the specified token */
-void copyarray(int *, int *);		/* Copy an array of ints to another array of ints */ 
+void copyarray(int *, int *, size_t);		/* Copy an array of ints to another array of ints */ 
 void die(char *);			/* Kill and error message */
 int iszero(int *);			/* Returns true if an entire array is zero */ 
 int *divide(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */ 
 int *multiply(int *, int *, int *);	/* Multiply arrays of integers (long multiplication) */ 
 size_t reversestr(int *);		/* Reverse an integer array */
-void setarray(int *, int);		/* Set an array of ints to all zeros or a magnitude thereof */
+void setarray(int *, int, size_t);		/* Set an array of ints to all zeros or a magnitude thereof */
 int *subtraction(int *, int *, int *);	/* Subtract two arrays */
 
 /* More (helper) function prototypes */
