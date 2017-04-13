@@ -2,36 +2,8 @@
 
 #define MAX(a,b) ((a) > (b) ? a : b)
 
-/* Functions */
-void addition(int *a, int *b) 
-{ 
-	int i;
-	int carry = 0;
-	size_t width = 0;
-	size_t wa = arraylen(a, 4242);
-	size_t wb = arraylen(b, 4242);
-
-	width = MAX(wa, wb);
-
-	for (i = width - 1; i>=0 ; i--)
-	{
-		a[i] += b[i] + carry;
-		carry = 0;
-		if (a[i] >= base)
-		{
-			carry = 1;
-			a[i] -= base;
-		}
-	}
-	if ( carry == 1 )
-	{ 
-		mirror[0] = 1;
-		copyarray(mirror + 1, a);
-		printarray(mirror, cardinal + 1); 
-	}
-}
-
-int *addition_r(int *a, int *b, int *c)
+/* Functions */ 
+int *addition(int *a, int *b, int *c)
 {
 	size_t i = 0;
 	size_t width = 0;
@@ -57,7 +29,6 @@ int *addition_r(int *a, int *b, int *c)
         c[i] = 4242;
        
 	reversestr(c);
-	printarray(c, i);
 	return c;
 }
 
@@ -72,7 +43,7 @@ size_t arraylen(int *array, int delim)
 void copyarray(int *answer, int *from)
 {
 	size_t i = 0;
-	for( i = 0; i < cardinal; i++)
+	for( i = 0; i < cardinal ; i++)
 		answer[i] = from[i];
 }
 
@@ -87,12 +58,10 @@ int *divide(int *a, int *b, int *c)
 	size_t i = 0;	
 	size_t j = 0;
 	size_t z = 0; 
-	size_t numer = arraylen(a, 4242);	/* cardinality of the numerator */
-	size_t denom = arraylen(b, 4242); 	/* cardinality of the denominator */
-	size_t real_cardinality = 0;		/* cardinality of the quotient's real part */
-	size_t imag_cardinality = 0;		/* cardinality of the quotient's imaginary part */
-	int sum = 0; 				/* hold a temporary signed value <= base */
-	int rec = 0; 				/* boolean record */
+	size_t numer = arraylen(a, 4242);
+	size_t denom = arraylen(b, 4242);
+	int sum = 0;
+	int rec = 0; 
 
 	/* TODO: capture the falling places and increment the *int */
 	setarray(c, 0);
@@ -133,18 +102,6 @@ int *divide(int *a, int *b, int *c)
 		if ( iszero(tmpmir) == 0)
 			break;
 	}
-
-	if ( numer + 1 > denom )
-		real_cardinality = numer - denom + 1;
-	else
-		real_cardinality = z;
-
-	if ( z >= real_cardinality )
-		imag_cardinality = z - real_cardinality;
-	
-	printarray(c, real_cardinality);
-	
-	printarray(c + (real_cardinality) ,imag_cardinality); 
 	return c;
 }
 
@@ -190,7 +147,6 @@ int *multiply(int *a, int *b, int *c)
 		}
 		c[k] += carry; 
 	}
-	printarray(c, la + lb); 
 	return c;
 }
 
@@ -237,31 +193,6 @@ void set_array(int *array, int init, size_t dec, int sign, int terminator, size_
 	array[len] = terminator;
 }
 
-void short_divide(int *answer, int denom)
-{
-	int carry = 0;
-	size_t i = 0;
-	for( i = 0; i < cardinal; i++)
-	{
-		answer[i] += carry * base;
-		carry = answer[i] % denom;
-		answer[i] /= denom;
-	}
-}
-
-void short_multiply(int *answer, int factor)
-{
-	int i;
-	int carry = 0;
-	for ( i = cardinal - 1; i >= 0 ; i--)
-	{
-		answer[i] *= factor;
-		answer[i] += carry;
-		carry = answer[i] / base;
-		answer[i] %= base;
-	}
-}
-
 int *str2ints(char *a, int *b)
 {
 	size_t i = 0;
@@ -285,43 +216,7 @@ void *strallocate(size_t len)
 	return ret;
 }
 
-void subtract(int *answer, int *decrem)
-{
-	int i;
-	int isneg = 0;
-	size_t width = 0;
-	
-	size_t wa = arraylen(answer, 4242); 
-	size_t wb = arraylen(decrem, 4242); 
-
-	width = MAX(wa, wb);
-
-	copyarray(mirror, answer);
-	for ( i = width; i >= 0 ; i--)
-	{ 
-		answer[i] -= decrem[i];
-		mirror[i] -= decrem[i]; 
-		isneg = 0;
-		if ( answer[i] < 0 )
-		{
-			answer[i] += base;
-			answer[i - 1]--;
-			isneg = 1;
-		}
-		if ( mirror[i] < 0 )
-		{
-			mirror[i] += base ;
-			mirror[i] = base - mirror[i];
-		} 
-	}
-	if ( isneg == 1 )
-	{
-		verbosity(mirror, "subtract() result was negative", 0);
-		copyarray(answer, mirror);
-	}
-}
-
-int *subtraction_r(int *a, int *b, int *c)
+int *subtraction(int *a, int *b, int *c)
 { 
 	size_t i = 0;
 	size_t width = 0;
@@ -361,7 +256,6 @@ int *subtraction_r(int *a, int *b, int *c)
 	}
 
 	reversestr(c);
-	printarray(c, i);
 	return c;
 } 
 
