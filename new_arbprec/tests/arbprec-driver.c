@@ -4,7 +4,7 @@
 #include <string.h>
 #include <arbprec/arbprec.h>
 
-size_t cardinal;	/* declare a global cardinal */
+
 int base = 10; 		/* global base */
 
 int main(int argc, char **argv)
@@ -67,18 +67,16 @@ int main(int argc, char **argv)
 	hold2 = str2ints(argv[1], bigint2);
 	hold[carda] = 4242;
 	hold2[cardb] = 4242;
-	result = divide(hold, hold2, result);
+	result = divide(hold, hold2, result); 
 
+	/* ... printing the float part of division is still a bit complicated */
 	if ( carda + 1 > cardb )
                 real_cardinality = carda - cardb + 1;
         else
-                real_cardinality = carda;
-
+                real_cardinality = carda; 
         if ( carda >= real_cardinality )
-                imag_cardinality = carda - real_cardinality;
-
-        printarray(result, real_cardinality);
-
+                imag_cardinality = carda - real_cardinality; 
+        printarray(result, real_cardinality); 
         printarray(result + (real_cardinality) ,imag_cardinality);
 
 
@@ -94,28 +92,28 @@ int main(int argc, char **argv)
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	hold = addition(hold, hold2, result);
-	printarray(hold, cardinal);
+	printarray(hold, MAX(carda, cardb));
 	
 	/* subtract */
 	printf("subtraction\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
 	hold = subtraction(hold, hold2, result);
-	printarray(hold, cardinal);
+	printarray(hold, MAX(carda, cardb));
 	
 	/* setarray, iszero, arb copyarray */
 	printf("setarray. iszero, copyarray\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	setarray(hold, 0);
-	setarray(hold2, 1);
-	printarray(hold, cardinal);
-	printarray(hold2, cardinal);
+	setarray(hold, 0, carda + cardb);
+	setarray(hold2, 1, carda + cardb);
+	printarray(hold, carda);
+	printarray(hold2, cardb);
 	if ( iszero(hold) == 0 )
 		printf("hold is zero\n");
 	if ( iszero(hold2) != 0 )
 		printf("hold2 is not zero\n");
-	copyarray(hold2, hold);
+	copyarray(hold2, hold, carda + cardb);
 	if ( iszero(hold2) == 0 )
 		printf("hold2 is now zero\n");
 
