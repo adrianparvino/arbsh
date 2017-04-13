@@ -18,6 +18,8 @@ int main(int argc, char **argv)
 	size_t cardb; 
 	int *bigint1;			/* Copy of argument 1 */
 	int *bigint2;			/* Copy of argument 2 */
+	size_t real_cardinality = 0;
+	size_t imag_cardinality = 0;
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
@@ -65,40 +67,40 @@ int main(int argc, char **argv)
 	hold2 = str2ints(argv[1], bigint2);
 	hold[carda] = 4242;
 	hold2[cardb] = 4242;
-	divide(hold, hold2, result);
+	result = divide(hold, hold2, result);
 
-	/* arb multiply */
+	if ( carda + 1 > cardb )
+                real_cardinality = carda - cardb + 1;
+        else
+                real_cardinality = carda;
+
+        if ( carda >= real_cardinality )
+                imag_cardinality = carda - real_cardinality;
+
+        printarray(result, real_cardinality);
+
+        printarray(result + (real_cardinality) ,imag_cardinality);
+
+
+	/* multiply */
 	printf("multiplication\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	multiply(hold, hold2, result);
+	result = multiply(hold, hold2, result);
+	printarray(result, carda + cardb);
 
-	/* arb addition */
+	/* add */
 	printf("addition\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	hold = addition_r(hold, hold2, result);
+	hold = addition(hold, hold2, result);
 	printarray(hold, cardinal);
 	
-	/* arb subtraction */
+	/* subtract */
 	printf("subtraction\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
-	hold = subtraction_r(hold, hold2, result);
-	printarray(hold, cardinal);
-	
-	/* arb addition */
-	printf("simple addition\n");
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	addition(hold, hold2);
-	printarray(hold, cardinal);
-
-	/* arb subtract */
-	printf("simple subtraction\n");
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	subtract(hold, hold2);
+	hold = subtraction(hold, hold2, result);
 	printarray(hold, cardinal);
 	
 	/* arb setarray, arb iszero, arb copyarray */
@@ -116,20 +118,6 @@ int main(int argc, char **argv)
 	copyarray(hold2, hold);
 	if ( iszero(hold2) == 0 )
 		printf("hold2 is now zero\n");
-
-	/* single digit arb multiplication */
-	printf("short multiplication\n");
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	short_multiply(hold, hold2[0]);
-	printarray(hold, cardinal);
-	
-	/* single digit arb short_short_divide */
-	printf("short division\n");
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	short_divide(hold, hold2[0]);
-	printarray(hold, cardinal);
 
 	return 0;
 } 
