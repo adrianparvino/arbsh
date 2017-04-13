@@ -321,7 +321,7 @@ void subtract(int *answer, int *decrem)
 	}
 	if ( isneg == 1 )
 	{
-		verbosity(mirror, "was negative", 0);
+		verbosity(mirror, "subtract() result was negative", 0);
 		copyarray(answer, mirror);
 	}
 }
@@ -361,22 +361,30 @@ int *subtraction_r(int *a, int *b, int *c)
 	
         c[i] = mirror[i] = 4242; 
 	if (borrow == -1)
+	{
+		verbosity(mirror, "subtraction_r() result was negative", 0);
 		c = mirror;
+	}
 
 	reversestr(c);
-	printarray(c, i );
+	printarray(c, i);
 	return c;
 } 
 
 void verbosity(int *array, char *message, int on)
 {
-	static int verbose = 0;
+	static int lever = 0;
+
 	if ( on == 1 )
-		verbose = 1;
-	if ( verbose == 0 )
+		lever = 1;
+	if ( lever == 0 )
 		return;
-	printf("Verbosity message: %s\n", message);
-	
-	printarray(array, cardinal);
-	printf("END verbosity:\n");
+	printf("START verbosity\n");
+	if ( message )
+		printf("message: %s\n", message); 
+	if ( array )
+		printarray(array, cardinal);
+	if (message||array)
+		printf("END verbosity:\n");
 }
+
