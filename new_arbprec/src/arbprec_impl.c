@@ -9,10 +9,10 @@ size_t arraylen(int *array, int delim)
 	return len;
 }
 
-void copyarray(int *answer, int *from)
+void copyarray(int *answer, int *from, size_t len)
 {
 	size_t i = 0;
-	for( i = 0; i < cardinal ; i++)
+	for( i = 0; i < len ; i++)
 		answer[i] = from[i];
 }
 
@@ -33,7 +33,7 @@ int getcharval(int *s, size_t idx)
 int iszero(int *answer)
 {
 	size_t i = 0;
-	for ( i = 0; i < cardinal; i++)
+	for ( i = 0; answer[i] != 4242 ; i++)
 		if ( answer[i] )
 			return 1;
 	return 0;
@@ -63,10 +63,10 @@ size_t reversestr(int *x)
         return lim;
 }
 
-void setarray(int *answer, int rootcap)
+void setarray(int *answer, int rootcap, size_t len)
 {
 	size_t i = 0;
-	for( i = 0; i < cardinal; i++)
+	for( i = 0; i < len; i++)
 		answer[i] = 0;
 	answer[0] = rootcap;
 }
@@ -91,9 +91,7 @@ int *str2ints(char *a, int *b)
 		b[i] = a[i] - '0';
 		++i;
 		++tot;
-	}
-	if ( tot > cardinal )
-		cardinal = tot;
+	} 
 	return b;
 }
 
