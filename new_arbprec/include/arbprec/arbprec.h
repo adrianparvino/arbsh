@@ -33,9 +33,7 @@ void *strallocate(size_t);		/* Memory allocater with error */
 /* Globals */
 extern size_t cardinal;			/* All array functions must have the same length (cardinality) */
 extern int base; 			/* Default to base 10 */
-int *mirror;
-int *result;
-int *tmpmir;
+int *mirror; 
 
 #endif /* _arbprec_h_ */
 
