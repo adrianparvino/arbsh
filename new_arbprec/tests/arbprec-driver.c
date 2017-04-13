@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
 			case 'v':
-				verbosity(NULL, NULL, 1);
+				verbosity(NULL, NULL, 1, 0);
 				break;
 			case 'b': /* Override base */
 				base = strtoul(optarg, 0, 10);
