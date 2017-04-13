@@ -23,7 +23,7 @@ int *subtraction(int *, int *, int *);	/* Subtract two arrays */
 int *str2ints(char *, int *);		/* Convert a string into an integer array */ 
 void printarray(int *, size_t len);	/* Print an array of integers */
 int getcharval(int *, size_t);		/* Return an indice position if it exists, if not, return 0 */
-void verbosity(int *, char *, int);	/* Verbosity function */
+void verbosity(int *, char *, int, size_t);	/* Verbosity function */
 void *strallocate(size_t);		/* Memory allocater with error */
 
 /* Globals */
