@@ -6,6 +6,10 @@
 #ifndef _arbprec_h_
 #define _arbprec_h_
 
+
+#define MAX(a,b) ((a) > (b) ? a : b)
+
+
 /* Function protoypes */
 
 int *addition(int *, int *, int *);	/* Add two arrays */
