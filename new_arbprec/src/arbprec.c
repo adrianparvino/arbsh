@@ -1,7 +1,6 @@
 #include <arbprec/arbprec.h>
 
 #define MAX(a,b) ((a) > (b) ? a : b)
-#define MIN(a,b) ((a) < (b) ? a : b)
 
 /* Functions */
 void addition(int *a, int *b) 
