@@ -1,5 +1,8 @@
 #include <arbprec/arbprec.h>
 
+#define MAX(a,b) ((a) > (b) ? a : b)
+#define MIN(a,b) ((a) < (b) ? a : b)
+
 /* Functions */
 void addition(int *a, int *b) 
 { 
@@ -8,9 +11,8 @@ void addition(int *a, int *b)
 	size_t width = 0;
 	size_t wa = arraylen(a, 4242);
 	size_t wb = arraylen(b, 4242);
-	
-	if ( wa > wb ) width = wa;
-	else width = wb;
+
+	width = MAX(wa, wb);
 
 	for (i = width - 1; i>=0 ; i--)
 	{
@@ -36,14 +38,11 @@ int *addition_r(int *a, int *b, int *c)
 	size_t width = 0;
 	int sum = 0;
 	int carry = 0;
-
-	
 	size_t wa = arraylen(a, 4242);
 	size_t wb = arraylen(b, 4242);
 
-	if ( wa > wb ) width = wa;
-	else width = wb;
-
+	width = MAX(wa, wb);
+	
         for( i = 0; i < width ; i++)
 	{
 		sum = getcharval(a, i) + getcharval(b, i) + carry;
@@ -97,8 +96,6 @@ int *divide(int *a, int *b, int *c)
 	int rec = 0; 				/* boolean record */
 
 	/* TODO: capture the falling places and increment the *int */
-
-	
 	setarray(c, 0);
 	setarray(mirror, 0);
 	copyarray(mirror, a);
@@ -178,7 +175,7 @@ int *multiply(int *a, int *b, int *c)
 	int carry = 0;
 	int la = 0;
 	int lb = 0;
-	/* either is zero, return c "0" ... */
+	/* TODO: either is zero, return c "0" ... */
  
 	la = arraylen(a, 4242);
 	lb = arraylen(b, 4242);
@@ -296,10 +293,9 @@ void subtract(int *answer, int *decrem)
 	size_t width = 0;
 	
 	size_t wa = arraylen(answer, 4242); 
-	size_t wb = arraylen(decrem, 4242);
+	size_t wb = arraylen(decrem, 4242); 
 
-	if ( wa > wb ) width = wa;
-	else width = wb;
+	width = MAX(wa, wb);
 
 	copyarray(mirror, answer);
 	for ( i = width; i >= 0 ; i--)
@@ -337,8 +333,7 @@ int *subtraction_r(int *a, int *b, int *c)
 	size_t wa = arraylen(a, 4242); 
 	size_t wb = arraylen(b, 4242);
 
-	if ( wa > wb ) width = wa;
-	else width = wb;
+	width = MAX(wa, wb);
 
         for( i=0; i < width ; i++)
 	{
