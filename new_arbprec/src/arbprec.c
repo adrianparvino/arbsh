@@ -5,6 +5,10 @@
 /* Functions */ 
 int *addition(int *a, int *b, int *c)
 {
+	/* 
+		TODO: get rid of addition() itself and implement it in terms of subtraction() 
+			--> This may require both immutable and mutable signs
+	*/
 	size_t i = 0;
 	size_t width = 0;
 	int sum = 0;
@@ -251,7 +255,7 @@ int *subtraction(int *a, int *b, int *c)
         c[i] = mirror[i] = 4242; 
 	if (borrow == -1)
 	{
-		verbosity(mirror, "subtraction_r() result was negative", 0);
+		verbosity(mirror, "subtraction_r() result was negative", 0, width);
 		c = mirror;
 	}
 
@@ -259,7 +263,7 @@ int *subtraction(int *a, int *b, int *c)
 	return c;
 } 
 
-void verbosity(int *array, char *message, int on)
+void verbosity(int *array, char *message, int on, size_t length)
 {
 	static int lever = 0;
 
@@ -271,7 +275,7 @@ void verbosity(int *array, char *message, int on)
 	if ( message )
 		printf("message: %s\n", message); 
 	if ( array )
-		printarray(array, cardinal);
+		printarray(array, length);
 	if (message||array)
 		printf("END verbosity:\n");
 }
