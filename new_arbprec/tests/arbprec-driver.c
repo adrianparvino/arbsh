@@ -20,6 +20,7 @@ int main(int argc, char **argv)
 	int *bigint2;			/* Copy of argument 2 */
 	size_t real_cardinality = 0;
 	size_t imag_cardinality = 0;
+	int *result;
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
@@ -55,7 +56,6 @@ int main(int argc, char **argv)
 
 	mirror = strallocate(1000 * sizeof(int));
 	result = strallocate(1000 * sizeof(int));
-	tmpmir = strallocate(1000 * sizeof(int));
 	bigint1 = strallocate(1000 * sizeof(int));
 	bigint2 = strallocate(1000 * sizeof(int));
 
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 	hold = subtraction(hold, hold2, result);
 	printarray(hold, cardinal);
 	
-	/* arb setarray, arb iszero, arb copyarray */
+	/* setarray, iszero, arb copyarray */
 	printf("setarray. iszero, copyarray\n");
 	hold = str2ints(argv[0], bigint1);
 	hold2 = str2ints(argv[1], bigint2);
