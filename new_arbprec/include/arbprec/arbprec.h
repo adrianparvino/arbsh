@@ -1,3 +1,8 @@
+#include <stddef.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #ifndef _arbprec_h_
 #define _arbprec_h_
 
