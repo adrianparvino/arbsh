@@ -4,8 +4,8 @@
 #include <string.h>
 #include <arbprec/arbprec.h>
 
-size_t cardinal;         /* All array functions must have the same length (cardinality) */
-int base = 10;                   /* Default to base 10 */
+size_t cardinal;	/* declare a global cardinal */
+int base = 10; 		/* global base */
 
 int main(int argc, char **argv)
 {
