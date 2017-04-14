@@ -7,8 +7,8 @@ int *divide(int *a, int *b, int *c)
 	size_t z = 0; 
 	size_t numer = arraylen(a, 4242);
 	size_t denom = arraylen(b, 4242);
-	int *mir = strallocate(sizeof(int) * numer + denom);
-	int *tmir = strallocate(sizeof(int) * numer + denom);
+	int *mir = arbprec_malloc(sizeof(int) * numer + denom);
+	int *tmir = arbprec_malloc(sizeof(int) * numer + denom);
 	int sum = 0;
 	int rec = 0;
 
