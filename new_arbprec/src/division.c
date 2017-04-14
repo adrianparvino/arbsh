@@ -7,23 +7,24 @@ int *divide(int *a, int *b, int *c)
 	size_t z = 0; 
 	size_t numer = arraylen(a, 4242);
 	size_t denom = arraylen(b, 4242);
-	int *mir = arbprec_malloc(sizeof(int) * numer + denom);
-	int *tmir = arbprec_malloc(sizeof(int) * numer + denom);
+	size_t width = numer + denom;
+	int *mir = arbprec_malloc(sizeof(int) * width);
+	int *tmir = arbprec_malloc(sizeof(int) * width);
 	int sum = 0;
 	int rec = 0;
 
 	/* TODO: capture the falling places and increment the *int */
-	setarray(c, 0, numer + denom);
-	setarray(mir, 4242, numer + denom);
-	copyarray(mir, a, numer + denom);
-	setarray(tmir, 4242, numer + denom);
-	copyarray(tmir, mir, numer + denom);
+	setarray(c, 0, width);
+	setarray(mir, 4242, width);
+	copyarray(mir, a, width);
+	setarray(tmir, 4242, width);
+	copyarray(tmir, mir, width);
 
 	/* numerator / denominator  =  quotient */
 	for ( ; z < numer ; )
 	{
-		copyarray(tmir, mir, numer + denom);
-		for (rec = 0, i = 0, j = z; i < denom ; j++ ,i++) 
+		copyarray(tmir, mir, width);
+		for (rec = 0, i = 0, j = z; i < denom ; j++ ,i++)
 		{
 			sum = (mir[j]) - (b[i]);
 			if ( sum < 0 )
@@ -39,18 +40,19 @@ int *divide(int *a, int *b, int *c)
 					mir[j] += base;
 				}
 				rec = 1;
-				break; 
+				break;
 			}
 			tmir[j] = sum;
-		} 
+		}
 		if ( rec == 0 )
-		{ 
-			copyarray(mir, tmir, numer + denom); 
+		{
+			copyarray(mir, tmir, width);
 			c[z] += 1;
 		} 
-		if ( iszero(tmir) == 0)
+		if ( iszero(tmir) == 0 )
 			break;
 	}
 	return c;
 }
+
 
