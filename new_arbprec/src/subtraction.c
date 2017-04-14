@@ -15,8 +15,8 @@ int *subtraction(int *a, int *b, int *c)
 
         for( i=0; i < width ; i++)
 	{
-		sum = getcharval(a, i, wa) - getcharval(b, i, wb) + borrow; 
-		mir = getcharval(a, i, wa) - getcharval(b, i, wb) + carry;
+		sum = hasplace(a, i, wa) - hasplace(b, i, wb) + borrow; 
+		mir = hasplace(a, i, wa) - hasplace(b, i, wb) + carry;
                 carry = borrow = 0;
 		if(sum < 0)
 		{
