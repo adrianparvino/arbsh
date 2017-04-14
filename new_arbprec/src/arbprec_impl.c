@@ -22,9 +22,8 @@ void die(char *message)
 	exit(1);
 }
 
-int getcharval(int *s, size_t idx)
-{ 
-	size_t len = arraylen(s, 4242);
+int getcharval(int *s, size_t idx, size_t len)
+{
         if (idx < len)
         	return s[len - idx - 1];
         return 0;
@@ -84,14 +83,9 @@ void set_array(int *array, int init, size_t dec, int sign, int terminator, size_
 
 int *str2ints(char *a, int *b)
 {
-	size_t i = 0;
-	size_t tot = 0;
-	while ( a[i] != '\0' )
-	{
+	size_t i;
+	for( i = 0 ;a[i] != '\0' ; i++)
 		b[i] = a[i] - '0';
-		++i;
-		++tot;
-	} 
 	return b;
 }
 
