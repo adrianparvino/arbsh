@@ -1,6 +1,14 @@
 #include <arbprec/arbprec.h>
 
-/* Functions */ 
+/* Functions */
+void *arbprec_malloc(size_t len)
+{
+	void *ret;
+	if(!(ret = malloc(len)))
+		die("malloc failed\n"); 
+	return ret;
+}
+
 size_t arraylen(int *array, int delim)
 { 
 	size_t len = 0; 
@@ -22,7 +30,7 @@ void die(char *message)
 	exit(1);
 }
 
-int getcharval(int *s, size_t idx, size_t len)
+int hasplace(int *s, size_t idx, size_t len)
 {
         if (idx < len)
         	return s[len - idx - 1];
@@ -87,14 +95,6 @@ int *str2ints(char *a, int *b)
 	for( i = 0 ;a[i] != '\0' ; i++)
 		b[i] = a[i] - '0';
 	return b;
-}
-
-void *strallocate(size_t len)
-{
-	void *ret;
-	if(!(ret = malloc(len)))
-		die("malloc failed\n"); 
-	return ret;
 }
 
 void verbosity(int *array, char *message, int on, size_t length)
