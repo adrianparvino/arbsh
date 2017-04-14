@@ -54,10 +54,10 @@ int main(int argc, char **argv)
 	printf("/ %20lf\n", a / b);
 	
 
-	mirror = strallocate(1000 * sizeof(int));
-	result = strallocate(1000 * sizeof(int));
-	bigint1 = strallocate(1000 * sizeof(int));
-	bigint2 = strallocate(1000 * sizeof(int));
+	mirror = arbprec_malloc(1000 * sizeof(int));
+	result = arbprec_malloc(1000 * sizeof(int));
+	bigint1 = arbprec_malloc(1000 * sizeof(int));
+	bigint2 = arbprec_malloc(1000 * sizeof(int));
 
 	/* arb divide */
 	printf("division\n");
