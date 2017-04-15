@@ -4,40 +4,30 @@
 <br clear="left"/></pre><dl>DESCRIPTION:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
-	Grafland is a collection of unique; userland tools, cross
-	compiling toolchains, math libraries, arbitrary precision 
-	math libraries, terminal rendering libraries, standard C 
-	libraries, readline line editing libraries, an irc client, 
-	a shell, shell libraries, an editor and a cross build system
-	to build outside software for toolchain and internal testing.
+	Grafland is a collection of original software, written by
+	myself (Graff) and various contributors.
 	
-	Each subdirectory has a README which documents its usage. 
 	Navigating to a subdirectory of grafland and inspecting
-	the README will reveal more about what the project contains.
+	the README will reveal more about what that particular 
+	project contains.
 	
 
 <br clear="left"/></pre><dl>HIER:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
-	<a href="posix/">posix/</a>
-		Userland applications written in C (native)
-
-		cp, ls, fetch, dd, find and many more, implemented from scratch
-		to subsets of POSIX specifications. 
-
-	<a href="legacy/lib/">legacy/lib/</a>
-		Helper functions for the utilities in posix/.
 
 	<a href="libc/">libc/</a>
 		Standard C library components.
 
 	
 	<a href="arbprec/">arbprec/</a>
-		Arbitrary precision string functions in C.
+		Arbitrary precision mathematics using strings.
 			-A bignum data type implementation.
+		Note:	Developers probably want new_arbprec which is
+			being redesigned to support floating point.
 
 	<a href="libc/math/">libc/math/</a>
-		Transcendental mathematics functions written in C (native).
+		Transcendental mathematics functions.
 			-Operate on and tranform double precision types.
 			-sqrt, atan, sin, jn, log and many more such math.h
 			 function implementations. This library covers most of
@@ -49,7 +39,8 @@
 		the graff shell (Gsh) and grafland irc client. The latter
 		is supplied with a unique ircline() function (native).
 
-	<a href="termcap/">termcap/</a>
+
+	curses/ & <a href="termcap/">termcap/</a>
 		Hexen, a minimal curses / conio style library. Hexen supplies
 		grafland's terminal capabilities and ultimately powers grafland's
 		readline/editline/ircline implementation, editor, irc client
@@ -62,20 +53,21 @@
 		A native shell.
 
 	<a href="irc/">irc/</a>
-		A native irc client and library.
+		A native irc client and library. 
+	
+	<a href="posix/">posix/</a>
+		Userland utilities.
+
+		cp, ls, fetch, dd, find and many more, implemented from scratch
+		to subsets of POSIX specifications.
 
 	<a href="legacy/libsh/">legacy/libsh/</a>
-		Userland applications and libraries written in POSIX shell 
-		(native).
+		Userland applications and libraries written in POSIX shell.
 
 	<a href="toolchain/">toolchain/</a>
-		A cross compiling toolchain and build system. Similiar to 
-		buildroot but with much simpler code,
-			-Link grafland components up into the toolchain
-			 for cross compilation and installation.
-			-Build and maintain outside software.
-
-
+		A cross compiling toolchain and build system. Similiar to
+		buildroot but with much simpler code, 
+	
 
 <br clear="left"/></pre><dl>BUILDING:</dl><pre>
 </pre><dd><hr/></dd><pre>
@@ -85,7 +77,7 @@
 
 	Install a single component of grafland: 
 	  
-       		cd grafland/cbin
+       		cd grafland/posix
 		make
 		make install DESTDIR=/path/to/target
 
@@ -93,16 +85,10 @@
 <br clear="left"/></pre><dl>CROSSBUILDING:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
-	Because grafland has its own gcc based cross compiling
-	toolchain system, it can easily build itself or other
-	other outside software. The toolchain/Makefile has links 
-	to build nearly 50 target packages. Grafland uses these 
-	packages internally to test its own toolchain
-	effectiveness.
+	Use grafland's internal gcc based cross compile system
+	to build itself or outside software. Links and build 
+	specifics are supplied for 50 target packages.  
 
-	The cross toolchain build system located inside of
-	toolchain/ can be used to create a cross toolchain
-	and then cross build the rest of the OS:
 
 		make toolchain
 
@@ -115,19 +101,18 @@
 
 	For finer grained control over the cross toolchain
 	(such as changing architectures or using the tool-
-	chain to build other OS)) you'll want to change
-	directories to toolchain/, view the documentation
+	chain to build other OS)), view the documentation
 	within toolchain/README and run the build system
-	from there.
+	from toolchain/.
 
 
 <br clear="left"/></pre><dl>PORTABILITY:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	To some extent all of the components of grafland are standalone. 
-	The core functionality (excluding the toolchain) depends on only 
-	the standard C library and a few POSIX extensions to it. This 
-	being the case it should work fine on linux, mac, NetBSD and 
+	The core functionality (excluding the toolchain) only depends
+	on the standard C library and a few POSIX extensions to it. This 
+	being the case it should work fine on Linux, mac, NetBSD and 
 	FreeBSD.
 
 
