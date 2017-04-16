@@ -43,7 +43,7 @@ HIER:
 		and system monitor. 
 
 	termcap/
-		Terminal capability definitions for the hexen / curses.
+		Terminal capability definitions for hexen / curses.
 
 	editor/
 		A native editor. 
