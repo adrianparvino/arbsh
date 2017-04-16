@@ -3,7 +3,7 @@ Grafland
 DESCRIPTION:
 ------------
 
-	Grafland is a collection of original software, written by myself 
+	Grafland is a collection of original software, written by myself
 	(graff) with contributions from mrig, evegniy, nixfox and moth.
 	
 	Navigating to a subdirectory of grafland and inspecting the README 
@@ -20,8 +20,8 @@ HIER:
 	arbprec/
 		Arbitrary precision mathematics using strings.
 			-A bignum data type implementation.
-		Note:	Developers probably want new_arbprec which is
-			being redesigned to support floating point.
+		Note:	Developers probably want new_arbprec which is being 
+			redesigned to support floating point.
 
 	libc/math/
 		Transcendental mathematics functions.
@@ -32,15 +32,15 @@ HIER:
 
 	readline/
 		Readline line editing. An editline/readline like implementation.
-		This library is used to supply line editing and history to
-		the graff shell (Gsh) and grafland irc client. The latter
-		is supplied with a unique ircline() function (native).
+		This library is used to supply line editing and history to the 
+		graff shell (Gsh) and grafland irc client. The latter is 
+		supplied with a unique ircline() function (native).
 
 	curses/
 		Hexen, a minimal curses / conio style library. Hexen supplies
-		grafland's terminal capabilities and ultimately powers grafland's
-		readline/editline/ircline implementation, editor, irc client
-		and system monitor. 
+		grafland's terminal capabilities and ultimately powers 
+		grafland's readline/editline/ircline implementation, editor, 
+		irc client and system monitor. 
 
 	termcap/
 		Terminal capability definitions for hexen / curses.
@@ -82,9 +82,9 @@ BUILDING:
 CROSSBUILDING:
 --------------- 
 
-	Use grafland's internal gcc based cross compile system
-	to build itself or outside software. Links and build 
-	specifics are supplied for 50 target packages.  
+	Use grafland's internal gcc based cross compile system to build itself
+	or outside software. Links and build specifics are supplied for 50 
+	target packages.  
 
 
 		make toolchain
@@ -96,21 +96,19 @@ CROSSBUILDING:
 		make install DESTDIR=$(pwd)/myroot
 
 
-	For finer grained control over the cross toolchain
-	(such as changing architectures or using the tool-
-	chain to build other OS)), view the documentation
-	within toolchain/README and run the build system
-	from toolchain/.
+	For finer grained control over the cross toolchain (such as changing 
+	architectures or using the toolchain to build other OS)), view the 
+	documentation within toolchain/README and run the build system from 
+	toolchain/.
 
 
 PORTABILITY:
 ------------
 
-	To some extent all of the components of grafland are standalone. 
-	The core functionality (excluding the toolchain) only depends
-	on the standard C library and a few POSIX extensions to it. This 
-	being the case it should work fine on Linux, mac, NetBSD and 
-	FreeBSD.
+	To some extent all of the components of grafland are standalone. The 
+	core functionality (excluding the toolchain) only depends on the 
+	standard C library and a few POSIX extensions to it. This being the 
+	case it should work fine on Linux, mac, NetBSD and FreeBSD.
 
 
 CONTACT:
