@@ -16,7 +16,6 @@ HIER:
 
 	libc/
 		Standard C library components.
-
 	
 	arbprec/
 		Arbitrary precision mathematics using strings.
@@ -37,12 +36,14 @@ HIER:
 		the graff shell (Gsh) and grafland irc client. The latter
 		is supplied with a unique ircline() function (native).
 
-
-	curses/ & termcap/
+	curses/
 		Hexen, a minimal curses / conio style library. Hexen supplies
 		grafland's terminal capabilities and ultimately powers grafland's
 		readline/editline/ircline implementation, editor, irc client
-		and system monitor.
+		and system monitor. 
+
+	termcap/
+		Terminal capability definitions for the hexen / curses.
 
 	editor/
 		A native editor. 
@@ -54,10 +55,8 @@ HIER:
 		A native irc client and library. 
 	
 	posix/
-		Userland utilities.
-
-		cp, ls, fetch, dd, find and many more, implemented from scratch
-		to subsets of POSIX specifications.
+		Userland utilities such as cp, ls, fetch, dd, find etc.
+		implemented to subsets of their POSIX specifications.
 
 	legacy/libsh/
 		Userland applications and libraries written in POSIX shell.
