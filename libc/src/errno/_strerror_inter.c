@@ -2,7 +2,7 @@
 
 /* x86 */
 char *_messages[150] = {
-	"\0",					/* (not used)	0	*/
+	"Unknown error code\0",			/* (not used)	0	*/
 	"Operation not permitted.\0",		/* EPERM	1	*/
 	"No such file or directory.\0",		/* ENOENT	2	*/
 	"No such process.\0",			/* ESRCH	3	*/
