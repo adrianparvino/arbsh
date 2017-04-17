@@ -9,6 +9,10 @@
 /* Macros */
 #define MAX(a,b) ((a) > (b) ? a : b)
 
+/* Structures and type definitions */
+
+
+
 /* Function protoypes */
 int *addition(int *, int *, int *);		/* Add two arrays */
 void *arbprec_malloc(size_t);			/* Memory allocater with error */
@@ -27,7 +31,6 @@ int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists,
 void verbosity(int *, char *, int, size_t);	/* Verbosity function */
 
 /* Globals */
-extern size_t cardinal;				/* All array functions must have the same length (cardinality) */
 extern int base; 				/* Default to base 10 */
 int *mirror; 
 
