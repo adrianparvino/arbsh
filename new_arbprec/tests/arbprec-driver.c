@@ -22,6 +22,9 @@ int main(int argc, char **argv)
 	size_t imag_cardinality = 0;
 	int *result;
 
+	bigflt *flt1 = 0;
+	bigflt *flt2 = 0;
+
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
 			case 'v':
