@@ -10,8 +10,16 @@
 #define MAX(a,b) ((a) > (b) ? a : b)
 
 /* Structures and type definitions */
+#define BIGFLT_MAX	127
 
+typedef struct { 
+	int *number;
+	int sign;
+	size_t float_pos;
+	size_t len; 
+} bigflt;
 
+bigflt _bigflt_alloc(size_t);
 
 /* Function protoypes */
 int *addition(int *, int *, int *);		/* Add two arrays */
