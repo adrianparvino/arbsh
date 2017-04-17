@@ -9,9 +9,7 @@
 /* Macros */
 #define MAX(a,b) ((a) > (b) ? a : b)
 
-/* Structures and type definitions */
-#define BIGFLT_MAX	127
-
+/* Structures and type definitions */ 
 typedef struct { 
 	int *number;
 	int sign;
@@ -19,7 +17,9 @@ typedef struct {
 	size_t len; 
 } bigflt;
 
-bigflt _bigflt_alloc(size_t);
+extern bigflt *ioflts;
+
+//bigflt _bigflt_alloc(size_t);
 
 /* Function protoypes */
 int *addition(int *, int *, int *);		/* Add two arrays */
