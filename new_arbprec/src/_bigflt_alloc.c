@@ -1,8 +1,8 @@
 #include <arbprec/arbprec.h>
 
-bigflt *_bigflt_alloc(size_t len)
+bigflt *arba_alloc(size_t len)
 {
-	bigflt *ret = malloc(sizeof (bigflt));
+	bigflt *ret = malloc(sizeof(bigflt));
 	ret->number = malloc(sizeof(int) * len);
 	ret->sign = '+';
 	ret->float_pos = 0;
@@ -10,3 +10,8 @@ bigflt *_bigflt_alloc(size_t len)
 	return ret;
 }
 
+void arba_free(bigflt *fp)
+{
+	free(fp->number);
+	free(fp);
+}
