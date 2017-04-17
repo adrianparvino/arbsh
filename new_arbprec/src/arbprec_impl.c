@@ -9,6 +9,15 @@ void *arbprec_malloc(size_t len)
 	return ret;
 }
 
+void *arbprec_realloc(void *ptr, size_t len)
+{
+	void *ret;
+	if(!(ret = realloc(ptr, len)))
+		die("realloc failed\n"); 
+	return ret;
+}
+
+
 size_t arraylen(int *array, int delim)
 { 
 	size_t len = 0; 

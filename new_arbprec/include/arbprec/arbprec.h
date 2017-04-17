@@ -14,12 +14,14 @@ typedef struct {
 	int *number;
 	int sign;
 	size_t float_pos;
-	size_t len; 
+	size_t len;
+	size_t allocated;
 } bigflt;
 
 /* Function protoypes */
 int *addition(int *, int *, int *);		/* Add two arrays */
-void *arbprec_malloc(size_t);			/* Memory allocater with error */
+void *arbprec_malloc(size_t);			/* malloc + error checking */
+void *arbprec_realloc(void *, size_t);		/* realloc + error checking */
 size_t arraylen(int *, int);			/* Similiar to strlen except it searches for the specified token */
 void copyarray(int *, int *, size_t);		/* Copy an array of ints to another array of ints */ 
 void die(char *);				/* Kill and error message */
