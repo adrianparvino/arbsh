@@ -17,10 +17,6 @@ typedef struct {
 	size_t len; 
 } bigflt;
 
-extern bigflt *ioflts;
-
-//bigflt _bigflt_alloc(size_t);
-
 /* Function protoypes */
 int *addition(int *, int *, int *);		/* Add two arrays */
 void *arbprec_malloc(size_t);			/* Memory allocater with error */
