@@ -10,15 +10,11 @@
 #define EAGAIN EWOULDBLOCK
 #endif
 
-/* TODO: zmapfile() */
-
 /*
- * read a whole file into memory
- * - deal with interrupted system calls (errno == EINTR)
- * - return address of dynamically allocated buffer
- *   - needs to be freed explicitly after use
- *   - return number of bytes read in sizeret
+ * Derived from Tuomo Venäläinen's OS-zero/unix.c
+ * with modifications for grafland by myself (Graff)
  */
+
 void *
 zreadfile(char *filename, size_t *sizeret)
 {
@@ -73,11 +69,6 @@ zreadfile(char *filename, size_t *sizeret)
     return buf;
 }
 
-/*
- * write nb bytes from buf into file
- * - deal with interrupted system calls (errno == EINTR)
- * - return 0 on success, -1 on failure
- */
 int
 zwritefile(char *filename, void *buf, size_t nb, size_t *sizeret)
 {
@@ -120,7 +111,6 @@ zwritefile(char *filename, void *buf, size_t nb, size_t *sizeret)
     return 0;
 }
 
-/* read in blocking mode */
 ssize_t
 zread(int fd, void *buf, size_t nb)
 {
