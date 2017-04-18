@@ -1,22 +1,47 @@
 #include <arbprec/arbprec.h>
 
+
+
 void arbprec_print(bigflt *flt)
 {
+	
+	/*
+		convert a bigflt to a string and print it to standard out
+		in a single `write';
+
+	*/
+
         size_t i = 0;
+	size_t j = 0;
+	size_t chunk = BUFSIZ / 16;
+	size_t allocated = chunk;
+	char *buf = arbprec_malloc(sizeof(char) * allocated);
 
 	if ( flt->sign )
-		printf("%c", flt->sign);
+		buf[j++] = flt->sign;
 
         for ( i = 0; i < flt->len ; ++i)
 	{
 		if ( flt->float_pos == i )
-			printf("."); 
-		
-		printf("%d", flt->number[i]);
+			buf[j++] = '.';
+		if ( j == allocated )
+		{
+			allocated += chunk;
+			buf = arbprec_realloc(buf, sizeof(char) * allocated);
+		}
+		buf[j++] = (flt->number[i] + '0');
 	}
+	
+	if ( j == allocated )
+	{
+		allocated += chunk;
+		buf = arbprec_realloc(buf, sizeof(char) * allocated);
+	}
+	buf[j++] = '\n';
+	buf[j++] = '\0';
+	write(1, buf, j);
+}
 
-        printf("\n");
-} 
 
 bigflt *str_to_bigflt(const char *str)
 {
@@ -64,7 +89,7 @@ bigflt *str_to_bigflt(const char *str)
 			if ( ret->len == ret->allocated)
 			{
 				ret->allocated += chunk;
-				ret->number = arbprec_realloc(ret->number, ret->allocated);
+				ret->number = arbprec_realloc(ret->number, sizeof(char) * ret->allocated);
 			}
 			ret->number[ret->len++] = str[i] - '0';
 		}
@@ -85,8 +110,10 @@ bigflt *arba_alloc(size_t len)
 	return ret;
 }
 
-void arba_free(bigflt *fp)
+void arba_free(bigflt *flt)
 {
-	free(fp->number);
-	free(fp);
+	if (flt->number)
+		free(flt->number);
+
+	free(flt);
 }
