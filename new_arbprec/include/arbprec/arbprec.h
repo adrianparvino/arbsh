@@ -13,6 +13,7 @@
 /* Structures and type definitions */ 
 typedef struct { 
 	int *number;
+	int *mirror;
 	int sign;
 	size_t float_pos;
 	size_t len;
