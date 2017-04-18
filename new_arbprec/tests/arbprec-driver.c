@@ -4,43 +4,14 @@
 #include <string.h>
 #include <arbprec/arbprec.h>
 
-
 int base = 10; 		/* global base */
 
 int main(int argc, char **argv)
-{
-	int *hold;	/* Copy of bigint1 */
-	int *hold2;	/* Copy of bigint2 */
+{ 
+	
+	int o = 0;
 	double a = 0;
 	double b = 0;
-	int o = 0;
-	size_t carda;
-	size_t cardb; 
-	int *bigint1;			/* Copy of argument 1 */
-	int *bigint2;			/* Copy of argument 2 */
-	size_t real_cardinality = 0;
-	size_t imag_cardinality = 0;
-	int *result;
-
-	bigflt *flt1 = str_to_bigflt("12345");
-	arbprec_print(flt1);
-
-	
-	bigflt *flt2 = str_to_bigflt("99123");
-	arbprec_print(flt2);
-
-	//arba_free(flt1);
-	//arba_free(flt2);
-
-	bigflt *flt3 = arba_alloc(1000);
-
-	flt3 = arbprec_add(flt1, flt2, flt3);
-	arbprec_print(flt3);
-
-	
-	flt3 = arbprec_sub(flt1, flt2, flt3);
-	arbprec_print(flt3);
-
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
@@ -49,8 +20,8 @@ int main(int argc, char **argv)
 				break;
 			case 'b': /* Override base */
 				base = strtoul(optarg, 0, 10);
-				break; 
-			default: 
+				break;
+			default:
 				break;
 		}
 
@@ -72,71 +43,21 @@ int main(int argc, char **argv)
 	printf("- %20lf\n", a - b);
 	printf("* %20lf\n", a * b);
 	printf("/ %20lf\n", a / b);
+
 	
+	bigflt *flt1 = str_to_bigflt(argv[0]);
+	bigflt *flt2 = str_to_bigflt(argv[1]);
+	bigflt *flt3 = arba_alloc(1000);
 
-	mirror = arbprec_malloc(1000 * sizeof(int));
-	result = arbprec_malloc(1000 * sizeof(int));
-	bigint1 = arbprec_malloc(1000 * sizeof(int));
-	bigint2 = arbprec_malloc(1000 * sizeof(int));
+	flt3 = arbprec_add(flt1, flt2, flt3);
+	arbprec_print(flt3);
 
-	/* arb divide */
-	printf("division\n");
-	carda = strlen(argv[0]);
-	cardb = strlen(argv[1]);
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	hold[carda] = 4242;
-	hold2[cardb] = 4242;
-	result = divide(hold, hold2, result); 
+	flt3 = arbprec_sub(flt1, flt2, flt3);
+	arbprec_print(flt3);
 
-	/* ... printing the float part of division is still a bit complicated */
-	if ( carda + 1 > cardb )
-                real_cardinality = carda - cardb + 1;
-        else
-                real_cardinality = carda; 
-        if ( carda >= real_cardinality )
-                imag_cardinality = carda - real_cardinality; 
-        printarray(result, real_cardinality); 
-        printarray(result + (real_cardinality) ,imag_cardinality);
+	flt3 = arbprec_mul(flt1, flt2, flt3);
+	arbprec_print(flt3);
 
-
-	/* multiply */
-	printf("multiplication\n");
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	result = multiply(hold, hold2, result);
-	printarray(result, carda + cardb);
-
-	/* add */
-	printf("addition\n");
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	hold = addition(hold, hold2, result);
-	printarray(hold, MAX(carda, cardb));
-	
-	/* subtract */
-	printf("subtraction\n");
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	hold = subtraction(hold, hold2, result);
-	printarray(hold, MAX(carda, cardb));
-	
-	/* setarray, iszero, arb copyarray */
-	printf("setarray. iszero, copyarray\n");
-	hold = str2ints(argv[0], bigint1);
-	hold2 = str2ints(argv[1], bigint2);
-	setarray(hold, 0, carda + cardb);
-	setarray(hold2, 1, carda + cardb);
-	printarray(hold, carda);
-	printarray(hold2, cardb);
-	if ( iszero(hold) == 0 )
-		printf("hold is zero\n");
-	if ( iszero(hold2) != 0 )
-		printf("hold2 is not zero\n");
-	copyarray(hold2, hold, carda + cardb);
-	if ( iszero(hold2) == 0 )
-		printf("hold2 is now zero\n");
 
 	return 0;
-} 
-
+}
