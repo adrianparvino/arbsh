@@ -24,7 +24,7 @@ bigflt *str_to_bigflt(const char *str)
 		convert a string to a bigflt and attempt a series of chunk 
 		based `realloc's to hold the generated values.
 
-		Try to keep the chunk size alligned with future devices
+		Try to keep the chunk size aligned with future devices
 		by aligning with a size macro SIZE_MACRO / 16
 	*/
 
