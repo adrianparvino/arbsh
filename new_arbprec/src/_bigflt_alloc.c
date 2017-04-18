@@ -1,9 +1,16 @@
 #include <arbprec/arbprec.h>
 
+void arbprec_print(bigflt *flt)
+{
+	size_t i = 0;
+	printarray(flt->number, flt->len);
+		
+}
+
 bigflt *str_to_bigflt(const char *str)
 {
 	size_t i = 0;
-	size_t chunk = 512;
+	size_t chunk = 256;
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 
 	ret->len = 0;
@@ -18,7 +25,10 @@ bigflt *str_to_bigflt(const char *str)
 			ret->sign = '+';
 		else if (str[i] == '-')
 			ret->sign = '-';
-		else {
+		else if (str[i] == ' ')
+			;
+		else
+		{
 			if ( ret->len == ret->allocated)
 			{
 				ret->allocated += chunk;
@@ -26,7 +36,6 @@ bigflt *str_to_bigflt(const char *str)
 			}
 			ret->number[ret->len++] = str[i] - '0';
 		}
-		
 	}
 	return ret;
 }
@@ -38,6 +47,7 @@ bigflt *arba_alloc(size_t len)
 	ret->sign = '+';
 	ret->float_pos = 0;
 	ret->len = len;
+	ret->allocated = len;
 	return ret;
 }
 
