@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #ifndef _arbprec_h_
 #define _arbprec_h_
@@ -20,6 +21,9 @@ typedef struct {
 
 /* Function protoypes */
 int *addition(int *, int *, int *);		/* Add two arrays */
+bigflt *arba_alloc(size_t);
+bigflt *arbprec_add(bigflt *, bigflt *, bigflt *);
+
 void arbprec_print(bigflt *);
 void *arbprec_malloc(size_t);			/* malloc + error checking */
 void *arbprec_realloc(void *, size_t);		/* realloc + error checking */
