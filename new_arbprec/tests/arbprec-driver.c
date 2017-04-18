@@ -37,6 +37,10 @@ int main(int argc, char **argv)
 	flt3 = arbprec_add(flt1, flt2, flt3);
 	arbprec_print(flt3);
 
+	
+	flt3 = arbprec_sub(flt1, flt2, flt3);
+	arbprec_print(flt3);
+
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
