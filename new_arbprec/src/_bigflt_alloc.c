@@ -113,7 +113,7 @@ bigflt *arba_alloc(size_t len)
 
 void arba_free(bigflt *flt)
 {
-	//if (flt->number)
+	if (flt->number)
 		free(flt->number);
 	free(flt);
 }
