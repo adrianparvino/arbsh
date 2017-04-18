@@ -1,32 +1,33 @@
 #include <arbprec/arbprec.h>
 
-int *divide(int *a, int *b, int *c)
+
+bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 {
 	size_t i = 0;	
 	size_t j = 0;
 	size_t z = 0; 
-	size_t numer = arraylen(a, 4242);
-	size_t denom = arraylen(b, 4242);
-	size_t width = numer + denom;
+
+	
+	size_t width = a->len + b->len;
 	int *mir = arbprec_malloc(sizeof(int) * width);
 	int *tmir = arbprec_malloc(sizeof(int) * width);
 	int sum = 0;
 	int rec = 0;
 
 	/* TODO: capture the falling places and increment the *int */
-	setarray(c, 0, width);
-	setarray(mir, 4242, width);
-	copyarray(mir, a, width);
-	setarray(tmir, 4242, width);
+	setarray(c->number, width);
+	setarray(mir, width);
+	copyarray(mir, a->number, width);
+	setarray(tmir, width);
 	copyarray(tmir, mir, width);
 
 	/* numerator / denominator  =  quotient */
-	for ( ; z < numer ; )
+	for ( ; z < a->len ; )
 	{
 		copyarray(tmir, mir, width);
-		for (rec = 0, i = 0, j = z; i < denom ; j++ ,i++)
+		for (rec = 0, i = 0, j = z; i < b->len ; j++ ,i++)
 		{
-			sum = (mir[j]) - (b[i]);
+			sum = (mir[j]) - (b->number[i]);
 			if ( sum < 0 )
 			{
 				if ( j == z )
@@ -47,12 +48,19 @@ int *divide(int *a, int *b, int *c)
 		if ( rec == 0 )
 		{
 			copyarray(mir, tmir, width);
-			c[z] += 1;
+			c->number[z] += 1;
 		} 
-		if ( iszero(tmir) == 0 )
+		if ( iszero(tmir, width) == 0 )
 			break;
 	}
+
+	if ( a->len + 1 > b->len )
+                c->float_pos = a->len - b->len + 1;
+        else
+                c->float_pos = a->len;
+
+	free(mir);
+	free(tmir);
 	return c;
 }
-
 
