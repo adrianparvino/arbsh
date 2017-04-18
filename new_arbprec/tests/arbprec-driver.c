@@ -9,7 +9,7 @@ int base = 10; 		/* global base */
 int main(int argc, char **argv)
 {
 
-	if ( argc < 2 )
+	if ( argc < 3 )
 		die("Needs 2 args\n");
 
 	double a = strtod(argv[1], 0);
