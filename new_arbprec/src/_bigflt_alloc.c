@@ -2,8 +2,8 @@
 
 void arbprec_print(bigflt *flt)
 {
-
         size_t i = 0;
+
 	if ( flt->sign )
 		printf("%c", flt->sign);
 
@@ -11,8 +11,8 @@ void arbprec_print(bigflt *flt)
 	{
 		if ( flt->float_pos == i )
 			printf("."); 
-		else
-			printf("%d", flt->number[i]);
+		
+		printf("%d", flt->number[i]);
 	}
 
         printf("\n");
@@ -37,15 +37,13 @@ bigflt *str_to_bigflt(const char *str)
 	ret->len = 0;
 	ret->allocated = chunk;
 	ret->number = arbprec_malloc(sizeof(int) * ret->allocated);
-	
 
 	for (i = 0; str[i] != '\0'; ++i)
 	{
-		
 		if (str[i] == '.')
 		{
 			flt_set = 1;
-			ret->float_pos = i;
+			ret->float_pos = i - 1;
 		}
 		else if (str[i] == '+')
 			ret->sign = '+';
