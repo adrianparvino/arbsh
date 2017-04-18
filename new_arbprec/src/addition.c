@@ -9,7 +9,7 @@ bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 	int carry = 0;
 	c->len = 0;
 
-	width = MAX(a->len, a->len);
+	width = MAX(a->len, b->len);
 	
         for( c->len = 0; c->len < width ; c->len++)
 	{
