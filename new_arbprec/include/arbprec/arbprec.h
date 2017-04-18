@@ -20,6 +20,7 @@ typedef struct {
 
 /* Function protoypes */
 int *addition(int *, int *, int *);		/* Add two arrays */
+void arbprec_print(bigflt *);
 void *arbprec_malloc(size_t);			/* malloc + error checking */
 void *arbprec_realloc(void *, size_t);		/* realloc + error checking */
 size_t arraylen(int *, int);			/* Similiar to strlen except it searches for the specified token */
@@ -32,6 +33,7 @@ size_t reversestr(int *);			/* Reverse an integer array */
 void setarray(int *, int, size_t);		/* Set an array of ints to all zeros or a magnitude thereof */
 int *subtraction(int *, int *, int *);		/* Subtract two arrays */
 int *str2ints(char *, int *);			/* Convert a string into an integer array */ 
+bigflt *str_to_bigflt(const char *);
 void printarray(int *, size_t len);		/* Print an array of integers */
 int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */
 void verbosity(int *, char *, int, size_t);	/* Verbosity function */
