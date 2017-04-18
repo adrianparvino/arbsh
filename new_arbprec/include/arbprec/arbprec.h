@@ -11,7 +11,7 @@
 #define MAX(a,b) ((a) > (b) ? a : b)
 
 /* Structures and type definitions */ 
-typedef struct { 
+typedef struct {
 	int *number;
 	int *mirror;
 	int sign;
@@ -21,34 +21,25 @@ typedef struct {
 } bigflt;
 
 /* Function protoypes */
-int *addition(int *, int *, int *);		/* Add two arrays */
 bigflt *arba_alloc(size_t);
 bigflt *arbprec_add(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_mul(bigflt *, bigflt *, bigflt *);
-
+bigflt *arbprec_div(bigflt *, bigflt *, bigflt *); 
 void arbprec_print(bigflt *);
-void *arbprec_malloc(size_t);			/* malloc + error checking */
-void *arbprec_realloc(void *, size_t);		/* realloc + error checking */
+void *arbprec_malloc(size_t);
+void *arbprec_realloc(void *, size_t);
 void arbprec_reverse(int *, size_t);
-size_t arraylen(int *, int);			/* Similiar to strlen except it searches for the specified token */
-void copyarray(int *, int *, size_t);		/* Copy an array of ints to another array of ints */ 
-void die(char *);				/* Kill and error message */
-int iszero(int *);				/* Returns true if an entire array is zero */ 
-int *divide(int *, int *, int *);		/* Multiply arrays of integers (long multiplication) */ 
-int *multiply(int *, int *, int *);		/* Multiply arrays of integers (long multiplication) */ 
-size_t reversestr(int *);			/* Reverse an integer array */
-void setarray(int *, int, size_t);		/* Set an array of ints to all zeros or a magnitude thereof */
-int *subtraction(int *, int *, int *);		/* Subtract two arrays */
-int *str2ints(char *, int *);			/* Convert a string into an integer array */ 
+void copyarray(int *, int *, size_t);
+void die(char *);
+int iszero(int *, size_t);
+void setarray(int *, size_t);
 bigflt *str_to_bigflt(const char *);
-void printarray(int *, size_t len);		/* Print an array of integers */
-int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */
-void verbosity(int *, char *, int, size_t);	/* Verbosity function */
+int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */ 
 
 /* Globals */
 extern int base; 				/* Default to base 10 */
-int *mirror; 
+
 
 #endif /* _arbprec_h_ */
 
