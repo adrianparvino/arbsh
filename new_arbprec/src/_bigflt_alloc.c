@@ -40,6 +40,7 @@ void arbprec_print(bigflt *flt)
 	buf[j++] = '\n';
 	buf[j++] = '\0';
 	write(1, buf, j);
+	free(buf);
 }
 
 
@@ -112,8 +113,7 @@ bigflt *arba_alloc(size_t len)
 
 void arba_free(bigflt *flt)
 {
-	if (flt->number)
+	//if (flt->number)
 		free(flt->number);
-
 	free(flt);
 }
