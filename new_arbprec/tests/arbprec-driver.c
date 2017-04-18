@@ -22,8 +22,8 @@ int main(int argc, char **argv)
 	size_t imag_cardinality = 0;
 	int *result;
 
-	bigflt *flt1 = 0;
-	bigflt *flt2 = 0;
+	bigflt *flt1 = str_to_bigflt("12345");
+	arbprec_print(flt1);
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
