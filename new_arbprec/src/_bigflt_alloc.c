@@ -1,4 +1,20 @@
 #include <arbprec/arbprec.h>
+void arbprec_reverse(int *x, size_t lim)
+{
+        size_t i = 0;
+        int swap = 0;
+        size_t half = lim / 2;
+
+        for ( ; i < half ; i++)
+        {
+                swap = x[i];
+                x[i] = x[lim - i - 1];
+                x[lim - i - 1] = swap;
+        }
+        return lim;
+}
+
+
 
 
 void arbprec_print(bigflt *flt)
@@ -23,7 +39,7 @@ void arbprec_print(bigflt *flt)
 	if ( flt->sign )
 		buf[j++] = flt->sign;
 
-        for ( i = 0; i < flt->len ; ++i)
+        for (i = 0; i < flt->len ; ++i)
 	{
 		if ( flt->float_pos == i )
 			buf[j++] = '.';
@@ -108,7 +124,7 @@ bigflt *arba_alloc(size_t len)
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 	ret->number = arbprec_malloc(sizeof(int) * len);
 	ret->sign = '+';
-	ret->float_pos = 0;
+	ret->float_pos = len + 1;
 	ret->len = len;
 	ret->allocated = len;
 	return ret;
@@ -120,3 +136,4 @@ void arba_free(bigflt *flt)
 		free(flt->number);
 	free(flt);
 }
+
