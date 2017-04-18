@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+
 void arbprec_reverse(int *x, size_t lim)
 {
         size_t i = 0;
@@ -11,11 +12,7 @@ void arbprec_reverse(int *x, size_t lim)
                 x[i] = x[lim - i - 1];
                 x[lim - i - 1] = swap;
         }
-        return lim;
 }
-
-
-
 
 void arbprec_print(bigflt *flt)
 {
