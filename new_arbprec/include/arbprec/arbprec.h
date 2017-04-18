@@ -23,6 +23,7 @@ int *addition(int *, int *, int *);		/* Add two arrays */
 void arbprec_print(bigflt *);
 void *arbprec_malloc(size_t);			/* malloc + error checking */
 void *arbprec_realloc(void *, size_t);		/* realloc + error checking */
+void arbprec_reverse(int *, size_t);
 size_t arraylen(int *, int);			/* Similiar to strlen except it searches for the specified token */
 void copyarray(int *, int *, size_t);		/* Copy an array of ints to another array of ints */ 
 void die(char *);				/* Kill and error message */
