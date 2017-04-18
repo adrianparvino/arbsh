@@ -2,7 +2,7 @@
 
 /* Functions */ 
 
-int *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
+bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 {
 	size_t width = 0;
 	int sum = 0;
