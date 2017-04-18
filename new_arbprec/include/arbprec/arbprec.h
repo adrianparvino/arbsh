@@ -24,6 +24,8 @@ typedef struct {
 int *addition(int *, int *, int *);		/* Add two arrays */
 bigflt *arba_alloc(size_t);
 bigflt *arbprec_add(bigflt *, bigflt *, bigflt *);
+bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
+bigflt *arbprec_mul(bigflt *, bigflt *, bigflt *);
 
 void arbprec_print(bigflt *);
 void *arbprec_malloc(size_t);			/* malloc + error checking */
