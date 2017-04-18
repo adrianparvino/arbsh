@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	arbprec_print(flt1);
 
 	
-	bigflt *flt2 = str_to_bigflt("-99123.456789");
+	bigflt *flt2 = str_to_bigflt("-  99123.456789");
 	arbprec_print(flt2);
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
