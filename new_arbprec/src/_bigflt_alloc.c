@@ -14,7 +14,7 @@ void arbprec_reverse(int *x, size_t lim)
         }
 }
 
-void arbprec_print(bigflt *flt)
+bigflt *arbprec_print(bigflt *flt)
 {
 	
 	/*
@@ -57,6 +57,7 @@ void arbprec_print(bigflt *flt)
 	buf[j++] = '\0';
 	write(1, buf, j);
 	free(buf);
+	return flt;
 }
 
 
