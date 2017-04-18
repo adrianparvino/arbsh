@@ -26,11 +26,16 @@ int main(int argc, char **argv)
 	arbprec_print(flt1);
 
 	
-	bigflt *flt2 = str_to_bigflt("-  99123.456789");
+	bigflt *flt2 = str_to_bigflt("99123");
 	arbprec_print(flt2);
 
-	arba_free(flt1);
-	arba_free(flt2);
+	//arba_free(flt1);
+	//arba_free(flt2);
+
+	bigflt *flt3 = arba_alloc(1000);
+
+	flt3 = arbprec_add(flt1, flt2, flt3);
+	arbprec_print(flt3);
 
 
 	while ((o = getopt (argc, argv, "vb:")) != -1)
