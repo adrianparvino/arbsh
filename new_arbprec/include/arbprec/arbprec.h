@@ -26,7 +26,7 @@ bigflt *arbprec_add(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_mul(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_div(bigflt *, bigflt *, bigflt *); 
-void arbprec_print(bigflt *);
+bigflt *arbprec_print(bigflt *);
 void *arbprec_malloc(size_t);
 void *arbprec_realloc(void *, size_t);
 void arbprec_reverse(int *, size_t);
