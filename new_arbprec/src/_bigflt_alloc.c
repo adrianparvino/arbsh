@@ -1,13 +1,16 @@
 #include <arbprec/arbprec.h>
 
 
-
 void arbprec_print(bigflt *flt)
 {
 	
 	/*
-		convert a bigflt to a string and print it to standard out
-		in a single `write';
+		Convert a bigflt to a string and print it to standard out
+		in a single `write'.
+
+		TODO:
+			It may be easier to use sprintf/printf to accumulate
+			the buffer to simplify debugging bigflt's
 
 	*/
 
@@ -47,11 +50,11 @@ void arbprec_print(bigflt *flt)
 bigflt *str_to_bigflt(const char *str)
 {
 	/*
-		convert a string to a bigflt and attempt a series of chunk 
+		Convert a string to a bigflt and attempt a series of chunk 
 		based `realloc's to hold the generated values.
 
 		Try to keep the chunk size aligned with future devices
-		by aligning with a size macro SIZE_MACRO / 16
+		by aligning with a size macro such as (SIZE_MACRO / 16).
 	*/
 
 	size_t i = 0;
@@ -90,7 +93,7 @@ bigflt *str_to_bigflt(const char *str)
 			if ( ret->len == ret->allocated)
 			{
 				ret->allocated += chunk;
-				ret->number = arbprec_realloc(ret->number, sizeof(char) * ret->allocated);
+				ret->number = arbprec_realloc(ret->number, sizeof(int) * ret->allocated);
 			}
 			ret->number[ret->len++] = str[i] - '0';
 		}
