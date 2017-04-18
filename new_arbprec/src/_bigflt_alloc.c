@@ -31,6 +31,8 @@ bigflt *str_to_bigflt(const char *str)
 	size_t i = 0;
 	size_t chunk = BUFSIZ / 16;
 	int flt_set = 0;
+	int sign_set = 0;
+	int padded = 0;
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 
 	ret->sign = '+';
@@ -43,14 +45,20 @@ bigflt *str_to_bigflt(const char *str)
 		if (str[i] == '.')
 		{
 			flt_set = 1;
-			ret->float_pos = i - 1;
+			ret->float_pos = i - sign_set - padded;
 		}
 		else if (str[i] == '+')
+		{
+			sign_set = 1;
 			ret->sign = '+';
+		}
 		else if (str[i] == '-')
+		{
+			sign_set = 1;
 			ret->sign = '-';
+		}
 		else if (str[i] == ' ')
-			;
+			++padded;
 		else
 		{
 			if ( ret->len == ret->allocated)
@@ -61,7 +69,7 @@ bigflt *str_to_bigflt(const char *str)
 			ret->number[ret->len++] = str[i] - '0';
 		}
 	}
-	if ( flt_set == 0 ) /* no float */
+	if ( flt_set == 0 ) /* not a float so put the "." at the representative end */
 		ret->float_pos = ret->len + 1;
 	return ret;
 }
