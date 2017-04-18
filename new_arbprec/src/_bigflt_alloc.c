@@ -113,6 +113,9 @@ bigflt *str_to_bigflt(const char *str)
 	}
 	if ( flt_set == 0 ) /* not a float so put the "." at the representative end */
 		ret->float_pos = ret->len + 1;
+
+	ret->mirror = arbprec_malloc(sizeof(int) * ret->allocated);
+
 	return ret;
 }
 
@@ -120,6 +123,7 @@ bigflt *arba_alloc(size_t len)
 {
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 	ret->number = arbprec_malloc(sizeof(int) * len);
+	ret->mirror = arbprec_malloc(sizeof(int) * len);
 	ret->sign = '+';
 	ret->float_pos = len + 1;
 	ret->len = len;
