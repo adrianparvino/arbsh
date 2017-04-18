@@ -39,6 +39,11 @@ int main(int argc, char **argv)
 	flt3 = arbprec_mul(flt1, flt2, flt3);
 	arbprec_print(flt3);
 
+	
+	flt3 = arbprec_div(flt1, flt2, flt3);
+	arbprec_print(flt3);
+
+
 
 	return 0;
 }
