@@ -29,6 +29,10 @@ int main(int argc, char **argv)
 	bigflt *flt2 = str_to_bigflt("-  99123.456789");
 	arbprec_print(flt2);
 
+	arba_free(flt1);
+	arba_free(flt2);
+
+
 	while ((o = getopt (argc, argv, "vb:")) != -1)
 		switch (o) { 
 			case 'v':
