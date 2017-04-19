@@ -48,7 +48,6 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 			copyarray(mir, tmir, width);
 			c->number[z] += 1;
 			c->len = z + 1;
-			
 		} 
 		if ( iszero(tmir, width) == 0 )
 			break;
