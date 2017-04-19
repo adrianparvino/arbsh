@@ -28,6 +28,9 @@ bigflt *arbprec_mul(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_print(bigflt *);
 bigflt *arbprec_setsign(bigflt *);
+
+int arbprec_isnegati(bigflt *);
+
 void *arbprec_malloc(size_t);
 void *arbprec_realloc(void *, size_t);
 void arbprec_reverse(int *, size_t);
