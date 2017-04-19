@@ -12,6 +12,14 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	int sum = 0;
 	int rec = 0;
 	c->len = 0;
+
+        /* see if either a or b is negative */
+	arbprec_initsign(c);
+        if (arbprec_isnegati(a))
+                arbprec_setsign(c);
+        if (arbprec_isnegati(b))
+                arbprec_setsign(c);
+
 	
 	setarray(c->number, width);
 	setarray(mir, width);
