@@ -1,6 +1,6 @@
 #include <arbprec/arbprec.h>
 
-bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
+bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
 {
         size_t width = 0;
         int sum = 0;
@@ -38,3 +38,26 @@ bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
         return c;
 }
 
+bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
+{
+        arbprec_initsign(c);
+
+        if ( arbprec_isnegati(a) &&  arbprec_isnegati(b) )
+        {
+                arbprec_setsign(c);
+                return c = arbprec_sub_inter(a, b, c);
+        }
+        else if ( arbprec_isnegati(a))
+        {
+                arbprec_setsign(c);
+                return c = arbprec_add_inter(a, b, c);
+        }
+        else if ( arbprec_isnegati(b))
+        {
+                return c = arbprec_add_inter(a, b, c);
+        }
+        else c = arbprec_sub_inter(a, b, c);
+
+        return c;
+}
+ 
