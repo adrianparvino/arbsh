@@ -17,15 +17,6 @@ void *arbprec_realloc(void *ptr, size_t len)
 	return ret;
 }
 
-
-size_t arraylen(int *array, int delim)
-{ 
-	size_t len = 0; 
-	while( array[len] != delim) 
-		++len;
-	return len;
-}
-
 void copyarray(int *answer, int *from, size_t len)
 {
 	size_t i = 0;
