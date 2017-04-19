@@ -9,7 +9,13 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
 	int sum = 0;
 	int carry = 0;
 
-	memset(c->number, 0, 100);
+	/* see if either a or b is negative */ 
+        if (arbprec_isnegati(a))
+                arbprec_setsign(c);
+        if (arbprec_isnegati(b))
+                arbprec_setsign(c);
+
+	memset(c->number, 0, 100); // fix this
 
 	for ( i = a->len - 1; i >= 0 ; i--)
 	{
