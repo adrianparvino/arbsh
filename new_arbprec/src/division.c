@@ -5,23 +5,20 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 {
 	size_t i = 0;	
 	size_t j = 0;
-	size_t z = 0; 
-
-	
+	size_t z = 0;
 	size_t width = a->len + b->len;
 	int *mir = arbprec_malloc(sizeof(int) * width);
 	int *tmir = arbprec_malloc(sizeof(int) * width);
 	int sum = 0;
 	int rec = 0;
-
-	/* TODO: capture the falling places and increment the *int */
+	
 	setarray(c->number, width);
 	setarray(mir, width);
-	copyarray(mir, a->number, width);
+	copyarray(mir, a->number, a->len);
 	setarray(tmir, width);
 	copyarray(tmir, mir, width);
 
-	/* numerator / denominator  =  quotient */
+	
 	for ( ; z < a->len ; )
 	{
 		copyarray(tmir, mir, width);
@@ -49,6 +46,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 		{
 			copyarray(mir, tmir, width);
 			c->number[z] += 1;
+			c->len = z;
 		} 
 		if ( iszero(tmir, width) == 0 )
 			break;
