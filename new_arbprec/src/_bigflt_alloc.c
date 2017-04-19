@@ -9,6 +9,13 @@ bigflt *arbprec_setsign(bigflt *flt)
 	return flt;
 }
 
+int arbprec_isnegati(bigflt *flt)
+{
+	if ( flt->sign == '-' )
+		return 1;
+	return 0;
+}
+
 void arbprec_reverse(int *x, size_t lim)
 {
         size_t i = 0;
