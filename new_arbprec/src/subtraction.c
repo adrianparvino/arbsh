@@ -29,10 +29,14 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
                 c->number[c->len] = sum;
                 c->mirror[c->len] = (base-1) - mir;
         }
-
-        c->number[c->len] = c->mirror[c->len] = 4242;
+        
         if (borrow == -1) 
+	{
 		c->number = c->mirror;
+		if (!( arbprec_isnegati(a) && arbprec_isnegati(b) ))
+			arbprec_setsign(c);
+	
+	}
 
         arbprec_reverse(c->number, c->len);
         return c;
@@ -42,7 +46,7 @@ bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
 {
         arbprec_initsign(c);
 
-        if ( arbprec_isnegati(a) &&  arbprec_isnegati(b) )
+        if ( arbprec_isnegati(a) && arbprec_isnegati(b) )
         {
                 arbprec_setsign(c);
                 return c = arbprec_sub_inter(a, b, c);
