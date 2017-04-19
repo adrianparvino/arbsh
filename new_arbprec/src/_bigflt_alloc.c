@@ -1,5 +1,11 @@
 #include <arbprec/arbprec.h>
 
+bigflt *arbprec_initsign(bigflt *flt)
+{
+	flt->sign = '+';
+	return flt;
+}
+
 bigflt *arbprec_setsign(bigflt *flt)
 {
 	if ( flt->sign == '+' )

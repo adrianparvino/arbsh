@@ -10,6 +10,7 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
 	int carry = 0;
 
 	/* see if either a or b is negative */ 
+	arbprec_initsign(c);
         if (arbprec_isnegati(a))
                 arbprec_setsign(c);
         if (arbprec_isnegati(b))
