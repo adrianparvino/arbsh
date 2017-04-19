@@ -8,6 +8,8 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	c->len = 0;
 
 	width = MAX(a->len, b->len);
+
+	
 	
         for( c->len = 0; c->len < width ; c->len++)
 	{
@@ -33,15 +35,15 @@ bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 {
 	arbprec_initsign(c);
 
-	if ( arbprec_isnegati(a) &&  arbprec_isnegati(b) )
+	if ( arbprec_isnegati(a) && arbprec_isnegati(b) )
 	{
 		arbprec_setsign(c);
 		return c = arbprec_add_inter(a, b, c);
 	}
 	else if ( arbprec_isnegati(a))
 	{
-		arbprec_setsign(c);
-		arbprec_setsign(c);
+		//arbprec_setsign(c);
+		//arbprec_setsign(c);
 		return c = arbprec_sub_inter(b, a, c);
 	}
 	else if ( arbprec_isnegati(b))
