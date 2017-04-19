@@ -1,5 +1,14 @@
 #include <arbprec/arbprec.h>
 
+bigflt *arbprec_setsign(bigflt *flt)
+{
+	if ( flt->sign == '+' )
+		flt->sign = '-';
+	else if ( flt->sign == '-' )
+		flt->sign = '+';
+	return flt;
+}
+
 void arbprec_reverse(int *x, size_t lim)
 {
         size_t i = 0;
@@ -23,7 +32,7 @@ bigflt *arbprec_print(bigflt *flt)
 
 		TODO:
 			It may be easier to use sprintf/printf to accumulate
-			the buffer to simplify debugging bigflt's
+			the buffer to simplify debugging bigflts
 
 	*/
 
