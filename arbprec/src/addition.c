@@ -20,17 +20,12 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 		/* add a vector resize here */
                 c->number[c->len] = sum;
         }
-        if (carry)
-	{
-		//write(1, "carry   ", 8);
+        if (carry) 
 		c->number[c->len++] = 1;
-	}
        
 	arbprec_reverse(c->number, c->len);
 	return c;
 }
-
-
 
 bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 {
@@ -38,23 +33,19 @@ bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 
 	if ( arbprec_isnegati(a) && arbprec_isnegati(b) )
 	{
-		//write(1, "ident 1 ", 8);
 		arbprec_setsign(c);
-		return c = arbprec_add_inter(a, b, c);
+		c = arbprec_add_inter(a, b, c);
 	}
 	else if ( arbprec_isnegati(a))
-	{
-		//write(1, "ident 2 ", 8);
-		arbprec_setsign(c);
-		arbprec_setsign(c);
-		return c = arbprec_sub_inter(b, a, c);
+	{ 
+		c = arbprec_sub_inter(b, a, c);
 	}
 	else if ( arbprec_isnegati(b))
 	{
-		//write(1, "ident 4 ", 8);
-		return c = arbprec_sub_inter(a, b, c);
+		c = arbprec_sub_inter(a, b, c);
 	}
 	else c = arbprec_add_inter(a, b, c);
 
         return c;
 }
+
