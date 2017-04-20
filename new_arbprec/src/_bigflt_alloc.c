@@ -60,12 +60,16 @@ bigflt *arbprec_print(bigflt *flt)
 
         for (i = 0; i < flt->len ; ++i)
 	{
-		if ( flt->float_pos == i )
-			buf[j++] = '.';
 		if ( j == allocated )
 		{
 			allocated += chunk;
 			buf = arbprec_realloc(buf, sizeof(char) * allocated);
+		}
+		
+		if ( flt->float_pos == i )
+		{
+			buf[j++] = '.';
+			continue;
 		}
 		buf[j++] = (flt->number[i] + '0');
 	}
@@ -77,7 +81,7 @@ bigflt *arbprec_print(bigflt *flt)
 	}
 	buf[j++] = '\n';
 	buf[j++] = '\0';
-	write(1, buf, j);
+	write(1, buf, j -1);
 	free(buf);
 	return flt;
 }
