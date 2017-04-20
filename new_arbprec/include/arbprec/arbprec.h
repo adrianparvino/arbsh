@@ -23,11 +23,9 @@ typedef struct {
 /* Function protoypes */
 bigflt *arba_alloc(size_t);
 bigflt *arbprec_add(bigflt *, bigflt *, bigflt *);
-bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
-
 bigflt *arbprec_add_inter(bigflt *, bigflt *, bigflt *);
+bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_sub_inter(bigflt *, bigflt *, bigflt *);
-
 bigflt *arbprec_mul(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_print(bigflt *);
