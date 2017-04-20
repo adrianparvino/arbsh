@@ -17,7 +17,6 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
                         carry = 1;
                         sum -= base;
                 }
-		/* add a vector resize here */
                 c->number[c->len] = sum;
         }
         if (carry) 

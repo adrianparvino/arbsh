@@ -30,7 +30,7 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
                 c->mirror[c->len] = (base-1) - mir;
         }
         
-        if (borrow == -1) 
+        if (borrow == -1)
 	{ 
 		c->number = c->mirror;
 		//if (!( arbprec_isnegati(a) && arbprec_isnegati(b) ))
