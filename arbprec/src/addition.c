@@ -9,8 +9,6 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 
 	width = MAX(a->len, b->len);
 
-	
-	
         for( c->len = 0; c->len < width ; c->len++)
 	{
 		sum = hasplace(a->number, c->len, a->len) + hasplace(b->number, c->len, b->len) + carry;
@@ -23,7 +21,10 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
                 c->number[c->len] = sum;
         }
         if (carry)
+	{
+		//write(1, "carry   ", 8);
 		c->number[c->len++] = 1;
+	}
        
 	arbprec_reverse(c->number, c->len);
 	return c;
@@ -37,17 +38,20 @@ bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 
 	if ( arbprec_isnegati(a) && arbprec_isnegati(b) )
 	{
+		//write(1, "ident 1 ", 8);
 		arbprec_setsign(c);
 		return c = arbprec_add_inter(a, b, c);
 	}
 	else if ( arbprec_isnegati(a))
 	{
-		//arbprec_setsign(c);
-		//arbprec_setsign(c);
+		//write(1, "ident 2 ", 8);
+		arbprec_setsign(c);
+		arbprec_setsign(c);
 		return c = arbprec_sub_inter(b, a, c);
 	}
 	else if ( arbprec_isnegati(b))
 	{
+		//write(1, "ident 4 ", 8);
 		return c = arbprec_sub_inter(a, b, c);
 	}
 	else c = arbprec_add_inter(a, b, c);
