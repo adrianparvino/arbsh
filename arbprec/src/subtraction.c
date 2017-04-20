@@ -32,9 +32,10 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         
         if (borrow == -1) 
 	{
+		//write(2, "flipsub ", 8); 
 		c->number = c->mirror;
-		if (!( arbprec_isnegati(a) && arbprec_isnegati(b) ))
-			arbprec_setsign(c);
+		//if (!( arbprec_isnegati(a) && arbprec_isnegati(b) ))
+		arbprec_setsign(c);
 	
 	}
 
@@ -48,16 +49,21 @@ bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
 
         if ( arbprec_isnegati(a) && arbprec_isnegati(b) )
         {
+		//write(1, "ident 1 ", 8);
                 arbprec_setsign(c);
                 return c = arbprec_sub_inter(a, b, c);
         }
         else if ( arbprec_isnegati(a))
         {
+		//write(1, "ident 2 ", 8);
                 arbprec_setsign(c);
                 return c = arbprec_add_inter(a, b, c);
         }
         else if ( arbprec_isnegati(b))
         {
+		//write(1, "ident 3 ", 8);
+		//arbprec_setsign(c);
+		/* subtracting a neg is the same as adding a pos */
                 return c = arbprec_add_inter(a, b, c);
         }
         else c = arbprec_sub_inter(a, b, c);
