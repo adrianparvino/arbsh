@@ -18,10 +18,7 @@ HIER:
 		Standard C library components.
 	
 	arbprec/
-		Arbitrary precision mathematics using strings.
-			-A bignum data type implementation.
-		Note:	Developers probably want new_arbprec which is being 
-			redesigned to support floating point.
+		Arbitrary precision mathematics.
 
 	libc/math/
 		Transcendental mathematics functions.
