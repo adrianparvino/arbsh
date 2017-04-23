@@ -34,6 +34,7 @@ bigflt *arbprec_sub_inter(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_mul(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_print(bigflt *);
+bigflt *arbprec_print_simple(bigflt *);
 bigflt *arbprec_setsign(bigflt *);
 bigflt *arbprec_initsign(bigflt *);
 bigflt *arbprec_copy(bigflt *, bigflt *);
