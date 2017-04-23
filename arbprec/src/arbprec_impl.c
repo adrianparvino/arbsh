@@ -61,14 +61,23 @@ void setarray(int *answer, size_t len)
 }
 bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 {
-	//copyarray(dest->number, src->number);
+	dest = arbprec_expand_vector(dest, src->len);
+	copyarray(dest->number, src->number, src->len);
+	copyarray(dest->mirror, src->mirror, src->len);
+	dest->sign = src->sign;
+	/* these should already have been set by expand_vector */
+	dest->len = src->len;
+	dest->chunk = src->chunk;
+	dest->allocated = src->allocated;
+	dest->float_pos = src->float_pos;
+
 	return dest;
 }
 
 bigflt *arbprec_dupa(bigflt *flt)
 {
-	size_t len = flt->len;
-	//arba_alloc
-	//arbprec_copy(new, flt);
-	//return new;
+	bigflt *ret = arbprec_expand_vector(NULL, flt->len);
+	arbprec_copy(ret, flt);
+	return ret;
 }
+
