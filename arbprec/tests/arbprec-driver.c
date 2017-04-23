@@ -39,6 +39,7 @@ int main(int argc, char **argv)
 	
 	flt3 = arbprec_div(flt1, flt2, flt3);
 	arbprec_print(flt3);
+	arbprec_print_simple(flt3);
 
 	printf("\n\n");
 	fflush(stdout);
