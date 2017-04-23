@@ -11,6 +11,10 @@
 #define MAX(a,b) ((a) > (b) ? a : b)
 
 /* Structures and type definitions */ 
+/*
+	radix_right = len - ( len - float_pos );
+	radix_left  = len - float_pos;
+*/
 typedef struct {
 	int *number;
 	int *mirror;
@@ -18,6 +22,7 @@ typedef struct {
 	size_t float_pos;
 	size_t len;
 	size_t allocated;
+	size_t chunk;
 } bigflt;
 
 /* Function protoypes */
@@ -31,6 +36,8 @@ bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_print(bigflt *);
 bigflt *arbprec_setsign(bigflt *);
 bigflt *arbprec_initsign(bigflt *);
+bigflt *arbprec_copy(bigflt *, bigflt *);
+bigflt *arbprec_expand_vector(bigflt *, size_t);
 
 int arbprec_isnegati(bigflt *);
 
