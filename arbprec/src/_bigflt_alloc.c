@@ -154,7 +154,7 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 		chunks = (request / flt->chunk) + 2;
 		flt->allocated = flt->chunk * chunks;
 		/* rapidly expand size */
-		//flt->chunk += flt->chunk;
+		flt->chunk += flt->chunk;
 		flt->number = arbprec_realloc(flt->number, flt->allocated * sizeof(int));
 		flt->mirror = arbprec_realloc(flt->mirror, flt->allocated * sizeof(int));
 	} 
