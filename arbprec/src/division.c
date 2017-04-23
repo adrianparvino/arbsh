@@ -19,14 +19,12 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
                 arbprec_setsign(c);
         if (arbprec_isnegati(b))
                 arbprec_setsign(c);
-
 	
-	setarray(c->number, width);
-	setarray(mir, width);
-	copyarray(mir, a->number, a->len);
-	setarray(tmir, width);
-	copyarray(tmir, mir, width);
-
+	setarray(c->number, width); 
+	setarray(mir, width); 
+	copyarray(mir, a->number, a->len); 
+	setarray(tmir, width); 
+	copyarray(tmir, mir, width); 
 	
 	for ( ; z < a->len ; )
 	{
