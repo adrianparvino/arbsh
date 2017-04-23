@@ -16,7 +16,7 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
         if (arbprec_isnegati(b))
                 arbprec_setsign(c);
 
-	memset(c->number, 0, 100); // fix this
+	memset(c->number, 0, 100);
 
 	for ( i = a->len - 1; i >= 0 ; i--)
 	{
