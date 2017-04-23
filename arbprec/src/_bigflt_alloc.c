@@ -36,7 +36,6 @@ void arbprec_reverse(int *x, size_t lim)
         }
 }
 
-
 bigflt *arbprec_print_simple(bigflt *flt)
 { 
         size_t i = 0; 
@@ -76,22 +75,13 @@ bigflt *arbprec_print(bigflt *flt)
 
 bigflt *str_to_bigflt(const char *str)
 {
-	/*
-		Convert a string to a bigflt and attempt a series of chunk 
-		based `realloc's to hold the generated values.
-
-		Try to keep the chunk size aligned with future devices
-		by aligning with a size macro such as (SIZE_MACRO / 16).
-	*/
-
 	size_t i = 0;
 	size_t chunk = BUFSIZ / 16;
 	int flt_set = 0;
 	int sign_set = 0;
-	int padded = 0; 
+	int padded = 0;
 
-	bigflt *ret = arba_alloc(chunk);
-	
+	bigflt *ret = arbprec_expand_vector(NULL, chunk);
 
 	for (i = 0; str[i] != '\0'; ++i)
 	{
@@ -121,7 +111,7 @@ bigflt *str_to_bigflt(const char *str)
 	if ( flt_set == 0 ) /* not a float so put the "." at the representative end */
 		ret->float_pos = ret->len + 1;
 
-	ret->mirror = arbprec_malloc(sizeof(int) * ret->allocated);
+	//ret->mirror = arbprec_malloc(sizeof(int) * ret->allocated);
 
 	return ret;
 }
@@ -149,11 +139,14 @@ void arba_free(bigflt *flt)
 bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 {
 	size_t chunks = 0;
-	if ( request >= flt->allocated )
+	
+	if (flt == NULL)
+	{
+		flt = arba_alloc(request);
+	} else if ( request >= flt->allocated )
 	{
 		chunks = (request / flt->chunk) + 2;
 		flt->allocated = flt->chunk * chunks;
-		/* rapidly expand size */
 		flt->chunk += flt->chunk;
 		flt->number = arbprec_realloc(flt->number, flt->allocated * sizeof(int));
 		flt->mirror = arbprec_realloc(flt->mirror, flt->allocated * sizeof(int));
