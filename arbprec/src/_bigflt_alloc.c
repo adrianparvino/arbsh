@@ -36,6 +36,20 @@ void arbprec_reverse(int *x, size_t lim)
         }
 }
 
+
+bigflt *arbprec_print_simple(bigflt *flt)
+{ 
+        size_t i = 0; 
+
+        for (i = 0; i < flt->len ; ++i)
+	{ 
+		if ( flt->float_pos == i ) 
+			printf("."); 
+		printf("%d", flt->number[i]); 
+	} 
+	return flt;
+}
+
 bigflt *arbprec_print(bigflt *flt)
 {
 	
@@ -67,10 +81,8 @@ bigflt *arbprec_print(bigflt *flt)
 		}
 		
 		if ( flt->float_pos == i )
-		{
 			buf[j++] = '.';
-			continue;
-		}
+	
 		buf[j++] = (flt->number[i] + '0');
 	}
 	
@@ -85,7 +97,6 @@ bigflt *arbprec_print(bigflt *flt)
 	free(buf);
 	return flt;
 }
-
 
 bigflt *str_to_bigflt(const char *str)
 {
