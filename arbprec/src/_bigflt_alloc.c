@@ -51,46 +51,22 @@ bigflt *arbprec_print_simple(bigflt *flt)
 }
 
 bigflt *arbprec_print(bigflt *flt)
-{
+{ 
 	
-	/*
-		Convert a bigflt to a string and print it to standard out
-		in a single `write'.
-
-		TODO:
-			It may be easier to use sprintf/printf to accumulate
-			the buffer to simplify debugging bigflts
-
-	*/
-
-        size_t i = 0;
+	char *buf = arbprec_malloc(sizeof(char) * (flt->len + 4)); // 4 == '+','.','\n','\0'
+	size_t i = 0;
 	size_t j = 0;
-	size_t chunk = BUFSIZ / 16;
-	size_t allocated = chunk;
-	char *buf = arbprec_malloc(sizeof(char) * allocated);
 
 	if ( flt->sign )
 		buf[j++] = flt->sign;
 
         for (i = 0; i < flt->len ; ++i)
-	{
-		if ( j == allocated )
-		{
-			allocated += chunk;
-			buf = arbprec_realloc(buf, sizeof(char) * allocated);
-		}
-		
+	{ 
 		if ( flt->float_pos == i )
 			buf[j++] = '.';
 	
 		buf[j++] = (flt->number[i] + '0');
-	}
-	
-	if ( j == allocated )
-	{
-		allocated += chunk;
-		buf = arbprec_realloc(buf, sizeof(char) * allocated);
-	}
+	} 
 	buf[j++] = '\n';
 	buf[j++] = '\0';
 	write(1, buf, j -1);
