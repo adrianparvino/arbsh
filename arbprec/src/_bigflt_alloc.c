@@ -101,13 +101,10 @@ bigflt *str_to_bigflt(const char *str)
 	size_t chunk = BUFSIZ / 16;
 	int flt_set = 0;
 	int sign_set = 0;
-	int padded = 0;
-	bigflt *ret = arbprec_malloc(sizeof(bigflt));
+	int padded = 0; 
 
-	ret->sign = '+';
-	ret->len = 0;
-	ret->allocated = chunk;
-	ret->number = arbprec_malloc(sizeof(int) * ret->allocated);
+	bigflt *ret = arba_alloc(chunk);
+	
 
 	for (i = 0; str[i] != '\0'; ++i)
 	{
@@ -130,11 +127,7 @@ bigflt *str_to_bigflt(const char *str)
 			++padded;
 		else
 		{
-			if ( ret->len == ret->allocated)
-			{
-				ret->allocated += chunk;
-				ret->number = arbprec_realloc(ret->number, sizeof(int) * ret->allocated);
-			}
+			ret = arbprec_expand_vector(ret, ret->len); 
 			ret->number[ret->len++] = str[i] - '0';
 		}
 	}
@@ -153,8 +146,9 @@ bigflt *arba_alloc(size_t len)
 	ret->mirror = arbprec_malloc(sizeof(int) * len);
 	ret->sign = '+';
 	ret->float_pos = len + 1;
-	ret->len = len;
+	ret->len = 0;
 	ret->allocated = len;
+	ret->chunk = 256;
 	return ret;
 }
 
@@ -163,5 +157,20 @@ void arba_free(bigflt *flt)
 	if (flt->number)
 		free(flt->number);
 	free(flt);
+}
+
+bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
+{
+	size_t chunks = 0;
+	if ( request >= flt->allocated )
+	{
+		chunks = (request / flt->chunk) + 2;
+		flt->allocated = flt->chunk * chunks;
+		/* rapidly expand size */
+		//flt->chunk += flt->chunk;
+		flt->number = arbprec_realloc(flt->number, flt->allocated * sizeof(int));
+		flt->mirror = arbprec_realloc(flt->mirror, flt->allocated * sizeof(int));
+	} 
+	return flt;
 }
 
