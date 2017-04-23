@@ -52,3 +52,17 @@ void setarray(int *answer, size_t len)
 	for( i = 0; i < len; i++)
 		answer[i] = 0;
 }
+
+bigflt *arbprec_copy(bigflt *dest, bigflt *src)
+{
+	//copyarray(dest->number, src->number);
+	return dest;
+}
+
+bigflt *arbprec_dupa(bigflt *flt)
+{
+	size_t len = flt->len;
+	//arba_alloc
+	//arbprec_copy(new, flt);
+	//return new;
+}
