@@ -49,6 +49,7 @@ void copyarray(int *, int *, size_t);
 void die(char *);
 int iszero(int *, size_t);
 void setarray(int *, size_t);
+void setarray2(int *, int, size_t);
 bigflt *str_to_bigflt(const char *);
 int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */ 
 
