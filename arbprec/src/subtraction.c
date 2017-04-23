@@ -57,6 +57,10 @@ bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
         }
         else if ( arbprec_isnegati(b))
         { 
+		/* TODO
+			fake sign pointer could be created here
+			by using an unallocated structure
+		*/
                 c = arbprec_add_inter(a, b, c);
         }
         else c = arbprec_sub_inter(a, b, c);
