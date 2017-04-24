@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <arbprec/arbprec.h>
-
+#include <arbprec/arbprec.h> 
 
 
 int main(int argc, char **argv)
@@ -39,10 +38,8 @@ int main(int argc, char **argv)
 	
 	flt3 = arbprec_div(flt1, flt2, flt3);
 	arbprec_print(flt3);
-	
 
 	printf("\n\n");
-	
 
 	return 0;
 }
