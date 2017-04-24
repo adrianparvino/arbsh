@@ -6,6 +6,16 @@ bigflt *arbprec_initsign(bigflt *flt)
 	return flt;
 }
 
+
+bigflt *arbprec_init(bigflt *flt)
+{
+	arbprec_initsign(flt);
+	flt->len = 0;
+	flt->float_pos = flt->len + 1;
+	return flt;
+}
+
+
 bigflt *arbprec_setsign(bigflt *flt)
 {
 	if ( flt->sign == '+' )
@@ -68,7 +78,7 @@ bigflt *arbprec_print(bigflt *flt)
 	} 
 	buf[j++] = '\n';
 	buf[j++] = '\0';
-	write(1, buf, j -1);
+	write(1, buf, j - 1);
 	free(buf);
 	return flt;
 }
@@ -108,10 +118,10 @@ bigflt *str_to_bigflt(const char *str)
 			ret->number[ret->len++] = str[i] - '0';
 		}
 	}
-	if ( flt_set == 0 ) /* not a float so put the "." at the representative end */
-		ret->float_pos = ret->len + 1;
 
-	//ret->mirror = arbprec_malloc(sizeof(int) * ret->allocated);
+	/* not a float so put the "." at the representative end */
+	if ( flt_set == 0 ) 
+		ret->float_pos = ret->len + 1;
 
 	return ret;
 }

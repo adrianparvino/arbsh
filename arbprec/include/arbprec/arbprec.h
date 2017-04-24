@@ -37,6 +37,7 @@ bigflt *arbprec_print(bigflt *);
 bigflt *arbprec_print_simple(bigflt *);
 bigflt *arbprec_setsign(bigflt *);
 bigflt *arbprec_initsign(bigflt *);
+bigflt *arbprec_init(bigflt *);
 bigflt *arbprec_copy(bigflt *, bigflt *);
 bigflt *arbprec_expand_vector(bigflt *, size_t);
 
