@@ -11,25 +11,21 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	int *tmir = arbprec_malloc(sizeof(int) * width);
 	int sum = 0;
 	int rec = 0;
-	c->len = 0;
 
-        /* see if either a or b is negative */
-	arbprec_initsign(c);
+	arbprec_init(c);
+	
         if (arbprec_isnegati(a))
                 arbprec_setsign(c);
         if (arbprec_isnegati(b))
                 arbprec_setsign(c);
-	
-	setarray(c->number, width); 
-	setarray(mir, width); 
-	copyarray(mir, a->number, a->len); 
-	setarray(tmir, width); 
-	copyarray(tmir, mir, width); 
-	
+
+	setarray(mir, width);
+	copyarray(mir, a->number, a->len);
+	copyarray(tmir, mir, width);
+	c->number[z] = 0;
+
 	for ( ; z < a->len ; )
 	{
-		/* if it was possible to have an block based copy of mir */
-		copyarray(tmir, mir, a->len - z);
 		for (rec = 0, i = 0, j = z; i < b->len ; j++ ,i++)
 		{
 			sum = (mir[j]) - (b->number[i]);
@@ -39,6 +35,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 				{
 					mir[j + 1] += ((mir[j]) * base);
 					++z;
+					c->number[z] = 0;
 				}
 			 	else
 				{
@@ -55,9 +52,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 			copyarray(mir, tmir, j);
 			c->number[z] += 1;
 			c->len = z + 1;
-		} 
-		//if ( iszero(tmir, width) == 0 )
-		//	break;
+		}
 	}
 
 	if ( a->len + 1 > b->len )
@@ -70,4 +65,3 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	free(tmir);
 	return c;
 }
-
