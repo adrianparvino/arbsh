@@ -28,7 +28,8 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	
 	for ( ; z < a->len ; )
 	{
-		copyarray(tmir, mir, width);
+		/* if it was possible to have an block based copy of mir */
+		copyarray(tmir, mir, a->len - z);
 		for (rec = 0, i = 0, j = z; i < b->len ; j++ ,i++)
 		{
 			sum = (mir[j]) - (b->number[i]);
@@ -50,13 +51,13 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 			tmir[j] = sum;
 		}
 		if ( rec == 0 )
-		{
-			copyarray(mir, tmir, width);
+		{ 
+			copyarray(mir, tmir, j);
 			c->number[z] += 1;
 			c->len = z + 1;
 		} 
-		if ( iszero(tmir, width) == 0 )
-			break;
+		//if ( iszero(tmir, width) == 0 )
+		//	break;
 	}
 
 	if ( a->len + 1 > b->len )
