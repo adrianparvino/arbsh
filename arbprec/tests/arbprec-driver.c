@@ -4,7 +4,7 @@
 #include <string.h>
 #include <arbprec/arbprec.h>
 
-int base = 10; 		/* global base */
+
 
 int main(int argc, char **argv)
 {
