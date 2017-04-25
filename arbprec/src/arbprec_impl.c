@@ -81,10 +81,28 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 	return dest;
 }
 
-bigflt *arbprec_dupa(bigflt *flt)
+bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
 {
-	bigflt *ret = arbprec_expand_vector(NULL, flt->len);
+	dest->sign = src->sign;
+	dest->number = src->number;
+	dest->mirror = src->mirror;
+	dest->len = src->len;
+	dest->chunk = src->chunk;
+	dest->allocated = src->allocated;
+	dest->float_pos = src->float_pos;
+	return dest;
+}
+
+bigflt *arbprec_dupa(bigflt *flt)
+{ 
+	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 	arbprec_copy(ret, flt);
+	return ret;
+}
+bigflt *arbprec_dup_sparse(bigflt *flt)
+{
+	bigflt *ret = arbprec_expand_vector(NULL, flt->len); 
+	arbprec_copy_sparse(ret, flt);
 	return ret;
 }
 
