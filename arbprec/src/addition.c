@@ -5,16 +5,10 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	size_t width = 0;
 	int sum = 0;
 	int carry = 0;
+	
+	width = MAX(a->len, b->len); 
+	c->float_pos = a->float_pos; 
 	c->len = 0;
-
-	/* TODO: 
-		The real and fractional parts of each vector should be expanded to have
-		the same width.
-	*/
-
-	width = MAX(a->len, b->len);
-
-	c->float_pos = a->float_pos;
 
         for( c->len = 0; c->len < width ; c->len++)
 	{
@@ -38,21 +32,13 @@ bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 	arbprec_initsign(c);
 
 	if (arbprec_isnegati(a) && arbprec_isnegati(b))
-	{
 		arbprec_setsign(c);
-		c = arbprec_add_inter(a, b, c);
-	}
 	else if (arbprec_isnegati(a))
-	{ 
-		c = arbprec_sub_inter(b, a, c);
-	}
+		return c = arbprec_sub_inter(b, a, c);
 	else if (arbprec_isnegati(b))
-	{
-		c = arbprec_sub_inter(a, b, c);
-	}
-	else c = arbprec_add_inter(a, b, c);
+		return c = arbprec_sub_inter(a, b, c);
 
-        return c;
+	return c = arbprec_add_inter(a, b, c);
 }
 
 
