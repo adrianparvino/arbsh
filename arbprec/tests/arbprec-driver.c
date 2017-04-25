@@ -14,13 +14,13 @@ int main(int argc, char **argv)
 	double a = strtod(argv[1], 0);
 	double b = strtod(argv[2], 0);
 
-	printf("  %20lf\n", a);
-	printf("  %20lf\n", b);
+	printf("  %20.10lf\n", a);
+	printf("  %20.10lf\n", b);
 	printf("  %20s\n", "-------------------");
-	printf("+ %20lf\n", a + b);
-	printf("- %20lf\n", a - b);
-	printf("* %20lf\n", a * b);
-	printf("/ %20lf\n", a / b);
+	printf("+ %20.10lf\n", a + b);
+	printf("- %20.10lf\n", a - b);
+	printf("* %20.10lf\n", a * b);
+	printf("/ %20.10lf\n", a / b);
 	fflush(stdout);
 
 	bigflt *flt1 = str_to_bigflt(argv[1]);
