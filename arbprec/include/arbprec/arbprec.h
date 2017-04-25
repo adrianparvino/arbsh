@@ -41,8 +41,8 @@ bigflt *arbprec_initsign(bigflt *);
 bigflt *arbprec_init(bigflt *);
 bigflt *arbprec_copy(bigflt *, bigflt *);
 bigflt *arbprec_copy_sparse(bigflt *, bigflt *);
-bigflt *arbprec_dupa(bigflt *, bigflt *);
-bigflt *arbprec_dup_sparse(bigflt *, bigflt *);
+bigflt *arbprec_dupa(bigflt *);
+bigflt *arbprec_dup_sparse(bigflt *);
 bigflt *arbprec_expand_vector(bigflt *, size_t);
 
 int arbprec_isnegati(bigflt *);
@@ -53,8 +53,7 @@ void arbprec_reverse(int *, size_t);
 void copyarray(int *, int *, size_t);
 void die(char *);
 int iszero(int *, size_t);
-void setarray(int *, size_t);
-void setarray2(int *, int, size_t);
+void setarray(int *, int, size_t);
 bigflt *str_to_bigflt(const char *);
 int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */ 
 
