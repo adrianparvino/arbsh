@@ -18,7 +18,7 @@ void *arbprec_realloc(void *ptr, size_t len)
 }
 
 void copyarray(int *answer, int *from, size_t len)
-{
+{ 
 	size_t i = 0;
 	for( i = 0; i < len ; i++)
 		answer[i] = from[i];
@@ -46,19 +46,13 @@ int iszero(int *answer, size_t lim)
 	return 0;
 }
 
-void setarray2(int *answer, int delim, size_t len)
+void setarray(int *answer, int delim, size_t len)
 {
 	size_t i = 0;
 	for( i = 0; i < len; i++)
 		answer[i] = delim;
 }
 
-void setarray(int *answer, size_t len)
-{
-	size_t i = 0;
-	for( i = 0; i < len; i++)
-		answer[i] = 0;
-}
 bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 {
 	dest = arbprec_expand_vector(dest, src->len);
