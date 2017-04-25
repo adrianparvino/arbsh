@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 {
 
 	if ( argc < 3 )
-		die("Needs 2 args\n");
+		arbprec_die("Needs 2 args\n");
 
 	double a = strtod(argv[1], 0);
 	double b = strtod(argv[2], 0);
@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 
 	bigflt *flt1 = str_to_bigflt(argv[1]);
 	bigflt *flt2 = str_to_bigflt(argv[2]);
-	bigflt *flt3 = arba_alloc(10000);
+	bigflt *flt3 = arbprec_expand_vector(NULL, flt1->len + flt2->len);
 
 	flt3 = arbprec_add(flt1, flt2, flt3);
 	arbprec_print(flt3);
