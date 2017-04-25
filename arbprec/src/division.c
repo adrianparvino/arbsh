@@ -1,6 +1,5 @@
 #include <arbprec/arbprec.h>
 
-
 bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 {
 	size_t i = 0;	
@@ -13,15 +12,14 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	int rec = 0;
 
 	arbprec_init(c);
-	
+
         if (arbprec_isnegati(a))
                 arbprec_setsign(c);
         if (arbprec_isnegati(b))
                 arbprec_setsign(c);
 
-	setarray(mir, width);
+	setarray(mir + a->len, 0, width - a->len);
 	copyarray(mir, a->number, a->len);
-	copyarray(tmir, mir, width);
 	c->number[z] = 0;
 
 	for ( ; z < a->len ; )
@@ -48,7 +46,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 			tmir[j] = sum;
 		}
 		if ( rec == 0 )
-		{ 
+		{
 			copyarray(mir, tmir, j);
 			c->number[z] += 1;
 			c->len = z + 1;
@@ -56,11 +54,10 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	}
 
 	if ( a->len + 1 > b->len )
-                c->float_pos = a->len - b->len + 1;
-        else
-                c->float_pos = a->len;
+		c->float_pos = a->len - b->len + 1;
+	else
+		c->float_pos = a->len;
 
-	
 	free(mir);
 	free(tmir);
 	return c;
