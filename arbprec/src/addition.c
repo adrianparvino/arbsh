@@ -8,30 +8,17 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	c->len = 0;
 
 	/* TODO: 
-		The fractional part of each vector can be expanded to have
+		The real and fractional parts of each vector should be expanded to have
 		the same width.
-		Expanding the non-fractional part of the vector is too expensive
-
-		Conversely, hasplace() could be expanded to return a zero
-		in the case that a place on the right of the decimal is missing --
-		but in order to do this the working "len" of the shorter array
-		be lengthened to simulate the presence of the nummber
-
 	*/
 
 	width = MAX(a->len, b->len);
-
-	
-//	if ( a->len < width )
-//		a->len = width;
-//	if ( b->len < width )
-//		b->len = width;
 
 	c->float_pos = a->float_pos;
 
         for( c->len = 0; c->len < width ; c->len++)
 	{
-		sum = hasplace2(a->number, c->len, a->len, a->float_pos) + hasplace2(b->number, c->len, b->len, a->float_pos) + carry;
+		sum = hasplace(a->number, c->len, a->len) + hasplace(b->number, c->len, b->len) + carry;
                 carry = 0;
                 if(sum >= base){
                         carry = 1;
@@ -67,4 +54,5 @@ bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 
         return c;
 }
+
 
