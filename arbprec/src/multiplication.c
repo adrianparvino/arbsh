@@ -30,6 +30,7 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
 		c->number[k] += carry;
 	}
 	c->len = a->len + b->len;
+	c->float_pos = a->float_pos + b->float_pos;
 	return c;
 }
 
