@@ -1,4 +1,4 @@
-CFLAGS += -Wall -Wextra -I./include/
+CFLAGS += -Wall -Wextra -I./include/ -O3
 
 LDFLAGS += "-Wl,-rpath=$(PWD)"
 
