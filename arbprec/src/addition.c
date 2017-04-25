@@ -22,16 +22,16 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	width = MAX(a->len, b->len);
 
 	
-	if ( a->len < width )
-		a->len = width;
-	if ( b->len < width )
-		b->len = width;
+//	if ( a->len < width )
+//		a->len = width;
+//	if ( b->len < width )
+//		b->len = width;
 
 	c->float_pos = a->float_pos;
 
         for( c->len = 0; c->len < width ; c->len++)
 	{
-		sum = hasplace(a->number, c->len, a->len) + hasplace(b->number, c->len, b->len) + carry;
+		sum = hasplace2(a->number, c->len, a->len, a->float_pos) + hasplace2(b->number, c->len, b->len, a->float_pos) + carry;
                 carry = 0;
                 if(sum >= base){
                         carry = 1;
