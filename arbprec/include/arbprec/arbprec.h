@@ -15,6 +15,7 @@
 	radix_right = len - ( len - float_pos );
 	radix_left  = len - float_pos;
 */
+
 typedef struct {
 	int *number;
 	int *mirror;
@@ -27,36 +28,35 @@ typedef struct {
 } bigflt;
 
 /* Function protoypes */
-bigflt *arba_alloc(size_t);
 bigflt *arbprec_add(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_add_inter(bigflt *, bigflt *, bigflt *);
-bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
-bigflt *arbprec_sub_inter(bigflt *, bigflt *, bigflt *);
-bigflt *arbprec_mul(bigflt *, bigflt *, bigflt *);
-bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
-bigflt *arbprec_print(bigflt *);
-bigflt *arbprec_print_simple(bigflt *);
-bigflt *arbprec_setsign(bigflt *);
-bigflt *arbprec_initsign(bigflt *);
-bigflt *arbprec_init(bigflt *);
 bigflt *arbprec_copy(bigflt *, bigflt *);
 bigflt *arbprec_copy_sparse(bigflt *, bigflt *);
+bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_dupa(bigflt *);
 bigflt *arbprec_dup_sparse(bigflt *);
 bigflt *arbprec_expand_vector(bigflt *, size_t);
+bigflt *arbprec_init(bigflt *);
+bigflt *arbprec_initsign(bigflt *);
+bigflt *arbprec_print(bigflt *);
+bigflt *arbprec_print_simple(bigflt *);
+bigflt *arbprec_mul(bigflt *, bigflt *, bigflt *);
+bigflt *arbprec_setsign(bigflt *);
+bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
+bigflt *arbprec_sub_inter(bigflt *, bigflt *, bigflt *);
+bigflt *str_to_bigflt(const char *);
 
+/* internal function prototypes */
+bigflt *arba_alloc(size_t);
+void arbprec_die(char *);
 int arbprec_isnegati(bigflt *);
-
 void *arbprec_malloc(size_t);
 void *arbprec_realloc(void *, size_t);
 void arbprec_reverse(int *, size_t);
 void copyarray(int *, int *, size_t);
-void die(char *);
+int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */ 
 int iszero(int *, size_t);
 void setarray(int *, int, size_t);
-bigflt *str_to_bigflt(const char *);
-int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */ 
-
 /* Globals */
 extern int base; 				/* Default to base 10 */
 
