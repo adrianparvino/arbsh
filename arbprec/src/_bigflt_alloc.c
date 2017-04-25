@@ -65,6 +65,7 @@ bigflt *arbprec_print(bigflt *flt)
 	char *buf = arbprec_malloc(sizeof(char) * (flt->len + 4)); // 4 == '+','.','\n','\0'
 	size_t i = 0;
 	size_t j = 0;
+	size_t wrt_ret = 0;
 
 	if ( flt->sign )
 		buf[j++] = flt->sign;
@@ -78,7 +79,8 @@ bigflt *arbprec_print(bigflt *flt)
 	} 
 	buf[j++] = '\n';
 	buf[j++] = '\0';
-	write(1, buf, j - 1);
+	if ((wrt_ret = write(1, buf, j - 1)) < 1)
+		write(2, "write() failed\n", 15);
 	free(buf);
 	return flt;
 }
