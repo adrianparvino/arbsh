@@ -39,9 +39,7 @@ int hasplace2(int *s, size_t idx, size_t len, size_t float_pos)
         if (idx < len )
         	return s[len - idx - 1 ];
         return 0;
-} 
-
-
+}
 
 int hasplace(int *s, size_t idx, size_t len)
 {
