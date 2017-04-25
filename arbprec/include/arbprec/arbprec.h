@@ -18,7 +18,8 @@
 typedef struct {
 	int *number;
 	int *mirror;
-	int sign;
+	int sign; /* immutable sign (programmer) */
+	int ngis; /* mutable sign (impl) */
 	size_t float_pos;
 	size_t len;
 	size_t allocated;
@@ -39,6 +40,9 @@ bigflt *arbprec_setsign(bigflt *);
 bigflt *arbprec_initsign(bigflt *);
 bigflt *arbprec_init(bigflt *);
 bigflt *arbprec_copy(bigflt *, bigflt *);
+bigflt *arbprec_copy_sparse(bigflt *, bigflt *);
+bigflt *arbprec_dupa(bigflt *, bigflt *);
+bigflt *arbprec_dup_sparse(bigflt *, bigflt *);
 bigflt *arbprec_expand_vector(bigflt *, size_t);
 
 int arbprec_isnegati(bigflt *);
