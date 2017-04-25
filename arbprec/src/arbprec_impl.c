@@ -30,6 +30,19 @@ void die(char *message)
 	exit(1);
 }
 
+int hasplace2(int *s, size_t idx, size_t len, size_t float_pos)
+{ 
+	//if ( (len - float_pos) > (len-idx))
+	//	return 0;
+	if ( idx < len - float_pos)
+		return 0;
+        if (idx < len )
+        	return s[len - idx - 1 ];
+        return 0;
+} 
+
+
+
 int hasplace(int *s, size_t idx, size_t len)
 {
         if (idx < len)
