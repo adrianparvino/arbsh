@@ -45,26 +45,13 @@ bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
 {
         arbprec_initsign(c);
 
-        if ( arbprec_isnegati(a) && arbprec_isnegati(b) )
-        {
+        if (arbprec_isnegati(a) && arbprec_isnegati(b))
                 arbprec_setsign(c);
-                c = arbprec_sub_inter(a, b, c);
-        }
-        else if ( arbprec_isnegati(a))
-        {
+        else if (arbprec_isnegati(a))
                 arbprec_setsign(c);
-                c = arbprec_add_inter(a, b, c);
-        }
-        else if ( arbprec_isnegati(b))
-        { 
-		/* TODO
-			fake sign pointer could be created here
-			by using an unallocated structure
-		*/
-                c = arbprec_add_inter(a, b, c);
-        }
-        else c = arbprec_sub_inter(a, b, c);
+        else if (arbprec_isnegati(b) || arbprec_isnegati(a))
+                return c = arbprec_add_inter(a, b, c);
 
-        return c;
+        return c = arbprec_sub_inter(a, b, c);
 }
  
