@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include "../stdio.h"
+#include <gstdio.h>
 	
 
 int main(void)
 {
-	GFILE *stream = GNULL;
-	char *line = GNULL;
+	GFILE *stream = NULL;
+	char *line = NULL;
 	size_t len = 0;
 	ssize_t read = 0;
 
