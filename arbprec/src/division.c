@@ -57,7 +57,9 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 			c->len = z + 1;
 		}
 	} 
-
+	//c->len += 1;
+	if ( c->len < c->float_pos)
+		c->len = c->float_pos;
 	free(mir);
 	free(tmir);
 	return c;
