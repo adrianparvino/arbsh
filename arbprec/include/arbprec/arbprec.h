@@ -11,6 +11,7 @@
 #define MAX(a,b) ((a) > (b) ? a : b)
 
 /* Structures and type definitions */ 
+
 /*
 	radix_right = len - ( len - float_pos );
 	radix_left  = len - float_pos;
@@ -19,8 +20,7 @@
 typedef struct {
 	int *number;
 	int *mirror;
-	int sign; /* immutable sign (programmer) */
-	int ngis; /* mutable sign (impl) */
+	int sign;
 	size_t float_pos;
 	size_t len;
 	size_t allocated;
@@ -54,12 +54,12 @@ void *arbprec_malloc(size_t);
 void *arbprec_realloc(void *, size_t);
 void arbprec_reverse(int *, size_t);
 void copyarray(int *, int *, size_t);
-int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */ 
+int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */
 int iszero(int *, size_t);
 void setarray(int *, int, size_t);
+
 /* Globals */
 extern int base; 				/* Default to base 10 */
-
 
 #endif /* _arbprec_h_ */
 
