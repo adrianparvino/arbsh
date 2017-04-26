@@ -26,7 +26,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 		c->float_pos = a->float_pos - b->float_pos + 1;
 	else
 		c->float_pos = a->float_pos;
-
+	int last = 0;
 	for ( ; z < a->len ; )
 	{
 		for (rec = 0, i = 0, j = z; i < b->len ; j++ ,i++)
@@ -36,9 +36,15 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 			{
 				if ( j == z )
 				{
+					
 					mir[j + 1] += ((mir[j]) * base);
-					++z;
+					//++z;
+					z++;
+					/* this zero need to be saved */
+					//c->len = z + 1;
+					c->len++;
 					c->number[z] = 0;
+					
 				}
 			 	else
 				{
@@ -54,12 +60,9 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 		{
 			copyarray(mir, tmir, j);
 			c->number[z] += 1;
-			c->len = z + 1;
 		}
 	} 
-	//c->len += 1;
-	if ( c->len < c->float_pos)
-		c->len = c->float_pos;
+
 	free(mir);
 	free(tmir);
 	return c;
