@@ -22,29 +22,38 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	copyarray(mir, a->number, a->len);
 	c->number[z] = 0;
 
-	if ( a->float_pos + 1 > b->float_pos)
-		c->float_pos = a->float_pos - b->float_pos + 1;
-	else
-		c->float_pos = a->float_pos;
-	int last = 0;
-	for ( ; z < a->len ; )
+	size_t diff = 0;
+	if ( a->float_pos < b->float_pos)
 	{
-		for (rec = 0, i = 0, j = z; i < b->len ; j++ ,i++)
+		diff = ( b->float_pos - a->float_pos) - 1;
+		setarray(c->number, 0, diff);
+		c->len = diff;
+		z = diff;
+		c->float_pos = 0;
+		c->number[z] = 0;
+	}else{
+
+		if ( a->float_pos + 1 > b->float_pos)
+			c->float_pos = a->float_pos - b->float_pos + 1;
+		else
+			c->float_pos = a->float_pos;
+	}
+
+	int carry = 0;
+	for ( ; z < a->len + diff; )
+	{
+		for (rec = 0, i = 0, j = z - diff; i < b->len ; j++ ,i++)
 		{
 			sum = (mir[j]) - (b->number[i]);
 			if ( sum < 0 )
 			{
-				if ( j == z )
-				{
-					
+				if ( j == z - diff)
+				{ 
 					mir[j + 1] += ((mir[j]) * base);
-					//++z;
 					z++;
-					/* this zero need to be saved */
-					//c->len = z + 1;
 					c->len++;
+					//if ( z !=diff )
 					c->number[z] = 0;
-					
 				}
 			 	else
 				{
