@@ -41,6 +41,7 @@ API:
 		arba_free(flt1);
 		arba_free(flt2);
 		arba_free(flt3);
+		return 0;
 	}
 
 
