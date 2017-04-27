@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>
-<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Arbitrary Precicion Floating Point</strong></dl><pre></dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Arbitrary Precicion Fixed/Floating Point Library</strong></dl><pre></dl><pre>
 
 
 
@@ -9,7 +9,6 @@
 	Build the static libary, the dynamic library and dynamically link the test suite:
 
 		make
-
 
 	Build the static libary, the dynamic library and statically link the test suite:
 
@@ -21,5 +20,39 @@
 
 	Run the test binary:
 
-		./tests/arbprec-driver 99999 8889
+		./tests/arbprec-driver 988983483.14891487417128 908408.38034834834857345834
+
+
+<br clear="left"/></pre><dl>API:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	Example API usage for dividing two numbers:
+
+	int main(void)
+	{
+		bigflt *flt1 = str_to_bigflt("9828954325778328944734987.2398472984356790934");
+		bigflt *flt2 = str_to_bigflt("78289764322362423523525287.327320000038908953476");
+
+		bigflt *flt3 = arbprec_expand_vector(NULL, flt1->len + flt2->len); 
+
+		flt3 = arbprec_div(flt1, flt2, flt3);
+
+		arbprec_print(flt3);
+
+		arba_free(flt1);
+		arba_free(flt2);
+		arba_free(flt3);
+	}
+
+
+	See tests/arbprec-driver.c for another example on how to use the API. 
+
+<br clear="left"/></pre><dl>REFERENCES:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	<a href="https://en.wikipedia.org/wiki/Floating-point_arithmetic">https://en.wikipedia.org/wiki/Floating-point_arithmetic</a>
+
+	<a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic">https://en.wikipedia.org/wiki/Fixed-point_arithmetic</a>
+
+
 </pre>
