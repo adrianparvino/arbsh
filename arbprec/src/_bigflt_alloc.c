@@ -105,7 +105,6 @@ bigflt *str_to_bigflt(const char *str)
 	/* not a float so put the "." at the representative end */
 	if ( flt_set == 0 ) 
 		ret->float_pos = ret->len;
-		//ret->float_pos = ret->len + 1;
 
 	return ret;
 }
