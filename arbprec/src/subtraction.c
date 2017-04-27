@@ -32,7 +32,9 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         
         if (borrow == -1)
 	{ 
+		int *swap = c->number;
 		c->number = c->mirror;
+		c->mirror = swap;
 		//if (!( arbprec_isnegati(a) && arbprec_isnegati(b) ))
 		arbprec_setsign(c);
 	}
