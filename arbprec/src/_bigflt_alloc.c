@@ -140,10 +140,12 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 		flt = arba_alloc(request);
 	} else if ( request >= flt->allocated )
 	{
-		chunks = (request / flt->chunk) + 2;
-		flt->allocated = flt->chunk * chunks;
-		flt->chunk += flt->chunk;
+		//chunks = (request / flt->chunk) + 2;
+		//flt->allocated = flt->chunk * chunks;
+		//flt->chunk += flt->chunk;
+		flt->allocated += flt->chunk + request;
 		flt->number = arbprec_realloc(flt->number, flt->allocated * sizeof(int));
+		//if ( flt->mirror != NULL)
 		flt->mirror = arbprec_realloc(flt->mirror, flt->allocated * sizeof(int));
 	} 
 	return flt;

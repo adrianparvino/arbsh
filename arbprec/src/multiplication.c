@@ -16,7 +16,7 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
         if (arbprec_isnegati(b))
                 arbprec_setsign(c);
 
-	c = arbprec_expand_vector(c, a->len + b->len);
+	c = arbprec_expand_vector(c, 123123);
 	setarray(c->number, 0, a->len + b->len);
 	
 	for ( i = a->len - 1; i >= 0 ; i--)
