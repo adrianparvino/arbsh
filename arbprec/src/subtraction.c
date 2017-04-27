@@ -7,6 +7,7 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         int mir = 0;
         int borrow = 0;
         int carry = -1;
+	int *swap;
 	c->len = 0;
 
         width = MAX(a->len, b->len);
@@ -32,10 +33,9 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         
         if (borrow == -1)
 	{ 
-		int *swap = c->number;
+		swap = c->number;
 		c->number = c->mirror;
 		c->mirror = swap;
-		//if (!( arbprec_isnegati(a) && arbprec_isnegati(b) ))
 		arbprec_setsign(c);
 	}
 
