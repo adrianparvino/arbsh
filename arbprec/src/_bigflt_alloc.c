@@ -104,7 +104,8 @@ bigflt *str_to_bigflt(const char *str)
 
 	/* not a float so put the "." at the representative end */
 	if ( flt_set == 0 ) 
-		ret->float_pos = ret->len + 1;
+		ret->float_pos = ret->len;
+		//ret->float_pos = ret->len + 1;
 
 	return ret;
 }
@@ -115,9 +116,8 @@ bigflt *arba_alloc(size_t len)
 	ret->number = arbprec_malloc(sizeof(int) * len);
 	ret->mirror = arbprec_malloc(sizeof(int) * len);
 	ret->sign = '+';
-	ret->float_pos = len;
+	ret->float_pos = ret->allocated = len;
 	ret->len = 0;
-	ret->allocated = len;
 	ret->chunk = 256;
 	return ret;
 }
@@ -139,13 +139,11 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 	{
 		flt = arba_alloc(request);
 	} else if ( request >= flt->allocated )
-	{
+	{ 
+		/* align chunk requests */
 		chunks = (request / flt->chunk) + 2;
 		flt->allocated = flt->chunk * chunks;
-		flt->chunk += flt->chunk;
-		//flt->allocated += flt->chunk + request;
 		flt->number = arbprec_realloc(flt->number, flt->allocated * sizeof(int));
-		//if ( flt->mirror != NULL)
 		flt->mirror = arbprec_realloc(flt->mirror, flt->allocated * sizeof(int));
 	} 
 	return flt;
@@ -158,13 +156,17 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 	copyarray(dest->number, src->number, src->len);
 	copyarray(dest->mirror, src->mirror, src->len);
 	dest->sign = src->sign;
-	/* these should already have been set by expand_vector */
-	dest->len = src->len;
-	dest->chunk = src->chunk;
-	dest->allocated = src->allocated;
-	dest->float_pos = src->float_pos;
-
+	/* 
+		these should be set by expand_vector 
+		->len ->chunk ->allocated ->float_pos
+	*/
 	return dest;
+}
+bigflt *arbprec_dup_sparse_mirror(bigflt *src)
+{
+	bigflt *ret = arbprec_dup_sparse(src);
+	arbprec_setsign(ret);
+	return ret;
 }
 
 bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
@@ -181,14 +183,14 @@ bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
 
 bigflt *arbprec_dupa(bigflt *flt)
 { 
-	bigflt *ret = arbprec_malloc(sizeof(bigflt));
+	bigflt *ret = arbprec_expand_vector(NULL, flt->len);
 	ret = arbprec_copy(ret, flt);
 	return ret;
 }
 
 bigflt *arbprec_dup_sparse(bigflt *flt)
 {
-	bigflt *ret = arbprec_expand_vector(NULL, flt->len); 
+	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 	ret = arbprec_copy_sparse(ret, flt);
 	return ret;
 }
