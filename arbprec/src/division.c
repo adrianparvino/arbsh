@@ -70,6 +70,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 		{
 			copyarray(mir, tmir, j);
 			c->number[z] += 1;
+			
 		}
 	} 
 
