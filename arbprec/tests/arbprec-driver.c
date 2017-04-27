@@ -14,13 +14,15 @@ int main(int argc, char **argv)
 	double a = strtod(argv[1], 0);
 	double b = strtod(argv[2], 0);
 
+	printf("\n\n\ninternal libm:\n__________\n\n");
 	printf("  %20.10lf\n", a);
 	printf("  %20.10lf\n", b);
-	printf("  %20s\n", "-------------------");
+	printf("  %15s\n", "-------------------");
 	printf("+ %20.10lf\n", a + b);
 	printf("- %20.10lf\n", a - b);
 	printf("* %20.10lf\n", a * b);
 	printf("/ %20.10lf\n", a / b);
+	printf("\n\narbprec:\n___________\n\n");
 	fflush(stdout);
 
 	bigflt *flt1 = str_to_bigflt(argv[1]);
