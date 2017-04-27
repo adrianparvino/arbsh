@@ -374,7 +374,7 @@ void dd_main()
 	if ( obs == 0 )
 		glb.numbs[1] = obs = bs; 
 
-	/* 5 Create a buffer the corresponds to the maximum ibs= and obs=  */ 
+	/* 5 Create a buffer that corresponds to the maximum ibs= and obs=  */ 
 	if (!(buf = malloc((sizeof(char) * ibs + 15 ))))
 		cutilerror("Insufficient memory\n", 1); // ibs= 
 	if (!(rotary = malloc((sizeof(char) * obs + 15))))
