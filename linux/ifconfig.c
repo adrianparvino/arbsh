@@ -9,14 +9,7 @@
 #include <errno.h>
 #include <netinet/in.h>
 #include <unistd.h>
-#include <netpacket/packet.h>
-/*
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-*/
-//#include <arpa/inet.h>
-
+#include <netpacket/packet.h> 
 
 /* (Copyright) 2014, "ifconfig.c" C. Graff */
 
@@ -27,18 +20,17 @@ struct optn{
 	int arp;
 	int mtu;
 	int down; 
+	char txstring[1000];
+        char mtustring[1000];
+	char bcaststring[1000];
+	char nmaskstring[1000];
+	char metricstring[1000]; 
 	int nmask;
 	int bcast;
 	int metric;
 	int promisc; 
 	int multicast; 
-	char txstring[1000];
-        char mtustring[1000];
-	char bcaststring[1000];
-	char nmaskstring[1000];
-	char metricstring[1000];
-}optn;
-
+}optn = { 0, 0, 0, 0, 0, {0}, {0}, {0}, {0}, {0}, 0, 0, 0, 0, 0};
 
 int show_ip(); 
 void adrs(int); 
@@ -46,7 +38,6 @@ int flagsmodes(int);
 int setip(char *, char *); 
 void hwaddress(unsigned char *);
 void bad_arg(char **, int, int, int);
-
 
 int main(int argc, char *argv[])
 {
@@ -56,21 +47,8 @@ int main(int argc, char *argv[])
 	int e = 0;
 	char *arguments[len]; 
 
-	optn.tx = 0;
-	optn.up = 0;
-	optn.mtu = 0;
-	optn.arp = 0;
-	optn.down = 0;
-	optn.bcast = 0;
-	optn.nmask = 0;
-	optn.metric = 0;
-	optn.promisc = 0;
-	optn.multicast = 0;
-
 	while ( c < argc )
 	{ 
-
-
 		if ( strcmp(argv[c], "up" ) == 0 )
 			optn.up = 1;
 		else if ( strcmp(argv[c], "down" ) == 0 )
@@ -87,8 +65,6 @@ int main(int argc, char *argv[])
                         optn.arp = 2; 
 		else if ( strcmp(argv[c], "multicast" ) == 0 )
                         optn.multicast = 1;
-		
-                   
 		else if ( strcmp(argv[c], "mtu" ) == 0 )
 		{ 
 			bad_arg(arguments, c, d, argc);
@@ -236,8 +212,6 @@ int show_ip()
 	struct ifmap;
 	struct ifconf ifc;
 	struct ifreq ifr[10]; 
-//	struct ifreq *req;
-//	struct ifreq ethreq;
 	int sd, ifc_num, i; 
 
 	sd = socket(PF_INET, SOCK_DGRAM, 0); 
