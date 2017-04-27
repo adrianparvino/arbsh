@@ -8,9 +8,13 @@ bigflt *arbprec_initsign(bigflt *flt)
 
 bigflt *arbprec_init(bigflt *flt)
 {
-	arbprec_initsign(flt);
+	/*
+		These members should be left alone:
+			->chunk ->allocated ->mirror ->number
+	*/
+	flt = arbprec_initsign(flt);
 	flt->len = 0;
-	flt->float_pos = flt->len + 1;
+	flt->float_pos = flt->len;
 	return flt;
 }
 
@@ -111,7 +115,7 @@ bigflt *arba_alloc(size_t len)
 	ret->number = arbprec_malloc(sizeof(int) * len);
 	ret->mirror = arbprec_malloc(sizeof(int) * len);
 	ret->sign = '+';
-	ret->float_pos = len + 1;
+	ret->float_pos = len;
 	ret->len = 0;
 	ret->allocated = len;
 	ret->chunk = 256;
@@ -176,14 +180,14 @@ bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
 bigflt *arbprec_dupa(bigflt *flt)
 { 
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
-	arbprec_copy(ret, flt);
+	ret = arbprec_copy(ret, flt);
 	return ret;
 }
 
 bigflt *arbprec_dup_sparse(bigflt *flt)
 {
 	bigflt *ret = arbprec_expand_vector(NULL, flt->len); 
-	arbprec_copy_sparse(ret, flt);
+	ret = arbprec_copy_sparse(ret, flt);
 	return ret;
 }
 
