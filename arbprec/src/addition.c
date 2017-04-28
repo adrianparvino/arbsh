@@ -7,7 +7,7 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	int carry = 0;
 	
 	width = MAX(a->len, b->len); 
-	c->float_pos = a->float_pos; 
+	//c->float_pos = a->float_pos; 
 	c->len = 0;
 
         for( c->len = 0; c->len < width ; c->len++)
