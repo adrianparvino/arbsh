@@ -14,7 +14,7 @@ bigflt *arbprec_init(bigflt *flt)
 	*/
 	flt = arbprec_initsign(flt);
 	flt->len = 0;
-	flt->float_pos = flt->len;
+	flt->float_pos = flt->len; 
 	return flt;
 }
 
@@ -104,7 +104,10 @@ bigflt *str_to_bigflt(const char *str)
 
 	/* not a float so put the "." at the representative end */
 	if ( flt_set == 0 ) 
+	{ 
 		ret->float_pos = ret->len;
+	}
+	
 
 	return ret;
 }
@@ -176,7 +179,7 @@ bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
 	dest->len = src->len;
 	dest->chunk = src->chunk;
 	dest->allocated = src->allocated;
-	dest->float_pos = src->float_pos;
+	dest->float_pos = src->float_pos; 
 	return dest;
 }
 
@@ -192,5 +195,37 @@ bigflt *arbprec_dup_sparse(bigflt *flt)
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 	ret = arbprec_copy_sparse(ret, flt);
 	return ret;
+}
+
+size_t rr(bigflt *flt)
+{
+	size_t ret = flt->len - flt->float_pos;
+	return ret;
+}
+
+size_t rl(bigflt *flt)
+{
+	return flt->float_pos;
+}
+
+void rst(bigflt *flt, size_t point)
+{
+	flt->float_pos = point;
+}
+
+size_t rsh(bigflt *flt)
+{
+	return flt->float_pos;
+}
+
+size_t arbprec_balance_sum(bigflt *a, bigflt *b, bigflt *c, size_t diff)
+{
+        size_t lim = a->len -1;
+
+        diff = rr(a) - rr(b);
+        for (; c->len < diff ; c->len++, lim--)
+                c->number[c->len] = a->number[lim];
+
+        return diff;
 }
 
