@@ -50,6 +50,22 @@ void copyarray(int *answer, int *from, size_t len)
 	for( i = 0; i < len ; i++)
 		answer[i] = from[i];
 }
+
+int hasplace2(int *s, size_t idx, size_t len, size_t flt)
+{
+	// past a radix 
+
+	if ( len > flt)
+	{
+		if ( len - idx > len)
+			return 0;
+	}
+        if (idx < len)
+        	return s[len - idx - 1];
+        return 0;
+} 
+
+
 int hasplace(int *s, size_t idx, size_t len)
 {
         if (idx < len)
@@ -72,3 +88,4 @@ void setarray(int *answer, int delim, size_t len)
 	for( i = 0; i < len; i++)
 		answer[i] = delim;
 }
+
