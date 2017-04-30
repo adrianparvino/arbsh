@@ -48,6 +48,8 @@ bigflt *str_to_bigflt(const char *);
 
 bigflt *arbprec_dup_sparse_mirror(bigflt *);
 
+void arbprec_match_precision(bigflt *, bigflt*);
+
 /* internal function prototypes */
 bigflt *arba_alloc(size_t);
 void arbprec_die(char *);
