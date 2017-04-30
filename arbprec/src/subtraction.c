@@ -1,5 +1,13 @@
 #include <arbprec/arbprec.h>
 
+int place(bigflt *flt, size_t idx)
+{
+        if (idx < flt->len)
+                return flt->number[flt->len - idx - 1];
+        return 0;
+} 
+
+
 bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
 {
         size_t width = 0;
@@ -7,29 +15,21 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         int mir = 0;
         int borrow = 0;
         int carry = -1;
-	int *swap;
-	static size_t diff = 0;
+	int *swap; 
         size_t i = 0;
         size_t al = a->len;
-        size_t bl = b->len;
-	
+        size_t bl = b->len; 
 
 	c->float_pos = MAX(rl(a), rl(b));
-        c->len = 0; 
+        c->len = 0;
 
-	if( rr(a) > rr(b))
-        {
-                diff = arbprec_balance_sum(a, b, c, diff);
-                al = a->len - diff;
-        } 
-
+	arbprec_match_precision(a, b);
         width = MAX(al, bl);
 
-
-	for( ; c->len < width + diff ; c->len++, i++)
+	for( ; c->len < width ; c->len++, i++)
         {
-                sum = hasplace(a->number, i, al) - hasplace(b->number, i, bl) + borrow;
-                mir = hasplace(a->number, i, al) - hasplace(b->number, i, bl) + carry;
+                sum = place(a, i) - place(b, i) + borrow;
+                mir = place(a, i) - place(b, i) + carry;
                 carry = borrow = 0;
                 if(sum < 0)
                 {
@@ -61,15 +61,6 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
 bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
 {
         arbprec_initsign(c);
-
-
-
-	if ( rr(b) > rr(a))
-	{
-		bigflt *pivotb = arbprec_dup_sparse_mirror(b);
-		
-		return c = arbprec_sub(pivotb, a, c);
-	}
 
         if (arbprec_isnegati(a) && arbprec_isnegati(b))
                 arbprec_setsign(c);

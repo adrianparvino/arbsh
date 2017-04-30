@@ -280,3 +280,23 @@ size_t arbprec_balance_sum(bigflt *a, bigflt *b, bigflt *c, size_t diff)
         return diff;
 }
 
+void arbprec_match_precision(bigflt *a, bigflt *b)
+{ 
+	size_t off = 0;
+	if (rr(b) < rr(a))
+        {
+                off = rr(a) - rr(b);
+                b = arbprec_expand_vector(b, b->len + off);
+                setarray(b->number + b->len , 0, off);
+                b->len += off;
+        }
+
+        else if (rr(b) > rr(a))
+        {
+                off = rr(b) - rr(a);
+                a = arbprec_expand_vector(a, a->len + off);
+                setarray(a->number + a->len , 0, off);
+                a->len += off;
+
+        } 
+}
