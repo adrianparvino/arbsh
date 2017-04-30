@@ -46,6 +46,8 @@ bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_sub_inter(bigflt *, bigflt *, bigflt *);
 bigflt *str_to_bigflt(const char *);
 
+bigflt *arbprec_dup_sparse_mirror(bigflt *);
+
 /* internal function prototypes */
 bigflt *arba_alloc(size_t);
 void arbprec_die(char *);
@@ -57,6 +59,7 @@ void copyarray(int *, int *, size_t);
 int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */
 int iszero(int *, size_t);
 void setarray(int *, int, size_t);
+void arba_free(bigflt *);
 
 size_t rr(bigflt *);
 size_t rl(bigflt *);
