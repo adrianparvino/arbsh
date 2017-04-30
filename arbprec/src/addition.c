@@ -12,6 +12,7 @@ size_t helper(bigflt *a, bigflt *b, bigflt *c)
 	for (; limi> 0; limi--, c->len++, lim--) 
 		c->number[c->len] = a->number[lim]; 
 
+	c->float_pos = MAX(a->float_pos, b->float_pos);
 	return diff;
 }
 
@@ -31,6 +32,7 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 
 	size_t al = a->len;
 	size_t bl = b->len;
+	c->float_pos = MAX(a->float_pos, b->float_pos);
 
 	if( radix_right_a > radix_right_b ) 
 	{
