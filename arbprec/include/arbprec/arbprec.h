@@ -71,6 +71,7 @@ size_t arbprec_balance_sum(bigflt *, bigflt *, bigflt *, size_t);
 
 /* Globals */
 extern int base; 				/* Default to base 10 */
+extern int scale;			
 
 #endif /* _arbprec_h_ */
 
