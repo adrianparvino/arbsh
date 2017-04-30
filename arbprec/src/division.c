@@ -25,22 +25,23 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	c->number[z] = 0;
 
 	if ( b->float_pos == 0  ) 
-		while (b->number[off] == 0 ) 
+		while (b->number[off] == 0 && off < b->len) 
 			++off; 
 	
-	if (a->float_pos < b->float_pos)
+	if (rl(a) < rl(b))
 	{
-		diff = b->float_pos - a->float_pos - 1;
+		diff = rl(b) - rl(a) - 1;
 		setarray(c->number, 0, diff);
 		c->len = z = diff;
 		c->number[z] = c->float_pos = 0 + off;
 	}
-	else if (a->float_pos + 1> b->float_pos) 
+	else if (rl(a) + 1> rl(b)) 
 	{
-		c->float_pos = a->float_pos - b->float_pos + off + 1;
+		c->float_pos = rl(a) - rl(b) + off + 1; 
 	}
 	else
-		c->float_pos = a->float_pos + off;
+		c->float_pos = rl(a) + off;
+		
 
 	for ( ; z < a->len + diff; )
 	{

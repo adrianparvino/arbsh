@@ -20,8 +20,8 @@
 typedef struct {
 	int *number;
 	int *mirror;
-	int sign;
-	size_t float_pos;
+	int sign;		
+	size_t float_pos;	/* length left of radix */ 
 	size_t len;
 	size_t allocated;
 	size_t chunk;
@@ -57,6 +57,12 @@ void copyarray(int *, int *, size_t);
 int hasplace(int *, size_t, size_t);		/* Return an indice position if it exists, if not, return 0 */
 int iszero(int *, size_t);
 void setarray(int *, int, size_t);
+
+size_t rr(bigflt *);
+size_t rl(bigflt *);
+void rst(bigflt *, size_t);
+size_t rsh(bigflt *);
+size_t arbprec_balance_sum(bigflt *, bigflt *, bigflt *, size_t);
 
 /* Globals */
 extern int base; 				/* Default to base 10 */
