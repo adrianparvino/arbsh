@@ -16,7 +16,7 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
         if (arbprec_isnegati(b))
                 arbprec_setsign(c);
 
-	c = arbprec_expand_vector(c, 123123);
+	c = arbprec_expand_vector(c, a->len + b->len);
 	setarray(c->number, 0, a->len + b->len);
 	
 	for ( i = a->len - 1; i >= 0 ; i--)
@@ -30,7 +30,7 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
 		c->number[k] += carry;
 	}
 	c->len = a->len + b->len;
-	c->float_pos = a->float_pos + b->float_pos;
+	c->float_pos = rl(a) + rl(b);
 	return c;
 }
 
