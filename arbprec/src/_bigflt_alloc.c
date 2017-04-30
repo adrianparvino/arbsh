@@ -2,15 +2,18 @@
 
 bigflt *arbprec_initsign(bigflt *flt)
 {
+	/* 	(internal)
+		Initialize the sign to positive
+	*/
 	flt->sign = '+';
 	return flt;
 }
 
 bigflt *arbprec_init(bigflt *flt)
-{
+{ 
 	/*
-		These members should be left alone:
-			->chunk ->allocated ->mirror ->number
+		Reset the length and sign of a bigflt so it can be
+		reused for a new answer
 	*/
 	flt = arbprec_initsign(flt);
 	flt->len = 0;
@@ -20,6 +23,9 @@ bigflt *arbprec_init(bigflt *flt)
 
 bigflt *arbprec_setsign(bigflt *flt)
 {
+	/*
+		Flip the sign of a bigflt
+	*/
 	if ( flt->sign == '+' )
 		flt->sign = '-';
 	else if ( flt->sign == '-' )
@@ -29,6 +35,9 @@ bigflt *arbprec_setsign(bigflt *flt)
 
 bigflt *arbprec_print_simple(bigflt *flt)
 { 
+	/*
+		Print a bigflt
+	*/
         size_t i = 0; 
 
         for (i = 0; i < flt->len ; ++i)
@@ -42,7 +51,9 @@ bigflt *arbprec_print_simple(bigflt *flt)
 
 bigflt *arbprec_print(bigflt *flt)
 { 
-	
+	/*
+		Print a bigflt in a single write
+	*/
 	char *buf = arbprec_malloc(sizeof(char) * (flt->len + 4)); // 4 == '+','.','\n','\0'
 	size_t i = 0;
 	size_t j = 0;
@@ -68,6 +79,13 @@ bigflt *arbprec_print(bigflt *flt)
 
 bigflt *str_to_bigflt(const char *str)
 {
+	/*
+		Convert a string to a bigflt
+
+		'+'/'-' are honored
+
+		' ' whitespace is ignored
+	*/
 	size_t i = 0;
 	size_t chunk = BUFSIZ / 16;
 	int flt_set = 0;
@@ -114,6 +132,10 @@ bigflt *str_to_bigflt(const char *str)
 
 bigflt *arba_alloc(size_t len)
 {
+	/*	(internal)
+		Allocate the basic requirements
+		of a bigflt
+	*/
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 	ret->number = arbprec_malloc(sizeof(int) * len);
 	ret->mirror = arbprec_malloc(sizeof(int) * len);
@@ -126,6 +148,9 @@ bigflt *arba_alloc(size_t len)
 
 void arba_free(bigflt *flt)
 {
+	/*
+		Free a bigflt
+	*/
 	if (flt->number)
 		free(flt->number);
 	if (flt->mirror)
@@ -135,6 +160,9 @@ void arba_free(bigflt *flt)
 
 bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 {
+	/*
+		Enlarge or create a bigflt
+	*/
 	size_t chunks = 0;
 	
 	if (flt == NULL)
@@ -154,6 +182,9 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 
 bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 {
+	/*
+		Copy a bigflt
+	*/
 	dest = arbprec_expand_vector(dest, src->len);
 	copyarray(dest->number, src->number, src->len);
 	copyarray(dest->mirror, src->mirror, src->len);
@@ -166,6 +197,9 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 }
 bigflt *arbprec_dup_sparse_mirror(bigflt *src)
 {
+	/*
+		Sparsely duplicate a bigflt and flip its sign
+	*/
 	bigflt *ret = arbprec_dup_sparse(src);
 	arbprec_setsign(ret);
 	return ret;
@@ -173,6 +207,9 @@ bigflt *arbprec_dup_sparse_mirror(bigflt *src)
 
 bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
 {
+	/*
+		Make a sparse copy of a bigflt
+	*/
 	dest->sign = src->sign;
 	dest->number = src->number;
 	dest->mirror = src->mirror;
@@ -185,6 +222,9 @@ bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
 
 bigflt *arbprec_dupa(bigflt *flt)
 { 
+	/*
+		Duplicate a bigflt
+	*/
 	bigflt *ret = arbprec_expand_vector(NULL, flt->len);
 	ret = arbprec_copy(ret, flt);
 	return ret;
@@ -192,6 +232,9 @@ bigflt *arbprec_dupa(bigflt *flt)
 
 bigflt *arbprec_dup_sparse(bigflt *flt)
 {
+	/*
+		Sparsely duplicate a bigflt
+	*/
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 	ret = arbprec_copy_sparse(ret, flt);
 	return ret;
@@ -199,27 +242,35 @@ bigflt *arbprec_dup_sparse(bigflt *flt)
 
 size_t rr(bigflt *flt)
 {
+	/* 	(internal)
+		Right hand radix position 
+	*/
 	size_t ret = flt->len - flt->float_pos;
 	return ret;
 }
 
 size_t rl(bigflt *flt)
 {
+	/*	(internal)
+		Left hand radix position
+	*/
 	return flt->float_pos;
 }
 
-void rst(bigflt *flt, size_t point)
+void rst(bigflt *flt, size_t radix)
 {
-	flt->float_pos = point;
-}
-
-size_t rsh(bigflt *flt)
-{
-	return flt->float_pos;
+	/*	(internal)
+		Set the left hand radix.
+	*/
+	flt->float_pos = radix;
 }
 
 size_t arbprec_balance_sum(bigflt *a, bigflt *b, bigflt *c, size_t diff)
 {
+	/*
+		Strip and record the trailing digits to the right of the radix
+		which don't have a match for simpler addition
+	*/
         size_t lim = a->len -1;
 
         diff = rr(a) - rr(b);
