@@ -1,9 +1,22 @@
+
 #include <arbprec/arbprec.h> 
 
-bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
+size_t helper(bigflt *a, bigflt *b, bigflt *c)
 {
+	size_t radix_right_a = (a->len - a->float_pos);
+	size_t radix_right_b = (b->len - b->float_pos);
+	size_t diff = radix_right_a - radix_right_b; 
+	size_t limi = diff;
+	size_t lim = a->len -1;
 
-	
+	for (; limi> 0; limi--, c->len++, lim--) 
+		c->number[c->len] = a->number[lim]; 
+
+	return diff;
+}
+
+bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
+{ 
 	size_t width = 0;
 	int sum = 0;
 	int carry = 0;
@@ -11,40 +24,31 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	size_t radix_right_a = (a->len - a->float_pos);
 	size_t radix_right_b = (b->len - b->float_pos);
 	size_t diff = 0;
+	size_t i = 0;
+	
 	c->len = 0;
-	width = MAX(a->len, b->len); 
+	width = MAX(a->len, b->len);
+
+	size_t al = a->len;
+	size_t bl = b->len;
 
 	if( radix_right_a > radix_right_b ) 
 	{
-		diff =  radix_right_a - radix_right_b; 
-		size_t lim = a->len;
-		size_t limi = diff;
-		for (; limi> 0; --limi)
-			c->number[c->len++] = a->number[a->len-- - 1]; 
-
-		c->float_pos = b->len;
-	
+		diff = helper(a, b, c);
+		al = a->len - diff;
 	}
-	else if ( radix_right_b > radix_right_a )
+	else if ( radix_right_b > radix_right_a ) 
 	{
-		diff = radix_right_b  - radix_right_a; 
-		size_t lim = b->len;
-		size_t limi= diff;
-		for (; limi> 0; --limi)
-			c->number[c->len++] = b->number[b->len-- - 1]; 
-		c->float_pos = a->len;
-	}
-
 	
-
-	//
-
-	size_t i = 0;
-
-
-        for( ; c->len < width ; c->len++, i++)
+		diff = helper(b, a, c);
+		bl = b->len - diff;
+	} 
+	width = MAX(al, bl);
+	
+        for( ; c->len < width + diff ; c->len++, i++)
 	{
-		sum = hasplace(a->number, i, a->len) + hasplace(b->number, i, b->len) + carry;
+		//arbprec_expand_vector(c, c->len + i );
+		sum = hasplace(a->number, i, al) + hasplace(b->number, i, bl) + carry;
 		
                 carry = 0;
                 if(sum >= base){
@@ -52,10 +56,11 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
                         sum -= base;
                 }
                 c->number[c->len] = sum;
+		//arbprec_print(c);
         }
         if (carry) 
 		c->number[c->len++] = 1;
-       	//c->len += 5;
+
 	arbprec_reverse(c->number, c->len);
 	return c;
 }
