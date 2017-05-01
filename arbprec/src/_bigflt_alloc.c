@@ -171,8 +171,9 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 	} else if ( request >= flt->allocated )
 	{ 
 		/* align chunk requests */
-		chunks = (request / flt->chunk) + 2;
-		flt->allocated = flt->chunk * chunks;
+		//chunks = (request / flt->chunk) + 2;
+		//flt->allocated = flt->chunk * chunks;
+		flt->allocated += flt->allocated;
 		flt->number = arbprec_realloc(flt->number, flt->allocated * sizeof(int));
 		flt->mirror = arbprec_realloc(flt->mirror, flt->allocated * sizeof(int));
 	} 
@@ -189,6 +190,10 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 	copyarray(dest->number, src->number, src->len);
 	copyarray(dest->mirror, src->mirror, src->len);
 	dest->sign = src->sign;
+	dest->len = src->len;
+	dest->float_pos = src->float_pos;
+	dest->allocated = src->allocated;
+	dest->chunk = src->chunk;
 	/* 
 		these should be set by expand_vector 
 		->len ->chunk ->allocated ->float_pos
