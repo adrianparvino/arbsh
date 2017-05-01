@@ -67,7 +67,10 @@ bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
         if (arbprec_isnegati(a) && arbprec_isnegati(b))
                 arbprec_setsign(c);
         else if (arbprec_isnegati(a))
+	{
                 arbprec_setsign(c);
+		return c = arbprec_add_inter(a, b, c);
+	}
         else if (arbprec_isnegati(b) || arbprec_isnegati(a))
                 return c = arbprec_add_inter(a, b, c);
 
