@@ -18,17 +18,18 @@
 	radix_left  = len - float_pos;
 */
 
-typedef struct {
-	int *number;		/* Main number */
+typedef struct {		/*     bigflt type		*/
+	int *number;		/* Main number			*/
 	int *mirror;		/* Negative subtraction requires a mirror */
 	int *nr;		/* Garbage collection for number */
 	int *mr;		/* Garbage collction for mirror */
-	int sign;		/* Sign */
-	size_t float_pos;	/* Length left of radix */ 
-	size_t len;		/* Length of number */
-	size_t allocated;	/* Length of alocated memory */
-	size_t chunk;		/* Allocation chunk size */
-	int nan;		/* Not a number */
+	int sign;		/* Sign 			*/
+	size_t float_pos;	/* Length left of radix 	*/
+	size_t len;		/* Length of number 		*/
+	size_t allocated;	/* Length of alocated memory 	*/
+	size_t chunk;		/* Allocation chunk size 	*/
+	int nan;		/* Not a number			*/
+	int inf;		/* Infinity 			*/
 } bigflt;
 
 /* Function protoypes */
@@ -57,6 +58,7 @@ bigflt *arbprec_dup_sparse_mirror(bigflt *);
 bigflt *arbprec_sqrt(bigflt *);
 bigflt *arbprec_hypot(bigflt *, bigflt *);
 
+bigflt *arbprec_sin(bigflt *);
 
 
 void arbprec_match_precision(bigflt *, bigflt*);
