@@ -1,6 +1,6 @@
 CFLAGS += -Wall -Wextra -I./include/ -O3
 
-LDFLAGS += "-Wl,-rpath=$(PWD)"
+LDFLAGS += "-Wl,-rpath=$(PWD)" 
 
 OBJ = $(shell for i in src/*.c ; do echo $${i%.c}.o ; done )
 
@@ -24,7 +24,7 @@ INCLUDES_TARG = $(shell for i in include/$(PREFIX)/*.h ; do echo $(DESTDIR)/$$i 
 
 TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
 
-LDLIBS += -L. -l$(LIBNAME)
+LDLIBS += -L. -l$(LIBNAME) -lm
 
 all:
 
