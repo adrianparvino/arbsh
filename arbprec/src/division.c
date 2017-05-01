@@ -24,6 +24,20 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	copyarray(mir, a->number, a->len);
 	c->number[z] = 0; 
 	
+	if (b->float_pos > 0 && b->number[0] == 0)
+	{
+		b->number = b->number + 1;
+		b->len -= 1;
+		b->float_pos -= 1;
+	
+	}
+	if (a->float_pos > 0 && a->number[0] == 0)
+	{
+		a->number = a->number + 1;
+		a->len -= 1;
+		a->float_pos -= 1;
+	
+	}
 
 	if ( b->float_pos == 0  ) 
 		while (b->number[off] == 0 && off < b->len) 
