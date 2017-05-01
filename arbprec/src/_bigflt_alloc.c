@@ -300,3 +300,12 @@ void arbprec_match_precision(bigflt *a, bigflt *b)
 
         } 
 }
+
+bigflt *arbprec_add_precision(bigflt *flt, size_t len)
+{
+	flt = arbprec_expand_vector(flt, flt->len + len);
+	setarray(flt->number + flt->len, 0, len);
+	flt->len += len;
+	return flt;
+	
+}
