@@ -16,6 +16,7 @@ bigflt *arbprec_init(bigflt *flt)
 		reused for a new answer
 	*/
 	flt = arbprec_initsign(flt);
+	flt->nan = 0;
 	flt->len = 0;
 	flt->float_pos = flt->len; 
 	return flt;
@@ -55,11 +56,6 @@ bigflt *arbprec_print(bigflt *flt)
 		Print a bigflt in a single write
 	*/
 	
-	if (flt == NOTANUM)
-	{
-		write(1, "NOTANUM\n", 8);
-		return NULL;
-	}
 	
 	char *buf = arbprec_malloc(sizeof(char) * (flt->len + 4)); // 4 == '+','.','\n','\0'
 	size_t i = 0;
@@ -70,6 +66,14 @@ bigflt *arbprec_print(bigflt *flt)
 	if ( flt->sign )
 		buf[j++] = flt->sign;
 
+	
+	if (flt->nan == 1)
+	{
+		strcpy(buf + j, "nan");
+		j+=3;
+		goto end;
+	}
+
         for (i = 0; i < flt->len  && i < scale; ++i)
 	{ 
 		if ( flt->float_pos == i )
@@ -77,6 +81,7 @@ bigflt *arbprec_print(bigflt *flt)
 	
 		buf[j++] = (flt->number[i] + '0');
 	} 
+	end:
 	buf[j++] = '\n';
 	buf[j++] = '\0';
 	if ((wrt_ret = write(1, buf, j - 1)) < 1)
@@ -150,6 +155,7 @@ bigflt *arba_alloc(size_t len)
 	ret->sign = '+';
 	ret->float_pos = ret->allocated = len;
 	ret->len = 0;
+	ret->nan = 0;
 	ret->chunk = 256;
 	return ret;
 }
@@ -202,6 +208,7 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 	dest->float_pos = src->float_pos;
 	dest->allocated = src->allocated;
 	dest->chunk = src->chunk;
+	dest->nan = src->nan;
 	/* 
 		these should be set by expand_vector 
 		->len ->chunk ->allocated ->float_pos
@@ -230,6 +237,7 @@ bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
 	dest->chunk = src->chunk;
 	dest->allocated = src->allocated;
 	dest->float_pos = src->float_pos; 
+	dest->nan = src->nan;
 	return dest;
 }
 
