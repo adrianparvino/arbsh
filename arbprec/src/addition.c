@@ -36,8 +36,12 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
                 }
                 c->number[c->len] = sum;
         }
-        if (carry) 
+        if (carry)
+	{
 		c->number[c->len++] = 1;
+		c->float_pos += 1;
+		c->len--;
+	}
 
 	arbprec_reverse(c->number, c->len);
 	return c;
