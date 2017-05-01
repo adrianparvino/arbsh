@@ -7,7 +7,7 @@
 
 int main(int argc, char **argv)
 {
-	scale = 100;
+	//scale = 100;
 
 	if ( argc < 3 )
 		arbprec_die("Needs 2 args\n");
