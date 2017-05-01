@@ -36,6 +36,7 @@ bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_dupa(bigflt *);
 bigflt *arbprec_dup_sparse(bigflt *);
 bigflt *arbprec_expand_vector(bigflt *, size_t);
+
 bigflt *arbprec_init(bigflt *);
 bigflt *arbprec_initsign(bigflt *);
 bigflt *arbprec_print(bigflt *);
@@ -49,6 +50,7 @@ bigflt *str_to_bigflt(const char *);
 bigflt *arbprec_dup_sparse_mirror(bigflt *);
 
 void arbprec_match_precision(bigflt *, bigflt*);
+bigflt *arbprec_add_precision(bigflt *, size_t);
 
 /* internal function prototypes */
 bigflt *arba_alloc(size_t);
