@@ -20,12 +20,12 @@ int main(int argc, char **argv)
 	printf("  %20.10lf\n", a);
 	printf("  %20.10lf\n", b);
 	printf("  %15s\n", "-------------------");
-	printf("+ %20.10lf\n", a + b);
-	printf("- %20.10lf\n", a - b);
-	printf("* %20.10lf\n", a * b);
-	printf("/ %20.10lf\n", a / b);
-	printf("# %20.10lf\n", sqrt(a));
-	printf("# %20.10lf\n", hypot(a, b));
+	printf("addi %20.10lf\n", a + b);
+	printf("subt %20.10lf\n", a - b);
+	printf("mult %20.10lf\n", a * b);
+	printf("divi %20.10lf\n", a / b);
+	printf("sqrt %20.10lf\n", sqrt(a));
+	printf("hypo %20.10lf\n", hypot(a, b));
 	printf("\n\narbprec:\n___________\n\n");
 	fflush(stdout);
 
