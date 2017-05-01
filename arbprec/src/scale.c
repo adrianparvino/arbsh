@@ -1,4 +1,4 @@
 #include <arbprec/arbprec.h>
 
-int scale = 59;
+size_t scale = 100;
 
