@@ -10,9 +10,29 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	int sum = 0;
 	int carry = 0;
 
+
+	arbprec_match_precision(a, b);
+	if (b->float_pos > 0 && b->number[0] == 0)
+        {
+                b->number = b->number + 1;
+                b->len -= 1;
+                b->float_pos -= 1;
+
+        }
+        if (a->float_pos > 0 && a->number[0] == 0)
+        {
+                a->number = a->number + 1;
+                a->len -= 1;
+                a->float_pos -= 1;
+
+        }
+	al = a->len;
+	bl = b->len;
+	
 	c->float_pos = MAX(rl(a), rl(b));
 	c->len = 0;
-
+	
+	/*
 	if( rr(a) > rr(b))
 	{ 
 		diff = arbprec_balance_sum(a, b, c, diff);
@@ -23,6 +43,7 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 		diff = arbprec_balance_sum(b, a, c, diff);
 		bl = b->len - diff;
 	} 
+	*/
 
 	width = MAX(al, bl);
 	
