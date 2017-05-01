@@ -7,6 +7,7 @@
 
 int main(int argc, char **argv)
 {
+	scale = 100;
 
 	if ( argc < 3 )
 		arbprec_die("Needs 2 args\n");
@@ -27,6 +28,11 @@ int main(int argc, char **argv)
 
 	bigflt *flt1 = str_to_bigflt(argv[1]);
 	bigflt *flt2 = str_to_bigflt(argv[2]);
+
+	flt1 = arbprec_add_precision(flt1, scale);
+	arbprec_match_precision(flt1, flt2);
+
+
 	bigflt *flt3 = arbprec_expand_vector(NULL, flt1->len + flt2->len);
 
 	flt3 = arbprec_add(flt1, flt2, flt3);
