@@ -47,11 +47,18 @@ API:
 
 	See tests/arbprec-driver.c for another example on how to use the API. 
 
+
 REFERENCES:
 -----------
 
 	https://en.wikipedia.org/wiki/Floating-point_arithmetic
 
 	https://en.wikipedia.org/wiki/Fixed-point_arithmetic
+
+
+CONTACT:
+--------
+
+	cm0graff@gmail.com
 
 
