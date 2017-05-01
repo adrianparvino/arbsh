@@ -50,6 +50,11 @@ bigflt *str_to_bigflt(const char *);
 
 bigflt *arbprec_dup_sparse_mirror(bigflt *);
 
+
+bigflt *arbprec_sqrt(bigflt *);
+
+
+
 void arbprec_match_precision(bigflt *, bigflt*);
 bigflt *arbprec_add_precision(bigflt *, size_t);
 
