@@ -19,14 +19,16 @@
 */
 
 typedef struct {
-	int *number;
-	int *mirror;
-	int sign;		
-	size_t float_pos;	/* length left of radix */ 
-	size_t len;
-	size_t allocated;
-	size_t chunk;
-	size_t nan;
+	int *number;		/* Main number */
+	int *mirror;		/* Negative subtraction requires a mirror */
+	int *nr;		/* Garbage collection for number */
+	int *mr;		/* Garbage collction for mirror */
+	int sign;		/* Sign */
+	size_t float_pos;	/* Length left of radix */ 
+	size_t len;		/* Length of number */
+	size_t allocated;	/* Length of alocated memory */
+	size_t chunk;		/* Allocation chunk size */
+	int nan;		/* Not a number */
 } bigflt;
 
 /* Function protoypes */
@@ -53,6 +55,7 @@ bigflt *arbprec_dup_sparse_mirror(bigflt *);
 
 
 bigflt *arbprec_sqrt(bigflt *);
+bigflt *arbprec_hypot(bigflt *, bigflt *);
 
 
 
