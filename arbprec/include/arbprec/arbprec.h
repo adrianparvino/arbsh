@@ -26,6 +26,7 @@ typedef struct {
 	size_t len;
 	size_t allocated;
 	size_t chunk;
+	size_t nan;
 } bigflt;
 
 /* Function protoypes */
@@ -80,6 +81,9 @@ size_t arbprec_balance_sum(bigflt *, bigflt *, bigflt *, size_t);
 /* Globals */
 extern int base; 				/* Default to base 10 */
 extern size_t scale;			
+
+extern bigflt *NOTANUM;
+extern bigflt *INFINIT;
 
 #endif /* _arbprec_h_ */
 
