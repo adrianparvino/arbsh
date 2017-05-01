@@ -54,10 +54,18 @@ bigflt *arbprec_print(bigflt *flt)
 	/*
 		Print a bigflt in a single write
 	*/
+	
+	if (flt == NOTANUM)
+	{
+		write(1, "NOTANUM\n", 8);
+		return NULL;
+	}
+	
 	char *buf = arbprec_malloc(sizeof(char) * (flt->len + 4)); // 4 == '+','.','\n','\0'
 	size_t i = 0;
 	size_t j = 0;
 	size_t wrt_ret = 0;
+
 
 	if ( flt->sign )
 		buf[j++] = flt->sign;
