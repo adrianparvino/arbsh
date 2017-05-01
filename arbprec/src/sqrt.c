@@ -2,7 +2,12 @@
 
 bigflt *arbprec_sqrt(bigflt *x)
 {
+	
 	size_t i = 0;
+
+	if (x->sign == '-')
+		return NOTANUM;
+
 	bigflt *y = arbprec_dupa(x);
 	bigflt *sum = arbprec_expand_vector(NULL, y->len + x->len);
 	bigflt *quo = arbprec_expand_vector(NULL, y->len + x->len);
