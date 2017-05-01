@@ -22,12 +22,14 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 
 	setarray(mir + a->len, 0, width - a->len);
 	copyarray(mir, a->number, a->len);
-	c->number[z] = 0;
+	c->number[z] = 0; 
+	
 
 	if ( b->float_pos == 0  ) 
 		while (b->number[off] == 0 && off < b->len) 
 			++off; 
-	
+
+		
 	if (rl(a) < rl(b))
 	{
 		diff = rl(b) - rl(a) - 1;
@@ -41,7 +43,8 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	}
 	else
 		c->float_pos = rl(a) + off;
-		
+	
+
 
 	for ( ; z < a->len + diff; )
 	{
@@ -77,6 +80,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 
 	free(mir);
 	free(tmir);
+
 	return c;
 }
 
