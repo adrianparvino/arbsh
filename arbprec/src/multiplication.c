@@ -31,6 +31,16 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
 	}
 	c->len = a->len + b->len;
 	c->float_pos = rl(a) + rl(b);
+
+
+
+
+	
+	
+	c->len = ((a->len + b->len) / 2);
+	
+	
+
 	return c;
 }
 
