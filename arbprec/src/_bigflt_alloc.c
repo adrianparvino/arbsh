@@ -62,7 +62,7 @@ bigflt *arbprec_print(bigflt *flt)
 	if ( flt->sign )
 		buf[j++] = flt->sign;
 
-        for (i = 0; i < flt->len ; ++i)
+        for (i = 0; i < flt->len  && i < scale; ++i)
 	{ 
 		if ( flt->float_pos == i )
 			buf[j++] = '.';
