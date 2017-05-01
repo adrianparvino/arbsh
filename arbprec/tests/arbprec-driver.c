@@ -25,6 +25,7 @@ int main(int argc, char **argv)
 	printf("* %20.10lf\n", a * b);
 	printf("/ %20.10lf\n", a / b);
 	printf("# %20.10lf\n", sqrt(a));
+	printf("# %20.10lf\n", hypot(a, b));
 	printf("\n\narbprec:\n___________\n\n");
 	fflush(stdout);
 
@@ -51,6 +52,10 @@ int main(int argc, char **argv)
 
 	
 	flt3 = arbprec_sqrt(flt1);
+	arbprec_print(flt3);
+
+	
+	flt3 = arbprec_hypot(flt1, flt2);
 	arbprec_print(flt3);
 
 	//arba_free(flt1);
