@@ -257,7 +257,7 @@ bigflt *arbprec_dupa(bigflt *flt)
 	/*
 		Duplicate a bigflt
 	*/
-	bigflt *ret = arbprec_expand_vector(NULL, flt->len);
+	bigflt *ret = arba_alloc(sizeof(bigflt));
 	ret = arbprec_copy(ret, flt);
 	return ret;
 }
@@ -340,10 +340,8 @@ bigflt *arbprec_add_precision(bigflt *flt, size_t len)
 	flt->len += len;
 	return flt;
 	
-}
-#include <arbprec/arbprec.h>
+} 
 
-/* Functions */ 
 void arbprec_die(char *message)
 {
 	fprintf(stderr, "%s", message);
@@ -392,22 +390,7 @@ void copyarray(int *answer, int *from, size_t len)
 	size_t i = 0;
 	for( i = 0; i < len ; i++)
 		answer[i] = from[i];
-}
-
-int hasplace2(int *s, size_t idx, size_t len, size_t flt)
-{
-	// past a radix 
-
-	if ( len > flt)
-	{
-		if ( len - idx > len)
-			return 0;
-	}
-        if (idx < len)
-        	return s[len - idx - 1];
-        return 0;
 } 
-
 
 int hasplace(int *s, size_t idx, size_t len)
 {
