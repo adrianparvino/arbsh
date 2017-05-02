@@ -8,7 +8,6 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	size_t width = a->len + b->len;
 	size_t diff = 0;
 	size_t off = 0;
-	size_t loff = 0;
 	int *mir = arbprec_malloc(sizeof(int) * width);
 	int *tmir = arbprec_malloc(sizeof(int) * width);
 	int sum = 0;
