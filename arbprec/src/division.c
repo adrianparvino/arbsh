@@ -40,6 +40,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	
 	}
 
+
 	//if ( b->float_pos == 0  ) 
 		while (b->number[off] == 0 && off < b->len) 
 			++off; 
