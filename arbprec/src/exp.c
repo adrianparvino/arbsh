@@ -18,13 +18,17 @@ bigflt *arbprec_exp(bigflt *x)
 	bigflt *y = arbprec_expand_vector(NULL, x->len * 200);
 	bigflt *sum1 = arbprec_expand_vector(NULL, x->len * 200);
 	bigflt *sum2 = arbprec_expand_vector(NULL, x->len * 200);
+	bigflt *thou = str_to_bigflt("10000");
 	
 	
 	bigflt *r = arbprec_expand_vector(NULL, x->len * 200);
 	bigflt *ret = arbprec_expand_vector(NULL, x->len * 200);
 	bigflt *swap;
 	
-	//i = arbprec_add(x, x, i);
+	//bigflt *i = arbprec_expand_vector(NULL, x->len * 200);
+	//i = arbprec_mul(x, thou, i);
+	//j = i->len * 30;
+//	arbprec_print(i);
 	
 	bigflt *s = str_to_bigflt("1.0");
 	s = arbprec_expand_vector(s, x->len * 200); 
@@ -34,29 +38,28 @@ bigflt *arbprec_exp(bigflt *x)
 
 
 	start:
-	arbprec_init(prod);
-	arbprec_init(prod2);
-	arbprec_init(quo); 
-
+	//arbprec_init(prod);
+	//arbprec_init(prod2);
+	//arbprec_init(quo); 
+//arbprec_print(i);
 	prod = arbprec_mul(i, four, prod); 
 	prod2 = arbprec_sub(prod, two, prod2);
-	//arbprec_print(prod2);
+
 	quo = arbprec_div(r, s, quo);
-	//arbprec_print(quo);
+
 	s = arbprec_add(prod2, quo, s);
-	//arbprec_print(s);
-	//s = ret;
+
+
 	--j;
 	z = arbprec_sub(i, one, z); 
-	//arbprec_print(z);
+
 	swap = i;
 	i = z;
 	z = swap;
 	if ( j >0 )
 		goto start;
 
-	//y = (s + x)/(s - x);
-
+	/* y = (s + x)/(s - x); */ 
 	sum1 = arbprec_add(s, x, sum1);
 	sum2 = arbprec_sub(s, x, sum2);
 	y = arbprec_div(sum1, sum2, y);
