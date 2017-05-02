@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
 	bigflt *flt3 = arbprec_expand_vector(NULL, flt1->len + flt2->len);
 
-	/*
+
 	flt3 = arbprec_add(flt1, flt2, flt3);
 	arbprec_print(flt3);
 
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 	flt3 = arbprec_hypot(flt1, flt2);
 	arbprec_print(flt3);
 
-	*/
+
 	flt3 = arbprec_exp(flt1);
 	arbprec_print(flt3);
 
