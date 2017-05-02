@@ -188,7 +188,7 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 	/*
 		Enlarge or create a bigflt
 	*/
-	size_t chunks = 0;
+	//size_t chunks = 0;
 	
 	if (flt == NULL)
 	{
@@ -430,5 +430,17 @@ void setarray(int *answer, int delim, size_t len)
 	size_t i = 0;
 	for( i = 0; i < len; i++)
 		answer[i] = delim;
+}
+
+int arpbrec_equals(bigflt *a, bigflt *b, size_t precision)
+{
+	size_t i = 0;
+
+	for (;i < precision && i < a->len && i < b->len; ++i)
+	{
+		if (!(a->number[i] == b->number[i]))
+			return 0;
+	}
+	return 1;
 }
 
