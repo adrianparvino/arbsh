@@ -13,14 +13,14 @@ bigflt *arbprec_exp(bigflt *x)
 	bigflt *two = str_to_bigflt("2.0000");
 	bigflt *four = str_to_bigflt("4.00000");
 	bigflt *i = str_to_bigflt("30.00000");
-	bigflt *z = arbprec_dupa(i);
+	bigflt *z = arbprec_expand_vector(NULL, x->len * 200);
 	bigflt *r = arbprec_expand_vector(NULL, x->len * 200);
-	bigflt *prod = arbprec_dupa(r);
-	bigflt *prod2 = arbprec_dupa(r);
-	bigflt *quo = arbprec_dupa(r);
-	bigflt *y = arbprec_dupa(r);
-	bigflt *sum1 = arbprec_dupa(r);
-	bigflt *sum2 = arbprec_dupa(r);
+	bigflt *prod = arbprec_expand_vector(NULL, x->len * 200);
+	bigflt *prod2 = arbprec_expand_vector(NULL, x->len * 200);
+	bigflt *quo = arbprec_expand_vector(NULL, x->len * 200);
+	bigflt *y = arbprec_expand_vector(NULL, x->len * 200);
+	bigflt *sum1 = arbprec_expand_vector(NULL, x->len * 200);
+	bigflt *sum2 = arbprec_expand_vector(NULL, x->len * 200);
 	bigflt *swap; 
 	
 

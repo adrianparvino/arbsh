@@ -257,7 +257,8 @@ bigflt *arbprec_dupa(bigflt *flt)
 	/*
 		Duplicate a bigflt
 	*/
-	bigflt *ret = arba_alloc(sizeof(bigflt));
+	//bigflt *ret = arba_alloc(sizeof(bigflt));
+	bigflt *ret = arbprec_expand_vector(NULL, flt->len);
 	ret = arbprec_copy(ret, flt);
 	return ret;
 }
