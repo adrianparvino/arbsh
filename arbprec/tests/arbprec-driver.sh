@@ -1,6 +1,6 @@
 #!/bin/sh
 
-EXE="./tests/arbprec-driver"
+EXE="valgrind ./tests/arbprec-driver"
 
 $EXE 123124 123
 
