@@ -63,7 +63,9 @@ int main(int argc, char *argv[])
 double trigfunc(int p, double x)
 {
 	int i = x + 30 / 4;
-	double r, s, y; 
+	double r = 0;
+	double s = 0;
+	double y = 0; 
  
 	if ( x < 0. )
                 i = -x + 30 / 4;
