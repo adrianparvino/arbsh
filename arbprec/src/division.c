@@ -8,6 +8,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	size_t width = a->len + b->len;
 	size_t diff = 0;
 	size_t off = 0;
+	size_t loff = 0;
 	int *mir = arbprec_malloc(sizeof(int) * width);
 	int *tmir = arbprec_malloc(sizeof(int) * width);
 	int sum = 0;
@@ -22,7 +23,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 
 	setarray(mir + a->len, 0, width - a->len);
 	copyarray(mir, a->number, a->len);
-	c->number[z] = 0; 
+	c->number[z] = 0;
 	
 	if (b->float_pos > 0 && b->number[0] == 0)
 	{
@@ -39,7 +40,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	
 	}
 
-	if ( b->float_pos == 0  ) 
+	//if ( b->float_pos == 0  ) 
 		while (b->number[off] == 0 && off < b->len) 
 			++off; 
 
@@ -57,7 +58,6 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	}
 	else
 		c->float_pos = rl(a) + off;
-	
 
 
 	for ( ; z < a->len + diff; )
@@ -91,7 +91,6 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 			
 		}
 	} 
-
 	free(mir);
 	free(tmir);
 
