@@ -12,12 +12,6 @@
 #define MIN(a,b) ((a) < (b) ? a : b)
 
 /* Structures and type definitions */ 
-
-/*
-	radix_right = len - ( len - float_pos );
-	radix_left  = len - float_pos;
-*/
-
 typedef struct {		/*     bigflt type		*/
 	int *number;		/* Main number			*/
 	int *mirror;		/* Negative subtraction requires a mirror */
