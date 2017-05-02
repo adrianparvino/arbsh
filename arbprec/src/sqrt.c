@@ -2,6 +2,13 @@
 
 bigflt *arbprec_sqrt(bigflt *x)
 {
+
+	/*
+		Using Newton's method (Also known as Babylonian sqrt)
+			sqrt(x) =  (((x/y) + y) / 2)
+
+			
+	*/
 	size_t i = 0;
 
 	bigflt *y = arbprec_dupa(x);
