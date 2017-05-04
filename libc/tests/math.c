@@ -28,6 +28,9 @@ int main(int argc, char *argv[])
         //printf("  gtanh =        %19.19f \n\n", gtanh(x)); 
 	printf("libc log =       %19.19f \n", log(x));
         printf("  glog =        %19.19f \n\n", glog(x));
+	
+	printf("libc exp =       %19.19f \n", exp(x));
+        printf("  gexp =        %19.19f \n\n", gexp(x));
 
         return 0;
 }
