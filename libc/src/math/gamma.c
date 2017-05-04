@@ -1,6 +1,6 @@
 #include "math.h"
 
-double mygamma(double x)
+double ggamma(double x)
 { 
         int a = 12;
         int k;
@@ -9,11 +9,11 @@ double mygamma(double x)
         double ret;
 	
 
-        ret = mysqrt(2.0 * PI);
+        ret = gsqrt(2.0 * PI);
 
         for( k = 1; k < a ; k++)
         {
-                c[k] = ((myexp(a - k) * mypow(a - k, k - 0.5)) / fac); 
+                c[k] = ((gexp(a - k) * gpow(a - k, k - 0.5)) / fac); 
                 fac *= -k;
         }
 
@@ -23,7 +23,7 @@ double mygamma(double x)
         }
 
 	/* -(x + a) */
-        ret *= myexp(-(x + a)) * mypow(x + a, x + 0.5);
+        ret *= gexp(-(x + a)) * gpow(x + a, x + 0.5);
 	
 
         return (ret / x);

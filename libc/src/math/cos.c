@@ -1,6 +1,6 @@
 #include "math.h"
 
-double mycos(double x)
+double gcos(double x)
 {
         int i;
         int j;
