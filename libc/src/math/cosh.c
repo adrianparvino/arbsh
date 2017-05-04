@@ -1,4 +1,4 @@
-#include "math.h"
+#include <gmath.h>
 
 double gcosh(double x)
 {
@@ -10,8 +10,9 @@ double gcosh(double x)
 
         sum = 0.0;
         last = 0; 
+	x = _arg_reduction(x);
 
-        for (i = 0; 1 ; i++)
+        for (i = 0; i < 10 ; i++)
         {
                 product = 1.0;
 
@@ -19,13 +20,7 @@ double gcosh(double x)
                 {
                         product *= x / j;
                 }
-                sum += product;
-
-                if ( sum == last )
-                        break;
-                last = sum;
-
-                
+                sum += product; 
         }
 
         return sum;
