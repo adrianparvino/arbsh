@@ -1,4 +1,4 @@
-#include "math.h"
+#include <gmath.h>
 
 double gexp(double x)
 {
