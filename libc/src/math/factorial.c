@@ -1,6 +1,6 @@
 #include "math.h"
 
-unsigned long myfactorial(unsigned long x)
+unsigned long gfactorial(unsigned long x)
 { 
 	unsigned int c;
 	unsigned long y = 1;
@@ -10,7 +10,7 @@ unsigned long myfactorial(unsigned long x)
  
 	return y; 
 } 
-unsigned long myfac(unsigned long x)
+unsigned long gfac(unsigned long x)
 {
         unsigned int c;
         unsigned long y = 1;

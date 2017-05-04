@@ -1,7 +1,7 @@
 #include "math.h"
 
-double myj1(double x)
+double gj1(double x)
 {
 	
-	return myjn(1, x);
+	return gjn(1, x);
 }

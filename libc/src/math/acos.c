@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myacos(double x)
+double gacos(double x)
 {
         /* identity: acos(x) = (PI / 2) + asin(-x) */
         int i = 0;
@@ -22,7 +22,7 @@ double myacos(double x)
 
         while ( 1 )
         {
-                y += ratio * (mypow(x, n) / n);
+                y += ratio * (gpow(x, n) / n);
                 n += 2;
                 i += 1;
                 ratio *= (1.0 + 2.0 * i) / (2.0 + 2.0 * i); 
