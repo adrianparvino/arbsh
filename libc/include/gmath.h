@@ -1,5 +1,6 @@
 
 /* definitions */
+#define TOLER .00001
 #define EULER 2.71828182846
 #define PI 3.14159265359
 #define MYNAN -1
@@ -28,3 +29,4 @@ double gsqrt(double);
 
 /* internal */
 double _arg_reduction(double);
+int _check_tolerance(double, double);
