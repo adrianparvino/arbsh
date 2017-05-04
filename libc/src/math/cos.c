@@ -6,9 +6,8 @@ double gcos(double x)
         int j;
         int toggle = 1;
         double product;
-        double last;
         double sum;
-
+	double last;
         sum = 0.0;
         last = 0;
 
@@ -23,6 +22,10 @@ double gcos(double x)
                         product *= x / j;
                 }
                 sum += product * toggle; 
+	
+		if (_check_tolerance(last, sum))
+                        break;
+		last = sum;
         	toggle = -toggle;
         }
 

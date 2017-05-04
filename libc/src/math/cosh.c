@@ -9,10 +9,9 @@ double gcosh(double x)
         double sum;
 
         sum = 0.0;
-        last = 0; 
-	x = _arg_reduction(x);
+        last = 0;
 
-        for (i = 0; i < 10 ; i++)
+        for (i = 0; i < 100 ; i++)
         {
                 product = 1.0;
 
