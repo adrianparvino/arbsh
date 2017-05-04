@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myexp(double x)
+double gexp(double x)
 {
         int i;
         int n = 0;
@@ -11,7 +11,7 @@ double myexp(double x)
         if (x == 1.0) {
                 y = EULER;
         } else if (x < 0) {
-                y = 1.0 / myexp(-x);
+                y = 1.0 / gexp(-x);
         } else {
                 n = 2;
                 y = 1.0 + x;
