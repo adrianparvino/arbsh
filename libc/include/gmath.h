@@ -1,6 +1,8 @@
 
 /* definitions */
+#define EULER 2.71828182846
 #define PI 3.14159265359
+#define MYNAN -1
 
 /* trig */ 
 double gsin(double);
@@ -19,7 +21,7 @@ double gacos(double);
 double gexp(double);
 
 /* pow */
-double gpow(double);
+double gpow(double, double);
 
 /* sqrt */
 double gsqrt(double);
