@@ -52,9 +52,13 @@ int main(int argc, char *argv[])
 	printf(" trigfunc tanh =  %19.19f \n",trigfunc(7, x));
 	printf("  mytanh =        %19.19f \n\n", mytanh(x)); 
 	
+	//printf("libc log =       %19.19f \n",log((1+x)/(1-x)));
+	
 	printf("libc log =       %19.19f \n",log(x));
        
         printf("  mylog =        %19.19f \n\n", mylog(x));
+	// double newx = log((1+x)/(1-x));
+	// printf("newx log =       %19.19f \n",(1-newx) * (1+newx));
  
 	return 0;
 } 
@@ -244,17 +248,26 @@ double mytanh(double x)
         return y;
 }
 
-double mylog(double x) 
-{
-        double s = 1, y;
-        int i = 30; 
+double mylog(double x)
+{ 
+	int i;
+	double s = 1;
+	double X = x-1;
+	double Y = x+1;
+	double Z = X / Y;
 
-        for (; i > 0; i--)
-        {
-		//s = ((4 * i - 2) - ((x * x)/s)); 
-                s = (((4 * i) - 2) + ((x * x)/s));
-        }
-        y = (s + x)/(s - x);
+	i = x + 30 / 4;
+	
 
-        return y;
+	for (i = 8; i > 0; i--)
+	{
+		//s = (2*i -1) - i*i*(x*x)/s;
+		s = (2*i -1) - i*i*(Z*Z)/s;
+	}
+
+	//return 2*x/s;
+	return 2*Z/s;
 }
+
+
+
