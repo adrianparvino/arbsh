@@ -1,6 +1,6 @@
 #include "math.h"
 
-double mysqrt(double x)
+double gsqrt(double x)
 {
 
         /* babylonian method */

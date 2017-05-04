@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myfabs (double x)
+double gfabs (double x)
 {
         return ((x >= 0) ? x : -x);
 }
