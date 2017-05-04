@@ -1,4 +1,4 @@
-#include "math.h"
+#include <gmath.h>
 
 /* not working! falls back to trig identity */
 
