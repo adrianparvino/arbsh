@@ -1,6 +1,4 @@
-#include "math.h"
-           
-
+#include <gmath.h>
 
 double gsin(double x)
 {
@@ -10,25 +8,18 @@ double gsin(double x)
         double product;
         double last = 0;
         double sum = 0;
+	double rl = 0;
 
-        while ( x >= (2*PI))
-                x -= (2*PI);
+	x = _arg_reduction(x);
 
-        while ( x < 0 )
-                x += (2*PI);
-
-        for (i = 0; i < 10000 ; i++)
+        for (i = 0; i < 10 ; i++)
         {
                 product = 1.0;
-                for (j = (2*i) + 1 ; j > 0 && product > EPS ; j--)
-                {
+                for (j = (2*i) + 1 ; j > 0 ; j--) 
                         product *= (x / j);
-                }
+
                 sum += product * toggle;
-                toggle = -toggle;
-                if ( sum == last )
-                        break;
-                last = sum;
+                toggle = -toggle; 
         }
 
         return sum;
