@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myj0(double x)
+double gj0(double x)
 {
-	return myjn(0, x);
+	return gjn(0, x);
 }

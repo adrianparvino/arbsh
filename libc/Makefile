@@ -26,7 +26,7 @@ INCLUDES_TARG =  $(shell for i in include/*.h ; do echo $(DESTDIR)/$$i ; done )
 
 TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
 
-LDLIBS = -L. -l$(LIBNAME)
+LDLIBS = -L. -l$(LIBNAME) -lm
 
 all:
 

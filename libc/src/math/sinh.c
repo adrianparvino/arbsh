@@ -2,7 +2,7 @@
            
 
 
-double mysinh(double x)
+double gsinh(double x)
 {
         long i;
         long j; 
