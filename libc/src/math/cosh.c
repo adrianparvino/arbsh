@@ -1,6 +1,6 @@
 #include "math.h"
 
-double mycosh(double x)
+double gcosh(double x)
 {
         int i;
         int j; 
