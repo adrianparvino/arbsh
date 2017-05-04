@@ -1,6 +1,4 @@
-#include "math.h"
-           
-
+#include <gmath.h>
 
 double gsinh(double x)
 {
@@ -10,7 +8,9 @@ double gsinh(double x)
         double last = 0;
         double sum = 0; 
 
-        for (i = 0; i < 10000 ; i++)
+	x = _arg_reduction(x);
+
+        for (i = 0; i < 10 ; i++)
         {
                 product = 1.0;
                 for (j = (2*i) + 1 ; j > 0 ; j--)
@@ -18,9 +18,6 @@ double gsinh(double x)
                         product *= (x / j);
                 }
                 sum += product; 
-                if ( sum == last )
-                        break;
-                last = sum;
         }
 
         return sum;
