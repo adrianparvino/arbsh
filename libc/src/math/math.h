@@ -6,33 +6,33 @@
 
 #define MYNAN -(0./0.)
 
-double myfabs(double); 
-unsigned long myfactorial(unsigned long);
-double myceil(double);
-double myfloor(double); 
+double gfabs(double); 
+unsigned long gfactorial(unsigned long);
+double gceil(double);
+double gfloor(double); 
 
-double mysqrt(double);
+double gsqrt(double);
 
-double mylog(double);
-double myexp(double);
-double mypow(double, double);
+double glog(double);
+double gexp(double);
+double gpow(double, double);
 
-double mycos(double);
-double mysin(double);
-double mytan(double);
+double gcos(double);
+double gsin(double);
+double gtan(double);
 
-double myacos(double);
-double myasin(double);
-double myatan(double);
+double gacos(double);
+double gasin(double);
+double gatan(double);
 
-double myhypot(double, double); 
-double myremainder(double, double);
-double myrint(double);
+double ghypot(double, double); 
+double gremainder(double, double);
+double grint(double);
 
-double myj0(double);
-double myj1(double);
+double gj0(double);
+double gj1(double);
 
-double myjn(int, double);
+double gjn(int, double);
 
-double mygamma(double);
-double myatanh(double);
+double ggamma(double);
+double gatanh(double);

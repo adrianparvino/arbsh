@@ -1,6 +1,6 @@
 #include "math.h"
 
-double mytgamma(double x)
+double gtgamma(double x)
 { 
-	return mygamma(x);
+	return ggamma(x);
 }
