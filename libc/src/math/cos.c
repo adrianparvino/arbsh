@@ -1,4 +1,4 @@
-#include "math.h"
+#include <gmath.h>
 
 double gcos(double x)
 {
@@ -12,13 +12,9 @@ double gcos(double x)
         sum = 0.0;
         last = 0;
 
-        while ( x >= (2*PI))
-                x -= (2*PI);
-        while ( x < 0 )
-                x += (2*PI);
+	x = _arg_reduction(x);
 
-
-        for (i = 0; 1 ; i++)
+        for (i = 0; i < 10; i++)
         {
                 product = 1.0;
 
@@ -26,13 +22,8 @@ double gcos(double x)
                 {
                         product *= x / j;
                 }
-                sum += product * toggle;
-
-                if ( sum == last )
-                        break;
-                last = sum;
-
-                toggle = -toggle;
+                sum += product * toggle; 
+        	toggle = -toggle;
         }
 
         return sum;

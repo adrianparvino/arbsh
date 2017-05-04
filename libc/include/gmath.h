@@ -1,4 +1,6 @@
 
+/* definitions */
+#define PI 3.14159265359
 
 /* trig */ 
 double gsin(double);
@@ -22,4 +24,5 @@ double gpow(double);
 /* sqrt */
 double gsqrt(double);
 
-
+/* internal */
+double _arg_reduction(double);
