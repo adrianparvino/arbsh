@@ -1,4 +1,4 @@
-#include "math.h"
+#include <gmath.h>
 
 unsigned long gfactorial(unsigned long x)
 { 
