@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myatan(double x)
+double gatan(double x)
 {
         /* taylor series based atan(x) aproximation */
         int j = 3;
@@ -11,7 +11,7 @@ double myatan(double x)
         /* x = x - x^3/3 + x^3/3 - x^3/3 + ...  */
         while (x < 1.0 && x > -1.0 &&  1)
         {
-                y += (mypow(x, j)/(j) * sign);
+                y += (gpow(x, j)/(j) * sign);
                 if (z == y)
                         break;
                 z = y;
@@ -32,7 +32,7 @@ double myatan(double x)
         /* ... 1/x + 1/(3*(x^3)) - 1/(5*x^5) + 1/(7*x^7) - ...  */
         for (j = 1; (x >= 1. || x <= -1.) && 1;)
         {
-                y += (1/ (j *(mypow(x, j)))) * sign;
+                y += (1/ (j *(gpow(x, j)))) * sign;
                 if (z == y)
                         break;
                 z = y;
