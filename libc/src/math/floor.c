@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myfloor(double x) 
+double gfloor(double x) 
 {
 	long i = (long)x; 
 	if(i > x)

@@ -1,6 +1,6 @@
 #include "math.h"
 
-double mylgamma(double x)
+double glgamma(double x)
 {
-	return (mylog(myfabs(mygamma(x)))); 
+	return (glog(gfabs(ggamma(x)))); 
 }

@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myceil(double x) 
+double gceil(double x) 
 {
 
 	long i = (long)x; 

@@ -2,7 +2,7 @@
 
 /* not working! falls back to trig identity */
 
-double mytan(double x)
+double gtan(double x)
 {
         /* x = x + x^3/3 + 2x^5/15 + 17x^7/315 + ...  */
         /* double factorials */
@@ -12,7 +12,7 @@ double mytan(double x)
         /* tan(x) = x + 2 x^3/3! + 16 x^5/5! + 272 x^7/7! */
 
 	/* not working! fall back to trig identity */
-        return (mysin(2*x) / (mycos(2*x) + 1));
+        return (gsin(2*x) / (gcos(2*x) + 1));
 
 }
 
