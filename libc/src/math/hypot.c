@@ -1,4 +1,4 @@
-#include "math.h"
+#include <gmath.h>
 
 double ghypot(double x, double y)
 { 
