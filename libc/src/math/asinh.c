@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myasinh(double x)
+double gasinh(double x)
 {
         int i = 0;
         int n = 3;
@@ -20,7 +20,7 @@ double myasinh(double x)
 
         while ( 1 )
         {
-                y += ratio * (mypow(x, n) / n);
+                y += ratio * (gpow(x, n) / n);
                 n += 2;
                 i += 1;
                 ratio *= (1.0 + 2.0 * i) / (2.0 + 2.0 * i);

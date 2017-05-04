@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myremainder(double x, double y)
+double gremainder(double x, double y)
 { 
 	double ret;
 
@@ -10,7 +10,7 @@ double myremainder(double x, double y)
 	if ( y < 0.0  )
                 y = -y;
 
-	ret = x - (y * myfloor(x / y)); 
+	ret = x - (y * gfloor(x / y)); 
 
 	return ret; 
 }

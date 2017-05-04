@@ -1,6 +1,6 @@
 #include "math.h"
 
-double myhypot(double x, double y)
+double ghypot(double x, double y)
 { 
-	return mysqrt((x * x) + (y * y));
+	return gsqrt((x * x) + (y * y));
 }
