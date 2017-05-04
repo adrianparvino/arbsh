@@ -257,12 +257,16 @@ double mylog(double x)
 	double Z = X / Y;
 
 	i = x + 30 / 4;
+	double cache = 0;
 	
 
-	for (i = 8; i > 0; i--)
+	for (i ; i > 0; i--)
 	{
 		//s = (2*i -1) - i*i*(x*x)/s;
 		s = (2*i -1) - i*i*(Z*Z)/s;
+		//if (cache == s)
+		//	break;
+		//cache = s;
 	}
 
 	//return 2*x/s;
