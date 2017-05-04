@@ -15,11 +15,11 @@ double glog(double x)
         if (x <= 0 )
                 return MYNAN;
 	
-        while (n < 100)
+        while (1)
         {
-        	y += (gpow(Z, n) / n ); 
+        	y += (gpow(Z, n) / n);
                 n+=2; 
-                if ( y == z )
+                if (_check_tolerance(z, y))
                         break;
                 z = y;
         }
