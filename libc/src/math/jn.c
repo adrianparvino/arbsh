@@ -1,6 +1,6 @@
 #include "math.h" 
 
-double myjn(int y, double x)
+double gjn(int y, double x)
 {
 
         int i = 0;
@@ -14,8 +14,8 @@ double myjn(int y, double x)
 	
 	/*   use trigonometric asymptotic aproximation for x >> y */
 	if ( x > ( y + 1 ) * 10000)
-		return mysqrt(2/ (PI * x )) * mycos(x-(2 * y + 1) * (PI/4)); 
-	/*   mysqrt(2/ (PI * x )) * cos(x-(2 * n + 1) * (PI/4)) */
+		return gsqrt(2/ (PI * x )) * gcos(x-(2 * y + 1) * (PI/4)); 
+	/*   gsqrt(2/ (PI * x )) * cos(x-(2 * n + 1) * (PI/4)) */
 
         if ( x == 0 && y == 0)
                 return 1.0;

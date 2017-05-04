@@ -2,7 +2,7 @@
            
 
 
-double mysin(double x)
+double gsin(double x)
 {
         int i;
         int j;
