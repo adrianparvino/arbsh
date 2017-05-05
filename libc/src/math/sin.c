@@ -2,10 +2,10 @@
 
 double gsin(double x)
 {
-        int i;
-        int j;
+        size_t i = 0;
+        size_t j = 0;
         int toggle = 1;
-        double product;
+        double product = 1.0;
         double last = 0;
         double sum = 0;
 	double rl = 0;
@@ -16,8 +16,10 @@ double gsin(double x)
         {
                 product = 1.0;
                 for (j = (2*i) + 1 ; j > 0 ; j--) 
-                        product *= (x / j);
+                        product *= x / j;
+
                 sum += product * toggle;
+
                 toggle = -toggle; 
         }
 
