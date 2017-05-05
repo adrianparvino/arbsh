@@ -17,10 +17,6 @@ double gsin(double x)
                 product = 1.0;
                 for (j = (2*i) + 1 ; j > 0 ; j--) 
                         product *= (x / j);
-		
-		//if (_check_tolerance(sum, last))
-                //        break;
-		//last = sum;
                 sum += product * toggle;
                 toggle = -toggle; 
         }
