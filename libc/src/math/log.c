@@ -2,7 +2,7 @@
 
 double glog(double x)
 {
-        int n = 1;
+        size_t n = 1;
         double y = 0;
         double z = 0;
 	double Z = (x-1)/(x+1);
