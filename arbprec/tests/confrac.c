@@ -140,8 +140,7 @@ double cf_cos(double x)
         for (; i > 0; i--) 
 		s = (((4 * i) - 2) - (r/s)); 
 
-	y = ((s * s) - r)/((s * s) + r); 
-    
+	y = ((s * s) - r)/((s * s) + r);
         return y;
 }
 double cf_tan(double x)
@@ -155,7 +154,6 @@ double cf_tan(double x)
 		s = ((4 * i - 2) - (r/s)); 
         
 	y = 2 * x * s/(s * s - r); 
-	
         return y;
 }
 
@@ -169,8 +167,7 @@ double cf_exp(double x)
         for (; i>0; i--) 
 		s = (((4 * i) - 2) + (r/s)); 
     
-        y = (s + x)/(s - x);
-
+        y = (s + x)/(s - x); 
         return y;
 }
 
@@ -180,12 +177,10 @@ double cf_sinh(double x)
         double s = 0, y;
 	double r = x * x;
 
-
         for (; i > 0; i--) 
 		s = (((4 * i) - 2) + (r/s)); 
 
 	y = 2 * x * s/(s * s - r); 
-
 	return y;
 }
 
@@ -212,7 +207,6 @@ double cf_tanh(double x)
 		s = (((4 * i) - 2) + (r/s)); 
         
         y = 2 * x * s/(s * s + r);   /* tan, tanh */ 
-        
         return y;
 }
 
@@ -239,10 +233,8 @@ double cf_sqrt(double x)
 	double Y = x+1;
 	double Z = X / Y;
 
-	for (; i > 0; i--)
-	{ 
-		s = (2*i -1) - i*i*(Z*Z)/s; 
-	} 
+	for (; i > 0; i--) 
+		s = (2*i -1) - i*i*(Z*Z)/s;
 
 	return 2*Z/s;
 	
