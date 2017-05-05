@@ -14,6 +14,7 @@ double mysinh(double);
 double mycosh(double);
 double mytanh(double);
 double mylog(double);
+double mysqrt(double);
 
 int main(int argc, char *argv[])
 {
@@ -37,28 +38,27 @@ int main(int argc, char *argv[])
 	printf("  mytan =         %19.19f \n\n", mytan(x));
 
 	printf("libc exp =        %19.19f \n", exp(x));
-	printf(" trigfunc exp  =  %19.19f \n",trigfunc(4, x));
+	printf(" trigfunc exp  =  %19.19f \n",trigfunc(5, x));
 	printf("  myexp  =        %19.19f \n\n", myexp(x));
+	
+	printf("libc log =       %19.19f \n",log(x));
+	printf(" trigfunc log =  %19.19f \n",trigfunc(4, x));
+        printf("  mylog =        %19.19f \n\n", mylog(x));
 
 	printf("libc sinh =       %19.19f \n",sinh(x));
-	printf(" trigfunc sinh =  %19.19f \n",trigfunc(5, x));
+	printf(" trigfunc sinh =  %19.19f \n",trigfunc(6, x));
 	printf("  mysinh =        %19.19f \n\n", mysinh(x));
 
 	printf("libc cosh =       %19.19f \n",cosh(x));
-	printf(" trigfunc cosh =  %19.19f \n",trigfunc(6, x));
+	printf(" trigfunc cosh =  %19.19f \n",trigfunc(7, x));
 	printf("  mycosh =        %19.19f \n\n", mycosh(x));
 
 	printf("libc tanh =       %19.19f \n",tanh(x));
-	printf(" trigfunc tanh =  %19.19f \n",trigfunc(7, x));
-	printf("  mytanh =        %19.19f \n\n", mytanh(x)); 
+	printf(" trigfunc tanh =  %19.19f \n",trigfunc(8, x));
+	printf("  mytanh =        %19.19f \n\n", mytanh(x));
 	
-	//printf("libc log =       %19.19f \n",log((1+x)/(1-x)));
-	
-	printf("libc log =       %19.19f \n",log(x));
-       
-        printf("  mylog =        %19.19f \n\n", mylog(x));
-	// double newx = log((1+x)/(1-x));
-	// printf("newx log =       %19.19f \n",(1-newx) * (1+newx));
+	printf("libc sqrt =       %19.19f \n",sqrt(x));
+        printf("  mysqrt =        %19.19f \n\n", mysqrt(x));
  
 	return 0;
 } 
@@ -70,9 +70,11 @@ double trigfunc(int p, double x)
 	double r = 0;
 	double s = 0;
 	double y = 0; 
+	double Z = (x-1)/(x+1);
  
-	if ( x < 0. )
-                i = -x + 30 / 4;
+
+        
+	i = 300;
 
 
 	if (p <= 3)
@@ -84,28 +86,36 @@ double trigfunc(int p, double x)
 		r = x * x;      /* hyperbolic */
 	} 
 	
-	//s = 4 * i + 2;
+	s = 4 * i + 2;
 
-	for (; i > 0; i--) 
-	{
-		s = 4 * i - 2 + r/s;
-		//printf("%lf\n", s);
+	if ( p < 4 || p > 4 )
+		for (; i > 0; i--) 
+			s = 4 * i - 2 + r/s; 
 
-	}
+	
+	for (; p == 4 && i > 0; i--) 
+		s = (2*i -1) - i*i*(Z*Z)/s;
+		
+	
 
-	switch (p % 4)
+	switch (p % 5)
 	{
 		case 0 : 
-			y = (s + x)/(s - x);         /* exp */
+			y = (s + x)/(s - x);		/* exp */
 			break;
 		case 1 : 
-			y = 2 * x * s/(s * s - r);   /* sin, sinh */
+			y = 2 * x * s/(s * s - r);	/* sin, sinh */
 			break;
 		case 2 : 
-			y = (s * s + r)/(s * s - r); /* cos, cosh */
+			y = (s * s + r)/(s * s - r);	/* cos, cosh */
 			break;
 		case 3 : 
-			y = 2 * x * s/(s * s + r);   /* tan, tanh */
+			y = 2 * x * s/(s * s + r);	/* tan, tanh */
+			break; 
+		case 4 :
+			y = 2*Z/s;			/* log */
+			break;
+		case 5 :
 			break;
 	}
 	return y;
@@ -116,22 +126,17 @@ double mysin(double x)
         double s = 1, y;
 	int i; 
         double last = 0;
+	double r = x * x;
 
-	i = x + 300 / 4;
+	i =  x + 300; 
 
-        if ( x < 0. ) 
-		i = -x + 30 / 4; 
-
-        for (; i ; i--)
+        for (; i > 0; i--)
         { 
-		s = (((4 * i) - 2) - ((x * x)/s)); 
-                if ( last == s ) 
-			break;
-                last = s;
+		s = (((4 * i) - 2) - (r/s)); 
         } 
 
         /* (2xs) / (s^2 - x^2) */
-	y = ((2 * x) * s)/((s * s) + (x * x)); 
+	y = ((2 * x) * s)/((s * s) + r); 
 
         return y;
 
@@ -141,18 +146,19 @@ double mycos(double x)
 
         double s = 1, y; 
 	int i = 30;
+	double r = x * x;
 
-	i = x + 30 / 4;
+	i = 30;
 
         if ( x < 0. )
                 i = -x + 30 / 4; 
 
         for (; i > 0; i--)
         { 
-		s = (((4 * i) - 2) - ((x * x)/s));
+		s = (((4 * i) - 2) - (r/s));
         } 
 	/* s^2 - x^2 / s^2 - x^2 */
-	y = ((s * s) - (x * x))/((s * s) + (x * x)); 
+	y = ((s * s) - r)/((s * s) + r); 
     
         return y;
 }
@@ -161,17 +167,16 @@ double mytan(double x)
 
         double s = 1, y;
         int i;
+	double r = x * x;
 
-	i = x + 30 / 4;
-
-        if ( x < 0. )
-        	i = -x + 30 / 4; 
+	i = 30; 
+       
 
         for (; i > 0; i--)
         { 
-		s = ((4 * i - 2) - ((x * x)/s)); 
+		s = ((4 * i - 2) - (r/s)); 
         } 
-	y = 2 * x * s/(s * s - (x * x)); 
+	y = 2 * x * s/(s * s - r); 
 	
         return y;
 }
@@ -182,15 +187,13 @@ double myexp(double x)
         double s = 1, y;
         int i = 30000000;
 	double last = 0;
+	double r = x * x;
 
-	i = x + 30000000 / 4;
+	i = 30; 
 
-        if ( x < 0. )
-                i = -x + 3000 / 4;
-
-        for (; i > 0; i--)
+        for (; i>0; i--)
         { 
-		s = (((4 * i) - 2) + ((x * x)/s));
+		s = (((4 * i) - 2) + (r/s));
                 if ( last == s )
                         break;
         }
@@ -202,16 +205,17 @@ double myexp(double x)
 double mysinh(double x)
 {
         int i = 30;
-        double s = 0, y; 
+        double s = 0, y;
+	double r = x * x;
 
 
         for (; i > 0; i--)
         { 
-		s = (((4 * i) - 2) + ((x * x)/s)); 
+		s = (((4 * i) - 2) + (r/s)); 
         } 
         
 
-	y = 2 * x * s/(s * s - (x * x)); 
+	y = 2 * x * s/(s * s - r); 
 
 	return y;
 }
@@ -220,12 +224,13 @@ double mycosh(double x)
 {
         int i = 30;
         double s = 1, y;
+	double r = x * x;
 	
         for (; i > 0; i--)
         {
-                s = (((4 * i) - 2) + ((x * x)/s)); 
+                s = (((4 * i) - 2) + (r/s)); 
         } 
-        y = (s * s + (x * x))/(s * s - (x * x)); 
+        y = (s * s + r)/(s * s - r); 
         return y;
 }
 
@@ -233,17 +238,15 @@ double mytanh(double x)
 {
         int i;
         double s = 1, y;
+	double r = x * x;
 
-        i = x + 30 / 4; 
-
-        if ( x < 0. )
-                i = -x + 30 / 4; 
+        i =  30; 
 
         for (; i > 0; i--)
         { 
-		s = (((4 * i) - 2) + ((x * x)/s)); 
+		s = (((4 * i) - 2) + (r/s)); 
         } 
-        y = 2 * x * s/(s * s + (x * x));   /* tan, tanh */ 
+        y = 2 * x * s/(s * s + r);   /* tan, tanh */ 
         
         return y;
 }
@@ -254,24 +257,42 @@ double mylog(double x)
 	double s = 1;
 	double X = x-1;
 	double Y = x+1;
-	double Z = X / Y;
+	double Z = X / Y; 
 
-	i = x + 30 / 4;
-	double cache = 0;
-	
+	i = 300;
 
-	for (i ; i > 0; i--)
-	{
-		//s = (2*i -1) - i*i*(x*x)/s;
-		s = (2*i -1) - i*i*(Z*Z)/s;
-		//if (cache == s)
-		//	break;
-		//cache = s;
-	}
+	for (i ; i>0; i--)
+	{ 
+		s = (2*i -1) - i*i*(Z*Z)/s; 
+		//printf("%lf\n", s);
+	} 
 
-	//return 2*x/s;
 	return 2*Z/s;
+	
 }
+
+
+double mysqrt(double x)
+{ 
+	int i;
+	double s = 1;
+	double X = x-1;
+	double Y = x+1;
+	double Z = X / Y; 
+
+	i = x + 3;
+
+	for (i ; i>0; i--)
+	{ 
+		s = (2*i -1) - i*i*(Z*Z)/s; 
+		//printf("%lf\n", s);
+	} 
+
+	return 2*Z/s;
+	
+}
+
+
 
 
 
