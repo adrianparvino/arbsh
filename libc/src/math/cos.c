@@ -2,12 +2,12 @@
 
 double gcos(double x)
 {
-        int i;
-        int j;
+        size_t i = 0;
+        size_t j = 0;
         int toggle = 1;
-        double product;
-        double sum;
-	double last;
+        double product = 1.0;
+        double sum = 0;
+	double last = 0;
         sum = 0.0;
         last = 0;
 
@@ -15,17 +15,17 @@ double gcos(double x)
 
         for (i = 0; i < 10; i++)
         {
-                product = 1.0;
+                product = 1.0; 
+                for (j = (2*i) ; j > 0 ; j--) 
+                        product *= x / j; 
 
-                for (j = (2*i) ; j > 0 ; j--)
-                {
-                        product *= x / j;
-                }
                 sum += product * toggle; 
-	
+
 		if (_check_tolerance(last, sum))
                         break;
+
 		last = sum;
+
         	toggle = -toggle;
         }
 
