@@ -1,6 +1,23 @@
-#include <gmath.h> 
+#include <gmath.h>
 
-/* series function written by CM Graff, 2017 */
+/*
+	Series function written by CM Graff, 2017
+
+	Greater N achieves greater precision.
+
+	  N       0 
+	____    _____
+	\       |   |
+	 >      |   | p(x/j)
+	/___    |   |
+
+        i = 0   j=(2*i)?+1
+
+
+	summation ...
+
+		cartesian product ...  
+*/
 
 double series_func_driver(double x, int selector)
 { 
