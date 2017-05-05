@@ -1,5 +1,7 @@
 #include <gmath.h> 
 
+/* series function written by CM Graff, 2017 */
+
 double series_func_driver(double x, int selector)
 { 
         double sum = 0;
