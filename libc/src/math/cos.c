@@ -8,8 +8,6 @@ double gcos(double x)
         double product = 1.0;
         double sum = 0;
 	double last = 0;
-        sum = 0.0;
-        last = 0;
 
 	x = _arg_reduction(x);
 
