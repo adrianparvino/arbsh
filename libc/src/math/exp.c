@@ -3,10 +3,10 @@
 
 double gexp(double x)
 {
-	size_t i;
-	size_t n = 2;
-	double y = 1.0 + x;
-	double d = 0;
+	size_t j = 0;
+	size_t i = 2;
+	double sum = 1.0 + x;
+	double product = 0;
 	double last = 0;
 
 	if (x == 1.0) 
@@ -15,21 +15,22 @@ double gexp(double x)
 		return 1.0 / gexp(-x); 
 	
 
-	for ( ; 1 ; n++)
+	for ( ; i < 10 ; i++)
 	{
-		d = x;
-		for (i = 2; i <= n; i++)
-		{
-			d *= x / i; 
-		}
-		y += d;
+		product = x;
+		for (j = 2; j <= i; j++) 
+			product *= x / j; 
+		
+		sum += product;
 
-		if (_check_tolerance(last, y))
+		if (_check_tolerance(last, sum))
 			break;
-		last = y;
+
+
+		last = sum;
 	}
 	
-	return y;
+	return sum;
 }
 
 
