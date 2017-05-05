@@ -1,5 +1,4 @@
 #include <gmath.h>
-#include <gstddef.h>
 
 double gexp(double x)
 {
@@ -25,7 +24,6 @@ double gexp(double x)
 
 		if (_check_tolerance(last, sum))
 			break;
-
 
 		last = sum;
 	}
