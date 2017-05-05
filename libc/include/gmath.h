@@ -1,9 +1,9 @@
-
+#include <gstddef.h>
 /* definitions */
-#define TOLER .00001
-#define EULER 2.71828182846
-#define PI 3.14159265359
-#define MYNAN -1
+#define	TOLER	.00001
+#define	EULER	2.71828182846
+#define	PI	3.14159265359
+#define	MYNAN	-1
 
 /* trig */ 
 double gsin(double);
