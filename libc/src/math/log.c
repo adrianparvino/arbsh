@@ -9,7 +9,7 @@ double glog(double x)
 
         /*
                 Log.c using the Taylor series:
-                ln(x) = 2((x-1/x+1) + 1/3(x-1/x+1)^3 + 1/5(x-1/x+1) + ... ) 
+                ln(x) = 2((x-1/x+1)^1 + 1/3(x-1/x+1)^3 + 1/5(x-1/x+1)^5 + ... ) 
         */
 
         if (x <= 0 )
