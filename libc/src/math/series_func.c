@@ -3,9 +3,11 @@
 /*
 	Series function written by CM Graff, 2017
 
-	Greater N achieves greater precision.
+	Greater N achieves greater precision. This forumla has a range
+	of -inf to inf. The formula calculates its aproximations using
+	a cartesian product nested within a summation:
 
-	  N       0 
+	  N       0
 	____    _____
 	\       |   |
 	 >      |   | p(x/j)
@@ -13,10 +15,10 @@
 
         i = 0   j=(2*i)?+1
 
+	The nexted cartesian product converges onto zero and then imparts
+	it aproximation to the outer summation which accumulates its
+	results.
 
-	summation ...
-
-		cartesian product ...  
 */
 
 double series_func_driver(double x, int selector)
