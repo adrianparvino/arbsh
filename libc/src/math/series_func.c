@@ -15,8 +15,8 @@
 
         i = 0   j=(2*i)?+1
 
-	The nexted cartesian product converges onto zero and then imparts
-	it aproximation to the outer summation which accumulates its
+	The nested cartesian product converges onto zero and then imparts
+	its aproximation to the outer summation which accumulates its
 	results.
 
 */
