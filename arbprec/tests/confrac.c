@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 	printf("  cf_tan =         %19.19f \n\n", cf_tan(x));
 
 	printf("libc exp =        %19.19f \n", exp(x));
-	printf(" trigfunc exp  =  %19.19f \n", trigfunc(5, x));
+	printf(" trigfunc exp  =  %19.19f \n", trigfunc(6, x));
 	printf("  cf_exp  =        %19.19f \n\n", cf_exp(x));
 	
 	printf("libc log =        %19.19f \n", log(x));
@@ -46,15 +46,20 @@ int main(int argc, char *argv[])
         printf("  cf_log =         %19.19f \n\n", cf_log(x));
 
 	printf("libc sinh =       %19.19f \n", sinh(x));
-	printf(" trigfunc sinh =  %19.19f \n", trigfunc(6, x));
+	printf(" trigfunc sinh =  %19.19f \n", trigfunc(7, x));
 	printf("  cf_sinh =        %19.19f \n\n", cf_sinh(x));
+	//printf("  new_sinh =        %19.19f \n\n", trigfunc(6, x) - trigfunc(6, x)/2 + 10);
+	double ret = trigfunc(5, x);
+	
+	printf("  libc atanh =        %19.19f \n\n", atanh(x));
+	printf("  new_atanh =        %19.19f \n\n", ret);
 
 	printf("libc cosh =       %19.19f \n", cosh(x));
-	printf(" trigfunc cosh =  %19.19f \n", trigfunc(7, x));
+	printf(" trigfunc cosh =  %19.19f \n", trigfunc(8, x));
 	printf("  cf_cosh =        %19.19f \n\n", cf_cosh(x));
 
 	printf("libc tanh =       %19.19f \n", tanh(x));
-	printf(" trigfunc tanh =  %19.19f \n", trigfunc(8, x));
+	printf(" trigfunc tanh =  %19.19f \n", trigfunc(9, x));
 	printf("  cf_tanh =        %19.19f \n\n", cf_tanh(x));
 	
 	printf("libc sqrt =       %19.19f \n",sqrt(x));
@@ -70,31 +75,29 @@ double trigfunc(int p, double x)
 	double r = 0;
 	double s = 0;
 	double y = 0; 
+	double hold = x; 
 	double Z = (x-1)/(x+1);
-	double ZZ = Z * Z;
+	double ZZ= 0;
 
+	if ( p == 5)
+		Z=x; 
+	Z = Z * Z;
 
 	if (p <= 3)
-	{
 		r = - x * x;    /* trig */
-	}
-	else
-	{    
+	else 
 		r = x * x;      /* hyperbolic */
-	} 
 	
 	s = 4 * i + 2;
 
-	if ( p < 4 || p > 4 )	/* ! log */
+	if ( p < 4 || p > 5 )	/* ! log */
 		for (; i > 0; i--) 
-			s = 4 * i - 2 + r/s; 
-
+			s = 4 * i - 2 + r/s;
 	
-	for (; p == 4 && i > 0; i--) /* log */
+	for (; (p == 4 || p == 5) && i > 0; i--) /* log */
 		s = (2*i -1) - i*i*(ZZ)/s;
-	
 
-	switch (p % 5)
+	switch (p % 6)
 	{
 		case 0 : 
 			y = (s + x)/(s - x);		/* exp */
@@ -110,9 +113,37 @@ double trigfunc(int p, double x)
 			break; 
 		case 4 :
 			y = 2*Z/s;			/* log */
+			break; 
+		case 5 : 
+			y = (2*Z/s) / 2;		/* atanh */
 			break;
-		case 5 :
+		case 6 :
 			break;
+
+		/*
+			These all have identities relating to log
+			so can likely be expressed using this series
+			function
+
+			asinh(x) = ln( x + [sqrt](x2 + 1) ) 
+			acosh(x) = ln( x [sqrt](x2 - 1) ) 
+			atanh(x) = 1/2 ln( (1+x)/(1-x) ) 
+			acsch(x) = ln( (1+[sqrt](1+x2) )/x ) 
+			asech(x) = ln( (1[sqrt](1-x2) )/x ) 
+			acoth(x) = 1/2 ln( (x+1)/(x-1) ) 
+
+
+			Conversely, these functions all bear a
+			relations ship to exp()
+
+			sinh(x) = ( e(x) - e(-x) )/2 
+			csch(x) = 1/sinh(x) = 2/( e(x) - e(-x) ) 
+			cosh(x) = ( e(x) + e(-x) )/2 
+			sech(x) = 1/cosh(x) = 2/( e(x) + e(-x) ) 
+			tanh(x) = sinh(x)/cosh(x) = ( e(x) - e(-x) )/( e(x) + e(-x) ) 
+			coth(x) = 1/tanh(x) = ( e(x) + e(-x))/( e(x) - e(-x) ) 
+		*/
+	
 	}
 	return y;
 }
