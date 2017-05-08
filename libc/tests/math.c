@@ -29,13 +29,13 @@ int main(int argc, char *argv[])
         printf("libc cosh =       %19.19f \n", cosh(x)); 
         printf("  gcosh =        %19.19f \n\n", gcosh(x)); 
 	printf("   sr func cosh =        %19.19f \n\n", series_func_driver(x, 1)); 
-        //printf("libc tanh =       %19.19f \n", tanh(x)); 
-        //printf("  gtanh =        %19.19f \n\n", gtanh(x)); 
+
 	printf("libc log =       %19.19f \n", log(x));
         printf("  glog =        %19.19f \n\n", glog(x));
 	
 	printf("libc exp =       %19.19f \n", exp(x));
         printf("  gexp =        %19.19f \n\n", gexp(x));
+	printf("   sr func exp =        %19.19f \n\n", series_func_driver(x, 4)); 
 
         return 0;
 }
