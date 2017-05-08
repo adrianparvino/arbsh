@@ -31,6 +31,6 @@ double gsqrt(double);
 /* internal */
 double _arg_reduction(double);
 int _check_tolerance(double, double);
-double series_func(double, int, int);
+double series_func(double, int, int, int);
 
 double series_func_driver(double, int);
