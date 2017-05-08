@@ -35,7 +35,15 @@ int main(int argc, char *argv[])
 	
 	printf("libc exp =       %19.19f \n", exp(x));
         printf("  gexp =        %19.19f \n\n", gexp(x));
-	printf("   sr func exp =        %19.19f \n\n", series_func_driver(x, 4)); 
+	printf("   sr func exp =        %19.19f \n\n", series_func_driver(x, 4));
+	
+	printf("libc acos =       %19.19f \n", acos(x));
+        printf("  gacos =        %19.19f \n\n", gacos(x));
+	printf("   sr func gacos =        %19.19f \n\n", aseries_func(x, 1));
+	
+	printf("libc asin =       %19.19f \n", asin(x));
+        printf("  gasin =        %19.19f \n\n", gasin(x));
+	printf("   sr func gasin =        %19.19f \n\n", aseries_func(x, 0));
 
         return 0;
 }
