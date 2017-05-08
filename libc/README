@@ -13,7 +13,7 @@ Testing:
 --------
 
 	./tests/gprintf-driver
-	./tests/gpopen-drivef
+	./tests/gpopen-driver
 	./tests/...
 
 
