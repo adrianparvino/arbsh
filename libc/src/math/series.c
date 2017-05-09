@@ -1,7 +1,8 @@
 #include <gmath.h>
 
 /*
-	Series function written by CM Graff, 2017
+	Series function. 
+	CM Graff, 2017
 
 	Greater N achieves greater precision. This forumla has a range
 	of -inf to inf. The formula calculates its aproximations using
@@ -20,6 +21,41 @@
 	results.
 
 */
+double gsin(double x)
+{ 
+	return series_func(x, 1, 1, 0);/* sin */ 
+}
+
+
+double gasin(double x)
+{ 
+	return aseries_func(x, 0);
+}
+
+
+double gsinh(double x)
+{ 
+	return series_func(x, 1, 0, 0);/* sinh */
+}
+
+
+double gcos(double x)
+{ 
+	return series_func(x, 0, 1, 0);
+}
+
+
+double gacos(double x)
+{
+	return aseries_func(x, 1);
+}
+
+double gcosh(double x)
+{
+	return series_func(x, 0, 0, 0);/* cosh */
+}
+
+
 
 double series_func_driver(double x, int selector)
 { 
