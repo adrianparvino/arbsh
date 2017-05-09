@@ -19,8 +19,8 @@ int main(int argc, char *argv[])
         printf("   gcos =        %19.19f \n\n", gcos(x)); 
 	printf("   sr func cos =        %19.19f \n\n", series_func_driver(x, 0)); 
 
-        printf("libc tan =        %19.19f \n", tan(x)); 
-        printf("  gtan =         %19.19f \n\n", gtan(x)); 
+        //printf("libc tan =        %19.19f \n", tan(x)); 
+        //printf("  gtan =         %19.19f \n\n", gtan(x)); 
         printf("libc exp =        %19.19f \n", exp(x)); 
         printf("  gexp  =        %19.19f \n\n", gexp(x)); 
         printf("libc sinh =       %19.19f \n", sinh(x)); 
