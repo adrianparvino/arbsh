@@ -28,9 +28,13 @@ double gpow(double, double);
 /* sqrt */
 double gsqrt(double);
 
+/* log */
+double glog(double);
+
 /* internal */
 double _arg_reduction(double);
 int _check_tolerance(double, double);
+double aseries_func(double, int);
 double series_func(double, int, int, int);
 
 double series_func_driver(double, int);
