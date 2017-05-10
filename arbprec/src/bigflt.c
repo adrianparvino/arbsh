@@ -178,9 +178,15 @@ void arba_free(bigflt *flt)
 	/*
 		Free a bigflt
 	*/
-	if (flt->number)
+	if (!flt)
+	{
+		write(2, "bad free\n", 8);
+		return;
+	}
+		
+	if (flt->nr)
 		free(flt->nr);
-	if (flt->mirror)
+	if (flt->mr)
 		free(flt->mr);
 	free(flt);
 }
@@ -190,7 +196,7 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 	/*
 		Enlarge or create a bigflt
 	*/
-	//size_t chunks = 0;
+	size_t chunks = 0;
 	
 	if (flt == NULL)
 	{
@@ -198,16 +204,10 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 	} else if ( request >= flt->allocated )
 	{ 
 		/* align chunk requests */
-		//chunks = (request / flt->chunk) + 2;
-		//flt->allocated = flt->chunk * chunks;
-		//flt->allocated += flt->allocated;
-		flt->allocated += 512;
-		//flt->number = arbprec_realloc(flt->number, flt->allocated * sizeof(int));
-		//flt->mirror = arbprec_realloc(flt->mirror, flt->allocated * sizeof(int));
-		flt->nr = arbprec_realloc(flt->nr, flt->allocated * sizeof(int));
-		flt->number = flt->nr;
-		flt->mr = arbprec_realloc(flt->mr, flt->allocated * sizeof(int));
-		flt->mirror = flt->mr;
+		chunks = (request / flt->chunk) + 2;
+		flt->allocated = flt->chunk * chunks; 
+		flt->number = flt->nr = arbprec_realloc(flt->nr, flt->allocated * sizeof(int)); 
+		flt->mirror = flt->mr = arbprec_realloc(flt->mr, flt->allocated * sizeof(int));
 	} 
 	return flt;
 }
