@@ -47,7 +47,7 @@ bigflt *arbprec_sub_inter(bigflt *, bigflt *, bigflt *);
 bigflt *str_to_bigflt(const char *);
 bigflt *arbprec_dup_sparse_mirror(bigflt *);
 bigflt *arbprec_sqrt(bigflt *, bigflt *);
-bigflt *arbprec_hypot(bigflt *, bigflt *);
+bigflt *arbprec_hypot(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_exp(bigflt *);
 int arbprec_equals(bigflt *, bigflt *, size_t);
 void arbprec_match_precision(bigflt *, bigflt*);
