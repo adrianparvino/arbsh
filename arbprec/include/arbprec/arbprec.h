@@ -35,7 +35,6 @@ bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_dupa(bigflt *);
 bigflt *arbprec_dup_sparse(bigflt *);
 bigflt *arbprec_expand_vector(bigflt *, size_t);
-
 bigflt *arbprec_init(bigflt *);
 bigflt *arbprec_initsign(bigflt *);
 bigflt *arbprec_print(bigflt *);
