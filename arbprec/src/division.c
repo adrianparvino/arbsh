@@ -18,32 +18,15 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
         if (arbprec_isnegati(a))
                 arbprec_setsign(c);
         if (arbprec_isnegati(b))
-                arbprec_setsign(c);
-
+                arbprec_setsign(c); 
+	
 	setarray(mir + a->len, 0, width - a->len);
 	copyarray(mir, a->number, a->len);
-	c->number[z] = 0;
-	
-	if (b->float_pos > 0 && b->number[0] == 0)
-	{
-		b->number = b->number + 1;
-		b->len -= 1;
-		b->float_pos -= 1;
-	
-	}
-	if (a->float_pos > 0 && a->number[0] == 0)
-	{
-		a->number = a->number + 1;
-		a->len -= 1;
-		a->float_pos -= 1;
-	
-	}
+	c->number[z] = 0; 
 
-
-	//if ( b->float_pos == 0  ) 
-		while (b->number[off] == 0 && off < b->len) 
-			++off; 
-
+	/* count the zeros to the right of the radix before a non-zero value */
+	while (b->number[off] == 0 && off < b->len) 
+		++off;
 		
 	if (rl(a) < rl(b))
 	{
@@ -58,7 +41,6 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	}
 	else
 		c->float_pos = rl(a) + off;
-
 
 	for ( ; z < a->len + diff; )
 	{
@@ -88,12 +70,12 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 		{
 			copyarray(mir, tmir, j);
 			c->number[z] += 1;
-			
 		}
 	} 
 	free(mir);
 	free(tmir);
 
+	c = strip_zeros(c);
 	return c;
 }
 
