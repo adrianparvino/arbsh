@@ -18,7 +18,7 @@ bigflt *arbprec_hypot(bigflt *x, bigflt *y)
 	pro1 = arbprec_mul(x, x, pro1);
 	pro2 = arbprec_mul(y, y, pro2);
 	sum = arbprec_add(pro1, pro2, sum);
-	ret = arbprec_sqrt(sum);
+	//ret = arbprec_sqrt(sum);
 
 	return ret;
 }
