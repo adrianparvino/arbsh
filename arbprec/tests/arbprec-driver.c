@@ -8,7 +8,7 @@
 
 int main(int argc, char **argv)
 {
-	scale = 50;
+	scale = 80;
 	
 	if ( argc < 3 )
 		arbprec_die("Needs 2 args\n");
@@ -53,18 +53,18 @@ int main(int argc, char **argv)
 	arbprec_print(flt3);
 
 
-	flt3 = arbprec_sqrt(flt1);
+	flt3 = arbprec_sqrt(flt1, flt3);
 	arbprec_print(flt3); 
-
+	/*
 	flt3 = arbprec_hypot(flt1, flt2);
 	arbprec_print(flt3); 
 
 	flt3 = arbprec_exp(flt1);
 	arbprec_print(flt3);
-
-	//arba_free(flt1);
-	//arba_free(flt2);
-	//arba_free(flt3);
+	*/
+	arba_free(flt1);
+	arba_free(flt2);
+	arba_free(flt3);
 
 	printf("\n\n");
 
