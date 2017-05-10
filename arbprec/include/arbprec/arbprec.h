@@ -45,20 +45,14 @@ bigflt *arbprec_setsign(bigflt *);
 bigflt *arbprec_sub(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_sub_inter(bigflt *, bigflt *, bigflt *);
 bigflt *str_to_bigflt(const char *);
-
 bigflt *arbprec_dup_sparse_mirror(bigflt *);
-
-
-bigflt *arbprec_sqrt(bigflt *);
+bigflt *arbprec_sqrt(bigflt *, bigflt *);
 bigflt *arbprec_hypot(bigflt *, bigflt *);
-
 bigflt *arbprec_exp(bigflt *);
-
 int arbprec_equals(bigflt *, bigflt *, size_t);
-
-
 void arbprec_match_precision(bigflt *, bigflt*);
 bigflt *arbprec_add_precision(bigflt *, size_t);
+bigflt *arbprec_sqrt_longhand(bigflt *, bigflt *);
 
 /* internal function prototypes */
 bigflt *arba_alloc(size_t);
