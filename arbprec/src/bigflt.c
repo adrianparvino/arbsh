@@ -315,10 +315,10 @@ void copyarray(int *answer, int *from, size_t len)
 		answer[i] = from[i];
 } 
 
-int hasplace(int *s, size_t idx, size_t len)
+int place(bigflt *flt, size_t idx)
 {
-        if (idx < len)
-        	return s[len - idx - 1];
+        if (idx < flt->len)
+                return flt->number[flt->len - idx - 1];
         return 0;
 } 
 
