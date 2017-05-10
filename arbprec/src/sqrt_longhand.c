@@ -28,6 +28,7 @@ bigflt *arbprec_sqrt_longhand(bigflt *a, bigflt *c)
         int *mir = arbprec_malloc(sizeof(int) * a->len);
         int *tmir = arbprec_malloc(sizeof(int) * a->len);
 	int *and = arbprec_malloc(sizeof(int) * a->len);
+	int *guess = arbprec_malloc(sizeof(int) * a->len);
 
 	int set[2] = { 0, 0 };
 	int iseven = 0;
@@ -39,7 +40,8 @@ bigflt *arbprec_sqrt_longhand(bigflt *a, bigflt *c)
 
 	for (i = 0 ; i < total_len ; ++i)
 	{
-		
+		;
+		//guess = arbprec_sub(
 	}
 	
 	return c;
