@@ -19,7 +19,16 @@
 
 bigflt *arbprec_sqrt_longhand(bigflt *flt)
 {
-	/* not yet implemented, use the note below to finish this */
+	/* not yet implemented, use the notes above to finish this */
+
+	size_t i = 0;
+	size_t j = 0;
+	size_t k = 0;
+
+	for (i = 0 ; i < flt->len ; ++i)
+	{
+		;
+	}
 	
 	return flt;
 }
