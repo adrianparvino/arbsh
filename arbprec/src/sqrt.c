@@ -2,7 +2,6 @@
 
 bigflt *arbprec_sqrt(bigflt *x, bigflt *c)
 {
-
 	/*
 		Using Newton's method (Also known as Babylonian sqrt)
 			sqrt(x) =  (((x/y) + y) / 2)
@@ -37,7 +36,7 @@ bigflt *arbprec_sqrt(bigflt *x, bigflt *c)
 	arba_free(sum);
 	arba_free(quo);
 	arba_free(two);
-	
+
 	return c;
 }
 
