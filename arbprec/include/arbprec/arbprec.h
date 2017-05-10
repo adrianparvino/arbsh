@@ -45,6 +45,8 @@ bigflt *arbprec_add_precision(bigflt *, size_t);
 bigflt *arbprec_sqrt_longhand(bigflt *, bigflt *);
 bigflt *arba_alloc(size_t);
 
+bigflt *strip_zeros(bigflt *);
+
 int arbprec_isnegati(bigflt *);
 int arbprec_equals(bigflt *, bigflt *, size_t);
 void arbprec_match_precision(bigflt *, bigflt*);
