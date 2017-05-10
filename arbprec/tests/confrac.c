@@ -74,8 +74,7 @@ double trigfunc(int p, double x)
 	size_t i = 300;
 	double r = 0;
 	double s = 0;
-	double y = 0; 
-	double hold = x; 
+	double y = 0;
 	double Z = (x-1)/(x+1);
 	double ZZ= 0;
 
