@@ -56,12 +56,12 @@ int main(int argc, char **argv)
 	flt3 = arbprec_sqrt(flt1, flt3);
 	arbprec_print(flt3); 
 
-	flt3 = arbprec_hypot(flt1, flt2, flt3);
-	arbprec_print(flt3); 
-	/*
-	flt3 = arbprec_exp(flt1);
-	arbprec_print(flt3);
-	*/
+	//flt3 = arbprec_hypot(flt1, flt2, flt3);
+	//arbprec_print(flt3); 
+
+	//flt3 = arbprec_exp(flt1);
+	//arbprec_print(flt3);
+
 	arba_free(flt1);
 	arba_free(flt2);
 	arba_free(flt3);
