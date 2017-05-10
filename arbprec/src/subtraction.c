@@ -1,13 +1,5 @@
 #include <arbprec/arbprec.h>
 
-int place(bigflt *flt, size_t idx)
-{
-        if (idx < flt->len)
-                return flt->number[flt->len - idx - 1];
-        return 0;
-} 
-
-
 bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
 {
         size_t width = 0;
@@ -44,10 +36,8 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
                         mir += base;
                 }
                 c->number[c->len] = sum;
-                c->mirror[c->len] = (base-1) - mir;
-	
-        }
-        
+                c->mirror[c->len] = (base-1) - mir; 
+        } 
         if (borrow == -1)
 	{ 
 		swap = c->number;
