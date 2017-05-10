@@ -211,8 +211,7 @@ bigflt *arbprec_dup_sparse(bigflt *flt)
 size_t rr(bigflt *flt)
 {
 	/* Right hand radix position */
-	size_t ret = flt->len - flt->float_pos;
-	return ret;
+	return flt->len - flt->float_pos;
 }
 
 size_t rl(bigflt *flt)
@@ -348,5 +347,16 @@ int arpbrec_equals(bigflt *a, bigflt *b, size_t precision)
 			return 0;
 	}
 	return 1;
+}
+
+bigflt *strip_zeros(bigflt *b)
+{
+	while (b->len > 0 && b->float_pos > 0 && b->number[0] == 0)
+        {
+                b->number = b->number + 1;
+                b->len -= 1;
+                b->float_pos -= 1;
+        } 
+	return b;
 }
 
