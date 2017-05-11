@@ -41,6 +41,7 @@ clean:
 	-$(MAKE) -C gsh clean
 	-$(MAKE) -C editor clean
 	-$(MAKE) -C gtop clean
+	-$(MAKE) -C arbprec clean
 	-$(RM) -r include lib
 
 
