@@ -38,13 +38,7 @@ double gatan(double x)
                 z = y;
                 j += 2;
                 sign = -sign;
-        }
-
+        } 
         return  y;
-
 }
-
-
-
-
 
