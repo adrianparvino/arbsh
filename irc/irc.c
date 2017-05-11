@@ -18,10 +18,6 @@
 
 /* local libraries */
 #define HASLIBM
-//#include "../libc/string/string.h"
-//#include "../libc/stdio/stdio.h"
-//#include "../termcap/termcap.h"
-//#include "../termcap/curses.h"
 #include <gstring.h>
 //#include <gstdio.h>
 #include <termcap/vt100.h>
