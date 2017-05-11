@@ -138,7 +138,7 @@ double aseries_func(double x, int selector)
         }
 
 	if ( selector == 0 ) /* asin */
-        	;
+        	{};
 	if ( selector == 1 ) /* acos */
 		return y = (PI / 2) - y;
 
