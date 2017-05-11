@@ -9,16 +9,10 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         int carry = -1;
 	int *swap; 
         size_t i = 0;
-        size_t al;
-        size_t bl;
 
-	c->float_pos = MAX(rl(a), rl(b));
-        c->len = 0;
-
+	c->float_pos = MAX(rl(a), rl(b)); 
 	arbprec_match_precision(a, b);
-	al = a->len;
-	bl = b->len; 
-        width = MAX(al, bl);
+        width = MAX(a->len, b->len);
 
 	for( ; c->len < width ; c->len++, i++)
         {
@@ -52,7 +46,7 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
 
 bigflt *arbprec_sub(bigflt *a, bigflt *b, bigflt *c)
 {
-        arbprec_initsign(c);
+        arbprec_init(c);
 
         if (arbprec_isnegati(a) && arbprec_isnegati(b))
                 arbprec_setsign(c);
