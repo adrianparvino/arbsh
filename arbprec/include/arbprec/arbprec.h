@@ -5,7 +5,7 @@
 /* Macros */
 #define MAX(a,b) ((a) > (b) ? a : b)
 
-/* Structures and type definitions */ 
+/* Structures and type definitions */
 typedef struct {		/*     bigflt type		*/
 	int *number;		/* Main number			*/
 	int *mirror;		/* Negative subtraction requires a mirror */
@@ -44,8 +44,8 @@ bigflt *arbprec_exp(bigflt *);
 bigflt *arbprec_add_precision(bigflt *, size_t);
 bigflt *arbprec_sqrt_longhand(bigflt *, bigflt *);
 bigflt *arba_alloc(size_t);
-
 bigflt *strip_zeros(bigflt *);
+bigflt *arbprec_copy_info(bigflt *, bigflt *);
 
 int arbprec_isnegati(bigflt *);
 int arbprec_equals(bigflt *, bigflt *, size_t);
@@ -61,9 +61,7 @@ int iszero(int *, size_t);
 void setarray(int *, int, size_t);
 size_t rr(bigflt *);
 size_t rl(bigflt *);
-void rst(bigflt *, size_t);
 size_t rsh(bigflt *);
-size_t arbprec_balance_sum(bigflt *, bigflt *, bigflt *, size_t);
 
 /* Globals */
 extern int base;
