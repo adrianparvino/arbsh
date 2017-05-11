@@ -1,5 +1,15 @@
 #include <gmath.h>
 
+double glgamma(double x)
+{
+	return (glog(gfabs(ggamma(x)))); 
+}
+
+double gtgamma(double x)
+{ 
+	return ggamma(x);
+}
+
 double ggamma(double x)
 { 
         int a = 12;
@@ -7,7 +17,6 @@ double ggamma(double x)
         double c[a];
         double fac = 1.0;
         double ret;
-	
 
         ret = gsqrt(2.0 * PI);
 
@@ -24,7 +33,6 @@ double ggamma(double x)
 
 	/* -(x + a) */
         ret *= gexp(-(x + a)) * gpow(x + a, x + 0.5);
-	
 
         return (ret / x);
 }
