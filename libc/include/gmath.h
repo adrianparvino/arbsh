@@ -3,8 +3,8 @@
 /* definitions */
 #define	TOLER	.00001
 #define	EULER	2.71828182846
-#define	PI	3.14159265359
-#define MYNAN -(0./0.) 
+#define PI	3.14159265358979323846264
+#define MYNAN	-(0./0.) 
 
 /* trig */ 
 double gsin(double);
@@ -50,3 +50,6 @@ double aseries_func(double, int);
 double series_func(double, int, int, int);
 
 double series_func_driver(double, int);
+
+double trigfunc(int, double);
+
