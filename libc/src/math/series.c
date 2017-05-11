@@ -24,26 +24,22 @@
 double gsin(double x)
 { 
 	return series_func(x, 1, 1, 0);/* sin */ 
-}
-
+} 
 
 double gasin(double x)
 { 
 	return aseries_func(x, 0);
-}
-
+} 
 
 double gsinh(double x)
 { 
 	return series_func(x, 1, 0, 0);/* sinh */
-}
-
+} 
 
 double gcos(double x)
 { 
 	return series_func(x, 0, 1, 0);
-}
-
+} 
 
 double gacos(double x)
 {
@@ -53,9 +49,7 @@ double gacos(double x)
 double gcosh(double x)
 {
 	return series_func(x, 0, 0, 0);/* cosh */
-}
-
-
+} 
 
 double series_func_driver(double x, int selector)
 { 
@@ -74,8 +68,7 @@ double series_func_driver(double x, int selector)
 	if ( selector == 4 )
 		sum = series_func(x, 0, 0, 1);/* exp  >> 1*/ 
         return sum;
-}
-
+} 
 
 double series_func(double x, int one, int toggler, int exp)
 {
