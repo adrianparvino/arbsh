@@ -5,24 +5,19 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	size_t width = 0; 
 	size_t diff = 0;
 	size_t i = 0;
-	size_t al = 0;
-	size_t bl = 0;
 	int sum = 0;
 	int carry = 0;
 
 	arbprec_match_precision(a, b);
-	al = a->len;
-	bl = b->len;
-	
 	c->float_pos = MAX(rl(a), rl(b));
-	c->len = 0; 
-	width = MAX(al, bl);
-	
+	width = MAX(a->len, b->len);
+
         for( ; c->len < width + diff ; c->len++, i++)
 	{ 
 		sum = place(a, i) + place(b, i) + carry;
                 carry = 0;
-                if(sum >= base){
+                if(sum >= base)
+		{
                         carry = 1;
                         sum -= base;
                 }
@@ -40,7 +35,7 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 
 bigflt *arbprec_add(bigflt *a, bigflt *b, bigflt *c)
 {
-	arbprec_initsign(c);
+	arbprec_init(c);
 
 	if (arbprec_isnegati(a) && arbprec_isnegati(b))
 		arbprec_setsign(c);
