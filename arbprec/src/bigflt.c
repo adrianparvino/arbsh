@@ -1,6 +1,5 @@
 #include <arbprec/arbprec.h>
 
-
 bigflt *arbprec_initsign(bigflt *flt)
 {
 	/* Initialize the sign to positive */
@@ -13,9 +12,7 @@ bigflt *arbprec_init(bigflt *flt)
 	/* Reset the length and sign of a bigflt so it can be
 		reused for a new answer */
 	flt = arbprec_initsign(flt);
-	flt->nan = 0;
-	flt->len = 0;
-	flt->float_pos = flt->len; 
+	flt->nan = flt->inf = flt->len = flt->float_pos = 0;
 	return flt;
 }
 
@@ -31,36 +28,42 @@ bigflt *arbprec_setsign(bigflt *flt)
 
 bigflt *arbprec_print(bigflt *flt)
 { 
-	/* Print a bigflt in a single write */
-	char *buf = arbprec_malloc(sizeof(char) * (flt->len + 4)); /* 4 == '+','.','\n','\0' */
+	/* Print a bigflt */
+	char buf[BUFSIZ] = { 0 };
 	size_t i = 0;
 	size_t j = 0;
-	size_t wrt_ret = 0;
 
 	if ( flt->sign )
-		buf[j++] = flt->sign;
-	
-	if (flt->nan == 1)
 	{
-		buf[j++] = 'n';
-		buf[j++] = 'a';
-		buf[j++] = 'n';
-		goto end;
+		buf[j++] = flt->sign;
+		buf[j] = '\0';
 	}
-
-        for (i = 0; i < flt->len  && i < scale; ++i)
+	
+	if (flt->nan == 1) 
+		printf("nan\n"); 
+	
+	if (flt->inf == 1) 
+		printf("inf\n"); 
+	
+        for (i = 0; i < flt->len && i < scale; ++i)
 	{ 
 		if ( flt->float_pos == i )
+		{
 			buf[j++] = '.';
-	
+			buf[j] = '\0';
+		} 
+		
 		buf[j++] = (flt->number[i] + '0');
+		buf[j] = '\0';
+		if ( i % (BUFSIZ - 10) == 0)
+		{
+			printf("%s", buf);
+			buf[0] = j = 0;
+			fflush(stdout);
+		}
 	} 
-	end:
-	buf[j++] = '\n';
-	buf[j++] = '\0';
-	if ((wrt_ret = write(1, buf, j - 1)) < 1)
-		write(2, "write() failed\n", 15);
-	free(buf);
+	printf("%s\n", buf);
+	fflush(stdout);
 	return flt;
 }
 
@@ -68,12 +71,11 @@ bigflt *str_to_bigflt(const char *str)
 {
 	/* Convert a string to a bigflt */ 
 	size_t i = 0;
-	size_t chunk = BUFSIZ;
 	int flt_set = 0;
 	int sign_set = 0;
 	int padded = 0;
 
-	bigflt *ret = arbprec_expand_vector(NULL, chunk);
+	bigflt *ret = arbprec_expand_vector(NULL, 512);
 
 	for (i = 0; str[i] != '\0'; ++i)
 	{
@@ -119,6 +121,7 @@ bigflt *arba_alloc(size_t len)
 	ret->float_pos = ret->allocated = len;
 	ret->len = 0;
 	ret->nan = 0;
+	ret->inf = 0;
 	ret->chunk = 256;
 	return ret;
 }
@@ -157,19 +160,10 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 	/* Copy a bigflt */
 	dest = arbprec_expand_vector(dest, src->len);
 	copyarray(dest->number, src->number, src->len);
-	copyarray(dest->mirror, src->mirror, src->len);
-	dest->sign = src->sign;
-	dest->len = src->len;
-	dest->float_pos = src->float_pos;
-	dest->allocated = src->allocated;
-	dest->chunk = src->chunk;
-	dest->nan = src->nan;
-	/* 
-		these should be set by expand_vector 
-		->len ->chunk ->allocated ->float_pos
-	*/
+	copyarray(dest->mirror, src->mirror, src->len); 
 	return dest;
 }
+
 bigflt *arbprec_dup_sparse_mirror(bigflt *src)
 {
 	/* Sparsely duplicate a bigflt and flip its sign */
@@ -181,14 +175,21 @@ bigflt *arbprec_dup_sparse_mirror(bigflt *src)
 bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
 {
 	/* Make a sparse copy of a bigflt */
-	dest->sign = src->sign;
+	dest = arbprec_copy_info(dest, src);
 	dest->number = src->number;
 	dest->mirror = src->mirror;
+	return dest;
+}
+
+bigflt *arbprec_copy_info(bigflt *dest, bigflt *src)
+{
+	dest->sign = src->sign;
 	dest->len = src->len;
 	dest->chunk = src->chunk;
 	dest->allocated = src->allocated;
 	dest->float_pos = src->float_pos; 
 	dest->nan = src->nan;
+	dest->inf = src->inf;
 	return dest;
 }
 
@@ -226,18 +227,6 @@ void rst(bigflt *flt, size_t radix)
 	flt->float_pos = radix;
 }
 
-size_t arbprec_balance_sum(bigflt *a, bigflt *b, bigflt *c, size_t diff)
-{
-	/* Strip and record the trailing digits to the right of the radix
-		which don't have a match for simpler addition */
-        size_t lim = a->len -1;
-        diff = rr(a) - rr(b);
-        for (; c->len < diff ; c->len++, lim--)
-                c->number[c->len] = a->number[lim];
-
-        return diff;
-}
-
 void arbprec_match_precision(bigflt *a, bigflt *b)
 { 
 	/* Match the precision of a number with that of another by
@@ -266,7 +255,7 @@ bigflt *arbprec_add_precision(bigflt *flt, size_t off)
 
 void arbprec_die(char *message)
 {
-	fprintf(stderr, "%s", message);
+	fprintf(stderr, "%s\n", message);
 	exit(1);
 } 
 

@@ -1,6 +1,5 @@
 #include <arbprec/arbprec.h>
 
-
 bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
 {
 	int i = 0;
@@ -10,7 +9,7 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
 	int carry = 0;
 
 	/* see if either a or b is negative */
-	arbprec_initsign(c);
+	arbprec_init(c);
         if (arbprec_isnegati(a))
                 arbprec_setsign(c);
         if (arbprec_isnegati(b))
@@ -33,7 +32,6 @@ bigflt *arbprec_mul(bigflt *a, bigflt *b, bigflt *c)
 	c->float_pos = rl(a) + rl(b);
 	c->len = ((a->len + b->len) / 2);
 	c = strip_zeros(c);
-
 	return c;
 }
 
