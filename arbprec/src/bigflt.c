@@ -161,6 +161,7 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 	dest = arbprec_expand_vector(dest, src->len);
 	copyarray(dest->number, src->number, src->len);
 	copyarray(dest->mirror, src->mirror, src->len); 
+	dest = arbprec_copy_info(dest, src);
 	return dest;
 }
 
