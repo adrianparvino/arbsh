@@ -1,4 +1,14 @@
-#include <gmath.h> 
+#include <gmath.h>
+
+double gj1(double x)
+{ 
+	return gjn(1, x);
+} 
+
+double gj0(double x)
+{
+	return gjn(0, x);
+}
 
 double gjn(int y, double x)
 {
@@ -82,4 +92,5 @@ double gjn(int y, double x)
         return ret;
 
 }
+
 
