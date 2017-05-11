@@ -1,12 +1,8 @@
-CFLAGS := -Wall -Wextra -c -lm -Iinclude -I../include
+CFLAGS += -Wall -Wextra -I./include/ -I../include -static
 
-LDFLAGS := -lm
-
-CC := gcc
+LDFLAGS += "-Wl,-rpath=$(PWD)" 
 
 OBJ = $(shell for i in *.c ; do echo $${i%.c}.o ; done )
-
-AR := ar
 
 LIBNAME = readline
 
@@ -16,55 +12,77 @@ DYNLIB = lib$(LIBNAME).so
 
 DYNCC = CC="$(CC) -fpic"
 
-DESTDIR := ../
+DESTDIR ?= ../
+
+.PHONY: uninstall
+
+PREFIX ?= /readline/
+
+INCLUDES = $(shell for i in include/$(PREFIX)/*.h ; do echo $$i ; done )
+
+INCLUDES_TARG = $(shell for i in include/$(PREFIX)/*.h ; do echo $(DESTDIR)/$$i ; done )
+
+TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
+
+LDLIBS += -L. -l$(LIBNAME)
 
 all:
 
-	-test -e ../include/termcap/vt100.h || $(MAKE) -C ../termcap install
 	$(MAKE) static
 	$(MAKE) cleanobj
 	$(MAKE) dynamic
-
+	$(MAKE) create_test
 
 static: $(OBJ)
 
 	$(MAKE) static_link
 
-
 dynwrap: $(OBJ)
 
-	
-dynamic:
+dynamic: 
 
 	$(MAKE) $(DYNCC) dynwrap
 	$(MAKE) dynamic_link
-
 
 static_link:
 
 	$(AR) -cvq $(STATLIB) $(OBJ)
 
-
 dynamic_link:
 
 	$(CC) -shared -Wl,-soname,$(DYNLIB) -o $(DYNLIB) $(OBJ)
 
+create_test: $(TEST_OBJ)
 
 cleanobj:
 
-	$(RM) $(OBJ)
-
+	$(RM) $(OBJ) 
 
 clean:
 	$(MAKE) cleanobj
-	$(RM) $(DYNLIB)
-	$(RM) $(STATLIB)
+	$(RM) $(DYNLIB) 
+	$(RM) $(STATLIB) 
+	$(RM) $(TEST_OBJ)
 
 install:
 
-	-mkdir -p $(DESTDIR)/lib/
-	-mkdir -p $(DESTDIR)/include/
-	cp -r $(STATLIB) $(DESTDIR)/lib/
-	cp -r $(DYNLIB) $(DESTDIR)/lib/
-	cp -r include/readline/ $(DESTDIR)/include/
+	mkdir -p $(DESTDIR)/lib/
+	mkdir -p $(DESTDIR)/include/$(PREFIX)
+	cp $(STATLIB) $(DESTDIR)/lib/
+	cp $(DYNLIB) $(DESTDIR)/lib/
+	cp $(INCLUDES) $(DESTDIR)/include/$(PREFIX)
+	$(MAKE) create_uninstall
 
+create_uninstall:
+
+	echo "#!/bin/sh" > uninstall
+	echo "set -x" >> uninstall
+	echo "rm $(INCLUDES_TARG)" >> uninstall
+	echo "rm $(DESTDIR)/lib/$(STATLIB)" >> uninstall
+	echo "rm $(DESTDIR)/lib/$(DYNLIB)" >> uninstall
+	
+uninstall:
+
+	chmod +x uninstall
+	./uninstall
+	rm uninstall

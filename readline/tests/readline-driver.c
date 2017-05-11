@@ -10,15 +10,18 @@
 #include <sys/ioctl.h>
 #include <readline/greadline.h>
 
+
+
 int main(void)
 {
         char *userline = malloc(BUFSIZ * sizeof(char));
 	size_t len = 0;
+
 	
         while ( 1 )
         {
 		userline[0] = '\0'; 
-                len = ircline(userline, "[ircline]>> ", 12);
+                len = greadline(userline, "[greadline]>> ", 14);
 		printf ("Finished line was: \n%s\n", userline);
 		gread_history(userline, len); 
         }
