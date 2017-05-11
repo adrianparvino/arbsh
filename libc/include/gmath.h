@@ -1,4 +1,5 @@
 #include <gstddef.h>
+#include <gstdlib.h>
 /* definitions */
 #define	TOLER	.00001
 #define	EULER	2.71828182846
@@ -30,6 +31,17 @@ double gsqrt(double);
 
 /* log */
 double glog(double);
+
+
+double gremainder(double, double);
+double gjn(int, double);
+double gj0(double);
+double gj1(double);
+double ggamma(double);
+
+double gfabs(double);
+
+double gfloor(double);
 
 /* internal */
 double _arg_reduction(double);
