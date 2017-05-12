@@ -22,17 +22,14 @@
 #include <errno.h>
 #include <stdint.h>
 
-/* local libraries */
-//##include "../termcap/termcap.h"
-//#include "../termcap/curses.h"
+/* local libraries */ 
 #include <curses/gcurses.h>
 #include <termcap/vt100.h>
+
 struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
 struct ansiglb ansiglb = { 0, 0, 0, 0};
 
-//#include "../lib/hexen.h"
-//#include "../libc/string/string.h"
-#include "../legacy/lib/date.h"
+size_t date(char *, char *, size_t);
 
 /* defines */ 
 #define BUF_MAX 1024
@@ -529,5 +526,19 @@ void print_procs(void)
 	setcursor(allbars / (cols) + 2 + 1, 1);
 	write(1, T_CLRCUR2BOT, T_CLRCUR2BOT_SZ);
 	write(1, buffer, buflen); 
+}
+
+size_t date(char *buf, char *format, size_t max)
+{
+        size_t n = 0;
+        time_t t; 
+        struct tm *tm;
+        if ((t = time(0)) == -1)
+                return 0;
+        if (!(tm = localtime(&t)))
+                return 0;
+        if ((n = strftime(buf, max, format, tm)) == 0)
+                return 0;
+        return n;
 }
 
