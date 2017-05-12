@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h> 
-#include "../legacy/lib/cutils.h"
+#include "cutils.h"
 
 /* Copyright 2015, C. Graff  "mkdir" */ 
 
