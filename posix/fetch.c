@@ -13,7 +13,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "../legacy/lib/cutils.h"
+#include "cutils.h"
 
 /* 
 	Copyright 2015-2017, "fetch.c", Christopher M. Graff
