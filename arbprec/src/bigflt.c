@@ -28,41 +28,32 @@ bigflt *arbprec_setsign(bigflt *flt)
 
 bigflt *arbprec_print(bigflt *flt)
 { 
-	/* Print a bigflt */
-	char buf[BUFSIZ] = { 0 };
+	/* Print a bigflt in chunks of BUFSIZ */
 	size_t i = 0;
-	size_t j = 0;
 
-	if ( flt->sign )
+	if ( flt->sign ) 
+		putchar(flt->sign);
+	
+	if (flt->nan == 1)
 	{
-		buf[j++] = flt->sign;
-		buf[j] = '\0';
+		puts("nan");
+		goto end;
 	}
 	
-	if (flt->nan == 1) 
-		printf("nan\n"); 
-	
-	if (flt->inf == 1) 
-		printf("inf\n"); 
+	if (flt->inf == 1)
+	{
+		puts("inf");
+		goto end;
+	}
 	
         for (i = 0; i < flt->len && i < scale; ++i)
-	{ 
-		if ( flt->float_pos == i )
-		{
-			buf[j++] = '.';
-			buf[j] = '\0';
-		} 
-		
-		buf[j++] = (flt->number[i] + '0');
-		buf[j] = '\0';
-		if ( i % (BUFSIZ - 10) == 0)
-		{
-			printf("%s", buf);
-			buf[0] = j = 0;
-			fflush(stdout);
-		}
-	} 
-	printf("%s\n", buf);
+	{
+		if (flt->float_pos == i)
+			putchar('.');
+		putchar((flt->number[i] + '0'));
+	}
+	end:
+	putchar('\n');
 	fflush(stdout);
 	return flt;
 }
