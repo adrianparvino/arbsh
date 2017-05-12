@@ -22,10 +22,8 @@
 //#include <gstdio.h>
 #include <termcap/vt100.h>
 #include <curses/gcurses.h>
-#include <readline/greadline.h> 
+#include <readline/greadline.h>
 
-#include "../legacy/lib/dial.h"
-#include "../legacy/lib/date.h"
 /* 
         2016-2017 (C) Copyright, `Irc', CM Graff
         See LICENSE for copying details.
@@ -43,6 +41,8 @@
 #define ID_DELAY	100000
 
 
+size_t date(char *, char *, size_t);
+int dialurl(const char *, unsigned short);
 
 /* structs */
 struct chan {
@@ -738,4 +738,43 @@ static void sigwinch(int sig)
         if (sig) 
 		winchg = 1;
 }
+
+int dialip(const char *server, unsigned short port)
+{
+	int sck;
+	struct sockaddr_in servaddr;
+
+	gmemset(&servaddr, 0, sizeof(servaddr));
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_port = htons(port);
+	if (!(sck = socket(AF_INET, SOCK_STREAM, 0))) 
+		return -1; 
+	if (inet_pton(AF_INET, server, &servaddr.sin_addr) != 1) 
+		return -1; 
+	if ((connect(sck, (struct sockaddr*)&servaddr, sizeof(servaddr)) ) == -1) 
+		return -1; 
+	return sck;
+}
+
+
+int dialurl(const char *host, unsigned short port)
+{
+	int sck;
+	struct sockaddr_in servaddr;
+	struct addrinfo *res, hints = { 0 };
+
+	hints.ai_family = AF_INET;
+	hints.ai_socktype = SOCK_STREAM;
+	if (getaddrinfo(host, 0, &hints, &res))
+		return -1;
+	gmemcpy(&servaddr, res->ai_addr, sizeof servaddr);
+	servaddr.sin_port = htons(port);
+	freeaddrinfo(res);
+	if (!(sck = socket(AF_INET, SOCK_STREAM, 0)))
+		return -1;
+	if ((connect(sck, (struct sockaddr *)&servaddr, sizeof servaddr)) == -1 )
+		return -1;
+	return sck;
+}
+
 
