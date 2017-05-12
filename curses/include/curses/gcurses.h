@@ -3,23 +3,17 @@
 */
 #include <termios.h>
 #include <sys/ioctl.h>
-//#include "termcap.h"
-//#include "../libc/stddef/stddef.h"
-//#include "../libc/string/string.h"
-//#include "../libc/stdio/stdio.h"
-//#include "../libc/stdlib/stdlib.h"
 #include <stddef.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <gstdio.h>
 #include <gstring.h>
-
 #include <termcap/vt100.h>
-
 #include <gstdlib.h>
 
 #define GBUFSIZ 4096
+
 int dothink;
 int hardadd;
 
@@ -28,7 +22,7 @@ struct ansiglb{
 	size_t col;	/* global columns */
 	size_t t;	/* total windows  */
 	size_t c;	/* current window */
-};//ansiglb;// = { 0, 0, 0, 0};
+};
 
 struct ANSIWINDOW{
 	size_t len;		/* length of primary buffer 	*/
@@ -38,7 +32,7 @@ struct ANSIWINDOW{
 	char *cpairs[GBUFSIZ];
 	int colordlen[GBUFSIZ];
 	char *colorlast[GBUFSIZ];
-};//ANSIWINDOW;//[15] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
+};
 
 /* fumction prototypes */ 
 int fastgetch(void);
