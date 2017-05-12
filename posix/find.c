@@ -12,7 +12,7 @@
 #include <pwd.h>
 #include <grp.h>
 
-#include "../legacy/lib/cutils.h"
+#include "cutils.h"
 /* 
 	(Copyright) 2014, , "find", C. Graff 
 */ 

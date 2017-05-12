@@ -63,6 +63,7 @@ clean:
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
 	$(RM) $(TEST_OBJ)
+	$(RM) uninstall
 
 install:
 
