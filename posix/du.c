@@ -11,8 +11,8 @@
 #include <limits.h>
 
 
-#include "../legacy/lib/cutils.h" 
-#include "../legacy/lib/inode_hash.c"
+#include "cutils.h" 
+#include "inode_hash.h"
 
 /* Copyright 2015, C. Graff  "du" */ 
 
