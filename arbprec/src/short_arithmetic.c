@@ -1,10 +1,39 @@
 #include <arbprec/arbprec.h>
 
+bigflt *arbprec_scoot(bigflt *a, int cap)
+{
+	size_t width = a->len + 1;
+	a = arbprec_expand_vector(a, width);
+	size_t i = 0;
 
+	a->number[0] = cap;
+
+	for (i = width; i > 0, i--) 
+		a->number[i + 1] = a->number[i];
+	
+	return a;
+}
 
 void arbprec_short_add(bigflt *a, int b)
 {
+	int i;
+	int carry = 0;
+	size_t width = a->len;
+	i = width - 1;
+	a[i] = b;
 
+	for (i = width - 1; i>=0 ; i--)
+	{
+		a[i] += carry;
+		carry = 0;
+		if (a[i] >= base)
+		{
+			carry = 1;
+			a[i] -= base;
+		}
+	}
+	if ( carry == 1 ) 
+		a = arbprec_scoot(a, 1);
 }
 
 void arbprec_short_sub(bigflt *a, int b)
