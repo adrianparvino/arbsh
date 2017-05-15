@@ -14,7 +14,15 @@ void arbprec_short_sub(bigflt *a, int b)
 
 void arbprec_short_mul(bigflt *a, int b)
 {
-
+	int i;
+	int carry = 0;
+	for ( i = a->len - 1; i >= 0 ; i--)
+	{
+		a->number[i] *= b;
+		a->number[i] += carry;
+		carry = a->number[i] / base;
+		a->number[i] %= base;
+	}
 }
 
 void arbprec_short_div(bigflt *a, int b)
