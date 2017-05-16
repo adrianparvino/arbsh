@@ -8,6 +8,7 @@ bigflt *arbprec_exp(bigflt *x, bigflt *c)
         */
 
 	size_t j = 30;
+
 	bigflt *s = str_to_bigflt("1.0");
 	bigflt *four = str_to_bigflt("4.00000");
 	bigflt *i = str_to_bigflt("30.00000");
@@ -16,7 +17,6 @@ bigflt *arbprec_exp(bigflt *x, bigflt *c)
 	bigflt *quo = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *sum1 = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *sum2 = arbprec_expand_vector(NULL, x->len + scale);
-
 
 	/* precompute r */
 	r = arbprec_mul(x, x, r);
