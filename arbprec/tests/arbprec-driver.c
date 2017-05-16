@@ -57,14 +57,20 @@ int main(int argc, char **argv)
 	arbprec_print(flt3); 
 
 	
-	flt3 = arbprec_sqrt_longhand(flt1, flt3);
+	flt3 = arbprec_hypot(flt1, flt2, flt3);
 	arbprec_print(flt3); 
 
-	//flt3 = arbprec_hypot(flt1, flt2, flt3);
+	//arbprec_short_sub(flt1, 1); 
+	//arbprec_print(flt1); 
+	
+	//flt3 = arbprec_sqrt_longhand(flt1, flt3);
 	//arbprec_print(flt3); 
 
-	//flt3 = arbprec_exp(flt1);
-	//arbprec_print(flt3);
+
+
+
+	flt3 = arbprec_exp(flt1);
+	arbprec_print(flt3);
 
 	arba_free(flt1);
 	arba_free(flt2);
