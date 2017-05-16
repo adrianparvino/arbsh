@@ -8,12 +8,10 @@ bigflt *arbprec_exp(bigflt *x)
         */
 
 	size_t j = 30;
-	bigflt * s = str_to_bigflt("1.0");
-	bigflt *one = str_to_bigflt("1.0000");
+	bigflt * s = str_to_bigflt("1.0"); 
 	bigflt *two = str_to_bigflt("2.0000");
 	bigflt *four = str_to_bigflt("4.00000");
 	bigflt *i = str_to_bigflt("30.00000");
-	bigflt *z = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *r = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *prod =  arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *prod2 = arbprec_expand_vector(NULL, x->len + scale);
@@ -29,14 +27,11 @@ bigflt *arbprec_exp(bigflt *x)
 
 	start: 
 
-	prod = arbprec_mul(i, four, prod); 
+	prod = arbprec_mul(i, four, prod);
 	prod2 = arbprec_sub(prod, two, prod2); 
-	quo = arbprec_div(r, s, quo); 
+	quo = arbprec_div(r, s, quo);
 	s = arbprec_add(prod2, quo, s);
-	z = arbprec_sub(i, one, z); 
-	swap = i;
-	i = z;
-	z = swap;
+	arbprec_short_sub(i, 1);
 
 	--j;
 	if (j >0 )
