@@ -16,13 +16,13 @@ bigflt *arbprec_scoot(bigflt *a, int cap)
 
 void arbprec_short_add(bigflt *a, int b)
 {
-	int i;
+	
 	int carry = 0;
-	size_t width = a->len;
-	i = width - 1;
-	a->number[i] = b;
+        size_t i= a->float_pos -1;
 
-	for (i = width - 1; i>=0 ; i--)
+        a->number[i] += b; 
+
+	for (; i>0 ; i--)
 	{
 		a->number[i] += carry;
 		carry = 0;
