@@ -43,7 +43,6 @@ void arbprec_short_sub(bigflt *a, int b)
 	 	so there is not much need to handle megative value
 		so omit the typical "mirror".
 	*/
-	//size_t i= a->len; 
 	size_t i= a->float_pos - 1; 
 
 	a->number[i] -= b;
