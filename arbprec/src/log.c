@@ -6,15 +6,13 @@ bigflt *arbprec_log(bigflt *x, bigflt *c)
                 Log using continued fraction expansion
         */
 
-	size_t j = 100;
+	size_t j = 30;
 	bigflt *s = str_to_bigflt("1.0");
 	bigflt *two = str_to_bigflt("2.00000");
-	bigflt *i = str_to_bigflt("100.00000");
+	bigflt *i = str_to_bigflt("30.00000");
 	bigflt *r = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *prod = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *quo = arbprec_expand_vector(NULL, x->len + scale);
-	bigflt *sum1 = arbprec_expand_vector(NULL, x->len + scale);
-	bigflt *sum2 = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *Z = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *ZZ = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *x1 = arbprec_expand_vector(NULL, x->len + scale);
