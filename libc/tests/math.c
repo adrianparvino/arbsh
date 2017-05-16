@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	printf("\n\n");
 	printf("libc log =     %19.19f\n", log(x));
         printf("glog =         %19.19f\n", glog(x));
-	printf("confrac log =  %19.19f\n", trigfunc(5, x));
+	printf("confrac log =  %19.19f\n", trigfunc(4, x));
 	printf("\n\n");
 	printf("libc exp =     %19.19f\n", exp(x));
         printf("gexp =         %19.19f\n", gexp(x));
