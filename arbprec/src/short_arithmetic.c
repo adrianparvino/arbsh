@@ -8,7 +8,7 @@ bigflt *arbprec_scoot(bigflt *a, int cap)
 
 	a->number[0] = cap;
 
-	for (i = width; i > 0, i--) 
+	for (i = width; i > 0; i--) 
 		a->number[i + 1] = a->number[i];
 	
 	return a;
@@ -20,16 +20,16 @@ void arbprec_short_add(bigflt *a, int b)
 	int carry = 0;
 	size_t width = a->len;
 	i = width - 1;
-	a[i] = b;
+	a->number[i] = b;
 
 	for (i = width - 1; i>=0 ; i--)
 	{
-		a[i] += carry;
+		a->number[i] += carry;
 		carry = 0;
-		if (a[i] >= base)
+		if (a->number[i] >= base)
 		{
 			carry = 1;
-			a[i] -= base;
+			a->number[i] -= base;
 		}
 	}
 	if ( carry == 1 ) 
@@ -38,7 +38,23 @@ void arbprec_short_add(bigflt *a, int b)
 
 void arbprec_short_sub(bigflt *a, int b)
 {
+	/* 	
+		This is primarily used as an unsigned decrementor
+	 	so there is not much need to handle megative value
+		so omit the typical "mirror".
+	*/
+	size_t i= a->len; 
 
+	a->number[i] -= b;
+
+	for (; i >= 0 ; i--)
+	{
+		if ( a->number[i] < 0 )
+		{
+			a->number[i] += base;
+			a->number[i - 1]--;
+		} 
+	} 
 }
 
 void arbprec_short_mul(bigflt *a, int b)
