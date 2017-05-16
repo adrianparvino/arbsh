@@ -26,7 +26,10 @@ double trigfunc(int p, double x)
 			s = 4 * i - 2 + r/s;
 	
 	for (; (p == 4 || p == 5) && i > 0; i--) /* log */
+	{
 		s = (2*i -1) - i*i*(ZZ)/s;
+		printf("%lf\n", s);
+	}
 
 	switch (p % 6)
 	{
