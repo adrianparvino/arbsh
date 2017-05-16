@@ -27,6 +27,7 @@ int main(int argc, char **argv)
 	printf("sqrt %20.10lf\n", sqrt(a));
 	printf("hypo %20.10lf\n", hypot(a, b));
 	printf("expo %20.10lf\n", exp(a));
+	printf("loga %20.10lf\n", log(a));
 	printf("\n\narbprec:\n___________\n\n");
 	fflush(stdout);
 
@@ -47,29 +48,21 @@ int main(int argc, char **argv)
 	arbprec_print(flt3);
 
 	flt3 = arbprec_mul(flt1, flt2, flt3);
-	arbprec_print(flt3); 
+	arbprec_print(flt3);
 	
 	flt3 = arbprec_div(flt1, flt2, flt3);
 	arbprec_print(flt3);
 
-
 	flt3 = arbprec_sqrt(flt1, flt3);
-	arbprec_print(flt3); 
-
+	arbprec_print(flt3);
+	
+	flt3 = arbprec_exp(flt1, flt3);
+	arbprec_print(flt3);
 	
 	flt3 = arbprec_hypot(flt1, flt2, flt3);
-	arbprec_print(flt3); 
-
-	//arbprec_short_sub(flt1, 1); 
-	//arbprec_print(flt1); 
+	arbprec_print(flt3);
 	
-	//flt3 = arbprec_sqrt_longhand(flt1, flt3);
-	//arbprec_print(flt3); 
-
-
-
-
-	flt3 = arbprec_exp(flt1);
+	arbprec_log(flt1, flt3);
 	arbprec_print(flt3);
 
 	arba_free(flt1);
