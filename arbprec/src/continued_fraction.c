@@ -20,7 +20,8 @@ bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 	bigflt *quo = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *sum1 = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *sum2 = arbprec_expand_vector(NULL, x->len + scale);
-	bigflt *negx = arbprec_copy(negx, x);
+	bigflt *negx = arbprec_expand_vector(NULL, x->len + scale);
+	negx = arbprec_copy(negx, x);
 	arbprec_setsign(negx);
 
 	/* precompute r */
@@ -31,9 +32,9 @@ bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 
 	start: 
 
-	prod = arbprec_mul(i, four, prod);
+	prod = arbprec_mul(i, four, prod); 
 	arbprec_short_sub(prod, 2);
-	quo = arbprec_div(r, s, quo);
+	quo = arbprec_div(r, s, quo); 
 	s = arbprec_add(prod, quo, s);
 	arbprec_short_sub(i, 1);
 	
@@ -71,16 +72,16 @@ bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 		sum2 = arbprec_add(prod, r, sum2);
 		c = arbprec_div(sum1, sum2, c);
 	}
-	
-	//arba_free(s);
-	//arba_free(four);
-	//arba_free(i);
-	//arba_free(r);
-	//arba_free(prod);
-	//arba_free(quo);
-	//arba_free(sum1);
-	//arba_free(sum2);
-	
+	/*
+	arba_free(s);
+	arba_free(four);
+	arba_free(i);
+	arba_free(r);
+	arba_free(prod);
+	arba_free(quo);
+	arba_free(sum1);
+	arba_free(sum2);
+	*/
 	return c;
 }
 
