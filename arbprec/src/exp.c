@@ -13,7 +13,7 @@ bigflt *arbprec_exp(bigflt *x, bigflt *c)
 	bigflt *four = str_to_bigflt("4.00000");
 	bigflt *i = str_to_bigflt("30.00000");
 	bigflt *r = arbprec_expand_vector(NULL, x->len + scale);
-	bigflt *prod =  arbprec_expand_vector(NULL, x->len + scale);
+	bigflt *prod = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *quo = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *sum1 = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *sum2 = arbprec_expand_vector(NULL, x->len + scale);
@@ -36,6 +36,15 @@ bigflt *arbprec_exp(bigflt *x, bigflt *c)
 	sum1 = arbprec_add(s, x, sum1);
 	sum2 = arbprec_sub(s, x, sum2); 
 	c = arbprec_div(sum1, sum2, c);
+	
+	arba_free(s);
+	arba_free(four);
+	arba_free(i);
+	arba_free(r);
+	arba_free(prod);
+	arba_free(quo);
+	arba_free(sum1);
+	arba_free(sum2);
 	
 	return c;
 }
