@@ -10,7 +10,6 @@ bigflt *arbprec_log(bigflt *x, bigflt *c)
 	bigflt *s = str_to_bigflt("1.0");
 	bigflt *two = str_to_bigflt("2.00000");
 	bigflt *i = str_to_bigflt("90.00000");
-	bigflt *r = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *prod = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *quo = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *Z = arbprec_expand_vector(NULL, x->len + scale);
@@ -44,14 +43,14 @@ bigflt *arbprec_log(bigflt *x, bigflt *c)
 	
 	z2 = arbprec_mul(Z, two, z2);
 	c = arbprec_div(z2, s, c);
-	free(i);
-	free(ii);
-	free(Z);
-	free(ZZ);
-	free(prod);
-	free(x1);
-	free(x2);
-	free(z2);
+	arba_free(i);
+	arba_free(ii);
+	arba_free(Z);
+	arba_free(ZZ);
+	arba_free(prod);
+	arba_free(x1);
+	arba_free(x2);
+	arba_free(z2);
 	
 	return c;
 }
