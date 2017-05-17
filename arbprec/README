@@ -13,19 +13,6 @@ BUILDING:
 
 		CFLAGS=-static make
 
-SUPPORTED FUNCTIONS:
---------------------
-
-	add
-	sub
-	mul
-	div
-	exp
-	log
-	sin
-	cos
-	tan
-
 
 TESTING:
 --------
