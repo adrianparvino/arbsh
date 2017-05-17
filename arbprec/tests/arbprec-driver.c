@@ -30,6 +30,7 @@ int main(int argc, char **argv)
 	printf("loga %20.10lf\n", log(a));
 	printf("sinu %20.10lf\n", sin(a));
 	printf("cosi %20.10lf\n", cos(a));
+	printf("tan  %20.10lf\n", tan(a));
 	printf("\n\narbprec:\n___________\n\n");
 	fflush(stdout);
 
@@ -73,8 +74,8 @@ int main(int argc, char **argv)
 	arbprec_cos(flt1, flt3);
 	arbprec_print(flt3);
 
-	//arbprec_tan(flt1, flt3);
-	//arbprec_print(flt3);
+	arbprec_tan(flt1, flt3);
+	arbprec_print(flt3);
 
 	arba_free(flt1);
 	arba_free(flt2);
