@@ -46,7 +46,8 @@ bigflt *arbprec_print(bigflt *flt)
 		goto end;
 	}
 	
-        for (i = 0; i < flt->len && i < scale; ++i)
+        //for (i = 0; i < flt->len && i < scale; ++i)
+	for (i = 0; i < flt->len ; ++i)
 	{
 		if (flt->float_pos == i)
 			putchar('.');
@@ -137,8 +138,9 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 	} else if ( request >= flt->allocated )
 	{ 
 		/* align chunk requests */
-		chunks = (request / flt->chunk) + 2;
-		flt->allocated = flt->chunk * chunks; 
+		//chunks = (request / flt->chunk) + 2;
+		//flt->allocated += flt->chunk * chunks; 
+		flt->allocated = (request + flt->chunk);
 		flt->number = flt->nr = arbprec_realloc(flt->nr, flt->allocated * sizeof(int)); 
 		flt->mirror = flt->mr = arbprec_realloc(flt->mr, flt->allocated * sizeof(int));
 	} 
@@ -331,13 +333,14 @@ int arpbrec_equals(bigflt *a, bigflt *b, size_t precision)
 }
 
 bigflt *strip_zeros(bigflt *b)
-{
-	while (b->len > 0 && b->float_pos > 0 && b->number[0] == 0)
+{ 
+	while (b->len > 0 && b->number[0] == 0)
         {
-                b->number = b->number + 1;
-                b->len -= 1;
-                b->float_pos -= 1;
-        } 
+       	        b->number = b->number + 1; 
+       		b->len -= 1;
+		if ( b->float_pos > 0 )
+                	b->float_pos -= 1;
+        }
 	return b;
 }
 
