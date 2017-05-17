@@ -14,6 +14,19 @@
 
 		CFLAGS=-static make
 
+<br clear="left"/></pre><dl>SUPPORTED FUNCTIONS:</dl><pre>
+</pre><dd><hr/></dd><pre>
+
+	add
+	sub
+	mul
+	div
+	exp
+	log
+	sin
+	cos
+	tan
+
 
 <br clear="left"/></pre><dl>TESTING:</dl><pre>
 </pre><dd><hr/></dd><pre>
@@ -34,6 +47,10 @@
 		bigflt *flt2 = str_to_bigflt("78289764322362423523525287.327320000038908953476");
 
 		bigflt *flt3 = arbprec_expand_vector(NULL, flt1->len + flt2->len); 
+
+		flt1 = arbprec_add_precision(flt1, scale);
+	        arbprec_match_precision(flt1, flt2);
+
 
 		flt3 = arbprec_div(flt1, flt2, flt3);
 

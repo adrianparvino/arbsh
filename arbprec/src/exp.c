@@ -66,6 +66,11 @@ bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 	}
 	if ( type == 3 ) /* tan */
 	{
+		prod2 = arbprec_mul(two, x, prod2);
+		sum1 = arbprec_mul(prod2, s, sum1);
+		prod = arbprec_mul(s, s, prod);
+		sum2 = arbprec_add(prod, r, sum2);
+		c = arbprec_div(sum1, sum2, c);
 	}
 	
 	//arba_free(s);
