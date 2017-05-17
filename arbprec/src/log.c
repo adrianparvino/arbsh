@@ -45,12 +45,16 @@ bigflt *arbprec_log(bigflt *x, bigflt *c)
 	c = arbprec_div(z2, s, c);
 	arba_free(i);
 	arba_free(ii);
+	arba_free(iz);
 	arba_free(Z);
 	arba_free(ZZ);
 	arba_free(prod);
 	arba_free(x1);
 	arba_free(x2);
 	arba_free(z2);
+	arba_free(quo);
+	arba_free(two);
+	arba_free(s);
 	
 	return c;
 }
