@@ -40,9 +40,7 @@ int main(int argc, char **argv)
 	flt1 = arbprec_add_precision(flt1, scale);
 	arbprec_match_precision(flt1, flt2);
 
-
 	bigflt *flt3 = arbprec_expand_vector(NULL, flt1->len + flt2->len);
-
 
 	flt3 = arbprec_add(flt1, flt2, flt3);
 	arbprec_print(flt3);
