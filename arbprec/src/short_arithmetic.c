@@ -10,13 +10,11 @@ bigflt *arbprec_scoot(bigflt *a, int cap)
 
 	for (i = width; i > 0; i--) 
 		a->number[i + 1] = a->number[i];
-	
+	a->len += 1;
 	return a;
 }
-
 void arbprec_short_add(bigflt *a, int b)
 {
-	
 	int carry = 0;
         size_t i= a->float_pos -1;
 
@@ -38,15 +36,8 @@ void arbprec_short_add(bigflt *a, int b)
 
 void arbprec_short_sub(bigflt *a, int b)
 {
-	/* 	
-		This is primarily used as an unsigned decrementor
-	 	so there is not much need to handle megative value
-		so omit the typical "mirror".
-	*/
-	size_t i= a->float_pos - 1; 
-
+	size_t i= a->float_pos - 1;
 	a->number[i] -= b;
-
 	for (; i > 0 ; i--)
 	{
 		if ( a->number[i] < 0 )
@@ -54,7 +45,8 @@ void arbprec_short_sub(bigflt *a, int b)
 			a->number[i] += base;
 			a->number[i - 1]--;
 		} 
-	} 
+	}
+	a = strip_zeros(a);
 }
 
 void arbprec_short_mul(bigflt *a, int b)
@@ -81,25 +73,3 @@ void arbprec_short_div(bigflt *a, int b)
 		a->number[i] /= b;
 	}
 }
-
-bigflt *arbprec_short_add_r(bigflt *a, int b, bigflt *c)
-{
-	return c;
-}
-
-bigflt *arbprec_short_sub_r(bigflt *a, int b, bigflt *c)
-{
-	return c;
-}
-
-bigflt *arbprec_short_mul_r(bigflt *a, int b, bigflt *c)
-{
-	return c;
-}
-
-bigflt *arbprec_short_div_r(bigflt *a, int b, bigflt *c)
-{
-	return c;
-}
-
-
