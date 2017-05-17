@@ -40,6 +40,7 @@ bigflt *str_to_bigflt(const char *);
 bigflt *arbprec_dup_sparse_mirror(bigflt *);
 bigflt *arbprec_sqrt(bigflt *, bigflt *);
 bigflt *arbprec_hypot(bigflt *, bigflt *, bigflt *);
+bigflt *arbprec_series(bigflt *, bigflt *, int);
 bigflt *arbprec_exp(bigflt *, bigflt *);
 bigflt *arbprec_log(bigflt *, bigflt *);
 bigflt *arbprec_sin(bigflt *, bigflt *);
