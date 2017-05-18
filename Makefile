@@ -21,12 +21,12 @@ all:
 	-$(MAKE) -C curses install
 	-$(MAKE) -C arbprec
 	-$(MAKE) -C arbprec install
-	-$(MAKE) -C gsh
+	-$(MAKE) -C sh
 	-$(MAKE) -C editor
 	-$(MAKE) -C posix
 	-$(MAKE) -C linux
 	-$(MAKE) -C irc
-	-$(MAKE) -C gtop
+	-$(MAKE) -C top
 	
 
 clean:
@@ -38,9 +38,9 @@ clean:
 	-$(MAKE) -C posix clean 
 	-$(MAKE) -C linux clean 
 	-$(MAKE) -C irc clean
-	-$(MAKE) -C gsh clean
+	-$(MAKE) -C sh clean
 	-$(MAKE) -C editor clean
-	-$(MAKE) -C gtop clean
+	-$(MAKE) -C top clean
 	-$(MAKE) -C arbprec clean
 	-$(RM) -r include lib
 
@@ -50,9 +50,9 @@ install:
 	-$(MAKE) -C posix install 
 	-$(MAKE) -C linux install 
 	-$(MAKE) -C irc install
-	-$(MAKE) -C gsh install 
+	-$(MAKE) -C sh install 
 	-$(MAKE) -C editor install
-	-$(MAKE) -C gtop install 
+	-$(MAKE) -C top install 
 	# Install toolchain last if it exists
 	#-$(MAKE) -C toolchain install
 
@@ -62,9 +62,9 @@ uninstall:
 	-$(MAKE) -C posix uninstall 
 	-$(MAKE) -C linux uninstall 
 	-$(MAKE) -C irc uninstall
-	-$(MAKE) -C gsh uninstall
+	-$(MAKE) -C sh uninstall
 	-$(MAKE) -C editor uninstall
-	-$(MAKE) -C gtop uninstall
+	-$(MAKE) -C top uninstall
 	#-$(MAKE) -C toolchain uninstall
 
 toolchain:
