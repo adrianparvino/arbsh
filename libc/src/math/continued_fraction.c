@@ -2,12 +2,14 @@
 
 double trigfunc(int p, double x)
 {
-	size_t i = 300;
+	size_t i = 90;
 	double r = 0;
 	double s = 0;
 	double y = 0;
 	double Z = (x-1)/(x+1);
 	double ZZ= 0;
+	double sum1 = 0;
+	double sum2 = 0;
 
 	if ( p == 5)
 		Z=x; 
@@ -19,16 +21,19 @@ double trigfunc(int p, double x)
 	else 
 		r = x * x;      /* hyperbolic */
 	
-	s = 4 * i + 2;
+	//s = 4 * i + 2;
 
 	if ( p < 4 || p > 5 )	/* ! log */
 		for (; i > 0; i--) 
+		{
 			s = 4 * i - 2 + r/s;
-	
+			
+		}
+
 	for (; (p == 4 || p == 5) && i > 0; i--) /* log */
 	{
 		s = (2*i -1) - i*i*(ZZ)/s;
-		printf("%lf\n", s);
+		
 	}
 
 	switch (p % 6)
@@ -37,7 +42,12 @@ double trigfunc(int p, double x)
 			y = (s + x)/(s - x);		/* exp */
 			break;
 		case 1 : 
-			y = 2 * x * s/(s * s - r);	/* sin, sinh */
+			sum1 = (2 * x * s);
+			sum2 = (s * s - r);
+			
+			
+			//y = 2 * x * s/(s * s - r);	/* sin, sinh */
+			y = sum1/sum2;
 			break;
 		case 2 : 
 			y = (s * s + r)/(s * s - r);	/* cos, cosh */
@@ -57,7 +67,7 @@ double trigfunc(int p, double x)
 	return y;
 }
 
-/*
+	/*
                         These all have identities relating to log
                         so can likely be expressed using this series
                         function
@@ -79,6 +89,6 @@ double trigfunc(int p, double x)
                         sech(x) = 1/cosh(x) = 2/( e(x) + e(-x) ) 
                         tanh(x) = sinh(x)/cosh(x) = ( e(x) - e(-x) )/( e(x) + e(-x) ) 
                         coth(x) = 1/tanh(x) = ( e(x) + e(-x))/( e(x) - e(-x) ) 
-                */
+         */
 
 
