@@ -15,6 +15,23 @@
 #include <signal.h>
 #include <curses.h>
 #include "../termcap/include/termcap/vt100.h"
+
+int cols = 0;
+int lines = 0;
+int ansiinit(void)
+{
+        int ret = 0;
+        struct winsize w;
+
+        if ( (ret = ioctl(0, TIOCGWINSZ, &w)) == -1)
+                return ret;
+        cols = w.ws_col;
+        lines = w.ws_row;
+        write(1, T_ERASEALL, T_ERASEALL_SZ);
+        write(1,T_INSERTRESET, T_INSERTRESET_SZ);
+        return ret;
+}
+
 int fastgetch()
 {
         char s[1];
@@ -54,8 +71,6 @@ int ch = 0;		/* Used to store input */
 char cb[7] = { 0 };	/* Used to store input */ 
 
 char *fname = NULL;
-int cols = 0;
-int lines = 0;
 int winchg = 0;
 int cflags = 0; 
 int tabstop = 8;
@@ -266,11 +281,11 @@ bool i_deltext(struct filepos pos0, struct filepos pos1)
 	return integrity;
 } 
 
-void getdimensions(void)
-{
-	//cols = ansiglb.col;
-	//lines = ansiglb.row; 
-}
+
+
+
+
+
 
 /* Main editing loop */
 void i_edit(void)
@@ -279,8 +294,8 @@ void i_edit(void)
 	{ 
 		if ( winchg == 1 )
 		{ 
-			//ansiinit(); 
-			getdimensions();
+			ansiinit(); 
+			//getdimensions();
 			winchg=0; 
 		}
 		i_update(); 
@@ -312,8 +327,8 @@ void i_setup(void)
 {
 	struct Line *l = NULL; 
 	
-	//ansiinit();
-	getdimensions();
+	ansiinit();
+	//getdimensions();
 	//ansicreate();
 	/* Init line structure */
 	l = (struct Line *) ecalloc(1, sizeof(struct Line));
