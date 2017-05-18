@@ -46,7 +46,7 @@ HIER:
 	editor/
 		A native editor. 
 
-	gsh/
+	sh/
 		A native shell.
 
 	irc/
