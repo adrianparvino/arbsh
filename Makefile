@@ -24,7 +24,6 @@ all:
 	-$(MAKE) -C sh
 	-$(MAKE) -C editor
 	-$(MAKE) -C posix
-	-$(MAKE) -C linux
 	-$(MAKE) -C irc
 	
 
@@ -35,7 +34,7 @@ clean:
 	-$(MAKE) -C libc clean
 	-$(MAKE) -C curses clean
 	-$(MAKE) -C posix clean 
-	-$(MAKE) -C linux clean 
+	-$(MAKE) -C lsb clean 
 	-$(MAKE) -C irc clean
 	-$(MAKE) -C sh clean
 	-$(MAKE) -C editor clean
