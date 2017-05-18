@@ -50,7 +50,7 @@ HIER:
 		A native shell.
 
 	irc/
-		A native irc client and library. 
+		A native irc client. 
 	
 	posix/
 		Userland utilities such as cp, ls, fetch, dd, find etc.
