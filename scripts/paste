@@ -1,9 +1,0 @@
-#!/bin/sh
-
-
-out=$(cat $1 | curl -F 'sprunge=<-' http://sprunge.us)
-wget $out -O output-paste
-cat output-paste
-rm output-paste
-
-
