@@ -2,7 +2,7 @@ CFLAGS += -Wall -Wextra -I./include/ -I../include -static
 
 LDFLAGS += "-Wl,-rpath=$(PWD)" 
 
-OBJ = $(shell for i in *.c ; do echo $${i%.c}.o ; done )
+OBJ = $(shell for i in src/*.c ; do echo $${i%.c}.o ; done )
 
 LIBNAME = readline
 
