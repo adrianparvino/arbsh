@@ -5,15 +5,8 @@
 
 #include <curses/gcurses.h>
 
-/* globals */
-int dothink = 0;
-int hardadd = 0; /* this should be added as a 4th function arg */
-//Dstruct ansiglb ansiglb = { 0, 0, 0, 0};
 struct ansiglb ansiglb;
-
-//struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, GNULL, GNULL, { GNULL } , { 0 } , {GNULL}}};
 struct ANSIWINDOW ANSIWINDOW[10];
-
 
 /* functions */
 int fastgetch() 
@@ -61,8 +54,7 @@ int termcatch(int flags, int reset)
 	{
 		term.c_lflag &= (flags);
 		term.c_cc[VMIN] = 1;
-		term.c_cc[VTIME] = 0;
-
+		term.c_cc[VTIME] = 0; 
 		if ((tcsetattr(0, TCSANOW, &term)) == 0 )
 			return 0;
 	/* Programmer access to reset user's terminal state */
@@ -113,50 +105,21 @@ int ansiinit(void)
 	if ( (ret = ioctl(0, TIOCGWINSZ, &w)) == -1)
 		return ret;
 	ansiglb.col = w.ws_col;
-	ansiglb.row = w.ws_row;
-	
+	ansiglb.row = w.ws_row; 
 	write(1, T_ERASEALL, T_ERASEALL_SZ);
 	write(1,T_INSERTRESET, T_INSERTRESET_SZ);
 	return ret;
-}
-
-void addcolor(char *string, size_t len, size_t position)
-{ 
-	/* only allow each color to be set away from white once */
-	char *p = T_WHITE_FG;
-	if (ANSIWINDOW[ansiglb.c].cpairs[position] != p && string != p && hardadd !=1)
-		return;
-	ANSIWINDOW[ansiglb.c].cpairs[position] = string;
-	ANSIWINDOW[ansiglb.c].colordlen[position] = len;
-}
-
-void addcolorrange(char *string, size_t len, size_t position, size_t end)
-{
-        /* only allow each color to be set away from white once */
-	char *p = T_WHITE_FG;
-	while ( position < end )
-	{
-        
-	        if (ANSIWINDOW[ansiglb.c].cpairs[position] != p && string != p && hardadd !=1)
-	                return;
-	        ANSIWINDOW[ansiglb.c].cpairs[position] = string;
-	        ANSIWINDOW[ansiglb.c].colordlen[position] = len;
-		++position;
-	}
-}
+} 
 
 int ansicreate(void)
 {
 	size_t len = 0;
 	len = ANSIWINDOW[ansiglb.t].len = ( ansiglb.col * ansiglb.row );
 	ANSIWINDOW[ansiglb.t].ansilastmap = gmalloc(sizeof(char) * len * 10);
-	ANSIWINDOW[ansiglb.t].ansiwinbuf = gmalloc(sizeof(char) * len * 10);
-	gmemset(ANSIWINDOW[ansiglb.t].colorlast, 0, (len * 10));
+	ANSIWINDOW[ansiglb.t].ansiwinbuf = gmalloc(sizeof(char) * len * 10); 
 	gmemset(ANSIWINDOW[ansiglb.t].ansilastmap, 0, (len * 10));
 	ansiglb.c = ansiglb.t;
-	size_t i = 0;
-	while (i < (len))
-		addcolor(T_WHITE_FG,T_WHITE_FG_SZ, i++);
+	size_t i = 0; 
 	ansiglb.t++;
 	return (ansiglb.t) - 1;
 }
@@ -210,17 +173,13 @@ int ansiredraw(size_t lim, size_t x, size_t y, size_t rightmarg)
 	{
 		a = ANSIWINDOW[ansiglb.c].ansiwinbuf[i];
 		b = ANSIWINDOW[ansiglb.c].ansilastmap[i]; 
-		c = ANSIWINDOW[ansiglb.c].cpairs[i];
-		d = ANSIWINDOW[ansiglb.c].colorlast[i]; 
-		
-		if ( dothink || a != b || c != d) 
+		if ( a != b || c != d) 
 		{ 
 			setcursor(k, j); 
 			write(0, ANSIWINDOW[ansiglb.c].cpairs[i], ANSIWINDOW[ansiglb.c].colordlen[i]);
 			ANSIWINDOW[ansiglb.c].colorlast[i] = c; 
 			setcursorchars(k, j, ANSIWINDOW[ansiglb.c].ansiwinbuf[i]); 
 			ANSIWINDOW[ansiglb.c].ansilastmap[i] = a; 
-			addcolor(T_WHITE_FG,T_WHITE_FG_SZ, i);
 		} 
 		if ( j == ansiglb.col - rightmarg) 
 		{
