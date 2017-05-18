@@ -1,5 +1,4 @@
-# git add libc/src/strcmp.c && git commit -m "[libc] Fix typo in strcmp" && git format-patch -1 --stdout| curl -F 'sprunge=<-' http://sprunge.us 
-#make CFLAGS='-I../include -I../include/bits/i386-sysv/ -I/usr/include'
+#!/bin/sh
 
 if [ $# != 3 ]
 then	printf -- "%s\n" "'file.c' 'message here' 'patchtitle'"
