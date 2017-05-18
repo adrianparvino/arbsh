@@ -26,7 +26,6 @@ all:
 	-$(MAKE) -C posix
 	-$(MAKE) -C linux
 	-$(MAKE) -C irc
-	-$(MAKE) -C top
 	
 
 clean:
@@ -40,7 +39,6 @@ clean:
 	-$(MAKE) -C irc clean
 	-$(MAKE) -C sh clean
 	-$(MAKE) -C editor clean
-	-$(MAKE) -C top clean
 	-$(MAKE) -C arbprec clean
 	-$(RM) -r include lib
 
@@ -52,7 +50,6 @@ install:
 	-$(MAKE) -C irc install
 	-$(MAKE) -C sh install 
 	-$(MAKE) -C editor install
-	-$(MAKE) -C top install 
 	# Install toolchain last if it exists
 	#-$(MAKE) -C toolchain install
 
@@ -64,7 +61,6 @@ uninstall:
 	-$(MAKE) -C irc uninstall
 	-$(MAKE) -C sh uninstall
 	-$(MAKE) -C editor uninstall
-	-$(MAKE) -C top uninstall
 	#-$(MAKE) -C toolchain uninstall
 
 toolchain:
