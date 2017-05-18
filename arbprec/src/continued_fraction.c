@@ -3,7 +3,7 @@
 /* 
         Exp, sin cos and tan using continued fraction expansion
 	(Copyright) 2017, CM. Graff. See LICENSE for copying details
-*/
+*/ 
 
 bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 {
