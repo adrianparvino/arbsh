@@ -19,9 +19,10 @@
 /* local libraries */
 #define HASLIBM
 //#include <gstring.h>
-#include <gstdio.h>
+#include <curses/gcurses.h>
+//#include <gstdio.h>
 #include <termcap/vt100.h>
-//#include <curses/gcurses.h>
+
 #include <readline/greadline.h>
 
 /* 
