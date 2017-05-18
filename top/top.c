@@ -243,20 +243,20 @@ int parseproc (void)
 			i = percent = len = 0;
 			ansiglb.c = 1;
 			k = count;
-			addcolorrange(T_CYAN_FG, T_BLUE_FG_SZ, len, len +4);
+		
 			len += ansiaddmem("Avg ", len, len + 4);
 			while ((i+1) < k )
 			{ 
 				j = sprintf(temp, "%-4d", i);
-				addcolorrange(T_CYAN_FG, T_BLUE_FG_SZ, len, len +j);
+				
 				len += ansiaddmem(temp, len, len + j); 
 				++i;
 			}
-			addcolorrange(T_CYAN_FG, T_BLUE_FG_SZ, len, len +4);
+			
 			len += ansiaddmem("Mem ", len, len + 4);
-			addcolorrange(T_CYAN_FG, T_BLUE_FG_SZ, len, len +4);
+			
 			len += ansiaddmem("Swp ", len, len + 4); 
-			write(1, T_GREEN_FG, T_GREEN_FG_SZ); 
+		
 			ansiredraw(len, 1, 1, ansiglb.col - baroff ); 
 		}
 		
@@ -269,11 +269,11 @@ int parseproc (void)
 			i = atoi(proct.lines[0].fields[0]);
 			length = sprintf(temp, "Uptime ");
 			z = length;
-			addcolorrange(T_CYAN_FG, T_CYAN_FG_SZ, 0,  length);
+			
 			length += sprintf(temp + length, "%d", i / 60 / 60 / 24);
 			length += sprintf(temp + length, ":%d", i / 60 / 60 % 24);
 			length += sprintf(temp + length, ":%d", i / 60 % 60); 
-			addcolorrange(T_BLUE_FG, T_BLUE_FG_SZ, z, length);
+			
 			len += ansiaddmem(temp, len, len + length);
 			ansiredraw(len, 2, ansiglb.col - cols + 4 + baroff, 0);
 		} 
@@ -285,13 +285,13 @@ int parseproc (void)
 			proc_stat("/proc/loadavg"); 
 			len += ansiaddstr("Loadavg ", len); 
 			i = len;
-			addcolorrange(T_CYAN_FG, T_CYAN_FG_SZ, 0, len);
+			
 			len += ansiaddstr(proct.lines[0].fields[0], len); 
 			len += ansiaddstr(" ", len); 
 			len += ansiaddstr(proct.lines[0].fields[1], len); 
 			len += ansiaddstr(" ", len); 
 			len += ansiaddstr(proct.lines[0].fields[2], len);
-			addcolorrange(T_BLUE_FG, T_BLUE_FG_SZ, i, len);
+			
 			ansiredraw(len, 3, ansiglb.col - cols + 4 + baroff, 0);	
 		} 
 		
@@ -300,10 +300,10 @@ int parseproc (void)
 			ansiglb.c = 4;
 			i = percent = len = 0;
 			i = date(temp, DATEFMT, 100);
-			addcolorrange(T_CYAN_FG, T_CYAN_FG_SZ, 0, 5);
+			
 			len += ansiaddmem("Time ", 0, 5);
 			len += ansiaddmem(temp, len, len + i);
-			addcolorrange(T_BLUE_FG, T_BLUE_FG_SZ, 5, len + i);
+			
 			ansiredraw(len, 4, ansiglb.col - cols + 4 + baroff, 0);
 		} 
 		
@@ -312,31 +312,31 @@ int parseproc (void)
 			i = percent = len = 0;
 			gethostname(temp, 100);
 			ansiglb.c = 5;
-			addcolorrange(T_CYAN_FG, T_CYAN_FG_SZ, 0, 5);
+			
 			len += ansiaddmem("Host ", 0, 5);
 			len += ansiaddmem(temp, len, len + strlen(temp));
-			addcolorrange(T_BLUE_FG, T_BLUE_FG_SZ, 5, len);
+			
 			ansiredraw(len, 5, ansiglb.col - cols + 4 + baroff, 0); 
 		} 
 		
 		if ( meterfinishbar )
 		{
 			ansiglb.c = 6;
-			write(1, T_BLACK_FG, T_BLACK_FG_SZ);
-			write(1, T_GREEN_BG, T_GREEN_BG_SZ);
+		
+			
 			i = percent = len = 0;
 			
 			len += ansiaddmem("PID CPU% S #THR VSS RSS UID", 0, 27);
 			len += ansiaddmem(WHITESPACE, len, ansiglb.col); 
-			addcolorrange(T_BLACK_FG, T_BLACK_FG_SZ, 0, len);
+			
 			ansiredraw(len, allbars / (cols) + 1, 0, 0); 
 		} 
 		
 		drawprocs:
 		if ( meterprocs )
 		{
-			write(1, T_BLACK_BG, T_BLACK_BG_SZ); 
-			write(1, T_CYAN_FG, T_CYAN_FG_SZ);
+			
+		
 			setcursor(allbars / (cols) + 2 , 1); 
 			limiter = (ansiglb.row - (allbars / (cols) + 2 + 1)); 
 			setcursor(allbars / (cols) + 2 + 1, 1);
@@ -357,18 +357,12 @@ void beautifulbars(size_t cols, double percent)
 	{
 		if ( bar < percent)
 		{
-			ansiwaddch('|', allbars);
-			if ( bar <  (percent / 4))
-				addcolor(T_GREEN_FG,T_GREEN_FG_SZ, allbars);
-			else if ( bar < (percent / 2 ))
-				addcolor(T_YELLOW_FG,T_YELLOW_FG_SZ, allbars);
-			else
-				addcolor(T_RED_FG,T_RED_FG_SZ, allbars);
+			ansiwaddch('|', allbars); 
 			allbars++; 
 		}
 		else {
 			ansiwaddch(' ', allbars++); 
-			//addcolor(T_BLUE_FG,T_YELLOW_FG_SZ, lim);
+			
 		}
 	} 
 	
