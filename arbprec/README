@@ -47,9 +47,7 @@ API:
 REFERENCES:
 -----------
 
-	https://en.wikipedia.org/wiki/Floating-point_arithmetic
-
-	https://en.wikipedia.org/wiki/Fixed-point_arithmetic
+	https://gmplib.org/manual/Division-Algorithms.html#Division-Algorithms
 
 	http://personal.maths.surrey.ac.uk/st/H.Bruin/MMath/Cardinality.html
 
