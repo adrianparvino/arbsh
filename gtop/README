@@ -1,9 +1,10 @@
-sysmon
+gtop
 
-sysmon is a system monitor based on top / htop
+gtop is a system monitor based on top / htop. It depends on the
+/proc filesystem.
 
-sysmon is not really for everyday use, but instead was programmed
-to test grafland' hexen.h screen drawing library.
+gtop is not really for everyday use, but instead was programmed
+to test grafland's screen drawing libraries.
 
 	Controls:
 
@@ -19,7 +20,7 @@ to test grafland' hexen.h screen drawing library.
 
 The output should look something like this: 
 
-	   ./sysmon
+	   ./gtop
 
 		 CPU [||                                           ]
 		 0   [||||                                         ] UPTIME 0:21:27
@@ -45,6 +46,6 @@ The output should look something like this:
 
 
 
-There are some aspirations to add native support for freebsd.
+
 
 
