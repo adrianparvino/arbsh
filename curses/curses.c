@@ -1,8 +1,3 @@
-/* 
-	Copyright 2016-2017, CM Graff, hexen.h 
-*/ 
-
-
 #include <curses/gcurses.h>
 
 struct ansiglb ansiglb;
@@ -39,37 +34,29 @@ int ansigetch(void)
 int termcatch(int flags, int reset)
 { 
 	static int set = 0;
-	static struct termios term, oterm;
-	
-	/* catch the user's original terminal state _once_ */
+	static struct termios term, oterm; 
 	if ( set == 0 )
 	{
 		if ((tcgetattr(0, &oterm)) != 0 )
 			return -1;
 		gmemcpy(&term, &oterm, sizeof(term));
 		set = 1;
-	}
-	/* Set the programmer's terminal attributes */
+	} 
 	if ( reset == 0 )
 	{
 		term.c_lflag &= (flags);
 		term.c_cc[VMIN] = 1;
 		term.c_cc[VTIME] = 0; 
 		if ((tcsetattr(0, TCSANOW, &term)) == 0 )
-			return 0;
-	/* Programmer access to reset user's terminal state */
+			return 0; 
 	}else if ( reset == 1 )
 		if ((tcsetattr(0, TCSANOW, &oterm)) == 0 )
-			return 0;
-
-	return -1;
-	
+			return 0; 
+	return -1; 
 }
 
 void setcursor(size_t x, size_t y)
 { 
-	/* [24;80H	Pos to line 24 col 80 (any line 1 to 24, any col 1 to 132)*/
-	/* \033[?;?H */
 	char str[1025] = { 0 };
 	size_t len = 0;
 	len = gsprintf(str, "\033[%zu;%zuH", x, y);
@@ -77,8 +64,7 @@ void setcursor(size_t x, size_t y)
 }
 
 void setcursorchars(size_t x, size_t y, char s)
-{
-	/* \033[?;?H? */
+{ 
 	char hold[2] = { 0 };
         hold[0] = s;
 	char str[1025] = { 0 }; 
@@ -159,35 +145,27 @@ size_t ansiaddstr(char *str, size_t position)
 }
 
 int ansiredraw(size_t lim, size_t x, size_t y, size_t rightmarg)
-{ 
-	/* print a fully populated ansiwinbuf */
+{
 	size_t i = 0;
 	size_t j = 1 + y;
 	size_t k = 1 + x;
 	int a = 0;
 	int b = 0;
-	char *c;
-	char *d;
 	
-	while ( i < lim ) 
+	for( ;i < lim; ++i, ++j) 
 	{
 		a = ANSIWINDOW[ansiglb.c].ansiwinbuf[i];
 		b = ANSIWINDOW[ansiglb.c].ansilastmap[i]; 
-		if ( a != b || c != d) 
+		if ( a != b) 
 		{ 
-			setcursor(k, j); 
-			write(0, ANSIWINDOW[ansiglb.c].cpairs[i], ANSIWINDOW[ansiglb.c].colordlen[i]);
-			ANSIWINDOW[ansiglb.c].colorlast[i] = c; 
 			setcursorchars(k, j, ANSIWINDOW[ansiglb.c].ansiwinbuf[i]); 
 			ANSIWINDOW[ansiglb.c].ansilastmap[i] = a; 
-		} 
+		}
 		if ( j == ansiglb.col - rightmarg) 
 		{
 			j = 0 + y;
 			++k;
-		} 
-		++i;
-		++j; 
+		}
 	}
 	return 0;
 }
