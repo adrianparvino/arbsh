@@ -24,7 +24,7 @@ INCLUDES_TARG = $(shell for i in include/$(PREFIX)/*.h ; do echo $(DESTDIR)/$$i 
 
 TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
 
-LDLIBS += -L. -l$(LIBNAME) -lm
+LDLIBS += -L. -l$(LIBNAME) -lm -lgmp
 
 all:
 
