@@ -15,8 +15,8 @@ int main(int argc, char *argv[])
         printf("libc sin =     %19.19f\n", sin(x)); 
         printf("gsin =         %19.19f\n", gsin(x)); 
 	printf("taylor sin =   %19.19f\n", series_func_driver(x, 2)); 
-	printf("confrac sin = %19.19f\n", trigfunc(1, x));
-	printf("\n\n");
+	printf("confrac sin = %19.19f\n", trigfunc(1, x)); 
+	printf("\n\n"); 
         printf("libc cos =     %19.19f\n", cos(x)); 
         printf("gcos =         %19.19f\n", gcos(x)); 
 	printf("taylor cos =   %19.19f\n", series_func_driver(x, 0)); 
@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
 	printf("taylor exp =   %19.19f\n", series_func_driver(x, 4));
 	printf("confrac exp  = %19.19f\n", trigfunc(6, x));
 	printf("\n\n");
+	
 	printf("libc acos =    %19.19f\n", acos(x));
         printf("gacos =        %19.19f\n", gacos(x));
 	printf("taylor gacos = %19.19f\n", aseries_func(x, 1));
