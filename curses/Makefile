@@ -1,4 +1,4 @@
-CFLAGS += -I./include/ -Wall -Wextra
+CFLAGS += -I./include/ -I../include -Wall -Wextra
 
 LDFLAGS +=
 
@@ -83,17 +83,5 @@ install:
 	mkdir -p $(DESTDIR)/include/
 	cp $(STATLIB) $(DESTDIR)/lib/
 	cp $(DYNLIB) $(DESTDIR)/lib/
-	cp $(INCLUDES) $(DESTDIR)/include/
+	cp -r include/* $(DESTDIR)/include/ 
 
-	echo "#!/bin/sh" > uninstall
-	echo "set -x" >> uninstall
-	echo "rm $(INCLUDES_TARG)" >> uninstall
-	echo "rm $(DESTDIR)/lib/$(STATLIB)" >> uninstall
-	echo "rm $(DESTDIR)/lib/$(DYNLIB)" >> uninstall
-
-	
-uninstall:
-
-	chmod +x uninstall
-	./uninstall
-	rm uninstall
