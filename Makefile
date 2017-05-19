@@ -24,7 +24,7 @@ all:
 	-$(MAKE) -C sh
 	-$(MAKE) -C editor
 	-$(MAKE) -C posix
-	-$(MAKE) -C irc
+	#-$(MAKE) -C irc
 	
 
 clean:
@@ -35,7 +35,7 @@ clean:
 	-$(MAKE) -C curses clean
 	-$(MAKE) -C posix clean 
 	-$(MAKE) -C lsb clean 
-	-$(MAKE) -C irc clean
+	#-$(MAKE) -C irc clean
 	-$(MAKE) -C sh clean
 	-$(MAKE) -C editor clean
 	-$(MAKE) -C arbprec clean
@@ -46,7 +46,7 @@ install:
 
 	-$(MAKE) -C posix install 
 	-$(MAKE) -C linux install 
-	-$(MAKE) -C irc install
+	#-$(MAKE) -C irc install
 	-$(MAKE) -C sh install 
 	-$(MAKE) -C editor install
 	# Install toolchain last if it exists
@@ -57,7 +57,7 @@ uninstall:
 
 	-$(MAKE) -C posix uninstall 
 	-$(MAKE) -C linux uninstall 
-	-$(MAKE) -C irc uninstall
+	#-$(MAKE) -C irc uninstall
 	-$(MAKE) -C sh uninstall
 	-$(MAKE) -C editor uninstall
 	#-$(MAKE) -C toolchain uninstall
