@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include <sys/ioctl.h>
 #include <termios.h>
-#include <gtermcap/vt100.h>
+#include <termcap/vt100.h>
 
 /* */
 extern int LINES;
