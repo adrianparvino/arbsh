@@ -19,7 +19,7 @@
 #include <termcap/vt100.h>
 #include <curses/gcurses.h>
 
-struct ANSIWINDOW ANSIWINDOW[10] = {{ 0,0, NULL, NULL, { NULL } , { 0 } , {NULL}}};
+
 struct ansiglb ansiglb = { 0, 0, 0, 0};
 
 /*
@@ -276,10 +276,8 @@ void i_edit(void)
 { 
 	while ( running )
 	{ 
-		dothink = 0;
 		if ( winchg == 1 )
 		{ 
-			dothink = 1; 
 			ansiinit(); 
 			getdimensions();
 			winchg=0; 
@@ -315,7 +313,7 @@ void i_setup(void)
 	
 	ansiinit();
 	getdimensions();
-	ansicreate();
+	//ansicreate();
 	/* Init line structure */
 	l = (struct Line *) ecalloc(1, sizeof(struct Line));
 	l->c = ecalloc(1, LINSIZ);
