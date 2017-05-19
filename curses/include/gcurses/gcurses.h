@@ -9,6 +9,10 @@
 #include <termios.h>
 #include <gtermcap/vt100.h>
 
+/* */
+extern int LINES;
+extern int COLS;
+
 /* limits */
 #define CURSES_MAX 10
 #define CURSES_BUFSIZ 512

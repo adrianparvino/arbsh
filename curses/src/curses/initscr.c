@@ -25,8 +25,8 @@ WINDOW *initscr(void)
 	ansiglb.t_eraseall = T_ERASEALL;
 
 	/* populate stdscr */
-	win->x = ansiglb.col;
-	win->y = ansiglb.row;
+	COLS = win->x = ansiglb.col;
+	LINES = win->y = ansiglb.row;
 
 	len = sprintf(buf, "%s%s", ansiglb.t_eraseall, ansiglb.t_insertreset);
 	write(1, buf, len);
