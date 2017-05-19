@@ -13,7 +13,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <curses.h>
+#include <gcurses/gcurses.h>
 #include "../termcap/include/termcap/vt100.h" 
 
 /*
@@ -530,7 +530,7 @@ size_t edmygetch(void)
 			}
 		}
 		return len;
-	case KEY_BACKSPACE:
+	case K_BACKSPACE:
 		f_delete();
 		break;
 	case K_CTRLEXX:
