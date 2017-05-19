@@ -10,17 +10,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <limits.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <signal.h>
-#include <sys/types.h>
-
-#include <termcap/vt100.h>
-#include <curses/gcurses.h>
-
-
-struct ansiglb ansiglb = { 0, 0, 0, 0};
+#include <curses.h>
+#include "../termcap/include/termcap/vt100.h" 
 
 /*
 	See LICENSE file for copyright and license details. 
@@ -53,8 +47,6 @@ int ch = 0;		/* Used to store input */
 char cb[7] = { 0 };	/* Used to store input */ 
 
 char *fname = NULL;
-int cols = 0;
-int lines = 0;
 int winchg = 0;
 int cflags = 0; 
 int tabstop = 8;
@@ -68,7 +60,7 @@ int tabstop = 8;
 /* function prototypes */
 void *ecalloc(size_t, size_t);
 void *erealloc(void *, size_t); 
-size_t edfastgetch(void);
+size_t edmygetch(void);
 void f_delete(void);
 void f_insert(void);
 void i_calcvlen(struct Line * l); 
@@ -85,10 +77,19 @@ struct filepos m_nextchar(struct filepos);
 struct filepos m_prevchar(struct filepos);
 struct filepos m_nextline(struct filepos);
 struct filepos m_prevline(struct filepos);
-void getdimensions(void);
+int getdimensions(void);
 static void sigwinch(int);
 int vlencnt(int, int);
 int vlinecnt(struct Line *);
+
+
+int mygetch()
+{
+        char ret;
+        read(0, &ret, 1);
+        return ret;
+}
+
 
 
 int main(int argc, char *argv[])
@@ -99,8 +100,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	setlocale(LC_ALL, "");
-	termcatch(~(ICANON | ECHO), 0);
+	setlocale(LC_ALL, ""); 
+	initscr();
 	signal(SIGWINCH, sigwinch);
 	i_setup();
 	fname = argv[1];
@@ -215,8 +216,7 @@ void i_calcvlen(struct Line * l)
 } 
 
 void i_die(const char *str)
-{ 
-	termcatch(~(ICANON | ECHO), 1);
+{
 	write(2, str, strlen(str)); 
 	exit(1);
 }
@@ -263,12 +263,6 @@ bool i_deltext(struct filepos pos0, struct filepos pos1)
 	} 
 
 	return integrity;
-} 
-
-void getdimensions(void)
-{
-	cols = ansiglb.col;
-	lines = ansiglb.row; 
 }
 
 /* Main editing loop */
@@ -278,12 +272,11 @@ void i_edit(void)
 	{ 
 		if ( winchg == 1 )
 		{ 
-			ansiinit(); 
-			getdimensions();
-			winchg=0; 
+			initscr(); 
+			winchg = 0; 
 		}
 		i_update(); 
-		edfastgetch();
+		edmygetch();
 	}
 } 
 
@@ -311,9 +304,7 @@ void i_setup(void)
 {
 	struct Line *l = NULL; 
 	
-	ansiinit();
-	getdimensions();
-	//ansicreate();
+	//getdimensions(); 
 	/* Init line structure */
 	l = (struct Line *) ecalloc(1, sizeof(struct Line));
 	l->c = ecalloc(1, LINSIZ);
@@ -366,7 +357,7 @@ void i_update(void)
 				i++;
 				scrline = scrline->prev;
 			}
-			if(i < 0 || i > lines) {
+			if(i < 0 || i > LINES) {
 				scrline = l; 
 			}
 			break;
@@ -376,7 +367,7 @@ void i_update(void)
 		vlines = vlinecnt(l);
 		if(fcur.l == l) { 
 			/* Can't have fcur.l after screen end, move scrline down */
-			while(irow + vlines > lines && scrline->next) {
+			while(irow + vlines > LINES && scrline->next) {
 				irow -= vlinecnt(scrline);
 				i += vlinecnt(scrline); 
 				scrline = scrline->next;
@@ -387,8 +378,8 @@ void i_update(void)
 	} 
 	/* end scroll area ? */ 
 	
-	/* Actually update lines on screen */
-	for(irow = 1 , l = scrline; irow < lines;
+	/* Actually update LINES on screen */
+	for(irow = 1 , l = scrline; irow < LINES;
 		irow += vlines, iline++) {
 		vlines = vlinecnt(l);
 		if(fcur.l == l) { 
@@ -397,41 +388,46 @@ void i_update(void)
 			cursor_r = irow;
 			for(ichar = 0; ichar < fcur.o; ichar++)
 				cursor_c += vlencnt(fcur.l->c[ichar], cursor_c);
-			while(cursor_c >= cols) {
-				cursor_c -= cols;
+			while(cursor_c >= COLS) {
+				cursor_c -= COLS;
 				cursor_r++;
 			}
 		} 
 		if(l)
 			l->dirty = FALSE; 
-		for(ixrow = ichar = ivchar = 0; ixrow < vlines && (irow + ixrow) < lines; ixrow++)
-		{
-			setcursor((irow + ixrow ), (ivchar % cols));
-			while(ivchar < (1 + ixrow) * cols)
+		for(ixrow = ichar = ivchar = 0; ixrow < vlines && (irow + ixrow) < LINES; ixrow++)
+		{ 
+			move((irow + ixrow ), (ivchar % COLS) );
+			refresh(); 
+			while(ivchar < (1 + ixrow) * COLS) 
 			{
-				if(l && ichar < l->len) {
-					/* Tab nightmare */
+				if(l && ichar < l->len) { 
 					if(l->c[ichar] == '\t') { 
-						write(1, WHITESPACE, vlencnt('\t', ivchar)); 
+						size_t leng = vlencnt('\t', ivchar);
+						size_t z = 0;
+						for (; z < leng ; ++z)
+							addch(' ');
 					}
 					else {
-						write(1, l->c + ichar, 1);
+						addch(l->c[ichar]);
 					}
 					ivchar += vlencnt(l->c[ichar], ivchar);
 					ichar++;
 				} else { 
-					break;
+					addch(' ');
+					++ivchar;
+					++ichar; 
 				}
 				
-			}
-			write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
+			} 
 		} 
 		if(l)
 			l = l->next;
 			
-	} 
-	/* Position cursor  ?? */
-	setcursor(cursor_r, cursor_c  + 1); 
+	}
+
+	move(cursor_r, cursor_c);
+	refresh();
 } 
 
 bool i_writefile(char *fname)
@@ -491,12 +487,12 @@ struct filepos m_nextline(struct filepos pos) {
 		pos.o = pos.l->len;
 	}
 	return pos;
-} 
+}
 
 struct filepos m_prevline(struct filepos pos) {
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
-		ivchar += vlencnt(pos.l->c[ichar], (ivchar % (cols - 1))); 
+		ivchar += vlencnt(pos.l->c[ichar], (ivchar % (COLS - 1))); 
 	if(pos.l->prev) { 
 		for(pos.l = pos.l->prev, pos.o = ichar = 0; ichar < ivchar && pos.o < pos.l->len; pos.o++)
 			ichar += vlencnt(pos.l->c[pos.o], ichar); 
@@ -506,18 +502,18 @@ struct filepos m_prevline(struct filepos pos) {
 	return pos;
 } 
 
-size_t edfastgetch(void)
+size_t edmygetch(void)
 {
 	static size_t len = 0; 
 	  
-	ch = fastgetch(); 
+	ch = mygetch(); 
 
 	switch (ch) { 
 	case K_ESCAPE: 
-		ch = fastgetch(); 
+		ch = mygetch(); 
 		switch (ch) {
 			case '[': 
-				ch = fastgetch(); 
+				ch = mygetch(); 
 				switch (ch) { 
 					case 'A': /* arrow up */ 
 						fcur = m_prevline(fcur); 
@@ -534,7 +530,7 @@ size_t edfastgetch(void)
 			}
 		}
 		return len;
-	case K_BACKSPACE:
+	case KEY_BACKSPACE:
 		f_delete();
 		break;
 	case K_CTRLEXX:
@@ -567,6 +563,6 @@ int vlencnt(int ch, int col)
 int vlinecnt(struct Line *l)
 {
 	if ( l )
-		return ( 1 + ( l->vlen / cols));
+		return ( 1 + ( l->vlen / COLS));
 	return 1;
 }
