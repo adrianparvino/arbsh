@@ -1,4 +1,4 @@
-#include <gcurses/gcurses.h>
+#include <curses.h>
 
 char *_vt52_erase(char *buf)
 {

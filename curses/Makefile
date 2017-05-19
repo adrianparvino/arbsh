@@ -27,8 +27,8 @@ LDLIBS += -L. -l$(LIBNAME)
 all:
 
 	$(MAKE) static
-	$(MAKE) cleanobj
-	$(MAKE) dynamic
+	#$(MAKE) cleanobj
+	#$(MAKE) dynamic
 
 
 static: $(OBJ)
@@ -82,6 +82,6 @@ install:
 	mkdir -p $(DESTDIR)/lib/
 	mkdir -p $(DESTDIR)/include/
 	cp $(STATLIB) $(DESTDIR)/lib/
-	cp $(DYNLIB) $(DESTDIR)/lib/
+	#cp $(DYNLIB) $(DESTDIR)/lib/
 	cp -r include/* $(DESTDIR)/include/ 
 
