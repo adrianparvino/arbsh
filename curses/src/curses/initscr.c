@@ -1,4 +1,4 @@
-#include <gcurses/gcurses.h>
+#include <curses.h>
 
 // TODO: Load values into ansiglb at run time from terminfo 
 
