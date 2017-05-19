@@ -1,4 +1,4 @@
-#include <gcurses/gcurses.h>
+#include <curses.h>
 
 int main(void)
 {

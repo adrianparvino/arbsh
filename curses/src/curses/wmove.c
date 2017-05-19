@@ -1,4 +1,4 @@
-#include <gcurses/gcurses.h>
+#include <curses.h>
 
 int wmove(WINDOW *win, size_t x, size_t y)
 {
