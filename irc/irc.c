@@ -18,11 +18,8 @@
 
 /* local libraries */
 #define HASLIBM
-//#include <gstring.h>
 #include <curses/gcurses.h>
-//#include <gstdio.h>
 #include <termcap/vt100.h>
-
 #include <readline/greadline.h>
 
 /* 
@@ -130,7 +127,7 @@ int main(int argc, char *argv[])
 	
 	if (!(glb.nick = malloc(sizeof(char) *BUFSIZ)))
                 return 1;
-	gmemset(glb.nick, 0, BUFSIZ);
+	memset(glb.nick, 0, BUFSIZ);
 	strcpy(glb.nick, "None");
        
         while ( *argv )
@@ -251,12 +248,12 @@ int chadd(char *name)
 
         if (!(ss[i].chl[ss[i].nch].name = malloc(sizeof(char) *BUFSIZ)))
                 panic("Out of memory 3.");
-        gmemset(ss[i].chl[ss[i].nch].name, 0, BUFSIZ);
+        memset(ss[i].chl[ss[i].nch].name, 0, BUFSIZ);
         strcpy(ss[i].chl[ss[i].nch].name, name);
         ss[i].chl[ss[i].nch].sz = BUFSIZ;
         if (!(ss[i].chl[ss[i].nch].buf = malloc(sizeof(char) * BUFSIZ)))
                 panic("Out of memory 4.");
-        gmemset(ss[i].chl[ss[i].nch].buf, 0, BUFSIZ);
+        memset(ss[i].chl[ss[i].nch].buf, 0, BUFSIZ);
 
         ss[i].chl[ss[i].nch].eol = ss[i].chl[ss[i].nch].buf;
         ss[i].chl[ss[i].nch].scroll = 0;
@@ -745,7 +742,7 @@ int dialip(const char *server, unsigned short port)
 	int sck;
 	struct sockaddr_in servaddr;
 
-	gmemset(&servaddr, 0, sizeof(servaddr));
+	memset(&servaddr, 0, sizeof(servaddr));
 	servaddr.sin_family = AF_INET;
 	servaddr.sin_port = htons(port);
 	if (!(sck = socket(AF_INET, SOCK_STREAM, 0))) 
@@ -768,7 +765,7 @@ int dialurl(const char *host, unsigned short port)
 	hints.ai_socktype = SOCK_STREAM;
 	if (getaddrinfo(host, 0, &hints, &res))
 		return -1;
-	gmemcpy(&servaddr, res->ai_addr, sizeof servaddr);
+	memcpy(&servaddr, res->ai_addr, sizeof servaddr);
 	servaddr.sin_port = htons(port);
 	freeaddrinfo(res);
 	if (!(sck = socket(AF_INET, SOCK_STREAM, 0)))
