@@ -18,7 +18,7 @@
 
 /* local libraries */
 #define HASLIBM
-#include <curses/gcurses.h>
+#include <gcurses/gcurses.h>
 #include <termcap/vt100.h>
 #include <readline/greadline.h>
 
