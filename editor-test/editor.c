@@ -14,11 +14,13 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <curses.h>
+#include <curses/gcurses.h>
 #include "../termcap/include/termcap/vt100.h"
 
 int cols = 0;
 int lines = 0;
-int ansiinit(void)
+
+int gansiinit(void)
 {
         int ret = 0;
         struct winsize w;
@@ -27,11 +29,11 @@ int ansiinit(void)
                 return ret;
         cols = w.ws_col;
         lines = w.ws_row;
-        write(1, T_ERASEALL, T_ERASEALL_SZ);
-        write(1,T_INSERTRESET, T_INSERTRESET_SZ);
+        //write(1, T_ERASEALL, T_ERASEALL_SZ);
+        //write(1,T_INSERTRESET, T_INSERTRESET_SZ);
         return ret;
 }
-
+/*
 int fastgetch()
 {
         char s[1];
@@ -39,7 +41,7 @@ int fastgetch()
         read(0, s, 1);
         return s[0];
 }
-
+*/
 /*
 	See LICENSE file for copyright and license details. 
 */
@@ -117,6 +119,7 @@ int main(int argc, char *argv[])
 
 	setlocale(LC_ALL, "");
 	//termcatch(~(ICANON | ECHO), 0);
+	initscr();
 	signal(SIGWINCH, sigwinch);
 	i_setup();
 	fname = argv[1];
@@ -294,7 +297,10 @@ void i_edit(void)
 	{ 
 		if ( winchg == 1 )
 		{ 
-			ansiinit(); 
+			gansiinit(); 
+			initscr();
+			//	nocanon();
+			noecho();
 			//getdimensions();
 			winchg=0; 
 		}
@@ -327,7 +333,7 @@ void i_setup(void)
 {
 	struct Line *l = NULL; 
 	
-	ansiinit();
+	gansiinit();
 	//getdimensions();
 	//ansicreate();
 	/* Init line structure */
@@ -423,33 +429,60 @@ void i_update(void)
 		for(ixrow = ichar = ivchar = 0; ixrow < vlines && (irow + ixrow) < lines; ixrow++)
 		{
 			//setcursor((irow + ixrow ), (ivchar % cols));
-			move((irow + ixrow ), (ivchar % cols));
+			
+			move((irow + ixrow ), (ivchar % cols) );
+			refresh();
+			//move((irow + ixrow ),1);
+			
+			
 			while(ivchar < (1 + ixrow) * cols)
+			
 			{
 				if(l && ichar < l->len) {
 					/* Tab nightmare */
 					if(l->c[ichar] == '\t') { 
-						write(1, WHITESPACE, vlencnt('\t', ivchar)); 
+						//write(1, WHITESPACE, vlencnt('\t', ivchar)); 
+						//addme
+						size_t leng = vlencnt('\t', ivchar);
+						size_t z = 0;
+						for (; z < leng ; ++z)
+							addch(' ');
 					}
 					else {
-						write(1, l->c + ichar, 1);
+						//write(1, l->c + ichar, 1);	
+						chtype ch = l->c[ichar];
+						
+						addch(ch);
 					}
 					ivchar += vlencnt(l->c[ichar], ivchar);
 					ichar++;
 				} else { 
-					break;
+					//write(1, " ", 1);
+					addch(' ');
+					++ivchar;
+					++ichar;
+					//write(1, WHITESPACE, (( 1 + ixrow) * cols) - ivchar);
+					//ivchar = ( 1 + ixrow) * cols;
+					//break;
 				}
 				
 			}
-			write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
+			
+			//write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
+			//write(1, "\n", 1);
 		} 
 		if(l)
 			l = l->next;
 			
 	} 
 	/* Position cursor  ?? */
-	//setcursor(cursor_r, cursor_c  + 1); 
-	move(cursor_r, cursor_c  + 1); 
+	
+	//setcursor(cursor_r, cursor_c); 
+	
+	move(cursor_r, cursor_c);
+	refresh();
+	//write(1, "", 1);
+	
 } 
 
 bool i_writefile(char *fname)

@@ -8,7 +8,7 @@ CFLAGS += -Wall -Wextra -I../include
 
 LDFLAGS += -L../lib 
 
-LDLIBS += -lcurses 
+LDLIBS += -lcurses -lgcurses
 
 OBJ = $(shell for i in *.c; do echo $${i%%.c} ; done)
 
