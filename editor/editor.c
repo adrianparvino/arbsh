@@ -13,7 +13,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <signal.h>
-//#include <gcurses/gcurses.h>
 #include <curses.h>
 #include "../termcap/include/termcap/vt100.h" 
 
