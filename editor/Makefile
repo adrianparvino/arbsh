@@ -20,12 +20,8 @@ install:
 
 	-@mkdir -p $(DESTDIR)/$(PREFIX)/
 	-@cp -a $(OBJ) $(DESTDIR)/$(PREFIX)/
-	-echo "rm $(OBJ_TARG)" > uninstall
+	-echo "rm $(OBJ_TARG)" > uninstall 
 
-uninstall:
-
-	-chmod +x uninstall
-	-./uninstall
 
 clean:
 
