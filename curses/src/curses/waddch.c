@@ -16,8 +16,6 @@ int waddch(WINDOW *win, chtype ch)
 	}
 	if (win->len > 0)
 		win->len--;
-
-	*win->rp = ch;
 	
 	if (win->len == 0)
 	{
@@ -26,6 +24,7 @@ int waddch(WINDOW *win, chtype ch)
 		win->len = (win->x * win->y);
 		return ch;
 	}
+	*win->rp = ch;
 	return *win->rp++;
 }
 
