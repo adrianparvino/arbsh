@@ -7,6 +7,7 @@ int wmove(WINDOW *win, size_t x, size_t y)
 	char str[128] = { 0 };
 	size_t len = 0;
 	len = sprintf(str, "\033[%zu;%zuH", x, y);
+	//write(1, str, len);
 	write(win->fd, str, len);
 	return 1;
 }
