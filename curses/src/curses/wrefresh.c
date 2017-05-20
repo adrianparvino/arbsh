@@ -4,7 +4,7 @@ int wrefresh(WINDOW *win)
 {
 	char buf[32];
 	size_t len = 0;
-	_setcursor(1, 1);
+	_setcursor(1, 0);
 	//_setcursor(win->px, win->py);
 	//clrtobot();
 	//if (win->clearok == 1)
