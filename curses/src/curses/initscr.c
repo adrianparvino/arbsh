@@ -13,6 +13,8 @@ WINDOW *initscr(void)
 	if ((ret = ioctl(0, TIOCGWINSZ, &w)) == -1)
 		return NULL;
 
+	noecho();
+
 	/* populate the global structure */
 	ansiglb.col = w.ws_col;
 	ansiglb.row = w.ws_row;
