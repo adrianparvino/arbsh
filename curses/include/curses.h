@@ -32,6 +32,8 @@ typedef struct{
         char *colorlast[CURSES_BUFSIZ];
 	size_t x;				/* dimensions */
 	size_t y;				/* dimensions */
+	size_t px;
+	size_t py;
 	bool clearok;
 } WINDOW;
 
