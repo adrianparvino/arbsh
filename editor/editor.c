@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <curses.h>
-#include "../termcap/include/termcap/vt100.h" 
+#include <termcap/vt100.h>
 
 /*
 	See LICENSE file for copyright and license details. 
@@ -80,8 +80,7 @@ struct filepos m_prevline(struct filepos);
 int getdimensions(void);
 static void sigwinch(int);
 int vlencnt(int, int);
-int vlinecnt(struct Line *);
-
+int vlinecnt(struct Line *); 
 
 int mygetch()
 {
@@ -89,8 +88,6 @@ int mygetch()
         read(0, &ret, 1);
         return ret;
 }
-
-
 
 int main(int argc, char *argv[])
 { 
