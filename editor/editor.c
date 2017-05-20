@@ -37,29 +37,27 @@ struct filepos {	/** A position in the file */
 } filepos;
 
 /* Globals */
-
-struct Line *fstline;	/* First line */
-struct Line *lstline;	/* Last line  */
-struct Line *scrline;	/* First line seen on screen */
-struct filepos fsel;	/* Selection point on file   */
-struct filepos fcur;	/* Insert position on file, cursor, current position */
-char cb[7] = { 0 };	/* Used to store input */
-
+struct Line *fstline;
+struct Line *lstline;
+struct Line *scrline;
+struct filepos fsel;
+struct filepos fcur;
+char cb[7] = { 0 };
 char *fname = NULL;
 int winchg = 0;
-int cflags = 0; 
+int cflags = 0;
 int tabstop = 8;
 
-/* macros */
-#define	TRUE	1
-#define	FALSE	0
-#define	LINSIZ	128 
-#define DELIM	0
+/* macros */ 
+#define TRUE 1
+#define FALSE 0
+#define	LINSIZ 128
+#define DELIM 0
 
 /* function prototypes */
 void *ecalloc(size_t, size_t);
 void *erealloc(void *, size_t); 
-size_t edi_getch(void);
+size_t edgetch(void);
 void f_delete(void);
 void f_insert(void);
 void i_calcvlen(struct Line * l); 
@@ -79,8 +77,7 @@ struct filepos m_prevline(struct filepos);
 int getdimensions(void);
 static void sigwinch(int);
 int vlencnt(int, int);
-int vlinecnt(struct Line *); 
-int i_getch(void);
+int vlinecnt(struct Line *);
 
 int main(int argc, char *argv[])
 { 
@@ -264,7 +261,7 @@ void i_edit(void)
 			winchg = 0; 
 		}
 		i_update(); 
-		edi_getch();
+		edgetch();
 	}
 } 
 
@@ -385,7 +382,7 @@ void i_update(void)
 		for(ixrow = ichar = ivchar = 0; ixrow < vlines && (irow + ixrow) < LINES; ixrow++)
 		{ 
 			move((irow + ixrow ), (ivchar % COLS));
-			refresh(); 
+			//refresh(); 
 			while(ivchar < (1 + ixrow) * COLS) 
 			{
 				if(l && ichar < l->len)
@@ -405,9 +402,11 @@ void i_update(void)
 					ichar++;
 				} else
 				{ 
-					addch(' ');
-					++ivchar;
-					++ichar; 
+					//addch(' ');
+					//++ivchar;
+					//++ichar; 
+					addch('\n');
+					break;
 				}
 				
 			} 
@@ -507,20 +506,20 @@ struct filepos m_prevline(struct filepos pos)
 	return pos;
 } 
 
-size_t edi_getch(void)
+size_t edgetch(void)
 {
 	static size_t len = 0; 
 	  
-	char ch = i_getch(); 
+	char ch = getch(); 
 
 	switch (ch)
 	{ 
 		case K_ESCAPE: 
-			ch = i_getch(); 
+			ch = getch(); 
 			switch (ch)
 			{
 				case '[': 
-					ch = i_getch(); 
+					ch = getch(); 
 					switch (ch)
 					{ 
 						case 'A': /* arrow up */ 
@@ -573,12 +572,5 @@ int vlinecnt(struct Line *l)
 	if ( l )
 		return ( 1 + ( l->vlen / COLS));
 	return 1;
-}
-
-int i_getch()
-{
-        char ret;
-        read(0, &ret, 1);
-        return ret;
-}
+} 
 
