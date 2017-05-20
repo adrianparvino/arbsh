@@ -9,5 +9,6 @@ int wrefresh(WINDOW *win)
 		len = sprintf(buf, "%s", ansiglb.t_eraseall);
 		write(win->fd, buf, len);
 	}
+	write(win->fd, win->buf, win->rp - win->buf);
 	return 0;
 }
