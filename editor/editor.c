@@ -37,14 +37,13 @@ struct filepos {	/** A position in the file */
 } filepos;
 
 /* Globals */
-int running = 1; 
+
 struct Line *fstline;	/* First line */
 struct Line *lstline;	/* Last line  */
 struct Line *scrline;	/* First line seen on screen */
 struct filepos fsel;	/* Selection point on file   */
 struct filepos fcur;	/* Insert position on file, cursor, current position */
-int ch = 0;		/* Used to store input */
-char cb[7] = { 0 };	/* Used to store input */ 
+char cb[7] = { 0 };	/* Used to store input */
 
 char *fname = NULL;
 int winchg = 0;
@@ -60,12 +59,12 @@ int tabstop = 8;
 /* function prototypes */
 void *ecalloc(size_t, size_t);
 void *erealloc(void *, size_t); 
-size_t edmygetch(void);
+size_t edi_getch(void);
 void f_delete(void);
 void f_insert(void);
 void i_calcvlen(struct Line * l); 
 bool i_deltext(struct filepos, struct filepos);
-void i_die(const char *str); 
+void i_die(const char *str, int);
 void i_edit(void); 
 void i_readfile(void);
 void i_setup(void); 
@@ -81,21 +80,12 @@ int getdimensions(void);
 static void sigwinch(int);
 int vlencnt(int, int);
 int vlinecnt(struct Line *); 
-
-int mygetch()
-{
-        char ret;
-        read(0, &ret, 1);
-        return ret;
-}
+int i_getch(void);
 
 int main(int argc, char *argv[])
 { 
 	if ( argc < 2 )
-	{
-		write(2, "Requires a file to edit\n", 24);
-		return 1;
-	}
+		i_die("Requires a file to edit\n", 1);
 
 	setlocale(LC_ALL, ""); 
 	initscr();
@@ -104,26 +94,24 @@ int main(int argc, char *argv[])
 	fname = argv[1];
 	i_readfile();
 	i_edit();
-	i_die("");
+	i_die("", 0);
 	return 0;
 } 
 
 void *ecalloc(size_t nmemb, size_t size)
 {
-	void *p; 
-	p = calloc(nmemb, size);
-	if(p == NULL)
-		i_die("Can't calloc.\n");
-	return p;
+	void *ret; 
+	if(!(ret = calloc(nmemb, size)))
+		i_die("Can't calloc.\n", 1);
+	return ret;
 }
 
 void *erealloc(void *ptr, size_t size)
 {
-	void *p; 
-	p = realloc(ptr, size);
-	if(p == NULL)
-		i_die("Can't realloc.\n"); 
-	return p;
+	void *ret; 
+	if (!(ret = realloc(ptr, size)))
+		i_die("Can't realloc.\n", 1); 
+	return ret;
 }
 
 void f_delete(void)
@@ -159,9 +147,10 @@ struct filepos i_addtext(char *buf, struct filepos pos)
 	struct filepos f;
 	char c;
 	
-	for(c = buf[0]; c != DELIM; c = buf[++i]) { 
-		/* newline / line feed */
-		if(c == '\n' || c == '\r') {
+	for(c = buf[0]; c != DELIM; c = buf[++i])
+	{ 
+		if(c == '\n' || c == '\r')
+		{
 			lnew = (struct Line *)ecalloc(1, sizeof(struct Line));
 			lnew->c = ecalloc(1, LINSIZ);
 			lnew->dirty = l->dirty = TRUE;
@@ -176,7 +165,8 @@ struct filepos i_addtext(char *buf, struct filepos pos)
 			l->next = lnew;
 			l = lnew;
 			/* \n in the middle of a line */ 
-			if(o + il < l->prev->len) {
+			if(o + il < l->prev->len)
+			{
 				f.l = l;
 				f.o = 0;
 				i_addtext(&(l->prev->c[o + il]), f);
@@ -185,7 +175,8 @@ struct filepos i_addtext(char *buf, struct filepos pos)
 			}
 			i_calcvlen(l->prev);
 			o = il = 0; 
-		} else {
+		} else
+		{
 			/* Regular char */
 			if(2 + (l->len) >= LINSIZ * (l->mul))
 				l->c = (char *) erealloc(l->c, LINSIZ * (++(l->mul)));
@@ -212,10 +203,10 @@ void i_calcvlen(struct Line * l)
 		l->vlen += vlencnt(l->c[i], l->vlen);
 } 
 
-void i_die(const char *str)
+void i_die(const char *str, int exitnumber)
 {
 	write(2, str, strlen(str)); 
-	exit(1);
+	exit(exitnumber);
 }
 
 /* Delete text between pos0 and pos1, which MUST be in order, fcur integrity
@@ -228,20 +219,21 @@ bool i_deltext(struct filepos pos0, struct filepos pos1)
 	if(pos0.l == fsel.l)
 		integrity = (fsel.o <= pos0.o || (pos0.l == pos1.l
 			&& fsel.o > pos1.o));
-	if(pos0.l == pos1.l) { 
+	if(pos0.l == pos1.l)
+	{ 
 		memmove(pos0.l->c + pos0.o, pos0.l->c + pos1.o,
 			(pos0.l->len - pos1.o));
 		pos0.l->dirty = TRUE;
 		pos0.l->len -= (pos1.o - pos0.o);
 		pos0.l->c[pos0.l->len] = DELIM;
 		i_calcvlen(pos0.l); 
-	} else { 
-
+	} else
+	{
 		pos0.l->len = pos0.o;
 		pos0.l->c[pos0.l->len] = DELIM;
-		pos0.l->dirty = TRUE; // <<-- glitch in screen updates! 
-		// i_calcvlen is unneeded here, because we call i_addtext later
-		while(pos1.l != ldel) {
+		pos0.l->dirty = TRUE;
+		while(pos1.l != ldel)
+		{
 			if(pos1.l == pos0.l->next)
 				i_addtext(&(pos0.l->next->c[pos1.o]), pos0);
 			if(pos0.l->next->next)
@@ -262,10 +254,9 @@ bool i_deltext(struct filepos pos0, struct filepos pos1)
 	return integrity;
 }
 
-/* Main editing loop */
 void i_edit(void)
 { 
-	while ( running )
+	while ( 1 )
 	{ 
 		if ( winchg == 1 )
 		{ 
@@ -273,7 +264,7 @@ void i_edit(void)
 			winchg = 0; 
 		}
 		i_update(); 
-		edmygetch();
+		edi_getch();
 	}
 } 
 
@@ -283,12 +274,12 @@ void i_readfile(void)
 	ssize_t n;
 	char *buf = NULL; 
 
-	if((fd = open(fname, O_RDONLY)) == -1) { 
-		i_die("unable to open file\n");
-	} 
+	if((fd = open(fname, O_RDONLY)) == -1)
+		i_die("unable to open file\n", 1);
 
 	buf = ecalloc(1, BUFSIZ + 1);
-	while((n = read(fd, buf, BUFSIZ)) > 0) {
+	while((n = read(fd, buf, BUFSIZ)) > 0)
+	{
 		buf[n] = DELIM;
 		fcur = i_addtext(buf, fcur);
 	}
@@ -299,10 +290,7 @@ void i_readfile(void)
 
 void i_setup(void) 
 {
-	struct Line *l = NULL; 
-	
-	//getdimensions(); 
-	/* Init line structure */
+	struct Line *l = NULL;
 	l = (struct Line *) ecalloc(1, sizeof(struct Line));
 	l->c = ecalloc(1, LINSIZ);
 	l->dirty = FALSE;
@@ -312,9 +300,7 @@ void i_setup(void)
 	l->prev = NULL; 
 	fstline = lstline = scrline = fcur.l = l;
 	fcur.o = 0;
-	fsel = fcur; 
-
-	return; 
+	fsel = fcur;
 } 
 
 /* Exchange pos0 and pos1 if not in order */
@@ -322,11 +308,11 @@ void i_sortpos(struct filepos * pos0, struct filepos * pos1)
 {
 	struct filepos p;
 
-	for(p.l = fstline; p.l; p.l = p.l->next) {
-		if(p.l == pos0->l || p.l == pos1->l) {
-			if((p.l == pos0->l && (p.l == pos1->l
-					&& pos1->o < pos0->o)) || (p.l == pos1->l
-				&& p.l != pos0->l))
+	for(p.l = fstline; p.l; p.l = p.l->next)
+	{
+		if(p.l == pos0->l || p.l == pos1->l)
+		{
+			if((p.l == pos0->l && (p.l == pos1->l && pos1->o < pos0->o)) || (p.l == pos1->l && p.l != pos0->l))
 				p = *pos0, *pos0 = *pos1, *pos1 = p;
 			break;
 		}
@@ -342,29 +328,33 @@ void i_update(void)
 	struct Line *l;
 	
 	/* Check offset */
-	for(l = fstline, iline = 1;
-		l && scrline->prev && l != scrline; iline++, l = l->next) {
-		if(l == fcur.l) { /* Can't have fcur.l before scrline, move scrline up */
+	for(l = fstline, iline = 1; l && scrline->prev && l != scrline; iline++, l = l->next)
+	{
+		if(l == fcur.l)
+		{
 			i = 0;
-			while(l != scrline) {
-				if(vlinecnt(scrline) > 1) {
+			while(l != scrline)
+			{
+				if(vlinecnt(scrline) > 1)
+				{
 					i = -1;
 					break;
 				}
 				i++;
 				scrline = scrline->prev;
 			}
-			if(i < 0 || i > LINES) {
-				scrline = l; 
-			}
+			if(i < 0 || i > LINES)
+				scrline = l;
 			break;
 		} 
 	}
-	for(i = irow = 1, l = scrline; l; l = l->next, irow += vlines) { 
+	for(i = irow = 1, l = scrline; l; l = l->next, irow += vlines)
+	{ 
 		vlines = vlinecnt(l);
-		if(fcur.l == l) { 
-			/* Can't have fcur.l after screen end, move scrline down */
-			while(irow + vlines > LINES && scrline->next) {
+		if(fcur.l == l)
+		{ 
+			while(irow + vlines > LINES && scrline->next)
+			{
 				irow -= vlinecnt(scrline);
 				i += vlinecnt(scrline); 
 				scrline = scrline->next;
@@ -373,19 +363,19 @@ void i_update(void)
 			break;
 		}
 	} 
-	/* end scroll area ? */ 
 	
-	/* Actually update LINES on screen */
-	for(irow = 1 , l = scrline; irow < LINES;
-		irow += vlines, iline++) {
+	/*  update screen */
+	for(irow = 1 , l = scrline; irow < LINES; irow += vlines, iline++) 
+	{
 		vlines = vlinecnt(l);
-		if(fcur.l == l) { 
-			/* Update screen cursor position */
+		if(fcur.l == l)
+		{
 			cursor_c = 0;
 			cursor_r = irow;
 			for(ichar = 0; ichar < fcur.o; ichar++)
 				cursor_c += vlencnt(fcur.l->c[ichar], cursor_c);
-			while(cursor_c >= COLS) {
+			while(cursor_c >= COLS)
+			{
 				cursor_c -= COLS;
 				cursor_r++;
 			}
@@ -394,23 +384,27 @@ void i_update(void)
 			l->dirty = FALSE; 
 		for(ixrow = ichar = ivchar = 0; ixrow < vlines && (irow + ixrow) < LINES; ixrow++)
 		{ 
-			move((irow + ixrow ), (ivchar % COLS) );
+			move((irow + ixrow ), (ivchar % COLS));
 			refresh(); 
 			while(ivchar < (1 + ixrow) * COLS) 
 			{
-				if(l && ichar < l->len) { 
-					if(l->c[ichar] == '\t') { 
+				if(l && ichar < l->len)
+				{ 
+					if(l->c[ichar] == '\t')
+					{ 
 						size_t leng = vlencnt('\t', ivchar);
 						size_t z = 0;
 						for (; z < leng ; ++z)
 							addch(' ');
 					}
-					else {
+					else 
+					{
 						addch(l->c[ichar]);
 					}
 					ivchar += vlencnt(l->c[ichar], ivchar);
 					ichar++;
-				} else { 
+				} else
+				{ 
 					addch(' ');
 					++ivchar;
 					++ichar; 
@@ -440,7 +434,8 @@ bool i_writefile(char *fname)
 		/* error */ 
 		return FALSE;
 	} 
-	for(l = fstline; wok && l; l = l->next) {
+	for(l = fstline; wok && l; l = l->next)
+	{
 		if(write(fd, l->c, l->len) == -1 || (l->next && write(fd, "\n", 1) == -1))
 			wok = FALSE;
 	} 
@@ -448,102 +443,118 @@ bool i_writefile(char *fname)
 	return wok;
 }
 
-struct filepos m_bol(struct filepos pos) {
+struct filepos m_bol(struct filepos pos)
+{
 	pos.o = 0;
 	return pos;
 }
 
-struct filepos m_nextchar(struct filepos pos) {
-	if(pos.o < pos.l->len) {
+struct filepos m_nextchar(struct filepos pos)
+{
+	if(pos.o < pos.l->len)
+	{
 		pos.o++; 
-	} else if(pos.l->next) {
+	} else if(pos.l->next)
+	{
 		pos.l = pos.l->next;
 		pos.o = 0;
 	}
 	return pos;
 } 
 
-struct filepos m_prevchar(struct filepos pos) {
-	if(pos.o > 0) {
+struct filepos m_prevchar(struct filepos pos)
+{
+	if(pos.o > 0)
+	{
 		pos.o--; 
-	} else if(pos.l->prev) {
+	} else if(pos.l->prev)
+	{
 		pos.l = pos.l->prev;
 		pos.o = pos.l->len;
 	}
 	return pos;
 } 
 
-struct filepos m_nextline(struct filepos pos) {
+struct filepos m_nextline(struct filepos pos)
+{
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
 		ivchar += vlencnt(pos.l->c[ichar], ivchar); 
-	if(pos.l->next) { 
+	if(pos.l->next)
+	{ 
 		for(pos.l = pos.l->next, pos.o = ichar = 0; ichar < ivchar && pos.o < pos.l->len; pos.o++)
 			ichar += vlencnt(pos.l->c[pos.o], ichar); 
-	} else {
+	} else
+	{
 		pos.o = pos.l->len;
 	}
 	return pos;
 }
 
-struct filepos m_prevline(struct filepos pos) {
+struct filepos m_prevline(struct filepos pos)
+{
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
 		ivchar += vlencnt(pos.l->c[ichar], (ivchar % (COLS - 1))); 
-	if(pos.l->prev) { 
+	if(pos.l->prev)
+	{ 
 		for(pos.l = pos.l->prev, pos.o = ichar = 0; ichar < ivchar && pos.o < pos.l->len; pos.o++)
 			ichar += vlencnt(pos.l->c[pos.o], ichar); 
-	} else {
+	} else
+	{
 		pos.o = 0;
 	}
 	return pos;
 } 
 
-size_t edmygetch(void)
+size_t edi_getch(void)
 {
 	static size_t len = 0; 
 	  
-	ch = mygetch(); 
+	char ch = i_getch(); 
 
-	switch (ch) { 
-	case K_ESCAPE: 
-		ch = mygetch(); 
-		switch (ch) {
-			case '[': 
-				ch = mygetch(); 
-				switch (ch) { 
-					case 'A': /* arrow up */ 
-						fcur = m_prevline(fcur); 
-						break;
-					case 'B': /* arrow down */ 
-						fcur = m_nextline(fcur); 
-						break;
-					case 'C': /* right arrow */ 
-						fcur = m_nextchar(fcur); 
-						break;
-					case 'D': /* left arrow */ 
-						fcur = m_prevchar(fcur); 
-						break;
+	switch (ch)
+	{ 
+		case K_ESCAPE: 
+			ch = i_getch(); 
+			switch (ch)
+			{
+				case '[': 
+					ch = i_getch(); 
+					switch (ch)
+					{ 
+						case 'A': /* arrow up */ 
+							fcur = m_prevline(fcur); 
+							break;
+						case 'B': /* arrow down */ 
+							fcur = m_nextline(fcur); 
+							break;
+						case 'C': /* right arrow */ 
+							fcur = m_nextchar(fcur); 
+							break;
+						case 'D': /* left arrow */ 
+							fcur = m_prevchar(fcur); 
+							break;
+					}
 			}
-		}
-		return len;
-	case K_BACKSPACE:
-		f_delete();
-		break;
-	case K_CTRLEXX:
-		i_writefile(fname);
-		break;
-	case K_CTRLENN:
-		i_die("");
-		break; 
-	default:
-		cb[0] = (char) ch;
-		f_insert();
-		break;
+			return len;
+		case K_BACKSPACE:
+			f_delete();
+			break;
+		case K_CTRLEXX:
+			i_writefile(fname);
+			break;
+		case K_CTRLENN:
+			i_die("", 0);
+			break; 
+		default:
+			cb[0] = (char) ch;
+			f_insert();
+			break;
 	}
 	return len;
 }
-
+	
 static void sigwinch(int sig)
 {
 	if (sig)
@@ -563,3 +574,11 @@ int vlinecnt(struct Line *l)
 		return ( 1 + ( l->vlen / COLS));
 	return 1;
 }
+
+int i_getch()
+{
+        char ret;
+        read(0, &ret, 1);
+        return ret;
+}
+
