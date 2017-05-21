@@ -24,3 +24,7 @@ clean:
 	$(RM) $(OBJ)
 	$(RM) uninstall
 
+native:
+
+	$(MAKE) -C . LDLIBS='-lgcurses'
+
