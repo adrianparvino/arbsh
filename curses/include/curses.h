@@ -22,32 +22,17 @@ typedef char chtype;
 
 typedef struct{ 
 	int fd;
-	char flags;
-	char *rp;
-        size_t len;
+	char *rp; 
         char *buf;
-        char *last;
-        char *cpairs[CURSES_BUFSIZ];
-        int colordlen[CURSES_BUFSIZ];
-        char *colorlast[CURSES_BUFSIZ];
-	size_t x;				/* dimensions */
-	size_t y;				/* dimensions */
-	size_t px;
-	size_t py;
-	bool clearok;
+	size_t len;
+	size_t x;				/* total x coord */
+	size_t y;				/* total y coord */
+	size_t px;				/* x coord for move() */
+	size_t py;				/* y coord for move() */
+	bool clearok;				/* clear attr */
 } WINDOW;
 
-extern WINDOW _IO_canon[CURSES_MAX];
-
-/* bit masks */
-enum _canons {
-	_BLACK  = 001,
-	_RED_ = 002,
-	_GREEN = 004,
-	_WHITE = 030,
-	_YELLOW  = 010,
-	_BLUE  = 020,
-};
+extern WINDOW _IO_canon[CURSES_MAX]; 
 
 /* global structures */
 struct ansiglb{
@@ -74,51 +59,29 @@ int move(size_t, size_t);
 /* initialize */
 WINDOW *initscr(void);
 /* character io */
-int addch(chtype); 				/* not implemented */
-int waddch(WINDOW *, const chtype); 		/* not implemented */
-int mvaddch(int, int, const chtype); 		/* not implemented */
-int mvwaddch(WINDOW *, int, int, const chtype); /* not implemented */
-int echochar(const chtype); 			/* not implemented */
-int wechochar(WINDOW *, const chtype); 		/* not implemented */
-/* colorization */
-int start_color(void); 				/* not implemented */
-bool has_colors(void);				/* not implemented */
-bool can_change_color(void);			/* not implemented */
-int init_pair(short pair, short f, short b);	/* not implemented */
-int init_color(short color, short r, short g, short b);	/* not implemented */ 
+int addch(chtype);
+int waddch(WINDOW *, const chtype); 
 /* echo */
 int noecho(void);
 int echo(void);
 /* internal */
 int _termcatch(int, int);
+void _setcursor(size_t, size_t);
 /* refresh */
 int refresh(void);
 int wrefresh(WINDOW *win);
 /* erase */
-int erase(void);				/* not implemented */
-int werase(WINDOW *);				/* not implemented */
-int clear(void);				/* not implemented */
-int wclear(WINDOW *);				/* not implemented */
-int clrtobot(void);				/* not implemented */
-int wclrtobot(WINDOW *);			/* not implemented */
-int clrtoeol(void);				/* not implemented */
-int wclrtoeol(WINDOW *);			/* not implemented */
+int erase(void);
+int werase(WINDOW *);
+int clear(void);
+int wclear(WINDOW *);
+int clrtobot(void);
+int wclrtobot(WINDOW *);
+int clrtoeol(void);
+int wclrtoeol(WINDOW *);
 /* clearok */
-int clearok(WINDOW *, bool);			/* not implemented */
-int idlok(WINDOW *, bool);			/* not implemented */
-void idcok(WINDOW *, bool);			/* not implemented */
-void immedok(WINDOW *, bool);			/* not implemented */
-int leaveok(WINDOW *, bool);			/* not implemented */
-int setscrreg(int, int);			/* not implemented */
-int wsetscrreg(WINDOW *, int, int);		/* not implemented */
-int scrollok(WINDOW *, bool);			/* not implemented */
-int nl(void);					/* not implemented */
-int nonl(void);					/* not implemented */
+int clearok(WINDOW *, bool); 
 /* getch */
-int getch(void);				/* not implemented */
-int wgetch(WINDOW *win);			/* not implemented */
-int mvgetch(int y, int x);			/* not implemented */
-int mvwgetch(WINDOW *win, int y, int x);	/* not implemented */
-int ungetch(int ch);				/* not implemented */
-int has_key(int ch);				/* not implemented */
+int getch(void);
+int wgetch(WINDOW *win); 
 
