@@ -2,9 +2,8 @@
 
 int wgetch(WINDOW *win)
 {
-	char str[1];
-	/* curses only has one input stream */
-	win = win; 
-	read(0, str, 1);
-	return str[0];
+	char x;
+	win = win; /* curses only has one input stream */
+	read(0, &x, 1);
+	return x;
 }

@@ -37,7 +37,6 @@ cleanobj:
 
 clean:
 	$(MAKE) cleanobj
-	$(RM) $(DYNLIB)
 	$(RM) $(STATLIB)
 	$(RM) $(TEST_OBJ) uninstall
 
