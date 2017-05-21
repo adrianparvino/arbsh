@@ -8,3 +8,4 @@ void _setcursor(size_t x, size_t y)
         len = sprintf(str, "\033[%zu;%zuH", x, y);
         write(0, str, len);
 }
+

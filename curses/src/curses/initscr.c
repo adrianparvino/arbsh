@@ -2,33 +2,52 @@
 
 // TODO: Load values into ansiglb at run time from terminfo 
 
-WINDOW *initscr(void)
+int _getdimension(void)
 {
+	struct winsize w;
 	int ret = 0;
+	if ((ret = ioctl(0, TIOCGWINSZ, &w)) == -1)
+                return 0;
+	COLS = ansiglb.col = w.ws_col;
+        LINES = ansiglb.row = w.ws_row;
+	return 1;
+}
+
+void _vt100(void)
+{
+	ansiglb.t_insertreset = T_INSERTRESET;
+	ansiglb.t_clrcur2bot = T_CLRCUR2BOT;
+	ansiglb.t_clrtoeol = T_CLRCUR2END;
+	ansiglb.t_eraseall = T_ERASEALL;
+}
+
+void _vt52(void)
+{
+	ansiglb.t_insertreset = T_INSERTRESET;
+        ansiglb.t_clrcur2bot = T_CLRCUR2BOT;
+        ansiglb.t_clrtoeol = T_CLRCUR2END;
+        ansiglb.t_eraseall = T_ERASEALL;
+}
+
+WINDOW *initscr(void)
+{ 
 	struct winsize w;
 	size_t len = 0;
 	char buf[128];
 	WINDOW *win = stdscr;
 
-	if ((ret = ioctl(0, TIOCGWINSZ, &w)) == -1)
+	/* populate the global structure */
+	if ( 1 ) /* vt100 mode should be activated by an environment trigger */
+		_vt100();
+
+	/* populate stdscr */
+	if(!(_getdimension()))
 		return NULL;
 
 	noecho();
 
-	/* populate the global structure */
-	ansiglb.col = w.ws_col;
-	ansiglb.row = w.ws_row;
-
-	ansiglb.t_eraseall = T_ERASEALL;
-	ansiglb.t_insertreset = T_INSERTRESET;
-	ansiglb.t_gohome = T_GOHOME;
-	ansiglb.t_clrcur2bot = T_CLRCUR2BOT;
-	ansiglb.t_clrtoeol = T_CLRCUR2END;
-	ansiglb.t_eraseall = T_ERASEALL;
-
-	/* populate stdscr */
-	COLS = win->x = ansiglb.col;
-	LINES = win->y = ansiglb.row;
+	win->x = COLS;
+	win->y = LINES;
 
 	len = sprintf(buf, "%s%s", ansiglb.t_eraseall, ansiglb.t_insertreset);
 	write(1, buf, len);
