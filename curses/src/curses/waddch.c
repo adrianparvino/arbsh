@@ -5,7 +5,6 @@ int waddch(WINDOW *win, chtype ch)
 	
 	if (win->buf == NULL)
 	{
-		write(1,"was here", 10);
 		win->len = (win->x * win->y);
 		if ((win->buf = malloc(sizeof(char) * win->len)) == NULL)
 		{ 
@@ -16,6 +15,7 @@ int waddch(WINDOW *win, chtype ch)
 	}
 	if (win->len > 0)
 		win->len--;
+
 	
 	if (win->len == 0)
 	{
