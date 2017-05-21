@@ -27,9 +27,9 @@ typedef struct{
 	size_t len;
 	size_t x;	/* total x coord */
 	size_t y;	/* total y coord */
-	size_t px;	/* x coord for move() */
-	size_t py;	/* y coord for move() */
-	bool clearok;	/* clear attr */
+	size_t px;	/* x coord for cursor */
+	size_t py;	/* y coord for cursor */
+	bool clearok;	/* clear WINDOW during the next refresh */
 } WINDOW;
 
 extern WINDOW _IO_canon[CURSES_MAX]; 
