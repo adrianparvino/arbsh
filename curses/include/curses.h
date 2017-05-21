@@ -9,7 +9,7 @@
 #include <termios.h>
 #include <termcap/vt100.h>
 
-/* */
+/* globals */
 extern int LINES;
 extern int COLS;
 
@@ -25,11 +25,11 @@ typedef struct{
 	char *rp; 
         char *buf;
 	size_t len;
-	size_t x;				/* total x coord */
-	size_t y;				/* total y coord */
-	size_t px;				/* x coord for move() */
-	size_t py;				/* y coord for move() */
-	bool clearok;				/* clear attr */
+	size_t x;	/* total x coord */
+	size_t y;	/* total y coord */
+	size_t px;	/* x coord for move() */
+	size_t py;	/* y coord for move() */
+	bool clearok;	/* clear attr */
 } WINDOW;
 
 extern WINDOW _IO_canon[CURSES_MAX]; 
@@ -60,7 +60,7 @@ int move(size_t, size_t);
 WINDOW *initscr(void);
 /* character io */
 int addch(chtype);
-int waddch(WINDOW *, const chtype); 
+int waddch(WINDOW *, const chtype);
 /* echo */
 int noecho(void);
 int echo(void);
@@ -80,8 +80,8 @@ int wclrtobot(WINDOW *);
 int clrtoeol(void);
 int wclrtoeol(WINDOW *);
 /* clearok */
-int clearok(WINDOW *, bool); 
+int clearok(WINDOW *, bool);
 /* getch */
 int getch(void);
-int wgetch(WINDOW *win); 
+int wgetch(WINDOW *win);
 
