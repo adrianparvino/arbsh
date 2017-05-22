@@ -85,3 +85,8 @@ int clearok(WINDOW *, bool);
 int getch(void);
 int wgetch(WINDOW *win);
 
+
+int _getdimension(void);
+void _vt100(void);
+void _vt52(void);
+
