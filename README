@@ -19,11 +19,9 @@ HIER:
 		Standard C library components.
 	
 	libc/math/
-		Transcendental mathematics functions.
-			-Operate on and tranform double precision types.
-			-sqrt, atan, sin, jn, log and many more such math.h
-			 function implementations. This library covers most of
-			 the math.h / libm normative cases.
+		Libm mathematics functions which operate on and tranform 
+		double precision types. This library covers most of the math.h / 
+		libm normative cases.
 
 	arbprec/
 		Arbitrary precision mathematics.
@@ -31,35 +29,40 @@ HIER:
 	readline/
 		Readline line editing. An editline/readline like implementation.
 		This library is used to supply line editing and history to the 
-		graff shell (Gsh) and grafland irc client. The latter is 
-		supplied with a unique ircline() function (native).
+		graff shell (Gsh) and grafland irc client.
+		
+		A unique "ircline" function is provided for programmers wishing
+		to implement single line editing.
 
 	curses/
-		Hexen, a minimal curses / conio style library. Hexen supplies
-		grafland's terminal capabilities and ultimately powers 
-		grafland's readline/editline/ircline implementation, editor, 
-		irc client and system monitor. 
+		A minimal curses implementation. This implementation and its
+		associated terminal capability definitions are used to power
+		grafland's shell, irc client, editor and readline library. 
 
 	termcap/
 		Terminal capability definitions for hexen / curses.
 
 	editor/
-		A native editor. 
+		A basic notepad-like editor implementation which runs in a 
+		terminal.
 
 	sh/
-		A native shell.
+		Gsh supports a subset of POSIX shell.
 
 	irc/
-		A native irc client. 
+		An extremely small client with minimal resource usage.
 	
 	posix/
 		Userland utilities such as cp, ls, fetch, dd, find etc.
 		implemented to subsets of their POSIX specifications.
 
 	toolchain/
-		A cross compiling toolchain and build system. Similiar to
-		buildroot but with much simpler code, 
-	
+		A cross compiling toolchain and package build system. Grafland's
+		toolchain is similiar to `buildroot' but with much simpler code
+		This benefits programmers wishing to understand such things as
+		toolchain development, building packages, and bootstrapping for
+		new target architectures.
+
 
 BUILDING:
 ---------
