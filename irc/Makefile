@@ -8,7 +8,7 @@ CFLAGS += -Wall -Wextra -I../include -static
 
 LDFLAGS += -L../lib
 
-LDLIBS += -lreadline -lcurses -lgc
+LDLIBS += -lreadline
 
 OBJ = $(shell for i in *.c; do echo $${i%%.c} ; done)
 

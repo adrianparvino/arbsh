@@ -17,8 +17,6 @@
 #include <stdint.h>
 
 /* local libraries */
-#define HASLIBM
-#include <gcurses/gcurses.h>
 #include <termcap/vt100.h>
 #include <readline/greadline.h>
 
@@ -41,6 +39,7 @@
 
 size_t date(char *, char *, size_t);
 int dialurl(const char *, unsigned short);
+int termcatch(int, int);
 
 /* structs */
 struct chan {
@@ -97,7 +96,7 @@ int chfind(char *);
 int delconn(char *s);
 void detectmessage(char *, char *, char *, char *);
 void drawscreen(void);
-size_t ircfastgetch(char *); 
+size_t ircigetch(char *); 
 void panic(const char *);
 void printout(void); 
 int readin(void);
@@ -105,6 +104,7 @@ int setupconn(char *, int);
 static void sigwinch(int);
 void uparse(char *);
 
+int igetch(void);
 
 int main(int argc, char *argv[])
 { 
@@ -120,8 +120,8 @@ int main(int argc, char *argv[])
 
         if ( argc > 1 && strcmp(argv[1], "-h") == 0)
         {
-		gdprintf(2, "%s server=irc.freenode.net port=6667", argv[0]);
-		gdprintf(2, " nick=doormouse channel='#irctest'\n", 35);
+		dprintf(2, "%s server=irc.freenode.net port=6667", argv[0]);
+		dprintf(2, " nick=doormouse channel='#irctest'\n");
                 return 0;
         }
 	
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
 			glb.w = hglb.w = win.ws_col;
         		glb.h = hglb.h = win.ws_row;
 			ircprint(glb.userline, len, "[[ ]]>> ", 8);
-			len = ircfastgetch(glb.userline);
+			len = ircigetch(glb.userline);
 			continue;
 		} 
 		
@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
                		determinewin();
                        	glb.w = hglb.w = win.ws_col;
                        	glb.h = hglb.h = win.ws_row;
-                       	len = ircfastgetch(glb.userline);
+                       	len = ircigetch(glb.userline);
                        	ircprint(glb.userline, len, "[[ ]]>> ", 8);
                	}
 	} 
@@ -261,7 +261,7 @@ int chadd(char *name)
         ss[i].chl[ss[i].nch].real = 0;
         ss[i].ch = ss[i].nch++;
 
-	gdprintf(sck[i], "JOIN %s\r\n", name);
+	dprintf(sck[i], "JOIN %s\r\n", name);
 
         return ss[i].nch;
 } 
@@ -297,7 +297,7 @@ void detectmessage(char *usr, char *cmd, char *par, char *data)
 		/* respond to VERSION requests, a hack */
 		if ( strcmp(data, "\001VERSION\001") == 0 )
 		{ 
-			gdprintf(sck[sckno], "NOTICE %s :\001VERSION Irc in C by CM Graff\001\r\n", usr);
+			dprintf(sck[sckno], "NOTICE %s :\001VERSION Irc in C by CM Graff\001\r\n", usr);
 		} else
 		{ 
 			/* private message user channels */
@@ -363,7 +363,7 @@ void detectmessage(char *usr, char *cmd, char *par, char *data)
 
 void panic(const char *m)
 {
-	gdprintf(2, "Panic: %s\n", m);
+	dprintf(2, "Panic: %s\n", m);
 	glb.runstate = 0;
 } 
 
@@ -456,7 +456,7 @@ void uparse(char *string)
                         if ( string)
                                 delconn(string);
                 } else if ( *(string + 1) == 'r' ) {
-			gdprintf(sck[i], "%s\r\n", string + 2);
+			dprintf(sck[i], "%s\r\n", string + 2);
                 } else if ( *(string + 1) == 'x' ) {
                         write(sck[i], "\001", 1);
                 } else if ( *(string + 1) == 'y' ) {
@@ -525,21 +525,21 @@ void accumulator(int cn, char *format, char *line1, char *line2)
 	c->real += (n + 1); 
 } 
 
-size_t ircfastgetch(char *l)
+size_t ircigetch(char *l)
 {
         static size_t len = 0;
         static size_t ret = 0;
         size_t z = 0;
         int c;
 
-        c = fastgetch();
+        c = igetch();
 
         switch (c) {
         case K_ESCAPE:
-                c = fastgetch();
+                c = igetch();
                 switch (c) {
                 case '[':
-                        c = fastgetch();
+                        c = igetch();
                         switch (c) {
                         case 'A': /* arrow up */
                                 if ( hglb.c > 0 )
@@ -571,13 +571,13 @@ size_t ircfastgetch(char *l)
                                 hglb.laro = len;
                                 break;
                         case '5': /* page up */ 
-				c = fastgetch(); 
+				c = igetch(); 
 				if ( ss[sckno].chl[ss[sckno].ch].scroll < (ss[sckno].chl[ss[sckno].ch].real - (glb.w + glb.w)))
                                         ss[sckno].chl[ss[sckno].ch].scroll += glb.w;
 				drawscreen();
                                 break;
                         case '6': /* page down */
-				c = fastgetch();
+				c = igetch();
 				if ( ss[sckno].chl[ss[sckno].ch].scroll > 0)
                                         ss[sckno].chl[ss[sckno].ch].scroll -= glb.w;
                                 drawscreen();
@@ -648,14 +648,15 @@ void drawscreen(void)
         size_t i = curserv;
 
         /* top bar */ 
-	gprintf("%s%s\033[1;2r", T_ERASEALL, T_BLUE_BG);
-	n = gprintf(" [%s] @ (%s) ", ss[i].chl[ss[i].ch].name, ss[i].chl[0].name); 
+	printf("%s%s\033[1;2r", T_ERASEALL, T_BLUE_BG);
+	n = printf(" [%s] @ (%s) ", ss[i].chl[ss[i].ch].name, ss[i].chl[0].name); 
+	fflush(stdout);
         write(1, WHITESPACE, glb.w - n);
-	gprintf("%s\n", T_BLACK_BG); 
+	printf("%s\n", T_BLACK_BG); 
 
         /* center text */ 
-	gprintf("\033[2;%zur\n%s", glb.h, T_ERASEBEGL2CUR); 
-
+	printf("\033[2;%zur\n%s", glb.h, T_ERASEBEGL2CUR); 
+	fflush(stdout);
         /* Print only last 300 lines or so? (yes this sucks)*/
         size_t totalchars = hglb.w * hglb.h - ss[i].chl[ss[i].ch].scroll;
 
@@ -668,10 +669,12 @@ void drawscreen(void)
                 write(1, ss[i].chl[ss[i].ch].buf, ss[i].chl[ss[i].ch].real - ss[i].chl[ss[i].ch].scroll);
 
         /* bottom bar */ 
-	gprintf("%s", T_BLUE_BG);
+	printf("%s", T_BLUE_BG);
+	fflush(stdout);
         n = 0;
         write(1, WHITESPACE, glb.w - n); 
-	gprintf("%s\n", T_BLACK_BG); 
+	printf("%s\n", T_BLACK_BG); 
+	fflush(stdout);
         /* now the prompt can be drawn by another function */
 }
 
@@ -691,7 +694,7 @@ int setupconn(char *s, int p)
 	sckno = numserv;
 	ss[numserv].nch = 0;
 	chadd(s); 
-	gdprintf(sck[numserv], "NICK %s\r\nUSER %s 8 * : \r\nMODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
+	dprintf(sck[numserv], "NICK %s\r\nUSER %s 8 * : \r\nMODE %s +i\r\n", glb.nick, glb.nick, glb.nick);
 	curserv = sckno = numserv;
 	++numserv; 
 	return 0; 
@@ -704,7 +707,7 @@ int delconn(char *name)
 	{
 		if ( strcmp(ss[i].chl[0].name, name) == 0 )
 		{
-			gdprintf(sck[i], "QUIT %s\r\n", name);
+			dprintf(sck[i], "QUIT %s\r\n", name);
 			ss[i] = ss[numserv - 1];
 			--numserv;
 			return 0;
@@ -722,7 +725,7 @@ int chdel(char *name)
                 if (!strcmp(ss[sckno].chl[i].name, name))
 		{ 
 			ss[sckno].ch = 0;
-			gdprintf(sck[sckno], "PART %s\r\n", name);
+			dprintf(sck[sckno], "PART %s\r\n", name);
 			ss[sckno].chl[i] = ss[sckno].chl[ss[sckno].nch - 1];
 			ss[sckno].nch -= 1;
                         return 0;
@@ -787,4 +790,42 @@ size_t date(char *buf, char *format, size_t max)
         if ((n = strftime(buf, max, format, tm)) == 0)
                 return 0;
         return n;
+}
+
+int igetch(void)
+{
+        char x;
+        read(0, &x, 1);
+        return x;
+}
+
+int termcatch(int flags, int reset)
+{
+        static int set = 0;
+        static struct termios term, oterm;
+
+        /* catch the user's original terminal state _once_ */
+        if ( set == 0 )
+        {
+                if ((tcgetattr(0, &oterm)) != 0 )
+                        return -1;
+                memcpy(&term, &oterm, sizeof(term));
+                set = 1;
+        }
+        /* Set the programmer's terminal attributes */
+        if ( reset == 0 )
+        {
+                term.c_lflag &= (flags);
+                term.c_cc[VMIN] = 1;
+                term.c_cc[VTIME] = 0;
+
+                if ((tcsetattr(0, TCSANOW, &term)) == 0 )
+                        return 0;
+        /* Programmer access to reset user's terminal state */
+        }else if ( reset == 1 )
+                if ((tcsetattr(0, TCSANOW, &oterm)) == 0 )
+                        return 0;
+
+        return -1;
+
 }
