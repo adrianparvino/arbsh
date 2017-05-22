@@ -649,10 +649,8 @@ void drawscreen(void)
 
         /* top bar */ 
 	printf("%s%s\033[1;2r", T_ERASEALL, T_BLUE_BG);
-	n = printf(" [%s] @ (%s) ", ss[i].chl[ss[i].ch].name, ss[i].chl[0].name); 
-	fflush(stdout);
-        write(1, WHITESPACE, glb.w - n);
-	printf("%s\n", T_BLACK_BG); 
+	n = printf(" [%s] @ (%s) ", ss[i].chl[ss[i].ch].name, ss[i].chl[0].name);
+	printf("%.*s%s\n", (int)glb.w - (int)n, WHITESPACE, T_BLACK_BG); 
 
         /* center text */ 
 	printf("\033[2;%zur\n%s", glb.h, T_ERASEBEGL2CUR); 
@@ -669,11 +667,7 @@ void drawscreen(void)
                 write(1, ss[i].chl[ss[i].ch].buf, ss[i].chl[ss[i].ch].real - ss[i].chl[ss[i].ch].scroll);
 
         /* bottom bar */ 
-	printf("%s", T_BLUE_BG);
-	fflush(stdout);
-        n = 0;
-        write(1, WHITESPACE, glb.w - n); 
-	printf("%s\n", T_BLACK_BG); 
+	printf("%s%.*s%s\n", T_BLUE_BG, (int)glb.w, WHITESPACE, T_BLACK_BG);
 	fflush(stdout);
         /* now the prompt can be drawn by another function */
 }
