@@ -1,5 +1,5 @@
 
-.SILENT: buildenvars clearenvars
+.SILENT: buildenvvars clearenvvars
 .PHONY: toolchain
 
 RELEASE = grafland-0.3d.tar.gz
@@ -60,37 +60,23 @@ toolchainclean:
 
 	$(MAKE) -C toolchain clean 
 
-buildenvars:
+buildenvvars:
 
 	$(MAKE) -s -C toolchain buildenvars
 
-clearenvars:
+clearenvvars:
 
 	$(MAKE) -s -C toolchain clearenvars
 
 release:
 
 	-rm README.html
-	-printf "\t$(WEBSITE)/$(RELEASE)\n" >> README
-	-printf "\n" >> README
-	-chmod +x legacy/libsh/text_to_html.sh README
-	./legacy/libsh/text_to_html.sh README
+	-printf "\t$(WEBSITE)/$(RELEASE)\n\n" >> README
+	./txt2html README
 	-git add *
 	-git commit -m $(RELEASE)
 	-git push origin master
 	cd $(SPWD)/.. && tar -c $(NAME) -f $(RELEASE)
 	cd $(SPWD)/.. && scp $(RELEASE) $(SSHSERVER)
-
-
-# Notes:
-#git config --global user.name ...
-#git config --global user.email ...
-#git commit --amend --reset-author
-#git pull 
-#git add ...
-#git commit -m ...
-#git format-patch -1 --stdout > ...
-#cat ... | curl -F 'sprunge=<-' http://sprunge.us
-
 
 
