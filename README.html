@@ -20,11 +20,9 @@
 		Standard C library components.
 	
 	<a href="libc/math/">libc/math/</a>
-		Transcendental mathematics functions.
-			-Operate on and tranform double precision types.
-			-sqrt, atan, sin, jn, log and many more such math.h
-			 function implementations. This library covers most of
-			 the math.h / libm normative cases.
+		Libm mathematics functions which operate on and tranform 
+		double precision types. This library covers most of the math.h / 
+		libm normative cases.
 
 	<a href="arbprec/">arbprec/</a>
 		Arbitrary precision mathematics.
@@ -32,35 +30,40 @@
 	<a href="readline/">readline/</a>
 		Readline line editing. An editline/readline like implementation.
 		This library is used to supply line editing and history to the 
-		graff shell (Gsh) and grafland irc client. The latter is 
-		supplied with a unique ircline() function (native).
+		graff shell (Gsh) and grafland irc client.
+		
+		A unique "ircline" function is provided for programmers wishing
+		to implement single line editing.
 
 	<a href="curses/">curses/</a>
-		Hexen, a minimal curses / conio style library. Hexen supplies
-		grafland's terminal capabilities and ultimately powers 
-		grafland's readline/editline/ircline implementation, editor, 
-		irc client and system monitor. 
+		A minimal curses implementation. This implementation and its
+		associated terminal capability definitions are used to power
+		grafland's shell, irc client, editor and readline library. 
 
 	<a href="termcap/">termcap/</a>
 		Terminal capability definitions for hexen / curses.
 
 	<a href="editor/">editor/</a>
-		A native editor. 
+		A basic notepad-like editor implementation which runs in a 
+		terminal.
 
 	<a href="sh/">sh/</a>
-		A native shell.
+		Gsh supports a subset of POSIX shell.
 
 	<a href="irc/">irc/</a>
-		A native irc client. 
+		An extremely small client with minimal resource usage.
 	
 	<a href="posix/">posix/</a>
 		Userland utilities such as cp, ls, fetch, dd, find etc.
 		implemented to subsets of their POSIX specifications.
 
 	<a href="toolchain/">toolchain/</a>
-		A cross compiling toolchain and build system. Similiar to
-		buildroot but with much simpler code, 
-	
+		A cross compiling toolchain and package build system. Grafland's
+		toolchain is similiar to `buildroot' but with much simpler code
+		This benefits programmers wishing to understand such things as
+		toolchain development, building packages, and bootstrapping for
+		new target architectures.
+
 
 <br clear="left"/></pre><dl>BUILDING:</dl><pre>
 </pre><dd><hr/></dd><pre>
