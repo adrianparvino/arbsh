@@ -1,6 +1,8 @@
 # Omnicross, Copyright, 2015-2016. see LICENSE for copying details
 
 LOGDIR = logdir/
+LOGHOST = $(shell gcc -dumpmachine)
+LOGHOSTUNAME = $(shell uname -a)
 SHELL = /bin/sh
 STAGE0OPT = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 MAKEINFO = false
@@ -170,7 +172,6 @@ OM_VALGRIND = valgrind-3.11.0
 OM_VALGRIND_MRR = http://www.csit.parkland.edu/~cgraff1/src/
 
 # core
-
 OM_MAKE = make-4.1
 OM_MAKE_MRR = http://ftp.gnu.org/gnu/make/
 OM_GENEXTFS = genext2fs-1.4.1
@@ -178,11 +179,6 @@ OM_GENEXTFS_MRR = https://sourceforge.net/projects/genext2fs/files/genext2fs/1.4
 OM_M4 = m4-1.4.17
 OM_M4_MRR = https://ftp.gnu.org/gnu/m4/
 
-
-# xorg packages ( incomplete )
-OM_PIXMAN = pixman-0.32.6
-
-#PKG_CONFIG_PATH=$(LIBROOT)/usr/local/lib/pkgconfig/
 
 # environment
 INACROSS = \
@@ -1156,35 +1152,6 @@ gdb_host: install_path
 	-$(MAKE) -C $(SPWD)/$(OM_GDB) install
 
 
-xorg_server_target: install_path
-
-	-rm -rf $(OM_XORG_SERVER)
-	-mkdir -p $(OM_XORG_SERVER)
-	@tar -xf $(OM_XSRC)/$(OM_XORG_SERVER).$(OM_SFX) -C $(SPWD) 
-	-cd $(SPWD)/$(OM_XORG_SERVER) && $(INACROSS) $(SPWD)/$(OM_XORG_SERVER)/configure \
-	--build=$(OM_HOST) \
-	--host=$(OM_SUBTARG) \
-	--target=$(OM_SUBTARG) 
-	
-
-	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_XORG_SERVER)
-	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_XORG_SERVER) install DESTDIR=$(OM_LIBROOT)
-
-
-pixman_host: install_path
-
-	-rm -rf $(OM_PIXMAN)
-	-mkdir -p $(OM_PIXMAN)
-	@tar -xf $(OM_XSRC)/$(OM_PIXMAN).$(OM_SFX) -C $(SPWD) 
-	-cd $(SPWD)/$(OM_PIXMAN) && $(INACROSS) $(SPWD)/$(OM_PIXMAN)/configure \
-	--prefix=$(OM_PREF)/$(OM_TARG) \
-	--host=$(OM_SUBTARG) \
-	--target=$(OM_SUBTARG)
-
-	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_PIXMAN)
-	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_PIXMAN) install
-
-
 python_target: install_path
 
 	
@@ -2146,7 +2113,7 @@ simple_dist_initramfs:
 	-kernel $(OM_LIBROOT)/boot/vmlinuz \
 	-append "root=/dev/sda rdinit=/bin/init"
 	
-posinstall:
+postinstall:
 
 	mkdir -p /newtoolchain/
 	mount /dev/sdc /newtoolchain/
@@ -2166,7 +2133,10 @@ posinstall:
 trivtest:
 
 	# Some trivial compile time tests
-	-mkdir -p $(LOGDIR) 
+	-mkdir -p $(LOGDIR)
+	-echo "Built using:" >> $(LOGDIR)/$(OM_HOST)-report
+	-echo $(LOGHOSTNAME) >> $(LOGDIR)/$(OM_HOST)-report
+	-echo $(LOGHOST) >> $(LOGDIR)/$(OM_HOST)-report
 	-/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/pthreads-test.c -lpthread && \
 	/$(OM_PREF)/bin/$(OM_TARG)-gcc -v 2>&1 | grep posix && \
 	/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/testing.c && \
