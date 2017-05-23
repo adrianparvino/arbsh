@@ -18,7 +18,6 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <stdint.h>
-#include <termcap/vt100.h>
 #include <readline/greadline.h>
 
 /*
