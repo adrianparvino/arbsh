@@ -20,7 +20,7 @@ Testing:
 Installation:
 -------------
 
-	make install DESTDIR=/path/to/installation/
+	make install DESTDIR=/path/to/installation
 
 
 Clean:
