@@ -2176,11 +2176,11 @@ endif
 logreport:
 
 
-	cd $(LOGDIR) && curl -u '$(LOGUSER)' https://api.github.com/user/repos -d '{"name":"$(DATE)_$(OM_TARG)_log"}'
+	cd $(LOGDIR) && curl -u '$(LOGUSER)' https://api.github.com/user/repos -d '{"name":"$(DATE)_$(LOGHOST)_to_$(OM_TARG)_build-log"}'
 	cd $(LOGDIR) && git init
 	cd $(LOGDIR) && git add $(LOGHOST)-report
-	-cp $(SPWD)/logfile $(LOGDIR)/$(DATE)_$(OM_TARG)_log
-	-cd $(LOGDIR) && git add $(DATE)_$(OM_TARG)_log
-	cd $(LOGDIR) && git commit -m "$(DATE)_$(OM_TARG)_log"
-	cd $(LOGDIR) && git remote add origin https://github.com/$(LOGUSER)/$(DATE)_$(OM_TARG)_log.git
+	-cp $(SPWD)/logfile $(LOGDIR)/$(DATE)_$(LOGHOST)_to_$(OM_TARG)_build-log
+	-cd $(LOGDIR) && git add $(DATE)_$(LOGHOST)_to_$(OM_TARG)_build-log
+	cd $(LOGDIR) && git commit -m "$(DATE)_$(LOGHOST)_to_$(OM_TARG)_build-log"
+	cd $(LOGDIR) && git remote add origin https://github.com/$(LOGUSER)/$(DATE)_$(LOGHOST)_to_$(OM_TARG)_build-log.git
 	cd $(LOGDIR) && git push origin master
