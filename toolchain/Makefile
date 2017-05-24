@@ -1,5 +1,7 @@
 # grafland toolchain, Copyright, 2015-2017. see LICENSE for copying details
 
+LOGUSER = cmgraff
+DATE = $(shell date +%s)
 LOGDIR = logdir/
 LOGHOST = $(shell gcc -dumpmachine)
 LOGHOSTUNAME = $(shell uname -a )
@@ -2171,5 +2173,14 @@ endif
 	-echo >> $(LOGDIR)/$(LOGHOST)-report
 
 
+logreport: 
 
+	cd $(LOGDIR) && curl -u '$(LOGUSER)' https://api.github.com/user/repos -d '{"name":"$(DATE)_$(OM_TARG)_log"}'
+	cd $(LOGDIR) && git remote add origin git@github.com:$(LOGUSER)/$(DATE)_$(OM_TARG)_log.git
+	cd $(LOGDIR) && git init 
+	cd $(LOGDIR) && git add $(LOGHOST)-report
+	cd $(LOGDIR) && git commit -m "$(DATE)_$(OM_TARG)_log"
+	cd $(LOGDIR) && git push origin master
 
+	
+	
