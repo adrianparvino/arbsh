@@ -2173,14 +2173,11 @@ endif
 	-echo >> $(LOGDIR)/$(LOGHOST)-report
 
 
-logreport: 
+logreport:
 
 	cd $(LOGDIR) && curl -u '$(LOGUSER)' https://api.github.com/user/repos -d '{"name":"$(DATE)_$(OM_TARG)_log"}'
 	cd $(LOGDIR) && git init
 	cd $(LOGDIR) && git add $(LOGHOST)-report
 	cd $(LOGDIR) && git commit -m "$(DATE)_$(OM_TARG)_log"
-	cd $(LOGDIR) && git remote add origin git@github.com:$(LOGUSER)/$(DATE)_$(OM_TARG)_log.git
+	cd $(LOGDIR) && git remote add origin https://github.com/$(LOGUSER)/$(DATE)_$(OM_TARG)_log.git
 	cd $(LOGDIR) && git push origin master
-
-	
-	
