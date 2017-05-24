@@ -2,7 +2,7 @@
 
 LOGDIR = logdir/
 LOGHOST = $(shell gcc -dumpmachine)
-LOGHOSTUNAME = $(shell uname -a)
+LOGHOSTUNAME = $(shell uname -a )
 SHELL = /bin/sh
 STAGE0OPT = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 MAKEINFO = false
@@ -2138,29 +2138,37 @@ trivtest:
 
 	# Some trivial compile time tests
 	-mkdir -p $(LOGDIR)
-	-echo "Built using:" >> $(LOGDIR)/$(OM_HOST)-report
-	-echo $(LOGHOSTNAME) >> $(LOGDIR)/$(OM_HOST)-report
-	-echo $(LOGHOST) >> $(LOGDIR)/$(OM_HOST)-report
+	#-printf "Built " >> $(LOGDIR)/$(LOGHOST)-report
+	
 	-/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/pthreads-test.c -lpthread && \
 	/$(OM_PREF)/bin/$(OM_TARG)-gcc -v 2>&1 | grep posix && \
 	/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/testing.c && \
-		printf "%s\t--> %s  (pthreads, c" "$(OM_HOST)" "$(OM_TARG)" >> $(LOGDIR)/$(OM_HOST)-report || \
-		printf "%s\t--> %s  (failed" "$(OM_HOST)" "$(OM_TARG)" >> $(LOGDIR)/$(OM_HOST)-report
+		printf "%s\t--> %s  (pthreads, c" "$(lOGHOST)" "$(OM_TARG)" >> $(LOGDIR)/$(LOGHOST)-report || \
+		printf "%s\t--> %s  (failed" "$(LOGHOST)" "$(OM_TARG)" >> $(LOGDIR)/$(LOGHOST)-report
 	-/$(OM_PREF)/bin/$(OM_TARG)-g++ tests/testing.cpp && \
-		printf ", c++" >> $(LOGDIR)/$(OM_HOST)-report 
+		printf ", c++" >> $(LOGDIR)/$(LOGHOST)-report 
 	-/$(OM_PREF)/bin/$(OM_TARG)-gfortran tests/testing.f && \
-		printf ", fortran" >> $(LOGDIR)/$(OM_HOST)-report
-	-printf ")\n" >> $(LOGDIR)/$(OM_HOST)-report
-	echo "Extra configuration:" >> $(LOGDIR)/$(OM_HOST)-report
-	echo "$(OM_CONF)" >> $(LOGDIR)/$(OM_HOST)-report
-	
-	
+		printf ", fortran" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf ")\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf '\tOperating system: $(LOGHOSTUNAME)\n' >> $(LOGDIR)/$(LOGHOST)-report 
+	-printf "\t$(OM_GCC)\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "\t$(OM_BINUTILS)\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "\t$(OM_MPC)\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "\t$(OM_MPFR)\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "\t$(OM_GMP)\n" >> $(LOGDIR)/$(LOGHOST)-report
 
-	
-
-
-
-
+ifeq ($(OM_LIBC),musl)
+	-printf "\t$(OM_MUSL)\n"  >> $(LOGDIR)/$(LOGHOST)-report
+endif
+ifeq ($(OM_LIBC),uclibc)
+	-printf "\t$(OM_UCLIBC)\n"  >> $(LOGDIR)/$(LOGHOST)-report
+endif
+ifeq ($(OM_LIBC),gnu)
+	-printf "\t$(OM_GLIBC)\n"  >> $(LOGDIR)/$(LOGHOST)-report
+endif
+	-/$(OM_PREF)/bin/$(OM_TARG)-gcc -v >> $(LOGDIR)/$(LOGHOST)-report 2>&1
+	-echo >> $(LOGDIR)/$(LOGHOST)-report
+	-echo >> $(LOGDIR)/$(LOGHOST)-report
 
 
 
