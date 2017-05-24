@@ -1,4 +1,4 @@
-# Omnicross, Copyright, 2015-2016. see LICENSE for copying details
+# grafland toolchain, Copyright, 2015-2017. see LICENSE for copying details
 
 LOGDIR = logdir/
 LOGHOST = $(shell gcc -dumpmachine)
@@ -14,7 +14,7 @@ KBUILDAREA = $(shell pwd)/kernel
 OM_TUPLEPRSFX = -pc-linux-
 OM_LIBC = musl
 OM_TARG = $(OM_ARCH)-pc-linux-$(OM_LIBC)
-OM_CONF =
+OM_CONF = --disable-libmpx
 OM_LINUXARCH = x86
 OM_BACKWARDCOMPAT = i386
 OM_HOST = $(shell uname -m)
@@ -24,16 +24,20 @@ OM_SRC = $(SPWD)/src
 OM_PATCH = $(SPWD)/patches
 OM_SFX = tar.gz
 #OM_BINUTILS = binutils-2.25
-OM_BINUTILS = binutils-2.26
+#OM_BINUTILS = binutils-2.26
+OM_BINUTILS = binutils-2.28
 #OM_GCC = gcc-4.9.2
-OM_GCC = gcc-5.3.0
+#OM_GCC = gcc-5.3.0
 #OM_GCC = gcc-6.1.0
+#OM_GCC = gcc-6.3.0
+OM_GCC = gcc-7.1.0
 OM_GMP = gmp-5.1.3
 OM_MPC = mpc-1.0.2
 OM_MPFR = mpfr-3.1.2
 #OM_MPFR = mpfr-3.1.4
 OM_LINUX = linux-4.1
-OM_MUSL = musl-1.1.14
+#OM_MUSL = musl-1.1.14
+OM_MUSL = musl-1.1.16
 OM_LANGS = c,c++
 KERNEL_MRR = https://www.kernel.org/pub/linux/kernel/v4.x/
 MUSL_MRR = http://www.musl-libc.org/releases/
@@ -2146,7 +2150,10 @@ trivtest:
 		printf ", c++" >> $(LOGDIR)/$(OM_HOST)-report 
 	-/$(OM_PREF)/bin/$(OM_TARG)-gfortran tests/testing.f && \
 		printf ", fortran" >> $(LOGDIR)/$(OM_HOST)-report
-	-printf ")\n" >> $(LOGDIR)/$(OM_HOST)-report 
+	-printf ")\n" >> $(LOGDIR)/$(OM_HOST)-report
+	echo "Extra configuration:" >> $(LOGDIR)/$(OM_HOST)-report
+	echo "$(OM_CONF)" >> $(LOGDIR)/$(OM_HOST)-report
+	
 	
 
 	
