@@ -2143,7 +2143,7 @@ trivtest:
 	-/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/pthreads-test.c -lpthread && \
 	/$(OM_PREF)/bin/$(OM_TARG)-gcc -v 2>&1 | grep posix && \
 	/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/testing.c && \
-		printf "%s\t--> %s  (pthreads, c" "$(lOGHOST)" "$(OM_TARG)" >> $(LOGDIR)/$(LOGHOST)-report || \
+		printf "%s\t--> %s  (pthreads, c" "$(LOGHOST)" "$(OM_TARG)" >> $(LOGDIR)/$(LOGHOST)-report || \
 		printf "%s\t--> %s  (failed" "$(LOGHOST)" "$(OM_TARG)" >> $(LOGDIR)/$(LOGHOST)-report
 	-/$(OM_PREF)/bin/$(OM_TARG)-g++ tests/testing.cpp && \
 		printf ", c++" >> $(LOGDIR)/$(LOGHOST)-report 
