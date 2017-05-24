@@ -16,8 +16,8 @@ Building:
 About:
 ------
 
-	Grafland's editor is a dead simple notepad-like text editors. It was
-	desgined primarily to test grafland's minimal curses implementation.
+	Grafland's editor is a dead simple notepad-like text editor. It was
+	designed primarily to test grafland's minimal curses implementation.
 
 	The grafland editor can be easily modified to not depend on the curses
 	library, however this has the tendency to hard code terminal capabali-
@@ -29,5 +29,12 @@ Contact:
 --------
 
 	cm0graff@gmail.com
+
+
+References:
+-----------
+
+	https://en.wikipedia.org/wiki/Edit_distance
+
 
 
