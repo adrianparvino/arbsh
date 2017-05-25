@@ -1047,6 +1047,7 @@ clean:
 	@rm -rf $(SPWD)/$(OM_MUSL)/
 	@rm -rf $(SPWD)/$(OM_UCLIBC)/
 	@rm -rf $(SPWD)/$(OM_GLIBC)/
+	@rm -rf $(SPWD)/$(OM_GLIBC)-build
 	@rm -rf $(SPWD)/$(OM_GCC)/
 	@rm -rf $(SPWD)/$(OM_GCC)-build/
 	@rm -rf $(SPWD)/$(OM_GCC)-build-target/
@@ -2160,10 +2161,12 @@ trivtest:
 		printf ", fortran" >> $(LOGDIR)/$(LOGHOST)-report
 	-printf ")\n" >> $(LOGDIR)/$(LOGHOST)-report
 	-printf "Extra OM_CONF=$(OM_CONF)\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "\tOM_LINUXARCH: $(OM_LINUXARCH)\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "\tOM_BACKWARDCOMPAT: $(OM_BACKWARDCOMPAT)\n" >> $(LOGDIR)/$(LOGHOST)-report
 	-/$(OM_PREF)/bin/$(OM_TARG)-gcc -v >> $(LOGDIR)/$(LOGHOST)-report 2>&1
 	-printf "\n" >> $(LOGDIR)/$(LOGHOST)-report
 
-finishreport:
+startreport:
 
 	-printf '\tOperating system: $(LOGHOSTUNAME)\n' >> $(LOGDIR)/$(LOGHOST)-report 
 	-printf "\t$(OM_GCC)\n" >> $(LOGDIR)/$(LOGHOST)-report
@@ -2181,6 +2184,7 @@ endif
 ifeq ($(OM_LIBC),gnu)
 	-printf "\t$(OM_GLIBC)\n"  >> $(LOGDIR)/$(LOGHOST)-report
 endif
+	
 	
 	-echo >> $(LOGDIR)/$(LOGHOST)-report
 	-echo >> $(LOGDIR)/$(LOGHOST)-report
