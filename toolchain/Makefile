@@ -1,7 +1,7 @@
 # grafland toolchain, Copyright, 2015-2017. see LICENSE for copying details
 
 LOGUSER = cmgraff
-DATE = $(shell date +%s)
+BUILDNO = 1
 LOGDIR = logdir/
 LOGHOST = $(shell gcc -dumpmachine)
 LOGHOSTUNAME = $(shell uname -a )
@@ -185,6 +185,8 @@ OM_GENEXTFS_MRR = https://sourceforge.net/projects/genext2fs/files/genext2fs/1.4
 OM_M4 = m4-1.4.17
 OM_M4_MRR = https://ftp.gnu.org/gnu/m4/
 
+# logging
+LOGNAME = build_$(BUILDNO)__$(OM_GCC)__$(LOGHOST)
 
 # environment
 INACROSS = \
@@ -215,6 +217,11 @@ OM_OPENSSL_CROSS_ENV = \
 	MAKEDEPEND='makedepend -- $(OM_TARG)/$(OM_TARG)'
 
 all:
+	-mkdir -p $(LOGDIR)
+	$(MAKE) primary > $(LOGDIR)/$(OM_CONF)-build-log 2>&1
+	$(MAKE) trivtest
+
+primary:
 
 	$(MAKE) -i populate
 	#$(MAKE) generate_host_tools
@@ -2138,8 +2145,6 @@ trivtest:
 
 	# Some trivial compile time tests
 	-mkdir -p $(LOGDIR)
-	#-printf "Built " >> $(LOGDIR)/$(LOGHOST)-report
-	
 	-/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/pthreads-test.c -lpthread && \
 	/$(OM_PREF)/bin/$(OM_TARG)-gcc -v 2>&1 | grep posix && \
 	/$(OM_PREF)/bin/$(OM_TARG)-gcc tests/testing.c && \
@@ -2150,6 +2155,9 @@ trivtest:
 	-/$(OM_PREF)/bin/$(OM_TARG)-gfortran tests/testing.f && \
 		printf ", fortran" >> $(LOGDIR)/$(LOGHOST)-report
 	-printf ")\n" >> $(LOGDIR)/$(LOGHOST)-report
+
+finishreport:
+
 	-printf '\tOperating system: $(LOGHOSTUNAME)\n' >> $(LOGDIR)/$(LOGHOST)-report 
 	-printf "\t$(OM_GCC)\n" >> $(LOGDIR)/$(LOGHOST)-report
 	-printf "\t$(OM_BINUTILS)\n" >> $(LOGDIR)/$(LOGHOST)-report
@@ -2173,11 +2181,11 @@ endif
 
 logreport:
 
-	cd $(LOGDIR) && curl -u '$(LOGUSER)' https://api.github.com/user/repos -d '{"name":"$(DATE)__$(LOGHOST)__to__$(OM_TARG)__build-log"}'
+	cd $(LOGDIR) && curl -u '$(LOGUSER)' https://api.github.com/user/repos -d '{"name":"$(LOGNAME)"}'
 	cd $(LOGDIR) && git init
-	cd $(LOGDIR) && git add $(LOGHOST)-report
-	-cp $(SPWD)/logfile $(LOGDIR)/$(DATE)__$(LOGHOST)__to__$(OM_TARG)__build-log
-	-cd $(LOGDIR) && git add $(DATE)__$(LOGHOST)__to__$(OM_TARG)__build-log
-	cd $(LOGDIR) && git commit -m "$(DATE)__$(LOGHOST)__to__$(OM_TARG)__build-log"
-	cd $(LOGDIR) && git remote add origin https://github.com/$(LOGUSER)/$(DATE)__$(LOGHOST)__to__$(OM_TARG)__build-log.git
+	cd $(LOGDIR) && git add *
+	cd $(LOGDIR) && git commit -m "$(LOGNAME)"
+	cd $(LOGDIR) && git remote add origin https://github.com/$(LOGUSER)/$(LOGNAME).git
 	cd $(LOGDIR) && git push origin master
+
+
