@@ -24,7 +24,7 @@ make OM_ARCH='aarch64' OM_LIBC='gnu' BUILDNO=$buildno
 make clean OM_ARCH='aarch64' OM_LIBC='gnu' BUILDNO=$buildno
 make finishreport
 
-buildno=$((buildno + 1))
+
 
 
 
