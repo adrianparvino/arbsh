@@ -1093,6 +1093,7 @@ clean:
 	@rm -rf $(OM_OCRAD)
 	@rm -rf $(OM_TARG)
 	@rm -rf $(OM_TARG)-toolchain
+	@rm -rf kernel
 
 
 buildenvars:
