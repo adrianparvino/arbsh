@@ -2168,6 +2168,7 @@ trivtest:
 
 startreport:
 
+	-mkdir -p $(LOGDIR)/
 	-printf '\tOperating system: $(LOGHOSTUNAME)\n' >> $(LOGDIR)/$(LOGHOST)-report 
 	-printf "\t$(OM_GCC)\n" >> $(LOGDIR)/$(LOGHOST)-report
 	-printf "\t$(OM_BINUTILS)\n" >> $(LOGDIR)/$(LOGHOST)-report
