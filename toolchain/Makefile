@@ -218,7 +218,7 @@ OM_OPENSSL_CROSS_ENV = \
 
 all:
 	-mkdir -p $(LOGDIR)
-	$(MAKE) primary > $(LOGDIR)/$(OM_CONF)-build-log 2>&1
+	$(MAKE) primary > $(LOGDIR)/$(OM_TARG)-build-log 2>&1
 	$(MAKE) trivtest
 
 primary:
@@ -1091,6 +1091,9 @@ clean:
 	@rm -rf $(OM_GDB)
 	@rm -rf $(OM_GDB)-build-host
 	@rm -rf $(OM_OCRAD)
+	@rm -rf $(OM_TARG)
+	@rm -rf $(OM_TARG)-toolchain
+
 
 buildenvars:
 
