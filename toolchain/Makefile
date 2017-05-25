@@ -2187,6 +2187,8 @@ endif
 
 logreport:
 
+	cp Makefile $(LOGDIR)
+	cd $(LOGDIR) && $(LOGHOST)-report $(LOGHOST)-report.README
 	cd $(LOGDIR) && curl -u '$(LOGUSER)' https://api.github.com/user/repos -d '{"name":"$(LOGNAME)"}'
 	cd $(LOGDIR) && git init
 	cd $(LOGDIR) && git add *
