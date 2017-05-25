@@ -16,7 +16,7 @@ KBUILDAREA = $(shell pwd)/kernel
 OM_TUPLEPRSFX = -pc-linux-
 OM_LIBC = musl
 OM_TARG = $(OM_ARCH)-pc-linux-$(OM_LIBC)
-OM_CONF = --disable-libmpx
+OM_CONF = --disable-libmpx --disable-multilib
 OM_LINUXARCH = x86
 OM_BACKWARDCOMPAT = i386
 OM_HOST = $(shell uname -m)
@@ -45,10 +45,10 @@ KERNEL_MRR = https://www.kernel.org/pub/linux/kernel/v4.x/
 MUSL_MRR = http://www.musl-libc.org/releases/
 GNU_MRR = https://ftp.gnu.org/gnu/
 GENERIC_MRR = http://www.csit.parkland.edu/~cgraff1/src/
-OM_UCLIBC_VER = 1.0.13
+OM_UCLIBC_VER = 1.0.24
 OM_UCLIBC = uClibc-ng-$(OM_UCLIBC_VER)
 UCLIBC_MRR = http://downloads.uclibc-ng.org/releases/$(OM_UCLIBC_VER)/
-OM_GLIBC = glibc-2.20
+OM_GLIBC = glibc-2.25
 OM_PERL_MRR = http://www.cpan.org/src/5.0/
 OM_PERL_CROSS_MRR = https://github.com/arsv/perl-cross/releases/download/1.0.2/
 
@@ -218,8 +218,8 @@ OM_OPENSSL_CROSS_ENV = \
 
 all:
 	-mkdir -p $(LOGDIR)
-	$(MAKE) primary > $(LOGDIR)/$(OM_TARG)-build-log 2>&1
-	$(MAKE) trivtest
+	-$(MAKE) primary > $(LOGDIR)/$(OM_TARG)-build-log 2>&1
+	-$(MAKE) trivtest
 
 primary:
 
