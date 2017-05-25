@@ -2158,6 +2158,9 @@ trivtest:
 	-/$(OM_PREF)/bin/$(OM_TARG)-gfortran tests/testing.f && \
 		printf ", fortran" >> $(LOGDIR)/$(LOGHOST)-report
 	-printf ")\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "Extra OM_CONF=$(OM_CONF)\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-/$(OM_PREF)/bin/$(OM_TARG)-gcc -v >> $(LOGDIR)/$(LOGHOST)-report 2>&1
+	-printf "\n" >> $(LOGDIR)/$(LOGHOST)-report
 
 finishreport:
 
@@ -2177,7 +2180,7 @@ endif
 ifeq ($(OM_LIBC),gnu)
 	-printf "\t$(OM_GLIBC)\n"  >> $(LOGDIR)/$(LOGHOST)-report
 endif
-	-/$(OM_PREF)/bin/$(OM_TARG)-gcc -v >> $(LOGDIR)/$(LOGHOST)-report 2>&1
+	
 	-echo >> $(LOGDIR)/$(LOGHOST)-report
 	-echo >> $(LOGDIR)/$(LOGHOST)-report
 
