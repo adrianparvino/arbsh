@@ -1,6 +1,6 @@
 #!/bin/sh
 
-buildno="1"
+buildno="2"
 
 make OM_ARCH='i686' OM_LIBC='musl' BUILDNO=$buildno
 make clean OM_ARCH='i686' OM_LIBC='musl' BUILDNO=$buildno
