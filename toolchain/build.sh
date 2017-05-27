@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ulimit -S -t 3600 -v 2000000 -u 1200
+
 buildno="2"
 
 make startreport
