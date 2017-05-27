@@ -369,7 +369,8 @@ uclibc_stage_one: install_path
 	@cd $(SPWD)/$(OM_UCLIBC) && echo "RUNTIME_PREFIX=\"$(OM_PREF)/$(OM_TARG)/\"" >> .config 
 	@cd $(SPWD)/$(OM_UCLIBC) && echo "DEVEL_PREFIX=\"$(OM_PREF)/$(OM_TARG)/\"" >> .config 
 	@cd $(SPWD)/$(OM_UCLIBC) && echo "HAVE_SHARED=y" >> .config 
-	@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_THREADS_NATIVE=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_THREADS_NATIVE=y" >> .config 
+	@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_LINUXTHREADS=y" >> .config
 	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_UTMPX=y" >> .config 
 	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_UTMP=y" >> .config 
 	@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_SUSV3_LEGACY=y" >> .config 
@@ -391,7 +392,6 @@ uclibc_stage_two: install_path
 	--target=$(OM_TARG) \
 	--enable-languages=$(OM_LANGS) \
 	--disable-werror \
-	--disable-threads \
 	--disable-libquadmath \
 	--disable-libmudflap \
 	--disable-libsanitizer \
@@ -400,6 +400,7 @@ uclibc_stage_two: install_path
 	--with-headers="$(OM_PREF)/$(OM_TARG)/include" \
 	--disable-nls \
 	$(OM_CONF)
+	#--disable-threads \
 
 	$(MAKE) -i -C $(SPWD)/$(OM_GCC)-build-second
 
