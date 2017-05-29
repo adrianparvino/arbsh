@@ -11,7 +11,7 @@ int _flushbuf(int x, GFILE *fp)
 		fp->buf = buffer;
 		fp->lp = fp->rp = fp->buf;
 	} 
-	else if (write(fp->fd, fp->buf, fp->rp - fp->buf) < 0)
+	else if (fp->flags & _WRITE && write(fp->fd, fp->buf, fp->rp - fp->buf) < 0)
 	{ 
 		fp->flags |= _ERR;
 		return EOF; 
