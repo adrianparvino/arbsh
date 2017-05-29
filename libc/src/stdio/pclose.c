@@ -10,5 +10,6 @@ int gpclose(GFILE *fp)
 	fp->pid = 0;
 
 	gfclose(fp);
+	gfflush(NULL);
 	return -1;
 }
