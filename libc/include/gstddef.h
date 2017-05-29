@@ -23,10 +23,21 @@
 	being no larger than type long if determined by confstr().
 */ 
 
+#ifndef _PTRDIFF_T
+#ifndef _PTRDIFF_T_
+#ifndef PTRDIFF_T_
 typedef long ptrdiff_t;
+#endif
+#endif
+#endif
 
+#ifndef _SIZE_T
+#ifndef _SIZE_T_
+#ifndef SIZE_T_
 typedef unsigned long size_t;
-
+#endif
+#endif
+#endif
 /* 
 	TODO: Add support for __STDC_MB_MIGHT_NEQ_WC__ to wchar_t
 	#ifndef __STDC_MB_MIGHT_NEQ_WC__.
@@ -42,8 +53,14 @@ typedef unsigned long size_t;
 
 
 /* putting ssize_t here is not part of POSIX */
-typedef long ssize_t;
 
+#ifndef _SSIZE_T
+#ifndef _SSIZE_T_
+#ifndef SSIZE_T_
+typedef long ssize_t;
+#endif
+#endif
+#endif
 
 #define SEEK_SET	0
 #define SEEK_CUR	1
