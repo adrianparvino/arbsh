@@ -26,10 +26,6 @@ GFILE *gpopen(const char *command, const char *type)
 			goto error;
 		if ((close(pipefd[1])) == -1)
 			goto error;
-		// this seems to always error at -1
-		// so I am commenting it out.. for now.
-		//if ((dup2(pipefd[1], 2)) == -1)
-		//	goto error;
 		execvp(argv[0], argv);
 		_exit(1);
 	}
