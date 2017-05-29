@@ -26,7 +26,7 @@
 #ifndef _PTRDIFF_T
 #ifndef _PTRDIFF_T_
 #ifndef PTRDIFF_T_
-typedef long ptrdiff_t;
+//typedef long ptrdiff_t;
 #endif
 #endif
 #endif
@@ -34,7 +34,7 @@ typedef long ptrdiff_t;
 #ifndef _SIZE_T
 #ifndef _SIZE_T_
 #ifndef SIZE_T_
-typedef unsigned long size_t;
+//typedef unsigned long size_t;
 #endif
 #endif
 #endif
@@ -57,7 +57,7 @@ typedef unsigned long size_t;
 #ifndef _SSIZE_T
 #ifndef _SSIZE_T_
 #ifndef SSIZE_T_
-typedef long ssize_t;
+//typedef long ssize_t;
 #endif
 #endif
 #endif
