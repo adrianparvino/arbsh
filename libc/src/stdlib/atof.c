@@ -1,11 +1,15 @@
 #include <gctype.h>
+#include <gstdlib.h>
+#include <gstddef.h>
+#include <gstring.h>
+#include <glimits.h>
 #include <gstddef.h>
 
 double gatof(const char *s)
 {
 	double val, power;
 	static size_t i = 0;
-	size_t sign = 0;
+	int sign = 0;
 	if (gisspace(*s))
 		gatof(s + ++i);
 	sign = (s[i] == '-') ? -1 : 1;
