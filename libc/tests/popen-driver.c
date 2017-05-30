@@ -10,9 +10,10 @@ int main(void)
 		return 1;
 
 	while (fgets(path, 4096, fp) != NULL)
-		printf("%s", path); 
+		fprintf(stdout, "%s", path);
 
-	return status = pclose(fp);
+	pclose(fp);
+	return 0;
 }
 
 
