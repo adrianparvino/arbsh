@@ -13,9 +13,10 @@ int main(void)
 		return 1;
 	 
 	while (gfgets(path, 4096, fp) != NULL) 
-		gprintf("%s", path); 
+		gfprintf(gstdout, "%s", path);
 
-	return status = gpclose(fp);
+	gpclose(fp);
+	return 0;
 }
 
 
