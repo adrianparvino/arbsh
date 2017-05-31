@@ -18,7 +18,7 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <stdint.h>
-#include <readline/greadline.h>
+#include <readline/readline.h>
 
 /*
 	(Copyright) 2014-2017, "shell.c", CM Graff
@@ -135,13 +135,14 @@ int main(int argc, char **argv)
 		/* get user input */
 		else if ( ! argc ) 
 		{ 
-			if (!(len = greadline(l, GSHPROMPT, GSHPROMPTLEN)))
-				continue;
-			else {
+			//if (!(len = greadline(l, GSHPROMPT, GSHPROMPTLEN)))
+			//	continue;
+			//else {
+				l = readline(GSHPROMPT);
 		
-				gread_history(l, len ); 
+				add_history(l); 
 				++glb.count;
-			}
+			//}
 		}
 
 		/* interpret the primary input array */
@@ -173,7 +174,7 @@ int destroy(int exitno, char *message, char *l)
 	if ( glb.cmode == 0)
 		free(l);
 	free(cmds);
-	free(hist);
+	//free(hist);
 	exit(exitno); 
 }
 
