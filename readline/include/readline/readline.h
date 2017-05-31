@@ -13,11 +13,14 @@
 size_t ircline(char *, char *, size_t);
 void ircprint(char *, size_t, char *, size_t); 
 void determinewin(void); 
-int readchar(void);
-size_t greadline(char *, char *, size_t);
+int readchar(void); 
 size_t greadgetch(char *);
 void greadprint(char *, size_t, char *, size_t);
-int gread_history(char *, size_t);
+
+
+char *readline(char *);
+extern void add_history(const char *);
+
 
 /* structures */
 struct hglb {		/* globals	*/
