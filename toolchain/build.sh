@@ -22,6 +22,8 @@ make OM_ARCH='microblaze' OM_LIBC='musl' BUILDNO=$buildno OM_LINUXARCH="microbla
 make clean OM_ARCH='microblaze' OM_LIBC='musl' BUILDNO=$buildno OM_LINUXARCH="microblaze" OM_BACKWARDCOMPAT="microblaze"
 make OM_ARCH='sparc' OM_LIBC='musl' BUILDNO=$buildno OM_LINUXARCH="sparc" OM_BACKWARDCOMPAT="sparc"
 make clean OM_ARCH='sparc' OM_LIBC='musl' BUILDNO=$buildno OM_LINUXARCH="sparc" OM_BACKWARDCOMPAT="sparc"
+make OM_ARCH='powerpc' OM_LIBC='musl' BUILDNO=$buildno OM_LINUXARCH="powerpc" OM_BACKWARDCOMPAT="powerpc"
+make clean OM_ARCH='powerpc' OM_LIBC='musl' BUILDNO=$buildno OM_LINUXARCH="powerpc" OM_BACKWARDCOMPAT="powerpc"
 
 
 make -i OM_ARCH='i686' OM_LIBC='uclibc' BUILDNO=$buildno OM_LINUXARCH="x86" OM_BACKWARDCOMPAT="i386"
@@ -38,6 +40,9 @@ make OM_ARCH='microblaze' OM_LIBC='uclibc' BUILDNO=$buildno OM_LINUXARCH="microb
 make clean OM_ARCH='microblaze' OM_LIBC='uclibc' BUILDNO=$buildno OM_LINUXARCH="microblaze" OM_BACKWARDCOMPAT="microblaze"
 make OM_ARCH='sparc' OM_LIBC='uclibc' BUILDNO=$buildno OM_LINUXARCH="sparc" OM_BACKWARDCOMPAT="sparc"
 make clean OM_ARCH='sparc' OM_LIBC='uclibc' BUILDNO=$buildno OM_LINUXARCH="sparc" OM_BACKWARDCOMPAT="sparc"
+make OM_ARCH='powerpc' OM_LIBC='uclibc' BUILDNO=$buildno OM_LINUXARCH="powerpc" OM_BACKWARDCOMPAT="powerpc"
+make clean OM_ARCH='powerpc' OM_LIBC='uclibc' BUILDNO=$buildno OM_LINUXARCH="powerpc" OM_BACKWARDCOMPAT="powerpc"
+
 
 
 make OM_ARCH='i686' OM_LIBC='gnu' BUILDNO=$buildno OM_LINUXARCH="x86" OM_BACKWARDCOMPAT="i386"
@@ -54,6 +59,9 @@ make OM_ARCH='microblaze' OM_LIBC='gnu' BUILDNO=$buildno OM_LINUXARCH="microblaz
 make clean OM_ARCH='microblaze' OM_LIBC='gnu' BUILDNO=$buildno OM_LINUXARCH="microblaze" OM_BACKWARDCOMPAT="microblaze"
 make OM_ARCH='sparc' OM_LIBC='gnu' BUILDNO=$buildno OM_LINUXARCH="sparc" OM_BACKWARDCOMPAT="sparc"
 make clean OM_ARCH='sparc' OM_LIBC='gnu' BUILDNO=$buildno OM_LINUXARCH="sparc" OM_BACKWARDCOMPAT="sparc"
+make OM_ARCH='powerpc' OM_LIBC='gnu' BUILDNO=$buildno OM_LINUXARCH="powerpc" OM_BACKWARDCOMPAT="powerpc"
+make clean OM_ARCH='powerpc' OM_LIBC='gnu' BUILDNO=$buildno OM_LINUXARCH="powerpc" OM_BACKWARDCOMPAT="powerpc"
+
 make startreport
 
 
