@@ -18,7 +18,7 @@
 
 /* local libraries */
 #include <termcap/vt100.h>
-#include <readline/greadline.h>
+#include <readline/readline.h>
 
 /* 
         2016-2017 (C) Copyright, `Irc', CM Graff
@@ -609,7 +609,7 @@ size_t ircigetch(char *l)
                 uparse(l);
 		drawscreen();
 		if ( ret > 0 )
-			gread_history(l, ret); 
+			add_history(l); 
                 return 0;
 		//return ret;
         case K_BACKSPACE:

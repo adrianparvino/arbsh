@@ -83,7 +83,6 @@ int main(int argc, char **argv)
 	int let = 0;
 	int fp = 0; 
 	char *l;
-	size_t len = 0;
 
 	while ((o = getopt (argc, argv, "ct")) != -1)
                 switch (o) {
