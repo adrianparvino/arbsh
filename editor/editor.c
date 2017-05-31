@@ -14,7 +14,6 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <curses.h>
-#include <termcap/vt100.h>
 
 /*
 	See LICENSE file for copyright and license details. 
@@ -514,7 +513,7 @@ size_t edgetch(void)
 
 	switch (ch)
 	{ 
-		case K_ESCAPE: 
+		case 033:
 			ch = getch(); 
 			switch (ch)
 			{
@@ -537,13 +536,13 @@ size_t edgetch(void)
 					}
 			}
 			return len;
-		case K_BACKSPACE:
+		case 0177:
 			f_delete();
 			break;
-		case K_CTRLEXX:
+		case 030:
 			i_writefile(fname);
 			break;
-		case K_CTRLENN:
+		case 016:
 			i_die("", 0);
 			break; 
 		default:
