@@ -70,7 +70,7 @@ install:
 	mkdir -p $(DESTDIR)/lib/
 	mkdir -p $(DESTDIR)/include/$(PREFIX)
 	cp $(STATLIB) $(DESTDIR)/lib/
-	cp $(DYNLIB) $(DESTDIR)/lib/
+	#cp $(DYNLIB) $(DESTDIR)/lib/
 	cp $(INCLUDES) $(DESTDIR)/include/$(PREFIX)
 	$(MAKE) create_uninstall
 
