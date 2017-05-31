@@ -1,14 +1,6 @@
-#include <unistd.h>
-#include <string.h> 
 #include <stdio.h> 
-#include <stdint.h>
-
-/* gshline() */
-#include <stdlib.h>
-#include <limits.h>
-#include <termios.h>
-#include <sys/ioctl.h>
-#include <readline/greadline.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 int main(void)
 {
@@ -20,9 +12,9 @@ int main(void)
 		userline[0] = '\0'; 
                 len = ircline(userline, "[ircline]>> ", 12);
 		printf ("Finished line was: \n%s\n", userline);
-		gread_history(userline, len); 
+		add_history(userline);
         }
-	free(hist);
+	//free(hist);
         return 0;
 }
 
