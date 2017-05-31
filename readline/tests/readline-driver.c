@@ -1,32 +1,22 @@
-#include <unistd.h>
-#include <string.h> 
-#include <stdio.h> 
-#include <stdint.h>
+#include <stdio.h>
 
-/* gshline() */
-#include <stdlib.h>
-#include <limits.h>
-#include <termios.h>
-#include <sys/ioctl.h>
-#include <readline/greadline.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
-
-
-int main(void)
+int main()
 {
-        char *userline = malloc(BUFSIZ * sizeof(char));
-	size_t len = 0;
+        char *inpt;
 
-	
-        while ( 1 )
+        int i = 0;
+
+        while ( i < 10 )
         {
-		userline[0] = '\0'; 
-                len = greadline(userline, "[greadline]>> ", 14);
-		printf ("Finished line was: \n%s\n", userline);
-		gread_history(userline, len); 
+                inpt = readline("Enter texts: ");
+                add_history(inpt);
+                printf("%s", inpt);
+                printf("\n");
+                ++i;
         }
-	free(hist);
+
         return 0;
 }
-
-
