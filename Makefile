@@ -21,7 +21,7 @@ all:
 	-$(MAKE) -C curses install
 	-$(MAKE) -C arbprec
 	-$(MAKE) -C arbprec install
-	-$(MAKE) -C sh
+	-$(MAKE) -C gsh
 	-$(MAKE) -C editor
 	-$(MAKE) -C posix
 	-$(MAKE) -C irc
@@ -36,7 +36,7 @@ clean:
 	-$(MAKE) -C posix clean 
 	-$(MAKE) -C lsb clean 
 	-$(MAKE) -C irc clean
-	-$(MAKE) -C sh clean
+	-$(MAKE) -C gsh clean
 	-$(MAKE) -C editor clean
 	-$(MAKE) -C arbprec clean
 	-$(RM) -r include lib
@@ -47,7 +47,7 @@ install:
 	-$(MAKE) -C posix install 
 	-$(MAKE) -C linux install 
 	-$(MAKE) -C irc install
-	-$(MAKE) -C sh install 
+	-$(MAKE) -C gsh install 
 	-$(MAKE) -C editor install
 	# Install toolchain last if it exists
 	#-$(MAKE) -C toolchain install
