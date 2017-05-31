@@ -46,7 +46,7 @@ HIER:
 		A basic notepad-like editor implementation which runs in a 
 		terminal.
 
-	sh/
+	gsh/
 		Gsh supports a subset of POSIX shell.
 
 	irc/
