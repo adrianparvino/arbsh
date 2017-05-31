@@ -1,4 +1,4 @@
-#include <readline/greadline.h>
+#include <readline/readline.h>
 
 int readchar(void)
 {
@@ -8,7 +8,7 @@ int readchar(void)
 	if ((tcgetattr(0, &oterm)) != 0)
 		return -1;
 	memcpy(&term, &oterm, sizeof(term));
-	term.c_lflag &= ~(ICANON | ECHO); 
+	term.c_lflag &= ~(ICANON | ECHO);
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 	if ((tcsetattr(0, TCSANOW, &term)) != 0 )
@@ -59,8 +59,6 @@ void ircprint(char *l, size_t len, char *prompt, size_t plen)
 
 	/* write the prompt out */
 	write(1, prompt, plen);
-	
-	//dprintf(2, "irc print laro %d\n", hglb.laro);
 
 	if ( len )
 	{
@@ -105,9 +103,13 @@ void determinewin(void)
 	hglb.h = win.ws_row;
 }
 
-size_t greadline(char *l, char *prompt, size_t promptlen)
+char *readline(char *prompt)
 { 
+	size_t promptlen = strlen(prompt);
 	size_t len = 0;
+
+	char *l = malloc(len + 1);
+	
 	hglb.r = 1; 
 	
 	while ( hglb.r )
@@ -117,7 +119,7 @@ size_t greadline(char *l, char *prompt, size_t promptlen)
        		len = greadgetch(l);
 	}
 
-	return len;
+	return l;
 }
 
 size_t greadgetch(char *l)
@@ -263,16 +265,19 @@ void greadprint(char *l, size_t len, char *prompt, size_t plen)
         }
 }
 
-int gread_history(char *l, size_t len)
+extern void add_history(const char *l)
 {
+	size_t len = strlen(l);
 	if ( len > 1)
         { 
 		if (!(hist = realloc(hist, sizeof(struct hist) * ( hglb.t + 1))))
                 	return 0; // This _must_ be changed to a fatal error 
-        	strcpy(hist[hglb.t].line, l);
+        	//strcpy(hist[hglb.t].line, l);
+		memcpy(hist[hglb.t].line, l, len);
 		hist[hglb.t].len = len;
         	++hglb.t;
         }
 	hglb.c = hglb.t;
 	return 1;
 }
+
