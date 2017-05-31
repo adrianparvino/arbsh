@@ -4,7 +4,7 @@ PREFIX ?= /bin/
 
 DESTDIR ?= ../
 
-CFLAGS += -Wall -Wextra -I../include -static
+CFLAGS += -Wall -Wextra -I../include
 
 LDFLAGS += -L../lib 
 
