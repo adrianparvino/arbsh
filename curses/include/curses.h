@@ -24,6 +24,7 @@ typedef struct{
 	int fd;
 	char *rp; 
         char *buf;
+	char *last;
 	size_t len;
 	size_t x;	/* total x coord */
 	size_t y;	/* total y coord */
