@@ -318,7 +318,12 @@ void i_sortpos(struct filepos * pos0, struct filepos * pos1)
 /* Repaint screen */ 
 void i_update(void)
 {
-	int iline, irow, ixrow, ivchar, i, vlines;
+	int iline;
+	int irow;
+	int ixrow;
+	int ivchar;
+	int i;
+	int vlines;
 	int cursor_r = 0, cursor_c = 0;
 	size_t ichar; 
 	struct Line *l;
@@ -327,9 +332,8 @@ void i_update(void)
 	for(l = fstline, iline = 1; l && scrline->prev && l != scrline; iline++, l = l->next)
 	{
 		if(l == fcur.l)
-		{
-			i = 0;
-			while(l != scrline)
+		{ 
+			for (i=0;l != scrline;)
 			{
 				if(vlinecnt(scrline) > 1)
 				{
