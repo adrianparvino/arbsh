@@ -69,12 +69,8 @@ struct glb {
 	size_t w; 	/* terminal dimensions */
 	size_t h;
 	int runstate;
-} glb = { {}, NULL, 0, 0, 0, 1};
+} glb = { {}, NULL, 0, 0, 0, 1}; 
 
-
-//static struct hglb 
-
-//hglb = { .t = 0, .c =0, .r =0, .laro = 0, .w = 0, .h = 0 };
 
 /* globals */ 
 unsigned short port = 0;
