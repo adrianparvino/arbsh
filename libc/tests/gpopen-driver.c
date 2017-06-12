@@ -1,6 +1,7 @@
 #include <gstdio.h>
 #include <stdio.h>
 
+/* working with i686, x86_64, powerpcle and to some extent mipsel */
 
 
 int main(void)
