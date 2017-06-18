@@ -95,7 +95,8 @@ int main(int argc, char *argv[])
 
 	if (argc == 0 ) 
 	{
-		global.path = *argv;
+		//global.path = *argv;
+		global.path = ".";
 		if ( global.recur == 0 )
 			list_dirs(".");
 		if ( global.recur == 1 )
