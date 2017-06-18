@@ -14,7 +14,7 @@
 
 
 /* 
-	Copyright 2015-2016, C. Graff "ls"
+	Copyright 2015-2017, C. Graff "ls"
 */ 
 
 /* functions */
@@ -353,11 +353,15 @@ int find_pattern(char *path, size_t tot, size_t last)
 	char *spath = malloc (1); 
 	size_t dlen = 0;
 
-	printf("%s:\n", path);
-	chdir(path);
-	list_dirs(".");
-	chdir(home);
-	printf("\n");
+	
+	if ( chdir(path) == 0)
+	{
+		printf("%s:\n", path);
+		list_dirs(".");
+		chdir(home);
+		printf("\n");
+	}else
+		return -1;
 				
 	if (!(spath))
 		return -1;
