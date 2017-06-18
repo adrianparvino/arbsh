@@ -51,7 +51,6 @@ void cathead(int source, size_t end, int opened)
 		len = ret;
                 while (i < len)
                 {
-			
                         if (buf[i] == '\n')
                                 ++j;
 			++i; 
