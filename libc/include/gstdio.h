@@ -66,7 +66,7 @@ int _flushbuf(int, GFILE *);
 int gfflush(GFILE *);
 int _populate(int, int, int, char *, GFILE *);
 int ggetchar(void);
-int gputchar(char);
+int gputchar(int);
 int ggetc(GFILE *);
 int gfgetc(GFILE *);
 int gputc(int, GFILE *); 

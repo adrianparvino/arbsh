@@ -1,5 +1,5 @@
 #include <gstdio.h> 
-int putchar(int x)
+int gputchar(int x)
 {
 	return gputc(x, gstdout);
 }
