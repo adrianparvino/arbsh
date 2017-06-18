@@ -40,6 +40,7 @@ void cathead(int source, size_t end, int opened)
         size_t i, j; 
 	ssize_t ret = 0;
 	char buf[4096];
+	size_t len = 0;
 
         if (source == -1)
                 return;
@@ -47,19 +48,24 @@ void cathead(int source, size_t end, int opened)
         for (i = 0, j=0; (ret = read(source, buf, 4096)) > 0;)
         {
 		i = 0;
-                while (i < (size_t)ret)
+		len = ret;
+                while (i < len)
                 {
 			
                         if (buf[i] == '\n')
                                 ++j;
 			++i; 
-                        if (j == end)
-				break; 
+                        if (j == end) 
+			{
+				write(STDOUT_FILENO, buf, i);
+				goto end;
+			}
                 }
-		write(STDOUT_FILENO, buf, ret);
+		write(STDOUT_FILENO, buf, i);
         }
 	if (ret == -1)
 		write(2, "head error.\n", 12);
+	end:
 	if (opened == 1)
         	close(source);
 }
