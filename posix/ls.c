@@ -237,54 +237,81 @@ void ls_error(char *message, int i)
 
 void octtoperm(int octal)
 { 
+	char s[16];
+	size_t i = 0;
 
 	switch (octal & S_IFMT)
 	{
-		case S_IFBLK:
-			write(1, "b", 1);
+		case S_IFBLK: 
+			s[i++] = 'b';
 			break;
-		case S_IFCHR:
-			write(1, "c", 1);
+		case S_IFCHR: 
+			s[i++] = 'c';
 			break;
-		case S_IFDIR:
-			write(1, "d", 1);
+		case S_IFDIR: 
+			s[i++] = 'd';
 			break;
-		case S_IFIFO:
-			write(1, "p", 1);
+		case S_IFIFO: 
+			s[i++] = 'p';
 			break;
-		case S_IFLNK:
-			write(1, "l", 1);
+		case S_IFLNK: 
+			s[i++] = 'l';
 			break;
-		case S_IFREG:
-			write(1, "-", 1);
+		case S_IFREG: 
+			s[i++] = '-';
 			break; 
-		case S_IFSOCK:
-			write(1, "S", 1);
+		case S_IFSOCK: 
+			s[i++] = 'S';
 			break; 
 		default:
-			write(1, "?", 1);
+			s[i++] = '?';
 			break; 
 
 	} 
 
-	write(1, (octal & S_IRUSR) ? "r" : "-", 1);
-	write(1, (octal & S_IWUSR) ? "w" : "-", 1);
-	write(1, (octal & S_IXUSR) ? "x" : "-", 1);
-	write(1, (octal & S_IRGRP) ? "r" : "-", 1);
-	write(1, (octal & S_IWGRP) ? "w" : "-", 1);
-	write(1, (octal & S_IXGRP) ? "x" : "-", 1);
-	write(1, (octal & S_IROTH) ? "r" : "-", 1);
-	write(1, (octal & S_IWOTH) ? "w" : "-", 1); 
+	if (octal & S_IRUSR)
+		s[i++] = 'r';
+	else
+		s[i++] = '-';
+	if (octal & S_IWUSR)
+		s[i++] = 'w';
+	else
+		s[i++] = '-';
+	if (octal & S_IXUSR)
+		s[i++] = 'x';
+	else
+		s[i++] = '-';
+	if (octal & S_IRGRP)
+		s[i++] = 'r';
+	else
+		s[i++] = '-';
+	if (octal & S_IWGRP)
+		s[i++] = 'w';
+	else
+		s[i++] = '-';
+	if (octal & S_IXGRP)
+		s[i++] = 'x';
+	else
+		s[i++] = '-';
+	if (octal & S_IROTH)
+		s[i++] = 'r';
+	else
+		s[i++] = '-';
+	if (octal & S_IWOTH)
+		s[i++] = 'w';
+	else
+		s[i++] = '-';
 
-	if ( octal & S_ISVTX && octal & S_IXOTH )
-		write(1, "t", 1);
-	else if (octal & S_ISVTX )
-		write(1, "T", 1);
-	else if (octal & S_IXOTH )
-		write(1, "x", 1);
+	if ( octal & S_ISVTX && octal & S_IXOTH)
+		s[i++] = 't';
+	else if (octal & S_ISVTX) 
+		s[i++] = 'T';
+	else if (octal & S_IXOTH)
+		s[i++] = 'x';
 	else	
-		write(1, "-", 1);
+		s[i++] = '-';
 
+	write(1, s, i);
 }
 
 int compare (const void * a, const void * b )
