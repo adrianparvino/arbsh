@@ -6,7 +6,7 @@ size_t greadgetch(char *l)
         static size_t len = 0;
 	static size_t ret = 0;
 	size_t z = 0;
-        int c; 
+        int c;
        
 	c = readchar(); 
         
@@ -20,20 +20,22 @@ size_t greadgetch(char *l)
 			case 'A': /* arrow up */
 				if ( hglb.c > 0 )
 				{
-					--hglb.c;
-					//l[len] = 0;
-					strcpy(l, hist[hglb.c].line);
+					--hglb.c; 
+					strcpy(l, hist[hglb.c].line); 
 					len = hist[hglb.c].len;
 					hglb.laro = 0;
 				}
 				break;
 			case 'B': /* arrow down */
-				if ( hglb.c < hglb.t )
+				if ( hglb.c < hglb.t)
 				{
 					++hglb.c;
-					//l[len] = 0;
-					strcpy(l, hist[hglb.c].line);
-					len = hist[hglb.c].len;
+					if ( hglb.c < hglb.t)
+					{
+						strcpy(l, hist[hglb.c].line);
+						len = hist[hglb.c].len;
+					}else
+					len = 0;
 					hglb.laro = 0;
 				}
 				break;
@@ -86,13 +88,11 @@ size_t greadgetch(char *l)
 			z = (len - hglb.laro);
 			memmove(l + z + 1, l + z, hglb.laro);
 			l[z] = c; 
-	}
+		}
 		else { 
 			l[len] = c;
-		}
-
-		l[++len] = '\0';
-
+		} 
+		l[++len] = '\0'; 
                 break;
         }
 	l[len] = '\0';
