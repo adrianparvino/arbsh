@@ -5,7 +5,7 @@ char *readline(char *prompt)
 	size_t promptlen = strlen(prompt);
 	size_t len = 0;
 
-	char *l = malloc(len + 1);
+	char *l = malloc(len + 4096);
 	
 	hglb.r = 1; 
 	
