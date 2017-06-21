@@ -1,22 +1,16 @@
-//#include <stdio.h>
-
+#include <stdio.h> 
 #include <readline/readline.h>
 #include <readline/history.h>
 
-int main()
+int main(void)
 {
         char *inpt;
-
-        int i = 0;
-
-        while ( i < 10 )
+	
+        while ( 1 )
         {
                 inpt = readline("Enter texts: ");
                 add_history(inpt);
-                printf("%s", inpt);
-                printf("\n");
-                ++i;
+                printf("%s\n", inpt);
         }
-
         return 0;
 }
