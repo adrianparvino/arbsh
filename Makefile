@@ -2,7 +2,7 @@
 .SILENT: buildenvvars clearenvvars
 .PHONY: toolchain
 
-RELEASE = grafland-0.3d.tar.gz
+RELEASE = grafland-0.3e.tar.gz
 WEBSITE = http://www.csit.parkland.edu/~cgraff1
 SPWD = $(shell pwd)
 NAME = $(shell basename $(SPWD))
@@ -72,8 +72,8 @@ release:
 
 	-rm README.html
 	-printf "\t$(WEBSITE)/$(RELEASE)\n\n" >> README
-	./txt2html README
-	-git add *
+	./.tx2html README
+	-git add * .htaccess  .tx2html
 	-git commit -m $(RELEASE)
 	-git push origin master
 	cd $(SPWD)/.. && tar -c $(NAME) -f $(RELEASE)
