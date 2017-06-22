@@ -104,8 +104,6 @@ OM_RSYNC_MRR = https://download.samba.org/pub/rsync/src/
 OM_LIBICONV = libiconv-1.14
 OM_LIBUNISTRING = libunistring-0.9.6
 OM_LIBTOOL = libtool-2.4
-OM_SLIBTOOL = slibtool-main
-OM_SLIBTOOL_MRR = http://git.midipix.org/cgit.cgi/slibtool/snapshot/
 OM_LIBGC = gc-7.4.0
 OM_LIBGC_MRR = http://www.hboehm.info/gc/gc_source/
 OM_LIBATOMIC_OPS = libatomic_ops-7.4.2
@@ -1948,18 +1946,6 @@ netbsdcurses_host: install_path
 
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_NETBSDCURSES)
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_NETBSDCURSES) install DESTDIR=$(OM_PREF)/$(OM_TARG)
-
-slibtool_host: install_path
-
-	-rm -rf $(OM_SLIBTOOL)
-	cd $(OM_SRC) && test -e $(OM_SLIBTOOL).$(OM_SFX) || wget $(OM_SLIBTOOL_MRR)/$(OM_SLIBTOOL).$(OM_SFX)
-	@tar -xf $(OM_SRC)/$(OM_SLIBTOOL).$(OM_SFX) -C $(SPWD)
-	-cd $(SPWD)/$(OM_SLIBTOOL) && $(INACROSS) $(SPWD)/$(OM_SLIBTOOL)/configure \
-	--prefix=$(OM_PREF)/$(OM_TARG) \
-	--host=$(OM_HOST)
-
-	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_SLIBTOOL)
-	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_SLIBTOOL)
 
 tmux_target: install_path
 
