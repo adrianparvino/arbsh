@@ -8,7 +8,7 @@
 /*
 	2017 (C) Copyright, readline.h, CM Graff
 */
-#define READLINE_LIMIT 128
+#define READLINE_LIMIT 4096
 
 /* function prototypes */ 
 size_t ircline(char *, char *, size_t);
