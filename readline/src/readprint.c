@@ -15,7 +15,7 @@ size_t szstrcatn(char *dest, char *src, size_t limit, size_t offlen)
 	if ( offlen >= limit )
 		return 0;
 
-	for (i=0;destlen < limit - 1 && src[i] != 0;++i,++destlen) 
+	for (i=0;destlen < (limit - offlen) - 1 && src[i] != 0;++i,++destlen) 
 		dest[destlen] = src[i];
 	
 	dest[destlen] = 0;
