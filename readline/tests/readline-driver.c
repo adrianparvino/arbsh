@@ -8,7 +8,7 @@ int main(void)
 	
         while ( 1 )
         {
-                inpt = readline("Enter texts: ");
+                inpt = readline("readline-driver>> ");
                 add_history(inpt);
                 printf("%s\n", inpt);
         }
