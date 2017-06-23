@@ -4,10 +4,8 @@ size_t szstrcatn(char *dest, char *src, size_t limit, size_t offlen)
 {
 	/*
 		Type of function that concatenates two strings
-		and returns the number of bytes processed. The final
-		argument "offlen" ensures that if a pointer offset
-		is used with the first string that it will still not
-		overflow.
+		and returns the number of bytes processed. "offlen"
+		must contain the value of any offset to dest. 
 	*/
 	size_t destlen = strlen(dest);
 	size_t i = 0;
