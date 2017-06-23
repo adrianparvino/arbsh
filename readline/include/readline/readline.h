@@ -8,6 +8,7 @@
 /*
 	2017 (C) Copyright, readline.h, CM Graff
 */
+#define READLINE_LIMIT 128
 
 /* function prototypes */ 
 size_t ircline(char *, char *, size_t);
@@ -34,7 +35,7 @@ struct hglb {		/* globals	*/
 
 
 struct hist {			/* history lines	*/
-	char line[BUFSIZ];	/* lines		*/ 
+	char line[READLINE_LIMIT];	/* lines	*/ 
 	size_t len;		/* line length		*/
 }*hist;
 
