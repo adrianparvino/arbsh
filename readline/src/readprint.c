@@ -44,7 +44,8 @@ void greadprint(char *l, size_t len, char *prompt, size_t plen)
 		{ 
 			a += sprintf(s + a, "%s", T_CURSUP1ROW);
 			for ( z=0; z < hglb.w ; ++z)
-				write(1, T_CURS4D1COL, T_CURS4D1COL_SZ);
+				a += sprintf(s + a, "%s", T_CURS4D1COL_SZ);
+				//write(1, T_CURS4D1COL, T_CURS4D1COL_SZ);
 			++deep; 
 		}
         }
