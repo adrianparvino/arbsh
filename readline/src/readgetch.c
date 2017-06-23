@@ -80,6 +80,9 @@ size_t greadgetch(char *l)
 		l[--len] = '\0';
 		return len; 
         default:
+		/* this is wrong and needs to check that memmove() can't 
+		   go out of bounds
+		*/
 		if ( hglb.laro )
 		{
 			z = (len - hglb.laro);
@@ -91,11 +94,10 @@ size_t greadgetch(char *l)
 		} 
 		if ( len < READLINE_LIMIT -1)
 			l[++len] = '\0'; 
-		else
-			goto end;
+	
                 break;
         }
-	end:
+
 	l[len] = '\0';
 	return len;
 }
