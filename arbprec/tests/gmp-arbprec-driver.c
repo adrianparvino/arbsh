@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[])
 { 
-
+	argc = argc;
 	mpf_t n;
 	mpf_t j;
 	mpf_init(n); 
