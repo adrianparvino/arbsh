@@ -1,6 +1,5 @@
 #include <readline/readline.h>
 
-
 size_t greadgetch(char *l)
 {
         static size_t len = 0;
@@ -71,16 +70,14 @@ size_t greadgetch(char *l)
 		hglb.laro = 0;
                 return ret;
 	case K_BACKSPACE:
-		if ( len == 0 ) 
-			return len; 
+		if ( len == 0 )
+			return len;
 		if ( hglb.laro ) 
 		{
 			z = (len - hglb.laro);
                         memmove(l + z - 1, l + z, hglb.laro);
 		}
-
 		l[--len] = '\0';
-
 		return len; 
         default:
 		if ( hglb.laro )
