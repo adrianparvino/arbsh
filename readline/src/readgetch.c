@@ -89,7 +89,10 @@ size_t greadgetch(char *l)
 		else { 
 			l[len] = c;
 		} 
-		l[++len] = '\0'; 
+		if ( len < READLINE_LIMIT )
+			l[++len] = '\0'; 
+		else
+			return len;
                 break;
         }
 	l[len] = '\0';
