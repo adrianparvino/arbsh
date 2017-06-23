@@ -37,8 +37,9 @@ void greadprint(char *l, size_t len, char *prompt, size_t plen)
 	
 	/* calculate row pos and shove lines up */
 
-	while ( a < READLINE_LIMIT )
-	{
+	//while ( a < READLINE_LIMIT )
+	//{
+
         for (i = plen, j = len; j > (hglb.w - i) + 1; i = 0)
         { 
 		if ( deep == 0 ) /* if user is scanning don't shove lines */
@@ -76,7 +77,8 @@ void greadprint(char *l, size_t len, char *prompt, size_t plen)
 			++deep; 
 		}
         }
-	break;
-	}
+
+	//break;
+	//}
 	write(1, s, a);
 }
