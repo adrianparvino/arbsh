@@ -20,7 +20,7 @@ size_t greadgetch(char *l)
 				if ( hglb.c > 0 )
 				{
 					--hglb.c; 
-					strcpy(l, hist[hglb.c].line); 
+					memcpy(l, hist[hglb.c].line, hist[hglb.c].len);
 					len = hist[hglb.c].len;
 					hglb.laro = 0;
 				}
@@ -31,10 +31,10 @@ size_t greadgetch(char *l)
 					++hglb.c;
 					if ( hglb.c < hglb.t)
 					{
-						strcpy(l, hist[hglb.c].line);
+						memcpy(l, hist[hglb.c].line, hist[hglb.c].len);
 						len = hist[hglb.c].len;
 					}else
-					len = 0;
+						len = 0;
 					hglb.laro = 0;
 				}
 				break;
