@@ -28,18 +28,13 @@ void greadprint(char *l, size_t len, char *prompt, size_t plen)
 	size_t j;
 	size_t y;
 	size_t z;
-	//char s[READLINE_LIMIT];
 	char *s = malloc (READLINE_LIMIT);
 	size_t a = 0;
 	size_t limit = READLINE_LIMIT - 1;
         
 	s[0] = 0;
 	
-	/* calculate row pos and shove lines up */
-
-	//while ( a < READLINE_LIMIT )
-	//{
-
+	/* calculate row pos and shove lines up */ 
         for (i = plen, j = len; j > (hglb.w - i) + 1; i = 0)
         { 
 		if ( deep == 0 ) /* if user is scanning don't shove lines */
@@ -55,7 +50,9 @@ void greadprint(char *l, size_t len, char *prompt, size_t plen)
         /* clear the line */
 	a += szstrcatn(s + a, "\r", limit, a);
 
-        /* write the prompt out */
+        /* write the prompt out ( this should be seperated and written to stderr
+	   instead ).
+	*/
 	a += szstrcatn(s + a, prompt, limit, a);
 
         /* write the user's line out */
@@ -66,19 +63,17 @@ void greadprint(char *l, size_t len, char *prompt, size_t plen)
 	a += szstrcatn(s + a, T_CLRCUR2END, limit, a);
 
         /* walk the cursor backward to the user's position */
-        for (i=0, y = len + plen; i < hglb.laro ; ++i, --y)
+        for (i=0, y = len + plen; i < hglb.laro ;++i,--y)
         { 
 		a += szstrcatn(s + a, T_CURSBK1COL, limit, a);
 		if ( y % (hglb.w) == 0 )
 		{ 
 			a += szstrcatn(s + a, T_CURSUP1ROW, limit, a);
-			for ( z=0; z < hglb.w ; ++z)
-				a += szstrcatn(s + a, T_CURS4D1COL, limit, a);
-			++deep; 
+			for (z=0; z < hglb.w;++z)
+				a += szstrcatn(s + a, T_CURS4D1COL, limit, a); 
+			++deep;
 		}
         }
 
-	//break;
-	//}
 	write(1, s, a);
 }
