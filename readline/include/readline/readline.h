@@ -18,10 +18,8 @@ int readchar(void);
 size_t greadgetch(char *);
 void greadprint(char *, size_t, char *, size_t);
 
-
 char *readline(char *);
 extern void add_history(const char *);
-
 
 /* structures */
 struct hglb {		/* globals	*/
@@ -33,10 +31,10 @@ struct hglb {		/* globals	*/
 	size_t h;
 }hglb;
 
-
 struct hist {			/* history lines	*/
 	char line[READLINE_LIMIT];	/* lines	*/ 
 	size_t len;		/* line length		*/
 }*hist;
 
 struct winsize win;
+
