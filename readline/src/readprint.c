@@ -50,10 +50,13 @@ void greadprint(char *l, size_t len, char *prompt, size_t plen)
         /* clear the line */
 	a += szstrcatn(s + a, "\r", limit, a);
 
-        /* write the prompt out ( this should be seperated and written to stderr
-	   instead ).
-	*/
-	a += szstrcatn(s + a, prompt, limit, a);
+	/* Dump any attribute manipulations before the prompt */
+	write(1, s, a);
+	a = 0;
+	s[a] = 0;
+
+        /* write the prompt out to stderr as a convention */
+	write(2, prompt, plen);
 
         /* write the user's line out */
 	l[len] = 0;
