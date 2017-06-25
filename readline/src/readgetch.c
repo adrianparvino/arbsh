@@ -39,6 +39,9 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 	size_t last;
 	size_t matches = 0;
 	char *match = NULL;
+	
+	size_t i = 0;
+	int lever = 0;
 
         if ( ( dir = opendir(path) ) )
         {
@@ -56,8 +59,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
                         {
-				size_t i = 0;
-				int lever = 0;
+				lever = 0;
 				if (dlen < patlen)
 					lever = 1;
 				for (i=0; i<patlen;++i)
@@ -180,7 +182,7 @@ size_t greadgetch(char *l)
 		l[--len] = '\0';
 		return len; 
         default:
-		/* this is wrong and needs to check that memmove() can't 
+		/* this needs to check that memmove() can't 
 		   go out of bounds
 		*/
 		if ( hglb.laro )
