@@ -7,24 +7,29 @@ void tokenize(char *l)
 {
 	size_t i = 0;
 	size_t len = 0; 
-	int inas = 0;
+	int inas = 1;
 	while (1)
 	{
 		if (*l == ' ' || *l == 0)
 		{
+		
 			if ( inas == 0 )
 			{
 				tokens[i][len] = 0;
 				++i;
 			}
-			len = 0;
 			inas = 1;
+			len = 0;
+			
 			if (*l == 0) 
 				break;
+			
 		}
 		else 
 			inas = 0;
+		
 		tokens[i][len] = *l;
+		tokens[i][len + 1] = 0;
 		++l;
 		++len;
 	}
