@@ -3,27 +3,22 @@ int find_pattern(char *path, size_t tot, size_t last);
 
 int find_pattern_wrap(char *path, size_t tot, size_t last)
 {
-	char *temp=malloc(4095);;
-	char *p;
-
 	if (!(*path))
 		return;
-	strcpy(temp, path);
-	//temp = basename(temp);
-	if (path[0] == '/'&& path[1] == '\0')
-	{
-		p = temp;
-	}else {
-		
-		p = strrchr(temp, '/');
-		*p++ = 0;
-	}
+
+	char *pathnam = malloc(4095);;
+	char *pattern = malloc(4095);;
+
+	strcpy(pathnam, path);
+	strcpy(pattern, path);
+	pathnam = dirname(pathnam);
+	pattern = basename(pattern);
 
 	printf("\n");
-	printf("Path name:%s\n", temp);
-	printf("Remaining pat:%s\n", p);
+	printf("dirname :%s\n", pathnam);
+	printf("basename :%s\n", pattern);
 	fflush(stdout);
-	find_pattern(temp, tot, last);
+	find_pattern(pathnam, tot, last);
 }
 
 int find_pattern(char *path, size_t tot, size_t last)
