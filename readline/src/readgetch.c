@@ -1,48 +1,46 @@
 #include <readline/readline.h>
 char * find_pattern(char *path, size_t tot, char *pat, size_t patlen);
+char *find_pattern_wrap(char *path, size_t tot, size_t last);
 
-char tokens[100][READLINE_LIMIT] = { 0 };
 
-void tokenize(char *l)
+
+char *tokenize(char *l)
 {
 	size_t i = 0;
-	size_t len = 0; 
+	size_t len = 0;
 	int inas = 1;
+	char *ret = malloc(READLINE_LIMIT);
+	//char tokens[100][READLINE_LIMIT] = { 0 }; // only need the final token
 	while (1)
 	{
 		if (*l == ' ' || *l == 0)
 		{
 			if ( inas == 0 )
-			{
-				tokens[i][len] = 0;
 				++i;
-			}
 			inas = 1;
 			len = 0;
-			
-			if (*l == 0) 
+			if (*l == 0)
 				break;
-			
 		}
-		else 
+		else
 			inas = 0;
 	
 		if (*l != ' ')
 		{
-			tokens[i][len] = *l;
-			tokens[i][len + 1] = 0;
+			//tokens[i][len] = *l;
+			//tokens[i][len + 1] = 0;
+			ret[len] = *l;
+			ret[len + 1] = 0;
 			++len;
 		}
-	
 		++l;
-		
 	}
 
 	size_t j = 0;
-	for (j=0;j<i;++j)
-	{
-		printf("\n%s\n", tokens[j]);
-	}
+	//for (j=0;j<i;++j) 
+	//	printf("\n%s\n", tokens[j]);
+	return find_pattern_wrap(ret, len, 0);
+	//printf("\n%s\n", ret);
 }
 
 char *find_pattern_wrap(char *path, size_t tot, size_t last)
@@ -56,6 +54,8 @@ char *find_pattern_wrap(char *path, size_t tot, size_t last)
 
 	strcpy(pathnam, path);
 
+	tot = strlen(path) -1;
+
 	if (path[tot] == '/')
 	{
 		pattern = "";
@@ -67,8 +67,8 @@ char *find_pattern_wrap(char *path, size_t tot, size_t last)
 	} 
 
 	printf("\n");
-	//printf("dirname :%s\n", pathnam);
-	//printf("basename :%s\n", pattern);
+	printf("dirname :%s\n", pathnam);
+	printf("basename :%s\n", pattern);
 	ret = find_pattern(pathnam, strlen(pathnam), pattern, strlen(pattern));
 
 	return ret;
@@ -119,9 +119,11 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 					if ( match == NULL ) 
 					{
 						match = malloc(READLINE_LIMIT);
+						strcpy(match, spath);
 						//memcpy(match, spath, tot + 1 + dlen + 1);
-						memcpy(match, spath, tot + 1);
-					}else printf("%s\n", spath);
+						//memcpy(match, spath, tot + 1);
+					}
+					printf("%s\n", spath);
 					++matches;
 				}
                         }
@@ -133,9 +135,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 		}
 			
 
-        }
-        
-               
+        } 
         closedir(dir);
         return NULL;
 }
@@ -204,8 +204,9 @@ size_t greadgetch(char *l)
 	case '\t':
 		l[len] = 0;
 		//if ((line =find_pattern_wrap(l, len -1, 0)))
-		//	len = sprintf(l, "%s", line);
-		tokenize(l);
+		if ((line =tokenize(l)))
+			len = sprintf(l, "%s", line);
+		//tokenize(l);
 		break;
         case '\n':
 		write(1, "\n", 1);
