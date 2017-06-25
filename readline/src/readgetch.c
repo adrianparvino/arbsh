@@ -34,11 +34,13 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 {
         DIR *dir;
         struct dirent *d;
-        char *spath = NULL;
+     
         size_t dlen = 0;
 	size_t last;
 	size_t matches = 0;
 	char *match = NULL;
+	char spath[READLINE_LIMIT];
+	spath[0] = 0;
 	
 	size_t i = 0;
 	int lever = 0;
@@ -48,13 +50,12 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                 d = readdir(dir);
                 while (d)
                 {
-                        dlen = strlen(d->d_name);
-
-                        last = (tot + dlen + 2); /* +2 = '/' + '\0' */
-                        spath = realloc(spath, last);
-                        if (!(spath))
-                                return -1;
+                        dlen = strlen(d->d_name); 
                         tot = sprintf(spath, "%s/%s", path, d->d_name);
+			//memcpy(spath, path, tot);
+			//memcpy(spath + tot, "/", 1);
+			//memcpy(spath + tot + 1, d->d_name, dlen);
+			//spath[tot + 1 + dlen] = 0;
 
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
@@ -69,21 +70,28 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 				}
 				if ( lever == 0)
 				{
-                                	printf("%s\n", spath);
+                                	
+					
 					if ( match == NULL ) 
-						match = strdup(spath); 
-				
+					{
+						match = malloc(READLINE_LIMIT);
+						//memcpy(match, spath, tot + 1 + dlen + 1);
+						memcpy(match, spath, tot + 1);
+					}else printf("%s\n", spath);
 					++matches;
 				}
                         }
                         d = readdir(dir);
                 }
 		if ( matches == 1 ) 
+		{
 			return match; 
+		}
+			
 
         }
-        if ( spath)
-                free(spath);
+        
+               
         closedir(dir);
         return NULL;
 }
@@ -150,15 +158,9 @@ size_t greadgetch(char *l)
 		}
 		return len;
 	case '\t':
-
-		
 		l[len] = 0;
 		if ((line =find_pattern_wrap(l, len -1, 0)))
-		{
 			len = sprintf(l, "%s", line);
-			
-		}
-		
 		break;
         case '\n':
 		write(1, "\n", 1);
