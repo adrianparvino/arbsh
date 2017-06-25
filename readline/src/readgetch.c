@@ -1,13 +1,14 @@
 #include <readline/readline.h>
-int find_pattern(char *path, size_t tot, char *pat, size_t patlen);
+char * find_pattern(char *path, size_t tot, char *pat, size_t patlen);
 
-int find_pattern_wrap(char *path, size_t tot, size_t last)
+char *find_pattern_wrap(char *path, size_t tot, size_t last)
 {
 	if (!(*path))
 		return;
 
 	char *pathnam = malloc(4095);; 
 	char *pattern = malloc(4095);; 
+	char *ret = NULL;
 
 	strcpy(pathnam, path);
 
@@ -24,11 +25,12 @@ int find_pattern_wrap(char *path, size_t tot, size_t last)
 	printf("\n");
 	printf("dirname :%s\n", pathnam);
 	printf("basename :%s\n", pattern);
+	ret = find_pattern(pathnam, tot, pattern, strlen(pattern));
 
-	find_pattern(pathnam, tot, pattern, strlen(pattern));
+	return ret;
 }
 
-int find_pattern(char *path, size_t tot, char *pat, size_t patlen)
+char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 {
         DIR *dir;
         struct dirent *d;
@@ -36,6 +38,7 @@ int find_pattern(char *path, size_t tot, char *pat, size_t patlen)
         size_t dlen = 0;
 	size_t last;
 	size_t matches = 0;
+	char *match = NULL;
 
         if ( ( dir = opendir(path) ) )
         {
@@ -55,7 +58,9 @@ int find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                         {
 				size_t i = 0;
 				int lever = 0;
-				for (i=0; i<patlen&& i < dlen;++i)
+				if (dlen < patlen)
+					lever = 1;
+				for (i=0; i<patlen;++i)
 				{
 					if (pat[i] != d->d_name[i]) 
 						lever = 1;
@@ -63,19 +68,26 @@ int find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 				if ( lever == 0)
 				{
                                 	printf("%s\n", spath);
+					if ( match == NULL )
+					{
+						match = strdup(spath);
+					}
 					++matches;
 				}
                         }
                         d = readdir(dir);
                 }
 		if ( matches == 1 )
+		{
 			printf("we had a truthful match\n");
+			return match;
+		}
 
         }
         if ( spath)
                 free(spath);
         closedir(dir);
-        return 0;
+        return NULL;
 }
 
 
@@ -86,6 +98,7 @@ size_t greadgetch(char *l)
 	static size_t ret = 0;
 	size_t z = 0;
         int c;
+	char *line = NULL;
        
 	c = readchar(); 
         
@@ -139,8 +152,13 @@ size_t greadgetch(char *l)
 		}
 		return len;
 	case '\t':
+
+		
 		l[len] = 0;
-		find_pattern_wrap(l, len -1, 0);
+		if ((line =find_pattern_wrap(l, len -1, 0)))
+		{
+			len = sprintf(l, "%s", line);
+		}
 		
 		break;
         case '\n':
