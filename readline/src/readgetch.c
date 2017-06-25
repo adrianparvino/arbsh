@@ -6,12 +6,8 @@ int find_pattern_wrap(char *path, size_t tot, size_t last)
 	if (!(*path))
 		return;
 
-	char *pathnam = malloc(4095);;
-	char *a;
-	char *pattern = malloc(4095);;
-	char *b;
-	
-
+	char *pathnam = malloc(4095);; 
+	char *pattern = malloc(4095);; 
 
 	strcpy(pathnam, path);
 
@@ -23,17 +19,7 @@ int find_pattern_wrap(char *path, size_t tot, size_t last)
 		strcpy(pattern, path);
 		pathnam = dirname(pathnam);
 		pattern = basename(pattern);
-	}
-
-
-	
-	
-
-
-
-
-
-
+	} 
 
 	printf("\n");
 	printf("dirname :%s\n", pathnam);
@@ -49,6 +35,7 @@ int find_pattern(char *path, size_t tot, char *pat, size_t patlen)
         char *spath = NULL;
         size_t dlen = 0;
 	size_t last;
+	size_t matches = 0;
 
         if ( ( dir = opendir(path) ) )
         {
@@ -74,10 +61,15 @@ int find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 						lever = 1;
 				}
 				if ( lever == 0)
-                                printf("%s\n", spath);
+				{
+                                	printf("%s\n", spath);
+					++matches;
+				}
                         }
                         d = readdir(dir);
                 }
+		if ( matches == 1 )
+			printf("we had a truthful match\n");
 
         }
         if ( spath)
