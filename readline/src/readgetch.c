@@ -10,13 +10,19 @@ char *tokenize(char *l)
 	size_t len = 0;
 	int inas = 1;
 	char *ret = malloc(READLINE_LIMIT);
+	size_t j = 0;
+	size_t k = 0;
+	char *p = l;
 	//char tokens[100][READLINE_LIMIT] = { 0 }; // only need the final token
 	while (1)
 	{
 		if (*l == ' ' || *l == 0)
 		{
 			if ( inas == 0 )
+			{
+				k = j;
 				++i;
+			}
 			inas = 1;
 			len = 0;
 			if (*l == 0)
@@ -34,9 +40,8 @@ char *tokenize(char *l)
 			++len;
 		}
 		++l;
-	}
-
-	size_t j = 0;
+		++j;
+	} 
 	//for (j=0;j<i;++j) 
 	//	printf("\n%s\n", tokens[j]);
 	return find_pattern_wrap(ret, len, 0);
@@ -205,7 +210,7 @@ size_t greadgetch(char *l)
 		l[len] = 0;
 		//if ((line =find_pattern_wrap(l, len -1, 0)))
 		if ((line =tokenize(l)))
-			len = sprintf(l, "%s", line);
+			len = sprintf(l, "%s%s", l, line);
 		//tokenize(l);
 		break;
         case '\n':
