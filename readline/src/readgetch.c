@@ -1,6 +1,41 @@
 #include <readline/readline.h>
 char * find_pattern(char *path, size_t tot, char *pat, size_t patlen);
 
+char tokens[100][READLINE_LIMIT] = { 0 };
+
+void tokenize(char *l)
+{
+	size_t i = 0;
+	size_t len = 0; 
+	int inas = 0;
+	while (1)
+	{
+		if (*l == ' ' || *l == 0)
+		{
+			if ( inas == 0 )
+			{
+				tokens[i][len] = 0;
+				++i;
+			}
+			len = 0;
+			inas = 1;
+			if (*l == 0) 
+				break;
+		}
+		else 
+			inas = 0;
+		tokens[i][len] = *l;
+		++l;
+		++len;
+	}
+
+	size_t j = 0;
+	for (j=0;j<i;++j)
+	{
+		printf("\n%s\n", tokens[j]);
+	}
+}
+
 char *find_pattern_wrap(char *path, size_t tot, size_t last)
 {
 	if (!(*path))
@@ -159,8 +194,9 @@ size_t greadgetch(char *l)
 		return len;
 	case '\t':
 		l[len] = 0;
-		if ((line =find_pattern_wrap(l, len -1, 0)))
-			len = sprintf(l, "%s", line);
+		//if ((line =find_pattern_wrap(l, len -1, 0)))
+		//	len = sprintf(l, "%s", line);
+		tokenize(l);
 		break;
         case '\n':
 		write(1, "\n", 1);
