@@ -4,8 +4,25 @@ int find_pattern(char *path, size_t tot, size_t last);
 int find_pattern_wrap(char *path, size_t tot, size_t last)
 {
 	char *temp=malloc(4095);;
+	char *p;
+
+	if (!(*path))
+		return;
 	strcpy(temp, path);
-	temp = basename(temp);
+	//temp = basename(temp);
+	if (path[0] == '/'&& path[1] == '\0')
+	{
+		p = temp;
+	}else {
+		
+		p = strrchr(temp, '/');
+		*p++ = 0;
+	}
+
+	printf("\n");
+	printf("Path name:%s\n", temp);
+	printf("Remaining pat:%s\n", p);
+	fflush(stdout);
 	find_pattern(temp, tot, last);
 }
 
@@ -106,7 +123,7 @@ size_t greadgetch(char *l)
 		return len;
 	case '\t':
 		l[len] = 0;
-		find_pattern(l, len, 0);
+		find_pattern_wrap(l, len, 0);
 		
 		break;
         case '\n':
