@@ -1,5 +1,5 @@
 #include <readline/readline.h>
-int find_pattern(char *path, size_t tot, size_t last);
+int find_pattern(char *path, size_t tot, char *pat, size_t patlen);
 
 int find_pattern_wrap(char *path, size_t tot, size_t last)
 {
@@ -7,26 +7,48 @@ int find_pattern_wrap(char *path, size_t tot, size_t last)
 		return;
 
 	char *pathnam = malloc(4095);;
+	char *a;
 	char *pattern = malloc(4095);;
+	char *b;
+	
+
 
 	strcpy(pathnam, path);
-	strcpy(pattern, path);
-	pathnam = dirname(pathnam);
-	pattern = basename(pattern);
+
+	if (path[tot] == '/')
+	{
+		pattern = "";
+	}else
+	{
+		strcpy(pattern, path);
+		pathnam = dirname(pathnam);
+		pattern = basename(pattern);
+	}
+
+
+	
+	
+
+
+
+
+
+
 
 	printf("\n");
 	printf("dirname :%s\n", pathnam);
 	printf("basename :%s\n", pattern);
-	fflush(stdout);
-	find_pattern(pathnam, tot, last);
+
+	find_pattern(pathnam, tot, pattern, strlen(pattern));
 }
 
-int find_pattern(char *path, size_t tot, size_t last)
+int find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 {
         DIR *dir;
         struct dirent *d;
         char *spath = NULL;
         size_t dlen = 0;
+	size_t last;
 
         if ( ( dir = opendir(path) ) )
         {
@@ -44,6 +66,14 @@ int find_pattern(char *path, size_t tot, size_t last)
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
                         {
+				size_t i = 0;
+				int lever = 0;
+				for (i=0; i<patlen&& i < dlen;++i)
+				{
+					if (pat[i] != d->d_name[i]) 
+						lever = 1;
+				}
+				if ( lever == 0)
                                 printf("%s\n", spath);
                         }
                         d = readdir(dir);
@@ -118,7 +148,7 @@ size_t greadgetch(char *l)
 		return len;
 	case '\t':
 		l[len] = 0;
-		find_pattern_wrap(l, len, 0);
+		find_pattern_wrap(l, len -1, 0);
 		
 		break;
         case '\n':
