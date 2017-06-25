@@ -1,4 +1,50 @@
 #include <readline/readline.h>
+int find_pattern(char *path, size_t tot, size_t last);
+
+int find_pattern_wrap(char *path, size_t tot, size_t last)
+{
+	char *temp=malloc(4095);;
+	strcpy(temp, path);
+	temp = basename(temp);
+	find_pattern(temp, tot, last);
+}
+
+int find_pattern(char *path, size_t tot, size_t last)
+{
+        DIR *dir;
+        struct dirent *d;
+        char *spath = NULL;
+        size_t dlen = 0;
+
+        if ( ( dir = opendir(path) ) )
+        {
+                d = readdir(dir);
+                while (d)
+                {
+                        dlen = strlen(d->d_name);
+
+                        last = (tot + dlen + 2); /* +2 = '/' + '\0' */
+                        spath = realloc(spath, last);
+                        if (!(spath))
+                                return -1;
+                        tot = sprintf(spath, "%s/%s", path, d->d_name);
+
+                        if ( strcmp( ".", d->d_name) &&
+                           ( strcmp( "..", d->d_name)) )
+                        {
+                                printf("%s\n", spath);
+                        }
+                        d = readdir(dir);
+                }
+
+        }
+        if ( spath)
+                free(spath);
+        closedir(dir);
+        return 0;
+}
+
+
 
 size_t greadgetch(char *l)
 {
@@ -59,7 +105,9 @@ size_t greadgetch(char *l)
 		}
 		return len;
 	case '\t':
-		//write(1, "tab complete\n", 13);
+		l[len] = 0;
+		find_pattern(l, len, 0);
+		
 		break;
         case '\n':
 		write(1, "\n", 1);
