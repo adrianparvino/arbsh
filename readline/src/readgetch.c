@@ -23,9 +23,9 @@ char *find_pattern_wrap(char *path, size_t tot, size_t last)
 	} 
 
 	printf("\n");
-	printf("dirname :%s\n", pathnam);
-	printf("basename :%s\n", pattern);
-	ret = find_pattern(pathnam, tot, pattern, strlen(pattern));
+	//printf("dirname :%s\n", pathnam);
+	//printf("basename :%s\n", pattern);
+	ret = find_pattern(pathnam, strlen(pathnam), pattern, strlen(pattern));
 
 	return ret;
 }
@@ -70,20 +70,16 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 				if ( lever == 0)
 				{
                                 	printf("%s\n", spath);
-					if ( match == NULL )
-					{
-						match = strdup(spath);
-					}
+					if ( match == NULL ) 
+						match = strdup(spath); 
+				
 					++matches;
 				}
                         }
                         d = readdir(dir);
                 }
-		if ( matches == 1 )
-		{
-			printf("we had a truthful match\n");
-			return match;
-		}
+		if ( matches == 1 ) 
+			return match; 
 
         }
         if ( spath)
@@ -160,6 +156,7 @@ size_t greadgetch(char *l)
 		if ((line =find_pattern_wrap(l, len -1, 0)))
 		{
 			len = sprintf(l, "%s", line);
+			
 		}
 		
 		break;
