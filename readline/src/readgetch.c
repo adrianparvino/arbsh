@@ -12,7 +12,6 @@ void tokenize(char *l)
 	{
 		if (*l == ' ' || *l == 0)
 		{
-		
 			if ( inas == 0 )
 			{
 				tokens[i][len] = 0;
@@ -27,11 +26,16 @@ void tokenize(char *l)
 		}
 		else 
 			inas = 0;
-		
-		tokens[i][len] = *l;
-		tokens[i][len + 1] = 0;
+	
+		if (*l != ' ')
+		{
+			tokens[i][len] = *l;
+			tokens[i][len + 1] = 0;
+			++len;
+		}
+	
 		++l;
-		++len;
+		
 	}
 
 	size_t j = 0;
