@@ -3,7 +3,10 @@
 #include <string.h>
 #include <stdlib.h> 
 #include <unistd.h> 
+#include <sys/types.h>
+#include <dirent.h>
 #include <termcap/vt100.h>
+#include <libgen.h>
 
 /*
 	2017 (C) Copyright, readline.h, CM Graff
