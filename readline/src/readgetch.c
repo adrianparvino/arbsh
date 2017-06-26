@@ -37,14 +37,14 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 					if ( match == NULL ) 
 					{
 						match = malloc(READLINE_LIMIT);
-						strcpy(match, spath);
-					}else
+						strcpy(match, spath); 
+					}
 					printf("%s\n", spath);
 					++matches;
 				}
                         }
                         d = readdir(dir);
-                }
+                } 
 		if ( matches == 1 ) 
 		{
 			return match; 
@@ -119,7 +119,9 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 		size_t z = len;
 		size_t y = 0;
 		size_t point = 0;
-	
+		write(1, "\r", 1);
+			write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
+		write(1, prompt, plen);
 		for ( ;z > 0;--z ,++y)
 		{
 			if (l[z] == '/' && point == 0)
@@ -139,16 +141,7 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 			sprintf(l + (len -y) + 1, "%s", line);
 			len = strlen(l); 
 		
-		//write(1, "\r", 1);
-		
-		//write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
-		//write(1, l, len);
-		//write(1, prompt, plen);
 		}	
-		
-		//len = 0;
-		//l[len] = 0;
-	
 		
 		l[len] = '\0';
 		return len;
