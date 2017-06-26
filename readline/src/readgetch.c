@@ -1,54 +1,6 @@
 #include <readline/readline.h>
 char * find_pattern(char *path, size_t tot, char *pat, size_t patlen);
-char *find_pattern_wrap(char *path, size_t tot, size_t last);
-
-
-
-char *tokenize(char *l)
-{
-	size_t i = 0;
-	size_t len = 0;
-	int inas = 1;
-	char *ret = malloc(READLINE_LIMIT);
-	size_t j = 0;
-	size_t k = 0;
-	char *p = l;
-	//char tokens[100][READLINE_LIMIT] = { 0 }; // only need the final token
-	while (1)
-	{
-		if (*l == ' ' || *l == 0)
-		{
-			if ( inas == 0 )
-			{
-				k = j;
-				++i;
-			}
-			inas = 1;
-			len = 0;
-			if (*l == 0)
-				break;
-		}
-		else
-			inas = 0;
-	
-		if (*l != ' ')
-		{
-			//tokens[i][len] = *l;
-			//tokens[i][len + 1] = 0;
-			ret[len] = *l;
-			ret[len + 1] = 0;
-			++len;
-		}
-		++l;
-		++j;
-	} 
-	p[k] = 0;
-	printf("\nreserve %s\n", p);
-	//for (j=0;j<i;++j) 
-	//	printf("\n%s\n", tokens[j]);
-	return find_pattern_wrap(ret, len, 0);
-	
-}
+char *find_pattern_wrap(char *path, size_t tot, size_t last); 
 
 char *find_pattern_wrap(char *path, size_t tot, size_t last)
 {
@@ -74,8 +26,8 @@ char *find_pattern_wrap(char *path, size_t tot, size_t last)
 	} 
 
 	printf("\n");
-	printf("dirname :%s\n", pathnam);
-	printf("basename :%s\n", pattern);
+	//printf("dirname :%s\n", pathnam);
+	//printf("basename :%s\n", pattern);
 	ret = find_pattern(pathnam, strlen(pathnam), pattern, strlen(pattern));
 
 	return ret;
@@ -102,12 +54,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                 while (d)
                 {
                         dlen = strlen(d->d_name); 
-                        tot = sprintf(spath, "%s/%s", path, d->d_name);
-			//memcpy(spath, path, tot);
-			//memcpy(spath + tot, "/", 1);
-			//memcpy(spath + tot + 1, d->d_name, dlen);
-			//spath[tot + 1 + dlen] = 0;
-
+                        tot = sprintf(spath, "%s/%s", path, d->d_name); 
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
                         {
@@ -120,16 +67,12 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 						lever = 1;
 				}
 				if ( lever == 0)
-				{
-                                	
-					
+				{ 
 					if ( match == NULL ) 
 					{
 						match = malloc(READLINE_LIMIT);
 						strcpy(match, spath);
-						//memcpy(match, spath, tot + 1 + dlen + 1);
-						//memcpy(match, spath, tot + 1);
-					}
+					}//else
 					printf("%s\n", spath);
 					++matches;
 				}
@@ -139,9 +82,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 		if ( matches == 1 ) 
 		{
 			return match; 
-		}
-			
-
+		} 
         } 
         closedir(dir);
         return NULL;
@@ -219,20 +160,15 @@ size_t greadgetch(char *l)
 			if (l[z] == ' ' )
 				break; 
 		}
-		memcpy(pat, l + (len -y) + 1, y + 1);
-	
-		
-		printf("\n%s\n", l);
-		printf("\n%s\n", pat);
-	
+		memcpy(pat, l + (len -y) + 1, y + 1); 
+		//printf("\n%s\n", l);
+		//printf("\n%s\n", pat); 
 		if ((line =find_pattern_wrap(pat, y, 0)))
 		{
 			sprintf(l + (len -y) + 1, "%s", line);
 			len = strlen(l);
-		}
-		
-
-		
+		} 
+		return len;
 		break;
         case '\n':
 		write(1, "\n", 1);
