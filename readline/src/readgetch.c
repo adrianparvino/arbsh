@@ -9,12 +9,16 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 	size_t matches = 0;
 	char *match = NULL;
 	char spath[READLINE_LIMIT];
-	char names[100][1000];
+	//char names[3000][257] = { 0 };
+	char *names[3000];
+	//char **names;
 	size_t n = 0;
 	spath[0] = 0;
 	
 	size_t i = 0;
 	int lever = 0;
+
+	//names = malloc(14000);
 
         if ( ( dir = opendir(path) ) )
         {
@@ -22,13 +26,20 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                 while (d)
                 {
                         dlen = strlen(d->d_name);
-			//if ( path[tot] == '/')
-			//	tot = sprintf(names[n], "%s%s", path, d->d_name); 
-			//else
-                       		tot = sprintf(names[n], "%s/%s", path, d->d_name); 
+			
+			//names = malloc(*names);
+			
+			//*names = malloc(1000); 
+		
+               		
+			
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
                         {
+				
+			names[n] = malloc(256);
+			names[n][0] = 0;
+				tot = sprintf(names[n], "%s/%s", path, d->d_name); 
 				lever = 0;
 				if (dlen < patlen)
 					lever = 1;
@@ -45,24 +56,31 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 						strcpy(match, names[n]); 
 					}
 					//printf("%s\n", spath);
+					//printf("%s\n", names[n]);
 					++matches;
 				}
 				else --n;
+				n++;
                         }
-			n++;
+			
                         d = readdir(dir);
                 } 
 		if ( matches == 1 ) 
 		{
 			
-			return match + 1; 
+			return match; 
 		} else{
+			;
+			
 			size_t z = 0;
 			printf("\n");
-			while ( z < n )
+			for(z= 0; z < n;++z )
 			{
-				printf("%s\n", names[z++]);
+				printf("%s\n", names[z]);
+
+				free(names[z]);
 			}
+			
 		}
         } 
         closedir(dir);
@@ -150,13 +168,12 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 		pat[(y -point)] = 0;
 		//printf("\n%s\n", l);
 		//printf("\n%s\n", pat);
-		//printf("\n%s\n", l + (len -point) + 1); 
+		//printf("\n%s\n", l + (len -point) + 1);
 		
 		if ((line = find_pattern(pat, strlen(pat), l +  (len -point) + 1, strlen(l +  (len -point) + 1))))
 		{ 
 			sprintf(l + (len -y) + 1, "%s", line);
-			len = strlen(l); 
-		
+			len = strlen(l);
 		}
 		
 		l[len] = '\0';
