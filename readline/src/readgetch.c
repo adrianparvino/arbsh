@@ -42,10 +42,12 @@ char *tokenize(char *l)
 		++l;
 		++j;
 	} 
+	p[k] = 0;
+	printf("\nreserve %s\n", p);
 	//for (j=0;j<i;++j) 
 	//	printf("\n%s\n", tokens[j]);
 	return find_pattern_wrap(ret, len, 0);
-	//printf("\n%s\n", ret);
+	
 }
 
 char *find_pattern_wrap(char *path, size_t tot, size_t last)
@@ -207,11 +209,30 @@ size_t greadgetch(char *l)
 		}
 		return len;
 	case '\t':
-		l[len] = 0;
-		//if ((line =find_pattern_wrap(l, len -1, 0)))
-		if ((line =tokenize(l)))
-			len = sprintf(l, "%s%s", l, line);
-		//tokenize(l);
+		l[len] = 0; 
+		char pat[4096] = { 0 };
+		size_t z = len;
+		size_t y = 0;
+	
+		for ( ;z > 0;--z ,++y)
+		{
+			if (l[z] == ' ' )
+				break; 
+		}
+		memcpy(pat, l + (len -y) + 1, y + 1);
+	
+		
+		//printf("\n%s\n", l);
+		//printf("\n%s\n", pat);
+	
+		if ((line =find_pattern_wrap(pat, y, 0)))
+		{
+			len += sprintf(l + (len -y) + 1, "%s", line);
+		
+		}
+		
+
+
 		break;
         case '\n':
 		write(1, "\n", 1);
