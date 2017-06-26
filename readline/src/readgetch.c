@@ -120,8 +120,9 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 		size_t y = 0;
 		size_t point = 0;
 		write(1, "\r", 1);
-			write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
+		write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
 		write(1, prompt, plen);
+		write(1, "\n", 1);
 		for ( ;z > 0;--z ,++y)
 		{
 			if (l[z] == '/' && point == 0)
@@ -141,7 +142,7 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 			sprintf(l + (len -y) + 1, "%s", line);
 			len = strlen(l); 
 		
-		}	
+		}
 		
 		l[len] = '\0';
 		return len;
