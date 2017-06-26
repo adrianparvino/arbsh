@@ -14,7 +14,7 @@ char *readline(char *prompt)
 	{
 		determinewin(); 
 		greadprint(l, len, prompt, promptlen); 
-       		len = greadgetch(l);
+       		len = greadgetch(l, len, prompt, promptlen); 
 	}
 
 	return l;
