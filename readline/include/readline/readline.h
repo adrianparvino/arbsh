@@ -18,7 +18,7 @@ size_t ircline(char *, char *, size_t);
 void ircprint(char *, size_t, char *, size_t); 
 void determinewin(void); 
 int readchar(void); 
-size_t greadgetch(char *);
+size_t greadgetch(char *, size_t, char *, size_t);
 void greadprint(char *, size_t, char *, size_t);
 
 char *readline(char *);
