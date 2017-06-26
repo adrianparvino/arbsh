@@ -222,17 +222,17 @@ size_t greadgetch(char *l)
 		memcpy(pat, l + (len -y) + 1, y + 1);
 	
 		
-		//printf("\n%s\n", l);
-		//printf("\n%s\n", pat);
+		printf("\n%s\n", l);
+		printf("\n%s\n", pat);
 	
 		if ((line =find_pattern_wrap(pat, y, 0)))
 		{
-			len += sprintf(l + (len -y) + 1, "%s", line);
-		
+			sprintf(l + (len -y) + 1, "%s", line);
+			len = strlen(l);
 		}
 		
 
-
+		
 		break;
         case '\n':
 		write(1, "\n", 1);
