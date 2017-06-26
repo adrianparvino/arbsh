@@ -72,7 +72,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 					{
 						match = malloc(READLINE_LIMIT);
 						strcpy(match, spath);
-					}//else
+					}
 					printf("%s\n", spath);
 					++matches;
 				}
@@ -87,8 +87,6 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
         closedir(dir);
         return NULL;
 }
-
-
 
 size_t greadgetch(char *l)
 {
@@ -154,20 +152,24 @@ size_t greadgetch(char *l)
 		char pat[4096] = { 0 };
 		size_t z = len;
 		size_t y = 0;
+		size_t point = 0;
 	
 		for ( ;z > 0;--z ,++y)
 		{
+			if (l[z] == '/' && point == 0)
+				point = y;
 			if (l[z] == ' ' )
 				break; 
 		}
-		memcpy(pat, l + (len -y) + 1, y + 1); 
-		//printf("\n%s\n", l);
-		//printf("\n%s\n", pat); 
-		if ((line =find_pattern_wrap(pat, y, 0)))
+		memcpy(pat, l + (len -y) + 1, y + 1);
+		printf("\n%s\n", l);
+		printf("\n%s\n", pat); 
+		printf("\n%s\n",  l +  (len -point) + 1); 
+		if ((line = find_pattern_wrap(pat, y, 0)))
 		{
 			sprintf(l + (len -y) + 1, "%s", line);
 			len = strlen(l);
-		} 
+		}
 		return len;
 		break;
         case '\n':
