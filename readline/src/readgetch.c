@@ -9,6 +9,8 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 	size_t matches = 0;
 	char *match = NULL;
 	char spath[READLINE_LIMIT];
+	char names[100][1000];
+	size_t n = 0;
 	spath[0] = 0;
 	
 	size_t i = 0;
@@ -19,8 +21,11 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                 d = readdir(dir);
                 while (d)
                 {
-                        dlen = strlen(d->d_name); 
-                        tot = sprintf(spath, "%s/%s", path, d->d_name); 
+                        dlen = strlen(d->d_name);
+			//if ( path[tot] == '/')
+			//	tot = sprintf(names[n], "%s%s", path, d->d_name); 
+			//else
+                       		tot = sprintf(names[n], "%s/%s", path, d->d_name); 
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
                         {
@@ -37,18 +42,28 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 					if ( match == NULL ) 
 					{
 						match = malloc(READLINE_LIMIT);
-						strcpy(match, spath); 
+						strcpy(match, names[n]); 
 					}
-					printf("%s\n", spath);
+					//printf("%s\n", spath);
 					++matches;
 				}
+				else --n;
                         }
+			n++;
                         d = readdir(dir);
                 } 
 		if ( matches == 1 ) 
 		{
-			return match; 
-		} 
+			
+			return match + 1; 
+		} else{
+			size_t z = 0;
+			printf("\n");
+			while ( z < n )
+			{
+				printf("%s\n", names[z++]);
+			}
+		}
         } 
         closedir(dir);
         return NULL;
@@ -122,7 +137,7 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 		write(1, "\r", 1);
 		write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
 		write(1, prompt, plen);
-		write(1, "\n", 1);
+		//write(1, "\n", 1);
 		for ( ;z > 0;--z ,++y)
 		{
 			if (l[z] == '/' && point == 0)
