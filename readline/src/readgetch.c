@@ -8,16 +8,16 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 	size_t last;
 	size_t matches = 0;
 	char *match = NULL;
-	char spath[READLINE_LIMIT];
-	
 	char **names;
 	size_t n = 0;
-	spath[0] = 0;
 	size_t i = 0;
 	int lever = 0;
 	size_t z = 0;
 	size_t pp = strlen(path);
-	names = malloc (sizeof(*names) * 1 );
+	names = malloc (sizeof(*names) * 1);
+	
+	names[n] = malloc(256);
+	names[n][0] = 0; 
 
         if ( ( dir = opendir(path) ) )
         {
@@ -27,12 +27,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                         dlen = strlen(d->d_name); 
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
-                        {
-				//if(names[n] == NULL)
-				//{
-				names[n] = malloc(256);
-				names[n][0] = 0;
-				//}
+                        { 
 
 				if (pp && path[pp -1] == '/')
 					tot = sprintf(names[n], "%s%s", path, d->d_name); 
@@ -43,37 +38,31 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 				if (dlen < patlen)
 					lever = 1;
 				for (i=0; i<patlen;++i)
-				{
-					if (pat[i] != d->d_name[i]) 
+					if (pat[i] != d->d_name[i])
 						lever = 1;
-				}
 				if ( lever == 0)
 				{ 
-					if ( match == NULL ) 
-					{
-						match = malloc(READLINE_LIMIT);
-						strcpy(match, names[n]); 
-					} 
+					if (match == NULL) 
+						match = names[n];
 					++matches;
-					names = realloc(names, sizeof(*names) * (n++  + 10));
-				
-				}
-				//else --n;
-				
+					names = realloc(names, sizeof(*names) * (n++ + 10));
+					names[n] = malloc(256);
+					names[n][0] = 0;
+				} 
                         }
-			
                         d = readdir(dir);
                 } 
 		if ( matches == 1 ) 
 		{
-			
+			for(z= 0; z < n;++z) 
+				if (names[z] != match)
+					free(names[z]);
 			return match; 
 		} else{
 			printf("\n");
 			for(z= 0; z < n;++z )
 			{
 				printf("%s\n", names[z]);
-
 				free(names[z]);
 			}
 		}
@@ -164,6 +153,7 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 		{ 
 			sprintf(l + (len -y) + 1, "%s", line);
 			len = strlen(l);
+			free(line);
 		}
 		
 		l[len] = '\0';
