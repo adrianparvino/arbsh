@@ -9,13 +9,15 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 	size_t matches = 0;
 	char *match = NULL;
 	char spath[READLINE_LIMIT];
-	char *names[3000];
+	
+	char **names;
 	size_t n = 0;
 	spath[0] = 0;
 	size_t i = 0;
 	int lever = 0;
 	size_t z = 0;
 	size_t pp = strlen(path);
+	names = malloc (sizeof(*names) * 1 );
 
         if ( ( dir = opendir(path) ) )
         {
@@ -26,14 +28,17 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
                         {
+				//if(names[n] == NULL)
+				//{
 				names[n] = malloc(256);
 				names[n][0] = 0;
+				//}
+
 				if (pp && path[pp -1] == '/')
 					tot = sprintf(names[n], "%s%s", path, d->d_name); 
-				else
-				{
-					tot = sprintf(names[n], "%s/%s", path, d->d_name); 
-				}
+				else 
+					tot = sprintf(names[n], "%s/%s", path, d->d_name);
+
 				lever = 0;
 				if (dlen < patlen)
 					lever = 1;
@@ -50,9 +55,11 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 						strcpy(match, names[n]); 
 					} 
 					++matches;
+					names = realloc(names, sizeof(*names) * (n++  + 10));
+				
 				}
-				else --n;
-				n++;
+				//else --n;
+				
                         }
 			
                         d = readdir(dir);
