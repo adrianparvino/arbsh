@@ -6,6 +6,11 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 	static size_t ret = 0;
         int c;
 	char *line = NULL;
+	
+	char pat[4096] = { 0 };
+	size_t z = 0;
+	size_t y = 0;
+	size_t point = 0;
        
 	c = readchar(); 
         
@@ -60,21 +65,15 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 		return len;
 	case '\t':
 		l[len] = 0;
-		char pat[4096] = { 0 };
-		size_t z = len;
-		size_t y = 0;
-		size_t point = 0;
-		write(1, "\r", 1);
-		write(1, T_CLRCUR2END, T_CLRCUR2END_SZ);
-		write(1, prompt, plen); 
-		for ( ;z > 0;--z ,++y)
+		pat[0] = 0;
+		greadprint(l, len, prompt, plen); 
+		for (point=0,y=0,z=len ;z > 0;--z ,++y)
 		{
 			if (l[z] == '/' && point == 0)
 				point = y;
 			if (l[z] == ' ' )
-				break; 
+				break;
 		}
-
 		memcpy(pat, l + (len -y) + 1, y + 1);
 		pat[(y -point)] = 0; 
 		if ((line = find_pattern(pat, strlen(pat), l +  (len -point) + 1, strlen(l +  (len -point) + 1))))
