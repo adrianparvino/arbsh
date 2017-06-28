@@ -16,7 +16,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 	size_t pp = strlen(path);
 	names = malloc (sizeof(*names) * 1);
 	names[n] = malloc(256);
-	names[n][0] = 0; 
+	names[n][0] = 0;
 
         if ( ( dir = opendir(path) ) )
         {
@@ -28,7 +28,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                            ( strcmp( "..", d->d_name)) )
                         {
 				
-				if ((pp && path[pp -1] == '/'))
+				if ((pp && path[pp-1] == '/'))
 					tot = sprintf(names[n], "%s%s", path, d->d_name); 
 				else 
 					tot = sprintf(names[n], "%s/%s", path, d->d_name);
