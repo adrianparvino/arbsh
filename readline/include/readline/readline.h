@@ -23,6 +23,7 @@ void greadprint(char *, size_t, char *, size_t);
 
 char *readline(char *);
 extern void add_history(const char *);
+char * find_pattern(char *path, size_t tot, char *pat, size_t patlen);
 
 /* structures */
 struct hglb {		/* globals	*/
