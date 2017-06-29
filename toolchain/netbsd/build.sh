@@ -13,3 +13,7 @@ MIRROR="ftp://ftp.netbsd.org/pub/NetBSD/NetBSD-7.1/source/sets/"
 #gunzip *.tgz
 
 for i in *.tar ; do tar -xf $i ; done
+
+cd usr/src 
+
+./build.sh -m i386 -U -O ../obj/ tools >logfile 2>&1
