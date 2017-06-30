@@ -8,7 +8,7 @@ char *gstrdup(const char *s)
 	size_t len = gstrlen(s) + 1;
 
 	if (!(ret = gmalloc(len)))
-		return NULL:
+		return NULL;
 
 	gmemcpy(ret, s, len);
 	return ret;
