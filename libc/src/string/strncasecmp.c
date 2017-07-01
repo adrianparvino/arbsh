@@ -3,6 +3,8 @@
 #include <gstring.h>
 #include <ctype.h>
 
+/* Copyright (c) 2017, Iain Hill */
+
 int gstrncasecmp(const char *s, const char *t, size_t n)
 {
 	int s_bis, t_bis;
