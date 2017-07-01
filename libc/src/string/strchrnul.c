@@ -1,6 +1,7 @@
 #include <gstddef.h>
-
 #include <gstring.h>
+
+/* Copyright (c) 2017, Iain Hill */
 
 char *gstrchrnul(const char *s, int c)
 {
