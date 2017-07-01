@@ -29,12 +29,6 @@ Clean:
 	make clean
 
 
-Irc:
-----
-
-	#grafland on irc.freenode.net
-
-
 References:
 -----------
 
