@@ -1,6 +1,7 @@
 #include <gstddef.h>
-
 #include <gstring.h>
+
+/* Copyright (c) 2017, Iain Hill */
 
 void *gmemchr(const void *str, int c, size_t n)
 {
