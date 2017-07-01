@@ -3,6 +3,8 @@
 //#include <gsignal.h>
 #include <gerrno.h>
 
+/* Copyright (c) 2017, Iain Hill */
+
 int gsystem(const char *cmd)
 {
 	int state;
