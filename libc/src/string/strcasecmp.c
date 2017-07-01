@@ -3,6 +3,8 @@
 #include <gstring.h>
 #include <gctype.h>
 
+/* Copyright (c) 2017, Iain Hill */
+
 int gstrcasecmp(const char *s, const char *t)
 {
 	int s_bis, t_bis;
