@@ -11,7 +11,7 @@ int concatenate(int, int);
 
 int main(int argc, char *argv[])
 {
-	if ( argc == 1 ) 
+	if (argc == 1) 
 		if (concatenate(0, 0) == -1)
 			return 1;
         while  (*++argv) 
@@ -25,13 +25,13 @@ int concatenate(int source, int opened)
         ssize_t n = 0;
         char buf[4096];
 
-        if ( source == -1 )
+        if (source == -1)
                 return -1;
 
         while ((n = read(source, buf, 4096)) > 0)
                 write(1, buf, n);
 	
-	if ( n == -1 )
+	if (n == -1)
 		return -1;
 
 	if (opened)
