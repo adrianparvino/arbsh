@@ -12,9 +12,11 @@ int concatenate(int, int);
 int main(int argc, char *argv[])
 {
 	if ( argc == 1 ) 
-		concatenate(0, 0); 
+		if (concatenate(0, 0) == -1)
+			return 1;
         while  (*++argv) 
-		concatenate(open(*argv, O_RDONLY), 1); 
+		if (concatenate(open(*argv, O_RDONLY), 1) == -1)
+			return 1;
 	return 0; 
 }
 
