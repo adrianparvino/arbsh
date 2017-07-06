@@ -15,10 +15,10 @@ HIER:
 -----
 
 
-	libc/
+	oldlibc/
 		Standard C library components.
 	
-	libc/src/math/
+	oldlibc/src/math/
 		Libm mathematics functions which operate on and tranform 
 		double precision types. This library covers most of the math.h / 
 		libm normative cases.
