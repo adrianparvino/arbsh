@@ -11,12 +11,6 @@ SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/
 
 
 all:
-	-git clone https://www.github.com/cmgraff/grafmusl libc
-	-cd libc && ./configure --prefix=$(SPWD)/
-	-$(MAKE) -C libc
-	-$(MAKE) -C libc install
-	-git clone https://www.github.com/cmgraff/ash
-	-cd ash && make
 	
 
 	-$(MAKE) -C termcap install
@@ -31,6 +25,14 @@ all:
 	-$(MAKE) -C posix
 	-$(MAKE) -C irc
 	-$(MAKE) install
+
+	#install the outside projects last for now
+	-git clone https://www.github.com/cmgraff/grafmusl libc
+	-cd libc && ./configure --prefix=$(SPWD)/
+	-$(MAKE) -C libc
+	-$(MAKE) -C libc install
+	-git clone https://www.github.com/cmgraff/ash
+	-$(MAKE) -C ash
 	
 
 clean:
