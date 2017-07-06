@@ -1,11 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>
-<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Grafland </strong></dl><pre></dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Grafland</strong></dl><pre></dl><pre>
 
 <br clear="left"/></pre><dl>DESCRIPTION:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
-	Grafland is a collection of original software written by myself
-	(Graff) and various contributors.
+	Grafland is a collection of original software written by CM Graff et al.
 
 
 	Navigating to a subdirectory of grafland and inspecting the README 
@@ -15,30 +14,21 @@
 <br clear="left"/></pre><dl>HIER:</dl><pre>
 </pre><dd><hr/></dd><pre>
 
-
-	<a href="oldlibc/">oldlibc/</a>
-		Standard C library components.
 	
-	<a href="oldlibc/src/math/">oldlibc/src/math/</a>
+	<a href="libm/">libm/</a>
 		Libm mathematics functions which operate on and tranform 
 		double precision types. This library covers most of the math.h / 
 		libm normative cases.
 
 	<a href="arbprec/">arbprec/</a>
-		Arbitrary precision mathematics.
+		An arbitrary precision mathematics library.
 
 	<a href="readline/">readline/</a>
-		Readline line editing. An editline/readline like implementation.
-		This library is used to supply line editing and history to the 
-		graff shell (Gsh) and grafland irc client.
-		
-		A unique "ircline" function is provided for programmers wishing
-		to implement single line editing.
+		Readline line editing library. An editline/readline like 
+		implementation.  
 
 	<a href="curses/">curses/</a>
-		A minimal curses implementation. This implementation and its
-		associated terminal capability definitions are used to power
-		grafland's shell, irc client, editor and readline library. 
+		A minimal curses library implementation. 
 
 	<a href="termcap/">termcap/</a>
 		Terminal capability definitions for hexen / curses.
@@ -58,11 +48,30 @@
 		implemented to subsets of their POSIX specifications.
 
 	<a href="toolchain/">toolchain/</a>
-		A cross compiling toolchain and package build system. Grafland's
-		toolchain is similiar to `buildroot' but with much simpler code
-		This benefits programmers wishing to understand such things as
-		toolchain development, building packages, and bootstrapping for
-		new target architectures.
+		A cross compiling toolchain and package build system similiar
+		to buildroot or yocto but much simpler. 
+
+
+
+	Grafland will also retrieve and build a collection of heavily modified
+	outside software which is also maintained by CM Graff et al.
+	
+	<a href="libc/">libc/</a>
+
+		grafmusl A completely rewritten version of the musl C standard 
+		library. <a href="https://github.com/cmgraff/grafmusl">https://github.com/cmgraff/grafmusl</a>
+
+
+	<a href="grafcube/">grafcube/</a>
+
+		A verion of the cube 1 3D video game which is being slowly
+		rewritten in C. <a href="https://github.com/cmgraff/grafcube">https://github.com/cmgraff/grafcube</a>
+
+
+	<a href="ash/">ash/</a>
+
+		A new version of the almquit shell forked from debian dash.
+		<a href="https://github.com/cmgraff/ash">https://github.com/cmgraff/ash</a>
 
 
 <br clear="left"/></pre><dl>BUILDING:</dl><pre>
