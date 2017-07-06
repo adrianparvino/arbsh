@@ -12,7 +12,7 @@ SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/
 
 all:
 	-git clone https://www.github.com/cmgraff/grafmusl libc
-	-cd libc && ./configure --prefix=$(SPWD)/installation
+	-cd libc && ./configure --prefix=$(SPWD)/
 	-$(MAKE) -C libc
 	-$(MAKE) -C libc install
 	-git clone https://www.github.com/cmgraff/ash
