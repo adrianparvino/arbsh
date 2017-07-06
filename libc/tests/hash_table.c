@@ -177,6 +177,7 @@ int main (int argc, char *argv[])
 		}
 		++argv; 
 	} 
+	destroy_table();
 	return 0;
 } 
 
@@ -259,7 +260,7 @@ int durecurse(char *path, size_t len, int *opt)
 		printf("%-5zu\t%s\n", (sb.st_blocks * 512 ) /hold.block, path); 
 		return 0;
 	} 
-	destroy_table();
+	
         return 1; 
 }
 
