@@ -1,10 +1,9 @@
-Grafland 
+Grafland
 
 DESCRIPTION:
 ------------
 
-	Grafland is a collection of original software written by myself
-	(Graff) and various contributors.
+	Grafland is a collection of original software written by CM Graff et al.
 
 
 	Navigating to a subdirectory of grafland and inspecting the README 
@@ -14,30 +13,21 @@ DESCRIPTION:
 HIER:
 -----
 
-
-	oldlibc/
-		Standard C library components.
 	
-	oldlibc/src/math/
+	libm/
 		Libm mathematics functions which operate on and tranform 
 		double precision types. This library covers most of the math.h / 
 		libm normative cases.
 
 	arbprec/
-		Arbitrary precision mathematics.
+		An arbitrary precision mathematics library.
 
 	readline/
-		Readline line editing. An editline/readline like implementation.
-		This library is used to supply line editing and history to the 
-		graff shell (Gsh) and grafland irc client.
-		
-		A unique "ircline" function is provided for programmers wishing
-		to implement single line editing.
+		Readline line editing library. An editline/readline like 
+		implementation.  
 
 	curses/
-		A minimal curses implementation. This implementation and its
-		associated terminal capability definitions are used to power
-		grafland's shell, irc client, editor and readline library. 
+		A minimal curses library implementation. 
 
 	termcap/
 		Terminal capability definitions for hexen / curses.
@@ -57,11 +47,30 @@ HIER:
 		implemented to subsets of their POSIX specifications.
 
 	toolchain/
-		A cross compiling toolchain and package build system. Grafland's
-		toolchain is similiar to `buildroot' but with much simpler code
-		This benefits programmers wishing to understand such things as
-		toolchain development, building packages, and bootstrapping for
-		new target architectures.
+		A cross compiling toolchain and package build system similiar
+		to buildroot or yocto but much simpler. 
+
+
+
+	Grafland will also retrieve and build a collection of heavily modified
+	outside software which is also maintained by CM Graff et al.
+	
+	libc/
+
+		grafmusl A completely rewritten version of the musl C standard 
+		library. https://github.com/cmgraff/grafmusl
+
+
+	grafcube/
+
+		A verion of the cube 1 3D video game which is being slowly
+		rewritten in C. https://github.com/cmgraff/grafcube
+
+
+	ash/
+
+		A new version of the almquit shell forked from debian dash.
+		https://github.com/cmgraff/ash
 
 
 BUILDING:
