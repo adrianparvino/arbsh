@@ -4,11 +4,7 @@ PREFIX ?= /bin/
 
 DESTDIR ?= ../
 
-CFLAGS += -Wall -Wextra -I../include
-
-LDFLAGS += -L../lib
-
-LDLIBS += 
+CFLAGS += -Wall -Wextra
 
 OBJ = $(shell for i in *.c; do echo $${i%%.c} ; done)
 
