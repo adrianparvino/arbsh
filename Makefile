@@ -1,4 +1,5 @@
 
+
 .SILENT: buildenvvars clearenvvars
 .PHONY: toolchain
 
@@ -27,12 +28,36 @@ all:
 	-$(MAKE) install
 
 	#install the outside projects last for now
+	-$(MAKE) get_grafmusl
+	-$(MAKE) make_grafmusl
+	-$(MAKE) get_ash
+	-$(MAKE) make_grafcube
+
+renew:
+
+	rm -rf libc
+	make get_grafmusl
+	cd libc && ./build.sh
+
+get_grafmusl:
+
 	-git clone https://www.github.com/cmgraff/grafmusl libc
+
+make_grafmusl:
+
 	-cd libc && ./configure --prefix=$(SPWD)/
 	-$(MAKE) -C libc
 	-$(MAKE) -C libc install
+
+get_ash:
+
 	-git clone https://www.github.com/cmgraff/ash
 	-$(MAKE) -C ash
+
+make_grafcube:
+
+	-git clone https://www.github.com/cmgraff/grafcube game
+	$(MAKE) -C game
 	
 
 clean:
