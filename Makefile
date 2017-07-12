@@ -71,7 +71,7 @@ clean:
 	-$(MAKE) -C gsh clean
 	-$(MAKE) -C editor clean
 	-$(MAKE) -C arbprec clean
-	-$(RM) -r include lib
+	-$(RM) -r include lib bin ash libc
 
 
 install:
