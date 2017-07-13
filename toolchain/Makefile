@@ -870,11 +870,6 @@ install_full:
 	mkdir -p $(DESTDIR)/
 	@cp -r $(OM_PREF)/$(OM_TARG)/* $(DESTDIR)/
 
-test:
-
-	@printf "#include <stdio.h>\nint main(){ puts(\"Works\"); }" > works.c
-	@/$(OM_PREF)/bin/$(OM_TARG)-gcc works.c -o $(DESTDIR)/works
-	@sudo chroot $(DESTDIR)/ /works
 
 bootstrap:
 
