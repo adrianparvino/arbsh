@@ -69,7 +69,7 @@ HIER:
 
 	ash/
 
-		A new version of the almquit shell forked from debian dash.
+		A new version of the Almquist shell forked from debian dash.
 		https://github.com/cmgraff/ash
 
 
