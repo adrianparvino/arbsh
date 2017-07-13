@@ -678,42 +678,6 @@ binutils_target: install_path
 	-$(INACROSS) $(MAKE) -C $(SPWD)/$(OM_BINUTILS)-build-target install
 
 
-working_gcc_target: install_path
-
-	-$(MAKE) -i binutils_target
-
-	rm -rf $(OM_GCC) $(OM_GCC)-build-target
-	mkdir -p $(OM_GCC)-build-target
-	@tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
-
-ifeq ($(OM_LIBC),musl)
-	-@cd $(SPWD)/$(OM_GCC) && patch -p1 < $(SPWD)/patches/$(OM_GCC)-musl.diff
-endif
-
-	-cd $(SPWD)/$(OM_GCC)-build-target && $(INACROSS) $(SPWD)/$(OM_GCC)/configure \
-	--prefix=$(OM_LIBROOT) \
-	--enable-languages=c \
-	--disable-libssp \
-	--disable-nls \
-	--disable-libquadmath \
-	--disable-threads \
-	--disable-decimal-float \
-	--disable-shared \
-	--disable-libmudflap \
-	--disable-libgomp \
-	--disable-libatomic \
-	--disable-werror \
-	--host=$(OM_TARG) \
-	--target=$(OM_TARG)
-
-	-CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" $(INACROSS) $(MAKE) -i -C $(SPWD)/$(OM_GCC)-build-target
-
-	-CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0" $(INACROSS) $(MAKE) -i -C $(SPWD)/$(OM_GCC)-build-target install
-
-	-mkdir -p $(OM_LIBROOT)/lib/gcc/$(OM_TARG)/4.9.2/
-	cp $(OM_PREF)/lib/gcc/$(OM_TARG)/4.9.2/* $(OM_LIBROOT)/lib/gcc/$(OM_TARG)/4.9.2/
-
-
 gnu_gcc_target: install_path
 
 	$(MAKE) -i gmp_host
