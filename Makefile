@@ -1,5 +1,3 @@
-
-
 .SILENT: buildenvvars clearenvvars
 .PHONY: toolchain
 
@@ -7,12 +5,9 @@ RELEASE = grafland-0.3e.tar.gz
 WEBSITE = http://www.csit.parkland.edu/~cgraff1
 SPWD = $(shell pwd)
 NAME = $(shell basename $(SPWD))
-SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/
-
-
+SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/ 
 
 all:
-	
 
 	-$(MAKE) -C termcap install
 	-$(MAKE) -C readline
@@ -28,22 +23,22 @@ all:
 	-$(MAKE) install
 
 	#install the outside projects last for now
-	-$(MAKE) get_grafmusl
-	-$(MAKE) make_grafmusl
+	-$(MAKE) get_graflibc
+	-$(MAKE) make_graflibc
 	-$(MAKE) get_ash
 	-$(MAKE) make_grafcube
 
 renew:
 
 	rm -rf libc
-	make get_grafmusl
-	cd libc && ./build.sh
+	make get_graflibc
+	$(MAKE) -C libc test
 
-get_grafmusl:
+get_graflibc:
 
-	-git clone https://www.github.com/cmgraff/grafmusl libc
+	-git clone https://www.github.com/cmgraff/graflibc libc
 
-make_grafmusl:
+make_graflibc:
 
 	-cd libc && ./configure --prefix=$(SPWD)/
 	-$(MAKE) -C libc
