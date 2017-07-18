@@ -443,25 +443,6 @@ lssh()
 	else	NUMIT="1"
 	fi
 
-	# shuffle (disabled)
-	cnt="0"
-	sft="0"
-	sftc="0"
-	vary="0"
-
-	while [ "$cnt" -lt "$N" ]
-	do	#eval OARRAY_"$sft"="$( eval printf '$'ARRAY_$cnt )"
-		eval OARRAY_"$cnt"="$( eval printf '$'ARRAY_$cnt )"
-		sft=$(($sft + $NUMIT ))
-		sftc=$(($sftc + 1))
-		cnt=$(( $cnt + 1 )) 
-		if [ $sftc = $((($N / $NUMIT) + 1)) ]
-		then	vary=$(( $vary + 1 ))
-			sft=$vary
-			sftc="0"
-		fi
-	done
-
 	# print
 	C="0"
 	while [ "$C" -lt "$N" ]
