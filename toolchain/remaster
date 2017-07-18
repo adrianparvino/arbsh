@@ -42,7 +42,7 @@ error()
 }
 
 # get duwrap
-. ../libsh/libsh 
+. ./libsh 
 
 cdwrap()
 {
