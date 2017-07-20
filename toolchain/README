@@ -250,10 +250,10 @@ SELF BOOTSTRAP:
 
 		make test_i386
 
-	On the target machine simply invoke the toolchain build system
-	Simply invoke the same commands again. Watch out for linker errors
-	and errors with gcc's cc1. It may be a good idea to use a new
-	a build path as well:
+	On the target machine simply invoke the same toolchain build 
+	system commands again. Watch out for linker errors and errors 
+	with gcc's cc1. It may be a good idea to use a new a build 
+	path as well:
 
 		make ; make bootstrap
 
