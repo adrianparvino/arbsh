@@ -10,7 +10,7 @@ INSTALLATION:
 -------------
 	Install a toolchain's libc to a root.
 
-		make install DESTDIR=/full/path/
+		make install DESTDIR="/full/path/"
 
 
 FEATURES:
