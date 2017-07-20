@@ -1,20 +1,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>
 <br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Grafland toolchain</strong></dl><pre></dl><pre>
 
-<br clear="left"/></pre><dl>BUILDING:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>BUILDING:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 	Build a toolchain:
 
 		make
 
-<br clear="left"/></pre><dl>INSTALLATION:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>INSTALLATION:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 	Install a toolchain's libc to a root.
 
-		make install DESTDIR=/full/<a href="path/">path/</a>
+		make install DESTDIR=<a href="/full/path/">/full/path/</a>
 
 
-<br clear="left"/></pre><dl>FEATURES:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>FEATURES:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	Gcc on target.
@@ -39,7 +39,7 @@
 
 
 
-<br clear="left"/></pre><dl>EXTERNAL USAGE:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>EXTERNAL USAGE:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	Dump the environment needed to use the built toolchain:
@@ -57,7 +57,7 @@
 			export `make clearenvars`
 
 
-<br clear="left"/></pre><dl>DESCRIPTION:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>DESCRIPTION:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	The toolchain build system supports multiple C library vendors.
@@ -89,7 +89,7 @@
 	OM_BACKWARDCOMPAT = i386 
 
 	
-<br clear="left"/></pre><dl>TARGET PACKAGES:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>TARGET PACKAGES:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	Using the internal package building system:
@@ -204,7 +204,7 @@
 
 
 
-<br clear="left"/></pre><dl>ADDING TARGET PACKAGES:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>ADDING TARGET PACKAGES:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 
@@ -232,7 +232,7 @@
 			make populate
 			make mynewpackage_target
 
-<br clear="left"/></pre><dl>SELF BOOTSTRAP:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>SELF BOOTSTRAP:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	The toolchain build system provides a mechanism in which targets
@@ -251,24 +251,24 @@
 
 		make test_i386
 
-	On the target machine simply invoke the toolchain build system
-	Simply invoke the same commands again. Watch out for linker errors
-	and errors with gcc's cc1. It may be a good idea to use a new
-	a build path as well:
+	On the target machine simply invoke the same toolchain build 
+	system commands again. Watch out for linker errors and errors 
+	with gcc's cc1. It may be a good idea to use a new a build 
+	path as well:
 
 		make ; make bootstrap
 
 	This functionality is in its fledgling experimental stages and
 	has not made it past a 3rd generation build lineage.
 
-<br clear="left"/></pre><dl>ASSUMPTIONS ABOUT TARBALLS:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>ASSUMPTIONS ABOUT TARBALLS:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	All tarballs must end in the same suffix. That suffix can be 
 	overridden by setting OM_SFX=.
 
 
-<br clear="left"/></pre><dl>REFERENCES:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>REFERENCES:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	<a href="http://preshing.com/20141119/how-to-build-a-gcc-cross-compiler">http://preshing.com/20141119/how-to-build-a-gcc-cross-compiler</a>
