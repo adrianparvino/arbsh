@@ -12,7 +12,7 @@ void simple_refresh(WINDOW *win)
                         win->last[i] = win->buf[i];
                 }
 
-                if (j == COLS )
+                if (j == win->x )
                 {
                         j = 1;
                         ++k;
