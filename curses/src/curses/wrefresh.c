@@ -45,8 +45,8 @@ int wrefresh(WINDOW *win)
 		len = sprintf(buf, "%s", ansiglb.t_eraseall);
 		write(win->fd, buf, len);
 	}
-	_simple_refresh(win);
-	//write(win->fd, win->buf, win->rp - win->buf);
+	//_simple_refresh(win);
+	write(win->fd, win->buf, win->rp - win->buf);
 	//size_t i = 0;
 	/*
 	for ( ; i < win->len ; ++i)
