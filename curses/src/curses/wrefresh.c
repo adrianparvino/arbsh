@@ -2,33 +2,55 @@
 
 typedef struct range {
 	size_t o;
+	size_t x;
+	size_t y;
 	size_t l;
 }range[1000];
 
+void simple_refresh(WINDOW *win)
+{
+	size_t i, j, k;
+	for (i=0, j=1, k=1;i < (win->rp - win->buf) ; ++i)
+        {       
+                if (win->last[i] != win->buf[i] )
+                {
+                        _setcursor(k, j);
+                        write(1, win->buf + i, 1);
+                        win->last[i] = win->buf[i];
+                }
 
-int wrefresh(WINDOW *win)
+                if (j == COLS )
+                {
+                        j = 1;
+                        ++k;
+                }
+                else
+                        ++j;
+        }
+
+}
+
+void clear_ok_wrap(WINDOW *win)
 {
 	char buf[32];
 	size_t len = 0; 
-	size_t i, j, k;
-	
-	/*
-	if (win->clearok == 1)
-	{
-		_setcursor(0, 1); 
-		len = sprintf(buf, "%s", ansiglb.t_eraseall);
-		write(win->fd, buf, len); 
-	}
-	*/
+        if (win->clearok == 1)
+        {
+                _setcursor(0, 1); 
+                len = sprintf(buf, "%s", ansiglb.t_eraseall);
+                write(win->fd, buf, len); 
+        } 
+}
 
+void line_refresh(WINDOW *win)
+{ 
+	size_t i, j, k;
+	int lines[4096] = { 0 };
 	for (i=0, j=1, k=1;i < (win->rp - win->buf) ; ++i)
 	{ 
-		if (win->last[i] != win->buf[i] )
-		{
-			_setcursor(k, j);
-			write(1, win->buf + i, 1);
-			win->last[i] = win->buf[i];
-		}
+		/* a character is dirty mark the current line for redrawing */
+		if (win->last[i] != win->buf[i] ) 
+			lines[k] = 1;
 	
                 if (j == COLS ) 
                 {
@@ -37,25 +59,24 @@ int wrefresh(WINDOW *win)
                 } 
 		else 
 			++j;
-	}
-
-	/*
-	for ( ; i < win->len ; ++i)
+	} 
+	/* iterate through all lines */
+	for (i=0,j=1; i<(win->rp - win->buf);i+=COLS, ++j)
 	{
-		if (!(win->last[i] != win->buf[i]))
+		if (lines[j])
 		{
-			range[k].o = i;
-			for ( ; i < win->len ; ++i)
-				if (!(win->last[i] != win->buf[i]))
-				{
-					range[k].l++;
-					win->last[i] = win->buf[i];
-				}
-			k++;
+			_setcursor(j, 0);
+			write(1, win->buf + i, COLS);
+			memcpy(win->last + i, win->buf + i, COLS);
 		}
-		
 	}
-	*/
+}
+
+int wrefresh(WINDOW *win)
+{
+	
+	//simple_refresh(win);
+	line_refresh(win);
 	/* set the final user cursor position */
 	_setcursor(win->px, win->py + 1); 
 
