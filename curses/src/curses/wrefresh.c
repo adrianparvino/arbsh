@@ -1,12 +1,5 @@
 #include <curses.h>
 
-typedef struct range {
-	size_t o;
-	size_t x;
-	size_t y;
-	size_t l;
-}range[1000];
-
 void simple_refresh(WINDOW *win)
 {
 	size_t i, j, k;
@@ -52,7 +45,7 @@ void line_refresh(WINDOW *win)
 		if (win->last[i] != win->buf[i] ) 
 			lines[k] = 1;
 	
-                if (j == COLS ) 
+                if (j == win->x ) 
                 {
                         j = 1;
                         ++k;
@@ -61,22 +54,24 @@ void line_refresh(WINDOW *win)
 			++j;
 	} 
 	/* iterate through all lines */
-	for (i=0,j=1; i<(win->rp - win->buf);i+=COLS, ++j)
+	for (i=0,j=1; i<(win->rp - win->buf);i+=(win->x), ++j)
 	{
+		/* A line was dirty, position the cursor and redraw it */
 		if (lines[j])
 		{
 			_setcursor(j, 0);
-			write(1, win->buf + i, COLS);
-			memcpy(win->last + i, win->buf + i, COLS);
+			write(1, win->buf + i, win->x);
+			memcpy(win->last + i, win->buf + i, win->x);
 		}
 	}
 }
 
 int wrefresh(WINDOW *win)
 {
-	
+	/* actually draw the chaacter grid */
 	//simple_refresh(win);
 	line_refresh(win);
+
 	/* set the final user cursor position */
 	_setcursor(win->px, win->py + 1); 
 
