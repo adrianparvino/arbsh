@@ -21,22 +21,12 @@ int waddch(WINDOW *win, chtype ch)
 	
 	if (win->len-- == 0)
 	{
-		//wrefresh(win);
-		refresh();
+		wrefresh(win);
 		win->rp = win->buf;
 		win->len = (win->x * win->y);
 	}
 	*win->rp = ch;
 	win->rp++; 
-	//if (win->len > 0)
-	//{
-		//win->len--;
-		
-	//}else {
-	//}
-		
-	
-	
 	
 	return ch;
 }
