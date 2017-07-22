@@ -39,6 +39,23 @@ int wrefresh(WINDOW *win)
 			++j;
 	}
 
+	/*
+	for ( ; i < win->len ; ++i)
+	{
+		if (!(win->last[i] != win->buf[i]))
+		{
+			range[k].o = i;
+			for ( ; i < win->len ; ++i)
+				if (!(win->last[i] != win->buf[i]))
+				{
+					range[k].l++;
+					win->last[i] = win->buf[i];
+				}
+			k++;
+		}
+		
+	}
+	*/
 	/* set the final user cursor position */
 	_setcursor(win->px, win->py + 1); 
 
