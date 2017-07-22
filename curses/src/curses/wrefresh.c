@@ -1,6 +1,6 @@
 #include <curses.h>
 
-void simple_refresh(WINDOW *win)
+void _simple_refresh(WINDOW *win)
 {
 	size_t i, j, k;
 	for (i=0, j=1, k=1;i < (win->rp - win->buf) ; ++i)
@@ -10,20 +10,16 @@ void simple_refresh(WINDOW *win)
                         _setcursor(k, j);
                         write(1, win->buf + i, 1);
                         win->last[i] = win->buf[i];
-                }
-
+                } 
                 if (j == win->x )
                 {
                         j = 1;
                         ++k;
-                }
-                else
-                        ++j;
-        }
-
+                } else ++j;
+        } 
 }
 
-void clear_ok_wrap(WINDOW *win)
+void _clear_ok_wrap(WINDOW *win)
 {
 	char buf[32];
 	size_t len = 0; 
@@ -35,7 +31,7 @@ void clear_ok_wrap(WINDOW *win)
         } 
 }
 
-void line_refresh(WINDOW *win)
+void _line_refresh(WINDOW *win)
 { 
 	size_t i, j, k;
 	int lines[4096] = { 0 };
@@ -68,16 +64,14 @@ void line_refresh(WINDOW *win)
 
 int wrefresh(WINDOW *win)
 {
-	/* actually draw the chaacter grid */
-	//simple_refresh(win);
-	line_refresh(win);
+	/* actually draw the character grid */ 
+	_line_refresh(win);
 
 	/* set the final user cursor position */
 	_setcursor(win->px, win->py + 1); 
 
-	/* reset the buffer pointer and the len count */
+	/* reset the buffer pointer */
         win->rp = win->buf;
-        win->len = (win->x * win->y);
 
 	return 0;
 }
