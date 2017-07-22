@@ -1,5 +1,11 @@
 #include <curses.h>
 
+typedef struct range {
+	size_t o;
+	size_t l;
+}range[1000];
+
+
 int wrefresh(WINDOW *win)
 {
 	char buf[32];
