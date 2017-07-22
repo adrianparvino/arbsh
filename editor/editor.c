@@ -405,14 +405,15 @@ void i_update(void)
 					ichar++;
 				} else
 				{ 
-					//addch(' ');
-					//++ivchar;
-					//++ichar; 
-					addch('\n');
-					break;
+					addch(' ');
+					++ivchar;
+					++ichar; 
+					//addch('\n');
+					//break;
 				}
 				
 			} 
+			
 		} 
 		if(l)
 			l = l->next;
