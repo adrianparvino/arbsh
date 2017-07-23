@@ -8,7 +8,7 @@ void _simple_refresh(WINDOW *win)
                 if (win->last[i] != win->buf[i] )
                 {
                         _setcursor(k, j);
-                        write(1, win->buf + i, 1);
+                        write(win->fd, win->buf + i, 1);
                         win->last[i] = win->buf[i];
                 } 
                 if (j == win->x )
@@ -56,7 +56,7 @@ void _line_refresh(WINDOW *win)
 		if (lines[j])
 		{
 			_setcursor(j, 0);
-			write(1, win->buf + i, win->x);
+			write(win->fd, win->buf + i, win->x);
 			memcpy(win->last + i, win->buf + i, win->x);
 		}
 	}
