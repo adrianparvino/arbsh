@@ -9,6 +9,6 @@ void _setcursor(size_t x, size_t y)
 	//y = y + 1;/* count y from 1 */
 	//x +=1;
         len = sprintf(str, "\033[%zu;%zuH", x, y);
-        write(1, str, len);
+        write(stdscr->fd, str, len);
 }
 
