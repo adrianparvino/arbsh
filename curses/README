@@ -1,7 +1,7 @@
 Graff's curses (gcurses)
 
-A minimal implementation:
--------------------------
+Description:
+------------
 
 	Graff's curses or gcurses is a minimal implementation of the curses
 	standard library. gcurses implements a subset of the X / curses
