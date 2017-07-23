@@ -68,6 +68,12 @@ int echo(void);
 /* internal */
 int _termcatch(int, int);
 void _setcursor(size_t, size_t);
+int _getdimension(void);
+void _vt100(void);
+void _vt52(void);
+void _line_refresh(WINDOW *);
+void _simple_refresh(WINDOW *);
+void _clear_ok_real(WINDOW *);
 /* refresh */
 int refresh(void);
 int wrefresh(WINDOW *win);
@@ -84,10 +90,8 @@ int wclrtoeol(WINDOW *);
 int clearok(WINDOW *, bool);
 /* getch */
 int getch(void);
-int wgetch(WINDOW *win);
+int wgetch(WINDOW *);
 
 
-int _getdimension(void);
-void _vt100(void);
-void _vt52(void);
+
 
