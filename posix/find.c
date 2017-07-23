@@ -113,10 +113,7 @@ int find_pattern(char *path, size_t tot, size_t last)
 			cache = s.truth[p]; 
 			while ( p < s.n )
 			{ 
-				
 				// Create an entry / exit point for ()'s 'parenthesis' 
-				// They appear to mainly have effect modifying the behavior 
-				// -o OR				
 
 				if ( cache != s.truth[p])
 				{ 
