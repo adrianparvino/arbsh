@@ -18,7 +18,7 @@ WINDOW *initscr(void)
 	win->y = LINES;
 
 	len = sprintf(buf, "%s%s", ansiglb.t_eraseall, ansiglb.t_insertreset);
-	write(1, buf, len);
+	write(win->fd, buf, len);
 	move(1, 0);
 	return win;
 }
