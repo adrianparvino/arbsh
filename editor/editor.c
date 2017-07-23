@@ -327,6 +327,7 @@ void i_update(void)
 	int cursor_r = 0, cursor_c = 0;
 	size_t ichar; 
 	struct Line *l;
+	size_t z = 0;
 	
 	/* Check offset */
 	for(l = fstline, iline = 1; l && scrline->prev && l != scrline; iline++, l = l->next)
@@ -384,6 +385,10 @@ void i_update(void)
 			l->dirty = FALSE; 
 		for(ixrow = ichar = ivchar = 0; ixrow < vlines && (irow + ixrow) < LINES; ixrow++)
 		{ 
+			/* it's a bit of a delicate balance in here making gcurses work correctly
+				and behave like ncurses. If you enable the refresh it will fail.
+				Conversely if you disable the move() then ncurses will fail.
+			*/
 			move((irow + ixrow ), (ivchar % COLS));
 			//refresh(); 
 			while(ivchar < (1 + ixrow) * COLS) 
@@ -392,9 +397,8 @@ void i_update(void)
 				{ 
 					if(l->c[ichar] == '\t')
 					{ 
-						size_t leng = vlencnt('\t', ivchar);
-						size_t z = 0;
-						for (; z < leng ; ++z)
+						z  = vlencnt('\t', ivchar); 
+						for (; z ; z--)
 							addch(' ');
 					}
 					else 
@@ -408,16 +412,11 @@ void i_update(void)
 					addch(' ');
 					++ivchar;
 					++ichar; 
-					//addch('\n');
-					//break;
-				}
-				
+				} 
 			} 
-			
 		} 
 		if(l)
-			l = l->next;
-			
+			l = l->next; 
 	}
 
 	move(cursor_r, cursor_c);
