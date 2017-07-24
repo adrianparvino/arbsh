@@ -17,15 +17,18 @@ all:
 	-$(MAKE) -C arbprec
 	-$(MAKE) -C arbprec install
 	-$(MAKE) -C gsh
-	-$(MAKE) -C editor
+	-$(MAKE) -C editor native
 	-$(MAKE) -C posix
 	-$(MAKE) -C irc
 	-$(MAKE) install
 
+
+none:
 	#install the outside projects last for now
 	-$(MAKE) get_graflibc
 	-$(MAKE) make_graflibc
 	-$(MAKE) get_ash
+	-$(MAKE) make_ash
 	-$(MAKE) make_grafcube
 
 renew:
@@ -49,12 +52,15 @@ get_ash:
 	-git clone https://www.github.com/cmgraff/ash
 	-$(MAKE) -C ash
 
+make_ash:
+
+	-$(MAKE) -C ash install
+
 make_grafcube:
 
 	-git clone https://www.github.com/cmgraff/grafcube game
 	$(MAKE) -C game
 	
-
 clean:
 
 	-$(MAKE) -C readline clean
