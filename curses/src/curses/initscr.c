@@ -16,10 +16,20 @@ WINDOW *initscr(void)
 
 	win->x = COLS;
 	win->y = LINES;
+	win->len = (win->x * win->y);
+
 
 	len = sprintf(buf, "%s%s", ansiglb.t_eraseall, ansiglb.t_insertreset);
 	write(win->fd, buf, len);
-	move(1, 0);
+	_setcursor(1, 1);
+	wclrtobot(win);
+	//if (win->buf)
+	//{ 
+	//	win->rp = win->buf;
+	//	free(win->buf);// yes this is cheap
+	//	free(win->last);// yes this is cheap 
+		
+	//}
 	return win;
 }
 
