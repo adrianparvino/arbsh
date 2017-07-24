@@ -22,13 +22,12 @@ all:
 	-$(MAKE) -C irc
 	-$(MAKE) install
 
-
-none:
 	#install the outside projects last for now
 	-$(MAKE) get_graflibc
 	-$(MAKE) make_graflibc
 	-$(MAKE) get_ash
 	-$(MAKE) make_ash
+	# it's unlikely that the game builds on the user's target
 	-$(MAKE) make_grafcube
 
 renew:
