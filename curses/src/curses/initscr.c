@@ -3,7 +3,7 @@
 WINDOW *initscr(void)
 {
 	size_t len = 0;
-	char buf[128];
+	char buf[128]; 
 	WINDOW *win = stdscr;
 
 	if ( 1 )
@@ -23,13 +23,17 @@ WINDOW *initscr(void)
 	write(win->fd, buf, len);
 	_setcursor(1, 1);
 	wclrtobot(win);
-	//if (win->buf)
-	//{ 
-	//	win->rp = win->buf;
-	//	free(win->buf);// yes this is cheap
-	//	free(win->last);// yes this is cheap 
-		
-	//}
+	
+	if (win->buf)
+	{ 
+		win->clearok = 1;
+		_clear_ok_real(win); 
+		free(win->buf);// yes this is cheap
+		free(win->last);// yes this is cheap 
+		win->buf = win->last = NULL;
+		win->rp = win->buf;
+	}
+	
 	return win;
 }
 
