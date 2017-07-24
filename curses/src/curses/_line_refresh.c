@@ -3,7 +3,12 @@
 void _line_refresh(WINDOW *win)
 {
         size_t i, j, k;
-        int lines[4096] = { 0 };
+        int *lines = malloc(sizeof(int) * win->x);
+	if (!lines)
+		return;
+
+	lines[0] = lines[1] = 0;
+
         for (i=0, j=1, k=1;i < (win->rp - win->buf) ; ++i)
         {
                 /* a character is dirty mark the current line for redrawing */
@@ -14,6 +19,7 @@ void _line_refresh(WINDOW *win)
                 {
                         j = 1;
                         ++k;
+			lines[k] = 0;
                 }
                 else
                         ++j;
@@ -29,5 +35,6 @@ void _line_refresh(WINDOW *win)
                         memcpy(win->last + i, win->buf + i, win->x);
                 }
         }
+	free(lines);
 }
 
