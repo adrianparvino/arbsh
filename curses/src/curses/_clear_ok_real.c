@@ -9,6 +9,7 @@ void _clear_ok_real(WINDOW *win)
                 _setcursor(0, 1);
                 len = sprintf(buf, "%s", ansiglb.t_eraseall);
                 write(win->fd, buf, len);
+		win->clearok = 1;
         }
 }
 

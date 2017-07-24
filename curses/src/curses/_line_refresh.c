@@ -3,11 +3,8 @@
 void _line_refresh(WINDOW *win)
 {
         size_t i, j, k;
-        int *lines = malloc(sizeof(int) * win->x);
-	if (!lines)
-		return;
-
-	lines[0] = lines[1] = 0;
+        char lines[4096];
+	memset(lines, 0, 4096);
 
         for (i=0, j=1, k=1;i < (win->rp - win->buf) ; ++i)
         {
@@ -35,6 +32,6 @@ void _line_refresh(WINDOW *win)
                         memcpy(win->last + i, win->buf + i, win->x);
                 }
         }
-	free(lines);
+
 }
 
