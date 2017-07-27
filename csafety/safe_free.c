@@ -11,23 +11,21 @@ typedef struct{
 
 bb d[10]; 
 
-void safe_free2(void **a)
+void *safe_free3(void *a) 
+{ 
+	free(a); 
+	return NULL; 
+}
+
+void safe_free2(void **a) 
 { 
 	free(*a); 
-        *a = NULL;
-	fprintf(stderr, "This function mysteriously prevents double frees\n");
+	*a = NULL; 
 }
 
 void safe_free(void *a, void **b)
-{
-	if (a)
-	{
-		free(a);
-		fprintf(stderr, "A true free was detected\n");
-	}
-	else {
-		fprintf(stderr, "A double free was detected and prevented\n");
-	}
+{ 
+	free(a); 
 	*b = NULL;
 }
 
@@ -92,6 +90,14 @@ int main(void)
         safe_free2((void**)&ff);
         safe_free2((void**)&ff);
 
+
+        ff = malloc(sizeof(bb));
+        ff->rp = malloc(1000);
+
+	ff->rp = safe_free3(ff->rp);
+	ff->rp = safe_free3(ff->rp);
+	ff->rp = safe_free3(ff->rp);
+	ff->rp = safe_free3(ff->rp);
 	
 	return 0; 
 }
