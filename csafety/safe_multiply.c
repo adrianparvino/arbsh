@@ -3,7 +3,11 @@
 size_t safe_multiply(size_t i, size_t inc, size_t limit)
 { 
 	if ( limit / i > inc ) 
+	{
+		fprintf(stderr, "Muliplication proposal was accepted\n");
 		return i * inc;
+	}
+	fprintf(stderr, "Muliplication proposal was rejected, returning the limit\n");
 	return limit;
 }
 
