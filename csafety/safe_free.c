@@ -1,5 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h> 
+/*
+	
+	The C11 draft states "If ptr is a null pointer, no action occurs."
+	therefore preventing "double frees" is reduced to the simple
+	operation of explicitly setting deallocated variables to NULL.  
+
+*/
 
 struct c { 
         char *rp; 
