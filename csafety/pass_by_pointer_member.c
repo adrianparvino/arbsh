@@ -17,7 +17,7 @@ typedef struct{
 
 bb d[10]; 
 
-void normal_way(void *a) 
+void does_not_work(void *a) 
 { 
 	/* doesn't work ! */
 	a = "Does not work!";
@@ -25,7 +25,10 @@ void normal_way(void *a)
 
 void pass_bpm(void **a) 
 { 
-	free(*a); 
+	/*
+		Pass by pointer to the first member's value
+	*/
+
 	*a = "hello world";
 }
 
@@ -35,14 +38,17 @@ int main(void)
 	ff = malloc(sizeof(bb));
 	ff->rp = malloc(1000);
 
+	ff->rp = "This string should be overwritten with a new pointer to \"hello world\" ";
+
+     	printf("%s\n", ff->rp);
+
         pass_bpm((void**)&(ff->rp));
    
     	printf("%s\n", ff->rp);
      
-      	normal_way(ff->rp);  /* doesn't work */
+      	does_not_work(ff->rp);  /* doesn't work */
 	
 	printf("%s\n", ff->rp);
-        
 	
 	return 0; 
 }
