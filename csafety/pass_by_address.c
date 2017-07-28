@@ -31,7 +31,7 @@ void does_not_work(void *a)
 void pass_bappt(void **a) 
 { 
 	/*
-		Pass by pointer to the first member's value
+		"pass by value of an address by a pointer to a pointer to a type"
 	*/
 	*a = "hello world";
 }
