@@ -5,7 +5,7 @@ size_t safe_multiply(size_t i, size_t x, size_t lim)
 	
 	if (i == 0) /* Handle zero so that a "divide by zero" can't happen */
 		return 0;
-	if (lim / i > x ) 
+	if (lim / i >= x ) 
 	{
 		fprintf(stderr, "Muliplication proposal was accepted\n");
 		return i * x;
