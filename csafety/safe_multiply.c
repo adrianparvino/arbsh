@@ -1,14 +1,14 @@
 #include <stdio.h>
 
-size_t safe_multiply(size_t i, size_t inc, size_t limit)
+size_t safe_multiply(size_t i, size_t x, size_t lim)
 { 
-	if ( limit / i > inc ) 
+	if (lim / i > x ) 
 	{
 		fprintf(stderr, "Muliplication proposal was accepted\n");
-		return i * inc;
+		return i * x;
 	}
 	fprintf(stderr, "Muliplication proposal was rejected, returning the limit\n");
-	return limit;
+	return lim;
 }
 
 int main(void)
