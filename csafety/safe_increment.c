@@ -3,11 +3,10 @@
 
 size_t safe_increment(size_t i, size_t inc, size_t limit)
 {
-	if ((limit - inc) > i)
+	if ((limit - inc) >= i)
 	{
 		fprintf(stderr, "arithmetic proposal was acceptable\n");
 		return i + inc;
-		
 	}
 	fprintf(stderr, "arithmetic proposal failed, returning the limit\n");
 	return limit;
