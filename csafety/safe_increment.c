@@ -1,15 +1,15 @@
 #include <stdio.h>
 
 
-size_t safe_increment(size_t i, size_t inc, size_t limit)
+size_t safe_increment(size_t i, size_t x, size_t lim)
 {
-	if ((limit - inc) >= i)
+	if ((lim - x) >= i)
 	{
 		fprintf(stderr, "arithmetic proposal was acceptable\n");
-		return i + inc;
+		return i + x;
 	}
 	fprintf(stderr, "arithmetic proposal failed, returning the limit\n");
-	return limit;
+	return lim;
 }
 
 int main(void)
