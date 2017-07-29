@@ -42,7 +42,7 @@ int main(void)
 	ff = malloc(sizeof(bb));
 	ff->rp = malloc(1000);
 
-	ff->rp = "This string should be overwritten with a new pointer to \"hello world\" ";
+	ff->rp = "This pointer to a string literal should be overwritten with a new pointer to the string liternal \"hello world\" ";
 
      	printf("%s\n", ff->rp);
 

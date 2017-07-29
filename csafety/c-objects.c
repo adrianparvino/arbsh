@@ -8,26 +8,21 @@ typedef struct{
 int main(void)
 { 
 	object *obja = malloc(sizeof(object) * 10);
-	object *hold = obja;
+
 	size_t i = 0;
 
 	for ( ; i < 10 ; ++i)
 	{
-		obja->rp = malloc(sizeof(char) * 100);
-		sprintf(obja->rp, "string %zu\n", i); 
-		++obja;
-		
-	}
-	obja = hold;
+		(obja+i)->rp = malloc(sizeof(char) * 100);
+		sprintf((obja + i)->rp, "string %zu\n", i); 
+	} 
 
-	for (i=0 ; i < 10 ; ++i, ++obja)
-		printf("%s", obja->rp);
+	for (i=0 ; i < 10 ; ++i)
+		printf("%s", (obja+i)->rp); 
 
-	obja = hold;
+	for (i=0 ; i < 10 ; ++i)
+                free((obja+i)->rp);
 
-	for (i=0 ; i < 10 ; ++i, ++obja)
-                free(obja->rp);
-
-	free(hold);
+	free(obja);
 	return 0; 
 }
