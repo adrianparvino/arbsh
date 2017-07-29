@@ -1,26 +1,29 @@
 #include <stdlib.h>
 #include <stdio.h> 
+#include <unistd.h>
 
 typedef struct{ 
         char *rp; 
+	size_t len;
 } object; 
 
 int main(void)
 { 
-	object *obja = malloc(sizeof(object) * 10);
-
 	size_t i = 0;
+	size_t lim = 10;
 
-	for ( ; i < 10 ; ++i)
+	object *obja = malloc(sizeof(object) * lim); 
+
+	for ( ; i < lim ; ++i)
 	{
 		(obja+i)->rp = malloc(sizeof(char) * 100);
-		sprintf((obja + i)->rp, "string %zu\n", i); 
+		(obja+i)->len = sprintf((obja+i)->rp, "string %zu\n", i); 
 	} 
 
-	for (i=0 ; i < 10 ; ++i)
-		printf("%s", (obja+i)->rp); 
+	for (i=0 ; i < lim ; ++i)
+		write(1, (obja+i)->rp, (obja+i)->len);
 
-	for (i=0 ; i < 10 ; ++i)
+	for (i=0 ; i < lim ; ++i)
                 free((obja+i)->rp);
 
 	free(obja);
