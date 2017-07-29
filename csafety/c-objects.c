@@ -22,7 +22,7 @@ int main(void)
 		(o+i)->len = sprintf((o+i)->rp, "string %zu\n", i); 
 	} 
 
-	/* test the array of objects (fast write) */
+	/* test the array of objects (fast write!) */
 	for (i=0 ; i < lim ; ++i)
 		write(1, (o+i)->rp, (o+i)->len);
 
@@ -32,6 +32,7 @@ int main(void)
 
 	/* free the object */
 	free(o);
+
 	return 0; 
 }
 
