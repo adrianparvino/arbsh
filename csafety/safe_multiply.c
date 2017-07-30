@@ -1,5 +1,15 @@
 #include <stdio.h>
 
+/*
+	over an unsigned domain, (x * y) / y != x precisely captures "x*y overflows"
+	as does a>-1U/b ? -1U : a*b;
+*/
+
+unsigned foo(unsigned a, unsigned b)
+{
+	return a>-1U/b ? -1U : a*b;
+}
+
 size_t safe_multiply(size_t i, size_t x, size_t lim)
 {
 	if (i == 0) /* Handle zero so that a "divide by zero" can't happen */
