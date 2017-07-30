@@ -6,4 +6,5 @@
 int main(void)
 {
 	object *o;
+	o->rp[0] = 0;
 }
