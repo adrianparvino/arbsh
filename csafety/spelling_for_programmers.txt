@@ -2,8 +2,8 @@
 A lot, Allot, (alot is not a word)
 ----------------------------------
 
-	"alot" is not a word. It is always "a lot". There is a word "allot",
-	but it has a completely different meaning.
+	"alot" is not a word. It is always "a lot". There is a similiar word 
+	"allot", but it has a completely different meaning.
 
 		"Tom likes to program a lot."
 
