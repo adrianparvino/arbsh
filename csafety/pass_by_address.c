@@ -2,57 +2,53 @@
 #include <stdio.h>
 
 /*
-	C does not support "pass by reference" nonetheless by passing a
-	the value of an address to a function accepting a pointer to a 
-	pointer to a type we can modify a value in C similiar to C++'s
-	"pass by reference". The canonical example of this is getline()
-	from the C standard library.
+	C does not support "pass by reference" nonetheless by passing the value
+	of an address to a function which accepts a pointer to a pointer to a 
+	type we can modify a value in C similiar to C++'s "pass by reference". 
+	The canonical example of this is getline() from the C standard library.
 
 	Presented below is the function pass_bappt() (Pass by address of a
 	pointer to a pointer to a type).
 */
 
-struct c { 
-        char *rp; 
-} c;
-
 typedef struct{ 
         char *rp; 
-} bb;
+	size_t len; /* len is not used in this example */
+} object;
 
-bb d[10]; 
-
-void does_not_work(void *a) 
+void does_not_work(char *a) 
 {
 	/* Doesn't work! (obviously) */
 	a = "Does not work!";
 }
 
-void pass_bappt(void **a) 
+void pass_bappt(char **a) 
 { 
 	/*
-		"pass by value of an address by a pointer to a pointer to a type"
+		"Pass by value of an address of a pointer to a pointer to a 
+		 type (pass_baapt)"
 	*/
 	*a = "hello world";
 }
 
 int main(void)
 { 
-	bb *ff;
-	ff = malloc(sizeof(bb));
-	ff->rp = malloc(1000);
+	object *o;
+	o = malloc(sizeof(object)); 
 
-	ff->rp = "This pointer to a string literal should be overwritten with a new pointer to the string liternal \"hello world\" ";
+	o->rp = "This pointer to a string literal should be overwritten with a new pointer to the string liternal \"hello world\" ";
 
-     	printf("%s\n", ff->rp);
+     	printf("%s\n", o->rp);
 
-        pass_bappt((void**)&(ff->rp));
+        pass_bappt(&(o->rp)); /* note the '&' */
    
-    	printf("%s\n", ff->rp);
+    	printf("%s\n", o->rp);
      
-      	does_not_work(ff->rp);  /* Doesn't work! (obviously) */
+      	does_not_work(o->rp);  /* Doesn't work! (obviously) */
 	
-	printf("%s\n", ff->rp);
+	printf("%s\n", o->rp);
 	
+
+	free(o);
 	return 0; 
 }
