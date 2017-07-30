@@ -75,7 +75,7 @@ Its, It's, It is
 
 		""It's really cold outside today."
 
-	""Its" always denoted ownsership or state."
+	""Its" always denotes ownsership or state."
 
 		""The computer does not have "its" hard drive."
 
