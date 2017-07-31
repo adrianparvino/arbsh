@@ -6,9 +6,11 @@ int main(void)
 	object *o;
 	o = object_init(o);
 	object_populate(o, "This is a string\n");
-	object_write(o); 
-	object_free(o); 
+	object_write(o);
+	object_free(o);
 
-	//o->rp = "hello";  //<--- This will fail if it is a truly opaque type
+	//o->rp = "hello";  //<-- This will fail to compile if it is a truly opaque type
+			    // thus proving that the implementation details are indeed 
+			    // hidden from the user of the API. Uncomment it to verify
 	return 0;
 }
