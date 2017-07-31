@@ -8,15 +8,11 @@
 
 */
 
-struct c { 
-        char *rp; 
-} c;
 
 typedef struct{ 
         char *rp; 
-} bb;
-
-bb d[10]; 
+	size_t len;
+}object;
 
 void *safe_free(void *a) 
 { 
@@ -27,26 +23,13 @@ void *safe_free(void *a)
 int main(void)
 {
 	char *l; 
-	bb *ff;
-	ff = malloc(sizeof(bb));
-	ff->rp = malloc(1000); 
-	c.rp = malloc(1000); 
-        l = malloc(1000);
-	ff->rp = safe_free(ff->rp);
-	ff->rp = safe_free(ff->rp);
-	ff->rp = safe_free(ff->rp);
-	ff->rp = safe_free(ff->rp);
-	ff = safe_free(ff);
-	ff = safe_free(ff);
-	ff = safe_free(ff);
-	ff = safe_free(ff);
-	l = safe_free(l);
-	l = safe_free(l);
-	l = safe_free(l);
-	c.rp = safe_free(c.rp);
-	c.rp = safe_free(c.rp);
-	c.rp = safe_free(c.rp);
-	c.rp = safe_free(c.rp);
-	
+	object *o;
+	o = malloc(sizeof(object));
+	o->rp = malloc(1000); 
+	o->rp = safe_free(o->rp);
+	o->rp = safe_free(o->rp); // does nothing
+	o = safe_free(o);
+	o = safe_free(o); // does nothing
+
 	return 0; 
 }
