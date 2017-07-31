@@ -1,4 +1,6 @@
 #include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include "shared.h"
 
 struct object {
@@ -20,6 +22,13 @@ object *object_init(object *o)
 }
 
 
+object *object_populate(object *o, char *s)
+{
+	o->rp = s;
+	o->len = strlen(s);
+}
 
-
-
+void object_write(object *o)
+{
+	write(1, o->rp, o->len);
+}
