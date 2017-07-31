@@ -1,4 +1,3 @@
-/* obj.c */
 #include <stdlib.h>
 #include "shared.h"
 
