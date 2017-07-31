@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 #include "shared.h"
 
 struct object {
@@ -16,11 +17,10 @@ size_t object_size(void)
 object *object_init(object *o)
 {
 	o = malloc (object_size());
-	o->rp = malloc(1000);
+	//o->rp = malloc(1000);
 	o->len = 0;
 	return o;
 }
-
 
 object *object_populate(object *o, char *s)
 {
@@ -28,7 +28,15 @@ object *object_populate(object *o, char *s)
 	o->len = strlen(s);
 }
 
+void object_free(object *o)
+{
+	//free(o->rp);
+	free(o);
+}
+
 void object_write(object *o)
 {
 	write(1, o->rp, o->len);
 }
+
+
