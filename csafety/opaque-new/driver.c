@@ -5,7 +5,6 @@
 
 int main(void)
 {
-	struct obj *o;
-	o->id = 0;
-	//o->rp[0] = 0;
+	obj *o;
+	o->id = 0; 
 }
