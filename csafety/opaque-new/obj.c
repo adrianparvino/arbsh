@@ -6,20 +6,23 @@ struct obj {
     int id;
 };
 
+
+
+
 /*
  * The caller will handle allocation.
  * Provide the required information only
  */
 
 size_t obj_size(void) {
-    return sizeof(struct obj);
+    return sizeof(obj);
 }
 
-void obj_setid(struct obj *o, int i) {
+void obj_setid(obj *o, int i) {
     o->id = i;
 }
 
-int obj_getid(struct obj *o) {
+int obj_getid(obj *o) {
     return o->id;
 }
 
