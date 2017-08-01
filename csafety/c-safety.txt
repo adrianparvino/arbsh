@@ -359,8 +359,8 @@ they end with .so.
 
 Static libraries get the entire archive of object code linked into the executable.
 Conversely, dynamic libraries sit in /lib and are loaded at runtime. Static 
-binaries will work in a chroot with no librearies at all. However, they may stil
-l have other dependencies such as /proc or the terminfo database.
+binaries will work in a chroot with no other libs at all. However, they may still
+have other dependencies such as /proc or the terminfo database.
 
 
 Makefile:
