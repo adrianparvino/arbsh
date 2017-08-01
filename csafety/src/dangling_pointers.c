@@ -1,3 +1,11 @@
+/*
+Dangling pointers can be completely avoided in C by keeping an extra copy of
+the original pointer. The idiom might be "a = b = malloc(..)" as opposed to
+"a = malloc(..)". In this way we always have access to the original pointer
+location and can free it without error.
+*/
+
+
 #include <stdlib.h>
 #include <stdio.h> 
 #include <unistd.h>
