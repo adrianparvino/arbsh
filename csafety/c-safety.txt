@@ -66,8 +66,65 @@ Presented below is a method of "programming with objects" in C.
 
 
 
+
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+c-safety (Pass by address of a pointer to a pointer)   	                page 2
+
+
+C does not support "pass by reference" nonetheless by passing the value
+of an address to a function which accepts a pointer to a pointer to a 
+type we can modify a value in C similiar to C++'s "pass by reference". 
+The canonical example of this is getline() from the C standard library.
+
+Presented below is the function pass_bappt() (Pass by address of a
+pointer to a pointer to a type).
+
+
+
+	#include <stdlib.h>
+	#include <stdio.h>
+	typedef struct{ 
+	        char *rp; 
+		size_t len; /* len is not used in this example */
+	} object;
+
+	void does_not_work(char *a) 
+	{
+		/* Doesn't work! (obviously) */
+		a = "Does not work!";
+	}
+
+	void pass_bappt(char **a) 
+	{ 
+		/*
+			"Pass by value of an address of a pointer to a pointer to a 
+			 type (pass_baapt)"
+		*/
+		*a = "hello world";
+	}
+
+	int main(void)
+	{ 
+		object *o;
+		o = malloc(sizeof(object)); 
+	
+		o->rp = "This pointer to a string literal should be overwritten\n";
+	
+     		printf("%s\n", o->rp);
+
+	        pass_bappt(&(o->rp)); /* note the '&' */
+   
+    		printf("%s\n", o->rp);
+     
+      		does_not_work(o->rp);  /* Doesn't work! (obviously) */
+	
+		printf("%s\n", o->rp);
+	
+
+		free(o);
+		return 0; 
+	}
 
 
 
@@ -80,9 +137,5 @@ Presented below is a method of "programming with objects" in C.
 
 
 
-
-
-
-
-
-
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
