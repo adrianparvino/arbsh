@@ -351,27 +351,27 @@ shared.h:
 -------------------------------------------------------------------------------
 c-safety (Creating static libraries with ar 5.0)                         page 6
 
-ar has been around for a long time. and it makes very simple archives. These 
-very simple archives happen to be readable by the compiler and we can 
-concatenate object code more or less endlessly into one of these .a and then 
-use it as a "library" the other type of library is called a dynamic library and 
+ar has been around for a long time. and it makes very simple archives. These
+very simple archives happen to be readable by the compiler and we can
+concatenate object code more or less endlessly into one of these .a and then
+use it as a "library". Another type of library is called a dynamic library and
 they end with .so.
 
-Static libraries get the entire thing linked into the executable, dynamic 
-libraries sit in /lib and are loaded at runtime. Static binaries will work in a 
-chroot with no fuss or /lib at all but they may have other dependencies such as
-/proc or the terminfo database.
+Static libraries get the entire archive of object code linked into the executable.
+Conversely, dynamic libraries sit in /lib and are loaded at runtime. Static 
+binaries will work in a chroot with no librearies at all. However, they may stil
+l have other dependencies such as /proc or the terminfo database.
 
 
 Makefile:
 	all: 
 
 		# create the object code
-		gcc -c frog.c dog.c swan.c
+		gcc -c frog.c dog.c swan.c -static
 		# Here we use `ar' to create the static library "libanimals.a"
 		ar -cvq libanimals.a frog.o dog.o swan.o 
 		# And finally link it into our executable test driver "main.c"
-		gcc main.c libanimals.a -o main
+		gcc main.c libanimals.a -o main -static
 
 	clean:
 
