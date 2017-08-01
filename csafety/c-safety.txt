@@ -208,7 +208,118 @@ operation of explicitly setting deallocated variables to NULL.
 
 
 -------------------------------------------------------------------------------
+------------------------------------------------------------------------------- 
+c-safety (Opaque objects and pointers)                                   page 4
+
+This program attempts to use the opaque-objects we have created.
+It has the ability to access and use the type "object" but not its
+structure members. The opaque object can only be manipulated via
+its API. Which in this case are the simple functions object_init ..
+and so on.
+
+main.c:
+	#include "shared.h"
+	int main(void)
+	{
+		object *o;
+		o = object_init(o);
+		object_populate(o, "This is a string\n");
+		object_write(o);
+		object_free(o);
+
+		//o->rp = "hello";  //<-- This will fail to compile if it is a truly opaque type,
+				    // producing the error: "dereferencing pointer to incomplete
+			            // type ‘object {aka struct object}" thus proving that the 
+				    // implementation details are indeed hidden from the user of 
+				    // the API. Uncomment it to verify
+		return 0;
+	}
+
+
+Makefile:
+	all:
+
+		gcc -c opaque.c -o opaque.o
+		gcc main-driver.c opaque.o -o main-driver
+
+	clean:
+
+		rm *.o
+		rm main-driver
+
+
+
+This is the actual opaque API library implementation. We declare an
+instantiation of the primary API structure from "shared.h" our shared
+header. But in this version we actually define its members. Inside of
+this file we can access all of the members of our opaque type but the
+end user of the API, or indeed anyone outside of this file can not.
+However, they can use the library as a library of opaque objects. The
+canonical example of the opaque object in C is the FILE * structure
+from stdio.  
+
+
+opaque.c
+	#include <stdlib.h>
+	#include <stdio.h>
+	#include <unistd.h>
+	#include <string.h>
+	#include "shared.h"
+
+
+	struct object {
+		char *rp;
+		size_t len;
+	}; 
+
+
+
+
+
+
 -------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+c-safety (Opaque objects and pointers)                                   page 5
+
+opaque.c (continued):
+	size_t object_size(void)
+	{
+		return sizeof(object);
+	}
+
+	object *object_init(object *o)
+	{
+		o = malloc (object_size());
+		o->len = 0;
+		return o;
+	}
+
+	object *object_populate(object *o, char *s)
+	{
+		o->rp = s;
+		o->len = strlen(s);
+	}
+
+	void object_free(object *o)
+	{ 
+		free(o);
+	}
+
+	void object_write(object *o)
+	{
+		write(1, o->rp, o->len);
+	}
+
+
+shared.h:
+	#include <stddef.h>
+
+	typedef struct object object; 
+	size_t object_size(void); 
+	object *object_init(object *);
+	object *object_populate(object *, char *);
+	void object_write(object *);
+	void object_free(object *);
 
 
 
@@ -224,3 +335,17 @@ operation of explicitly setting deallocated variables to NULL.
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
