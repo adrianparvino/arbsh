@@ -8,6 +8,8 @@
 # libraries sit in /lib and are loaded at runtime static binaries ofc, will work 
 # in a chroot with no fuss or /lib at all but they may need /proc. like top and
 # htop depend n parsing /proc in linux
+
+
 all: 
 
 	# create the object code
