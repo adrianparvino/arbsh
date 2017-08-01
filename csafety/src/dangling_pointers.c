@@ -6,11 +6,10 @@ int main(void)
 { 
 	char *a;
 	char *b;
+	const char *string = "This is a string\n";
 
-	a = b = malloc(32); // no need for sizeof with chars
-
-	char *string = "This is a string\n";
-
+	a = b = malloc(32); // Always keep at least 2 copies of
+			    // of the original pointer location.
 	while (*string)
 	{
 		*b = *string;
@@ -19,7 +18,10 @@ int main(void)
 		     // and can not be freed
 	}
 
-	printf("%s", a);
+	
+	write(1, a, b - a); // when "b" is incremented away from "a" and
+			    // becomes a dangling pointer then we can
+			    // calculate the length of the object as b-a.
 
 	free(a); // "a" however points at the original
 		 // location that "b" pointed to and
