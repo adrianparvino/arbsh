@@ -1,40 +1,36 @@
 CFLAGS += -Wall -Wextra
 
-OBJ = $(shell for i in *.c ; do echo $${i%.c}.o ; done )
+OBJ = frog.o \
+dog.o \
+swan.o
 
 LIBNAME = animals
 
-STATLIB = lib$(LIBNAME).a 
+STATLIB = lib$(LIBNAME).a
 
-TEST_OBJ = main.o
+TEST_OBJ = main
 
-LDLIBS += -L. -l$(LIBNAME)
+LDLIBS = -l$(LIBNAME)
+
+LDFLAGS = -L.
 
 all:
 
-	$(MAKE) static 
+	$(MAKE) static
 	$(MAKE) create_test
 
 static: $(OBJ)
 
-	$(MAKE) static_link 
+	$(MAKE) static_link
 
 static_link:
 
 	$(AR) -cvq $(STATLIB) $(OBJ)
 
-
-
-
-
 create_test: $(TEST_OBJ)
 
-cleanobj:
-
-	$(RM) $(OBJ) 
-
 clean:
-	$(MAKE) cleanobj
+	$(RM) $(OBJ) 
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
 	$(RM) $(TEST_OBJ)
