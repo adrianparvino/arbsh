@@ -1,5 +1,4 @@
-extern int frog;
-
+int frogs = 10;
 
 int inc_frogs(int d)
 {
