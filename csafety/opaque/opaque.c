@@ -17,7 +17,6 @@ size_t object_size(void)
 object *object_init(object *o)
 {
 	o = malloc (object_size());
-	//o->rp = malloc(1000);
 	o->len = 0;
 	return o;
 }
@@ -29,8 +28,7 @@ object *object_populate(object *o, char *s)
 }
 
 void object_free(object *o)
-{
-	//free(o->rp);
+{ 
 	free(o);
 }
 
