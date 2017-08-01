@@ -1,5 +1,4 @@
-extern int dog;
-
+int dogs = 10;
 
 int inc_dogs(int d)
 {
