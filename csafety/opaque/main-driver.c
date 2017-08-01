@@ -1,5 +1,12 @@
-
 #include "shared.h"
+
+/*
+	This program attempts to use the opaque-objects we have created.
+	It has the ability to access and use the type "object" but not its
+	structure members. The opaque object can only be manipulated via
+	its API. Which in this case are the simple functions object_init ..
+	and so on.
+*/
 
 int main(void)
 {
