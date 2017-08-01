@@ -1,4 +1,4 @@
-c-safety (programming with abstract objects)			page 1
+c-safety (programming with abstract objects 1.0)		page 1
 
 The C standard identifies objects in a very broad sense and applies the
 term to "any object in memory". However this definition of object does
@@ -69,7 +69,7 @@ Presented below is a method of "programming with objects" in C.
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Pass by address of a pointer to a pointer)   	                page 2
+c-safety (Pass by address of a pointer to a pointer 2.0)	         page 2
 
 
 C does not support "pass by reference" nonetheless by passing the value
@@ -139,7 +139,7 @@ pointer to a pointer to a type).
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Prevent double frees)   	              			page 3
+c-safety (Prevent double frees 3.0)	   	              		page 3
 
 
 The C11 draft states "If ptr is a null pointer, no action occurs."
@@ -209,7 +209,7 @@ operation of explicitly setting deallocated variables to NULL.
 
 -------------------------------------------------------------------------------
 ------------------------------------------------------------------------------- 
-c-safety (Opaque objects and pointers)                                   page 4
+c-safety (Opaque objects and pointers 4.0)                               page 4
 
 This program attempts to use the opaque-objects we have created.
 It has the ability to access and use the type "object" but not its
@@ -279,7 +279,7 @@ opaque.c
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Opaque objects and pointers)                                   page 5
+c-safety (Opaque objects and pointers 4.0)                               page 5
 
 opaque.c (continued):
 	size_t object_size(void)
@@ -346,6 +346,76 @@ shared.h:
 
 
 
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+c-safety (Creating static libraries with ar 5.0)                         page 6
+
+ar has been around for a long time. and it makes very simple archives. These 
+very simple archives happen to be readable by the compiler and we can 
+concatenate object code more or less endlessly into one of these .a and then 
+use it as a "library" the other type of library is called dynamic library and 
+they end with .so 
+
+Static libraries get the entire thing linked into the executable, dynamic 
+libraries sit in /lib and are loaded at runtime static binaries ofc, will work 
+in a chroot with no fuss or /lib at all but they may need /proc. like top and
+htop depend n parsing /proc in linux
+
+Makefile:
+	all: 
+
+		# create the object code
+		gcc -c frog.c dog.c swan.c
+		# Here we use `ar' to create the static library "libanimals.a"
+		ar -cvq libanimals.a frog.o dog.o swan.o 
+		# And finally link it into our executable test driver "main.c"
+		gcc main.c libanimals.a -o main
+
+	clean:
+
+		rm frog.o dog.o swan.o libanimals.a main
+
+dog.c:
+	int dogs = 10;
+
+	int inc_dogs(int d)
+	{
+		return d + 1;
+	}
+
+frog.c:
+	int frogs = 10;
+
+	int inc_frogs(int d)
+	{
+		return d + 1;
+	}
+
+swan.c:
+	int swans = 10;
+
+	int inc_swans(int d)
+	{
+		return d + 1;
+	}
+
+main.c:
+	#include <stdio.h>
+	#include "animals.h"
+	int main(void)
+	{ 
+		printf("Number of dogs %d\n", dogs);
+		printf("Number of swans %d\n", swans);
+		printf("Number of frogs %d\n", frogs);
+		dogs = inc_dogs(dogs);
+		swans = inc_dogs(swans);
+		frogs = inc_dogs(frogs); 
+		printf("Number of dogs %d\n", dogs);
+		printf("Number of swans %d\n", swans);
+		printf("Number of frogs %d\n", frogs); 
+		return 0; 
+	}
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
