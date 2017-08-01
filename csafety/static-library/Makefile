@@ -1,17 +1,15 @@
-# "make" is an implicit language. so basically we imply that the .o 
-# files are there .. and it creates them from the .c files. .o files 
-# are object code for libraries, whereas executables don't end in .o 
-# they have no suffix
 
+all: 
 
-all: frog.o dog.o swan.o 
-
+	# create the object code
+	gcc -c frog.c dog.c swan.c
 	# Here we use `ar' to create the static library "libanimals.a"
 	ar -cvq libanimals.a frog.o dog.o swan.o 
+	# And finally link it into our executable test driver "main.c"
 	gcc main.c libanimals.a -o main
 
 clean:
 
-	-$(RM) *.o
-	-$(RM) libanimals.a
-	-$(RM) main
+	rm frog.o dog.o swan.o libanimals.a main
+
+
