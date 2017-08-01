@@ -1,5 +1,4 @@
-extern int swans;
-
+int swans = 10;
 
 int inc_swans(int d)
 {
