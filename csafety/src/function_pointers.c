@@ -9,51 +9,44 @@ allowing the object itself to perform actions.
 #include <stdio.h> 
 #include <unistd.h> 
 
-typedef struct{ 
+typedef struct object object;
+
+typedef struct object{ 
         char *rp;
 	size_t len;
-	int (*f)(int, int);
+	object *next;
+	object *(*a)(object *o);
+	object *(*b)(object *o);
+	object *(*c)(object *o);
 } object;
 
-int add(int x, int y)
+object *obj_init(object *o)
 {
-	return x+y;
+	o->rp = malloc(256);
+	o->len = 0;
 }
 
-int mul(int x, int y)
+object *obj_pop(object *o)
 {
-	return x*y;
+	o->len = sprintf(o->rp, "%s\n", "string here");
 }
 
-object *object_init(object *o, int (*func)(int x, int y))
+object *obj_write(object *o)
 {
-	o->f = func;
-	return o;
-}
-
-object *object_exec(object *o, int x, int y)
-{ 
-	printf( "%d\n",  o->f(x, y));
-	return o;
+	write(1, o->rp, o->len);
 }
 
 int main()
 { 
 	object *o = malloc(sizeof(object));
+	o->a = obj_init; 
+	o->b = obj_pop; 
+	o->c = obj_write;
 
-	o = object_init(o, add);
+	o = o->a(o);
+	o = o->b(o);
+	o = o->c(o);
 
-	o = object_exec(o, 2, 3);
-
-	o = object_init(o, mul);
-
-	o = object_exec(o, 2, 3);
-
-		/* or */
-
-	printf( "%d\n",  o->f(3, 3));
-
-	free(o);
 
 	return 0;
 }
