@@ -5,37 +5,44 @@
 typedef struct{ 
         char *rp;
 	size_t len;
-	void (*f)(int, int);
+	int (*f)(int, int);
 } object;
 
-void add(int x, int y)
+int add(int x, int y)
 {
-	printf( "add %d\n", x + y);
+	return x+y;
 }
 
-void mul(int x, int y)
+int mul(int x, int y)
 {
-	printf( "mul %d\n", x * y);
-} 
+	return x*y;
+}
 
-object *object_mathfunc(object *o, void (*func))
+object *object_init(object *o, int (*func)(int x, int y))
 {
 	o->f = func;
+	return o;
 }
 
 object *object_exec(object *o, int x, int y)
-{
-	o->f(x, y);
+{ 
+	printf( "%d\n",  o->f(x, y));
 	return o;
 }
 
 int main()
 { 
 	object *o = malloc(sizeof(object));
-	o = object_mathfunc(o, add);
+
+	o = object_init(o, add);
+
 	o = object_exec(o, 2, 3);
-	o = object_mathfunc(o, mul);
+
+	o = object_init(o, mul);
+
 	o = object_exec(o, 2, 3);
+
+	free(o);
 
 	return 0;
 }
