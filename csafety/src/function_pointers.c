@@ -1,3 +1,10 @@
+/*
+Function pointers make objects even more powerful by allowing them to have a
+functions assigned as its various members. Effectively they take the struct 
+which is data and the function (which has functionality) and combines them. Thus
+allowing the object itself to perform actions.
+*/
+
 #include <stdlib.h>
 #include <stdio.h> 
 #include <unistd.h> 
@@ -41,6 +48,10 @@ int main()
 	o = object_init(o, mul);
 
 	o = object_exec(o, 2, 3);
+
+		/* or */
+
+	printf( "%d\n",  o->f(3, 3));
 
 	free(o);
 
