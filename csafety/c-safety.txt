@@ -562,9 +562,9 @@ saved to free it.
 c-safety (Function pointers 8.0) 			                 page 9
 
 Function pointers make objects even more powerful by allowing them to have
-functions assigned to its various members. Effectively they take the struct 
-which is data and the function (which has functionality) and combines them. Thus
-allowing the object itself to perform actions.
+functions assigned to their members. Effectively they take the struct which is 
+data and the function (which has functionality) and combines them. Thus allowing
+the object itself to perform actions.
 
 
 	#include <stdlib.h>
