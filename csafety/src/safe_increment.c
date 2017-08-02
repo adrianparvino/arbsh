@@ -18,7 +18,6 @@ int main(void)
 	a = safe_increment(a, 123123, (size_t) -1); 
 	printf("%zu\n", a);
 
-
 	a = (size_t) -1 / 10; 
 	a = safe_increment(a, 123123, (size_t) -1); 
 	printf("%zu\n", a);
