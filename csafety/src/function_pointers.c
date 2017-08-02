@@ -14,10 +14,7 @@ typedef struct object object;
 typedef struct object{ 
         char *rp;
 	size_t len;
-	object *next;
-	object *(*a)(object *o);
-	object *(*b)(object *o);
-	object *(*c)(object *o);
+	object *(*f[10])(object *o); 
 } object;
 
 object *obj_init(object *o)
@@ -39,13 +36,13 @@ object *obj_write(object *o)
 int main()
 { 
 	object *o = malloc(sizeof(object));
-	o->a = obj_init; 
-	o->b = obj_pop; 
-	o->c = obj_write;
+	o->f[0] = obj_init; 
+	o->f[1] = obj_pop; 
+	o->f[2] = obj_write;
 
-	o = o->a(o);
-	o = o->b(o);
-	o = o->c(o);
+	o = o->f[0](o);
+	o = o->f[1](o);
+	o = o->f[2](o);
 
 
 	return 0;
