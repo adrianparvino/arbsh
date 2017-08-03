@@ -699,4 +699,73 @@ array of function pointers
 	}
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+c-safety (Creating dynamic libraries 9) 		                page 11
 
+Unlinke static libraries, dynamic libraries can not be made using the `ar'
+utility and instead must be constructed by supplying directions to the compiler
+telling it to create them. Because our dyanmic library is not going to be
+installed we also have to specify the "-rpath" so that the dynamic loader knows
+how to find the executable. Normally with a library we will be installing to
+the end target of a system's /lib directory "-rpath" should not be specified.
+Another way to do this is to not use "rpath" at all and instead execute the
+test binary in place like this `LD_LIBRARY_PATH=$(pwd) ./main'. Presented below
+are 5 files that can be put into a directory to create a simple dynamic library
+build system.
+
+Makefile:
+
+	all: 
+
+		# Create the object code
+		gcc -c frog.c dog.c swan.c -static
+		# Create a dynamic library
+		cc -shared -Wl,-soname,libanim.so -o libanim.so frog.o swan.o dog.o
+		# And finally link it into our executable test driver "main.c"
+		gcc main.c libanim.so -o main "-Wl,-rpath=$(PWD)"
+
+	clean:
+
+		rm frog.o dog.o swan.o libanim.so main
+
+
+animals.h:
+
+	#ifndef _ANIMALS_
+	#define _ANIMALS_
+
+	extern int dogs;
+	extern int swans;
+	extern int frogs;
+	int inc_dogs(int);
+	int inc_swans(int);
+	int inc_frogs(int);
+
+	#endif
+
+frog.c:
+	int frogs = 10;
+
+	int inc_frogs(int d)
+	{
+		return d + 1;
+	}
+dog.c:
+	int dogs = 10;
+
+	int inc_dogs(int d)
+	{
+		return d + 1;
+	
+	}
+swan.c:
+	int swans = 10;
+
+	int inc_swans(int d)
+	{
+		return d + 1;
+	}
+
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
