@@ -211,7 +211,7 @@ operation of explicitly setting deallocated variables to NULL.
 ------------------------------------------------------------------------------- 
 c-safety (Opaque objects and pointers 4.0)                               page 4
 
-This program attempts to use the opaque-objects we create.
+This program (main.c) attempts to use the opaque-objects we create.
 It has the ability to access and use the type "object" but not its
 structure members. The opaque object can only be manipulated via
 its API. Which in this case are the simple functions object_init ..
@@ -227,11 +227,13 @@ main.c:
 		object_write(o);
 		object_free(o);
 
-		//o->rp = "hello";  //<-- This will fail to compile if it is a truly opaque type,
-				    // producing the error: "dereferencing pointer to incomplete
-			            // type ‘object {aka struct object}" thus proving that the 
-				    // implementation details are indeed hidden from the user of 
-				    // the API. Uncomment it to verify
+		//o->rp = "hello";  /* <-- This will fail to compile if it is a
+				     truly opaque type, producing the error: 
+				     "dereferencing pointer to incomplete type 
+				     ‘object {aka struct object}" thus proving 
+			             that the implementation details are indeed 
+				     hidden from the user of the API. Uncomment 
+				     it to verify */
 		return 0;
 	}
 
@@ -249,17 +251,16 @@ Makefile:
 
 
 
-This is the actual opaque API library implementation. We declare an
-instantiation of the primary API structure from "shared.h" our shared
-header. But in this version we actually define its members. Inside of
-this file we can access all of the members of our opaque type but the
-end user of the API, or indeed anyone outside of this file can not.
-However, they can use the library as a library of opaque objects. The
-canonical example of the opaque object in C is the FILE * structure
-from stdio.  
+Presented here (in opaque.c) is the actual opaque API library implementation. 
+We declare an instantiation of the primary API structure from "shared.h" our 
+shared header. But in this version we actually define its members. Inside of
+this file we can access all of the members of our opaque type but the end user 
+of the API, or indeed anyone outside of this file can not.  However, they can 
+use the library as a library of opaque objects. The canonical example of the 
+opaque object in C is the FILE * structure from stdio.  
 
 
-opaque.c
+opaque.c (part 1):
 	#include <stdlib.h>
 	#include <stdio.h>
 	#include <unistd.h>
@@ -276,12 +277,11 @@ opaque.c
 
 
 
-
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 c-safety (Opaque objects and pointers 4.0)                               page 5
 
-opaque.c (continued):
+opaque.c (part 2):
 	size_t object_size(void)
 	{
 		return sizeof(object);
