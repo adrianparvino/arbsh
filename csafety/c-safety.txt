@@ -127,10 +127,10 @@ pointer to a pointer to a type).
 	}
 
 
-
-
-
-
+Note that this creates an "anti-pattern" within the C programming langauge.
+Ideally values are saved using a different mechanism such as passing an object 
+with mutable members to a function and then returning that object to the calle
+(the calling function).
 
 
 
