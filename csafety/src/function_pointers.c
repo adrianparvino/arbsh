@@ -1,8 +1,10 @@
 /*
-Function pointers make objects even more powerful by allowing them to have a
-functions assigned as its various members. Effectively they take the struct 
-which is data and the function (which has functionality) and combines them. Thus
-allowing the object itself to perform actions.
+The concept of function pointers can be extended to an array of function
+pointers within an object. By also including an "iterator" function we can
+effectively add functions into the array one at a time and then execute them
+all at once with the iterator function. The initializer function is left
+seperate and functions are added with the obj_addaction function.
+
 */
 
 #include <stdlib.h>
@@ -46,28 +48,21 @@ object *obj_addaction(object *o, object *(*f)(object *))
 	return o;
 }
 
-
 object *iterate(object *o)
 {
 	size_t i = 0;
-	while ( i < o->actions)
-	{
+	for (; i < o->actions;++i) 
 		o->f[i](o);
-		++i;
-	}
 	return o;
 }
 
-int main()
+int main(void)
 { 
 	object *o = malloc(sizeof(object));
 	o = obj_init(o);
 	o = obj_addaction(o, obj_pop);
-	o = obj_addaction(o, obj_write); 
-	
+	o = obj_addaction(o, obj_write);
 	o = o->iterate(o);
-
-
 	return 0;
 }
 
