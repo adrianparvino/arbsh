@@ -699,7 +699,7 @@ array of function pointers
 	}
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Creating dynamic libraries 9) 		                page 11
+c-safety (Creating dynamic libraries 9.0) 		                page 11
 
 Unlike static libraries, dynamic libraries can not be made using the `ar'
 utility and instead must be constructed by supplying directions to the compiler
@@ -769,7 +769,7 @@ main.c: (next page)
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-
+c-safety (Creating dynamic libraries 9.0) 		                page 12
 
 main.c
 	#include <stdio.h>
