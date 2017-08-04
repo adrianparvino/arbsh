@@ -839,3 +839,73 @@ main.c
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
+c-safety (Simple objects using typedefed structs 10.0)                  page 12
+
+
+It's possible to program using objects in C, without all of the complicated
+pointer foo-bar. Here is an example of how to program in C using only simple 
+arrays of typedefed structs.
+
+
+	#include <stdio.h> 
+	#include <unistd.h>
+
+	typedef struct{ 
+	        char rp[1024];
+		size_t len;
+	} object; 
+
+	int main(void)
+	{ 
+		size_t i = 0;
+		size_t lim = 10;
+		object o[10]; 
+	
+		for ( ; i < lim ; ++i) 
+			(o+i)->len = sprintf((o+i)->rp, "string %zu\n", i); 
+	
+		for (i=0 ; i < lim ; ++i)
+			write(1, (o+i)->rp, (o+i)->len); 
+
+		return 0; 
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
