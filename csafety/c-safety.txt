@@ -842,7 +842,7 @@ main.c
 c-safety (Simple objects using typedefed structs 10.0)                  page 12
 
 
-It's possible to program using objects in C, without all of the complicated
+It's possible to program using objects in C without all of the complicated
 pointer foo-bar. Here is an example of how to program in C using only simple 
 arrays of typedefed structs.
 
