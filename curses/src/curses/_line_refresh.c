@@ -32,6 +32,5 @@ void _line_refresh(WINDOW *win)
                         memcpy(win->last + i, win->buf + i, win->x);
                 }
         }
-
 }
 
