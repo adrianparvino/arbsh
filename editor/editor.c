@@ -41,10 +41,8 @@ struct Line *lstline;
 struct Line *scrline;
 struct filepos fsel;
 struct filepos fcur;
-char cb[7] = { 0 };
 char *fname = NULL;
 int winchg = 0;
-int cflags = 0;
 int tabstop = 8;
 
 /* macros */ 
@@ -58,7 +56,7 @@ void *ecalloc(size_t, size_t);
 void *erealloc(void *, size_t); 
 size_t edgetch(void);
 void f_delete(void);
-void f_insert(void);
+void f_insert(char *);
 void i_calcvlen(struct Line * l); 
 bool i_deltext(struct filepos, struct filepos);
 void i_die(const char *str, int);
@@ -123,7 +121,7 @@ void f_delete(void)
 		fcur = fsel = pos0;
 }
 
-void f_insert(void)
+void f_insert(char *cb)
 {
 	struct filepos newcur;
 
@@ -512,6 +510,7 @@ struct filepos m_prevline(struct filepos pos)
 size_t edgetch(void)
 {
 	static size_t len = 0; 
+	char cb[7] = {0} ;
 	  
 	char ch = getch(); 
 
@@ -551,7 +550,7 @@ size_t edgetch(void)
 			break; 
 		default:
 			cb[0] = (char) ch;
-			f_insert();
+			f_insert(cb);
 			break;
 	}
 	return len;
