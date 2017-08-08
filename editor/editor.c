@@ -20,7 +20,7 @@
 */
 
 /* structs */
-typedef struct Line {		/** The internal representation of a line of text */
+typedef struct Line{		/** The internal representation of a line of text */
 	char *c;	/* Line content */
 	size_t len;	/* Line byte length */
 	size_t vlen;	/* On-screen line-length */
@@ -30,7 +30,7 @@ typedef struct Line {		/** The internal representation of a line of text */
 	struct Line *prev;	/* Previous line, NULL if first */
 } Line;
 
-typedef struct filepos {	/** A position in the file */
+typedef struct {	/** A position in the file */
 	Line *l;	/* Line */
 	size_t o;	/* Offset inside the line */
 } filepos;
@@ -41,7 +41,6 @@ Line *lstline;
 Line *scrline;
 filepos fsel;
 filepos fcur;
-char *fname = NULL;
 int winchg = 0;
 int tabstop = 8;
 
@@ -54,14 +53,14 @@ int tabstop = 8;
 /* function prototypes */
 void *ecalloc(size_t, size_t);
 void *erealloc(void *, size_t); 
-size_t edgetch(void);
+size_t edgetch(char *);
 void f_delete(void);
 void f_insert(char *);
 void i_calcvlen(Line * l); 
 bool i_deltext(filepos, filepos);
 void i_die(const char *str, int);
-void i_edit(void); 
-void i_readfile(void);
+void i_edit(char *); 
+void i_readfile(char *);
 void i_setup(void); 
 void i_sortpos(filepos *, filepos *);
 void i_update(void); 
@@ -84,10 +83,9 @@ int main(int argc, char *argv[])
 	setlocale(LC_ALL, ""); 
 	initscr();
 	signal(SIGWINCH, sigwinch);
-	i_setup();
-	fname = argv[1];
-	i_readfile();
-	i_edit();
+	i_setup(); 
+	i_readfile(argv[1]);
+	i_edit(argv[1]);
 	i_die("", 0);
 	return 0;
 } 
@@ -247,7 +245,7 @@ bool i_deltext(filepos pos0, filepos pos1)
 	return integrity;
 }
 
-void i_edit(void)
+void i_edit(char *fname)
 { 
 	while ( 1 )
 	{ 
@@ -257,11 +255,11 @@ void i_edit(void)
 			winchg = 0; 
 		}
 		i_update(); 
-		edgetch();
+		edgetch(fname);
 	}
 } 
 
-void i_readfile(void)
+void i_readfile(char *fname)
 {
 	int fd;
 	ssize_t n;
@@ -506,7 +504,7 @@ filepos m_prevline(filepos pos)
 	return pos;
 } 
 
-size_t edgetch(void)
+size_t edgetch(char *fname)
 {
 	static size_t len = 0; 
 	char cb[7] = {0} ;
