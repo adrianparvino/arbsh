@@ -20,9 +20,9 @@
 */
 
 /* structs */
-struct Line {		/** The internal representation of a line of text */
-	char *c;	/* struct Line content */
-	size_t len;	/* struct Line byte length */
+typedef struct Line {		/** The internal representation of a line of text */
+	char *c;	/* Line content */
+	size_t len;	/* Line byte length */
 	size_t vlen;	/* On-screen line-length */
 	size_t mul;	/* How many times LINSIZ is c malloc'd to */
 	bool dirty;	/* screen should be repainted */
@@ -30,17 +30,17 @@ struct Line {		/** The internal representation of a line of text */
 	struct Line *prev;	/* Previous line, NULL if first */
 } Line;
 
-struct filepos {	/** A position in the file */
-	struct Line *l;	/* struct Line */
+typedef struct filepos {	/** A position in the file */
+	Line *l;	/* Line */
 	size_t o;	/* Offset inside the line */
 } filepos;
 
 /* Globals */
-struct Line *fstline;
-struct Line *lstline;
-struct Line *scrline;
-struct filepos fsel;
-struct filepos fcur;
+Line *fstline;
+Line *lstline;
+Line *scrline;
+filepos fsel;
+filepos fcur;
 char *fname = NULL;
 int winchg = 0;
 int tabstop = 8;
@@ -57,24 +57,24 @@ void *erealloc(void *, size_t);
 size_t edgetch(void);
 void f_delete(void);
 void f_insert(char *);
-void i_calcvlen(struct Line * l); 
-bool i_deltext(struct filepos, struct filepos);
+void i_calcvlen(Line * l); 
+bool i_deltext(filepos, filepos);
 void i_die(const char *str, int);
 void i_edit(void); 
 void i_readfile(void);
 void i_setup(void); 
-void i_sortpos(struct filepos *, struct filepos *);
+void i_sortpos(filepos *, filepos *);
 void i_update(void); 
 bool i_writefile(char *);
-struct filepos i_addtext(char *, struct filepos); 
-struct filepos m_nextchar(struct filepos);
-struct filepos m_prevchar(struct filepos);
-struct filepos m_nextline(struct filepos);
-struct filepos m_prevline(struct filepos);
+filepos i_addtext(char *, filepos); 
+filepos m_nextchar(filepos);
+filepos m_prevchar(filepos);
+filepos m_nextline(filepos);
+filepos m_prevline(filepos);
 int getdimensions(void);
 static void sigwinch(int);
 int vlencnt(int, int);
-int vlinecnt(struct Line *);
+int vlinecnt(Line *);
 
 int main(int argc, char *argv[])
 { 
@@ -110,8 +110,8 @@ void *erealloc(void *ptr, size_t size)
 
 void f_delete(void)
 { 
-	struct filepos pos0 = fcur;
-	struct filepos pos1 = (struct filepos)m_prevchar(fcur);
+	filepos pos0 = fcur;
+	filepos pos1 = (filepos)m_prevchar(fcur);
 	
 	i_sortpos(&pos0, &pos1);
 	
@@ -123,7 +123,7 @@ void f_delete(void)
 
 void f_insert(char *cb)
 {
-	struct filepos newcur;
+	filepos newcur;
 
 	newcur = i_addtext(cb, fcur);
 	
@@ -134,18 +134,18 @@ void f_insert(char *cb)
 }
 
 /* Add text at pos, return the position after the inserted text */
-struct filepos i_addtext(char *buf, struct filepos pos)
+filepos i_addtext(char *buf, filepos pos)
 {
-	struct Line *l = pos.l, *lnew = NULL; 
+	Line *l = pos.l, *lnew = NULL; 
 	size_t o = pos.o, i = 0, il = 0;
-	struct filepos f;
+	filepos f;
 	char c;
 	
 	for(c = buf[0]; c != DELIM; c = buf[++i])
 	{ 
 		if(c == '\n' || c == '\r')
 		{
-			lnew = (struct Line *)ecalloc(1, sizeof(struct Line));
+			lnew = (Line *)ecalloc(1, sizeof(Line));
 			lnew->c = ecalloc(1, LINSIZ);
 			lnew->dirty = l->dirty = TRUE;
 			lnew->len = lnew->vlen = 0;
@@ -188,8 +188,8 @@ struct filepos i_addtext(char *buf, struct filepos pos)
 	return f;
 }
 
-/* Update the vlen value of a struct Line */
-void i_calcvlen(struct Line * l)
+/* Update the vlen value of a Line */
+void i_calcvlen(Line * l)
 {
 	size_t i; 
 	l->vlen = 0;
@@ -205,9 +205,9 @@ void i_die(const char *str, int exitnumber)
 
 /* Delete text between pos0 and pos1, which MUST be in order, fcur integrity
    is NOT assured after deletion, fsel integrity is returned as a bool */
-bool i_deltext(struct filepos pos0, struct filepos pos1)
+bool i_deltext(filepos pos0, filepos pos1)
 {
-	struct Line *ldel = NULL; 
+	Line *ldel = NULL; 
 	bool integrity = TRUE; 
 
 	if(pos0.l == fsel.l)
@@ -243,8 +243,7 @@ bool i_deltext(struct filepos pos0, struct filepos pos1)
 			free(ldel->c);
 			free(ldel);
 		}
-	} 
-
+	}
 	return integrity;
 }
 
@@ -284,8 +283,8 @@ void i_readfile(void)
 
 void i_setup(void) 
 {
-	struct Line *l = NULL;
-	l = (struct Line *) ecalloc(1, sizeof(struct Line));
+	Line *l = NULL;
+	l = (Line *) ecalloc(1, sizeof(Line));
 	l->c = ecalloc(1, LINSIZ);
 	l->dirty = FALSE;
 	l->len = l->vlen = 0;
@@ -298,9 +297,9 @@ void i_setup(void)
 } 
 
 /* Exchange pos0 and pos1 if not in order */
-void i_sortpos(struct filepos * pos0, struct filepos * pos1)
+void i_sortpos(filepos * pos0, filepos * pos1)
 {
-	struct filepos p;
+	filepos p;
 
 	for(p.l = fstline; p.l; p.l = p.l->next)
 	{
@@ -324,7 +323,7 @@ void i_update(void)
 	int vlines;
 	int cursor_r = 0, cursor_c = 0;
 	size_t ichar; 
-	struct Line *l;
+	Line *l;
 	size_t z = 0;
 	
 	/* Check offset */
@@ -425,7 +424,7 @@ bool i_writefile(char *fname)
 {
 	int fd = 1; 
 	bool wok = TRUE;
-	struct Line *l; 
+	Line *l; 
 
 	if(fname != NULL
 		&& (fd = open(fname, O_WRONLY | O_TRUNC | O_CREAT,
@@ -443,13 +442,13 @@ bool i_writefile(char *fname)
 	return wok;
 }
 
-struct filepos m_bol(struct filepos pos)
+filepos m_bol(filepos pos)
 {
 	pos.o = 0;
 	return pos;
 }
 
-struct filepos m_nextchar(struct filepos pos)
+filepos m_nextchar(filepos pos)
 {
 	if(pos.o < pos.l->len)
 	{
@@ -462,7 +461,7 @@ struct filepos m_nextchar(struct filepos pos)
 	return pos;
 } 
 
-struct filepos m_prevchar(struct filepos pos)
+filepos m_prevchar(filepos pos)
 {
 	if(pos.o > 0)
 	{
@@ -475,7 +474,7 @@ struct filepos m_prevchar(struct filepos pos)
 	return pos;
 } 
 
-struct filepos m_nextline(struct filepos pos)
+filepos m_nextline(filepos pos)
 {
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
@@ -491,7 +490,7 @@ struct filepos m_nextline(struct filepos pos)
 	return pos;
 }
 
-struct filepos m_prevline(struct filepos pos)
+filepos m_prevline(filepos pos)
 {
 	size_t ivchar, ichar; 
 	for(ivchar = ichar = 0; ichar < pos.o; ichar++)
@@ -569,7 +568,7 @@ int vlencnt(int ch, int col)
 	return 1;
 }
 
-int vlinecnt(struct Line *l)
+int vlinecnt(Line *l)
 {
 	if ( l )
 		return ( 1 + ( l->vlen / COLS));
