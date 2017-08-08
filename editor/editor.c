@@ -14,6 +14,7 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <curses.h>
+#include <stdbool.h>
 
 /*
 	See LICENSE file for copyright and license details. 
@@ -44,32 +45,39 @@ filepos fcur;
 int winchg = 0;
 int tabstop = 8;
 
-/* macros */ 
-#define TRUE 1
-#define FALSE 0
+/* macros */
 #define	LINSIZ 128
 #define DELIM 0
 
 /* function prototypes */
+size_t edgetch(char *);
+
+
 void *ecalloc(size_t, size_t);
 void *erealloc(void *, size_t); 
-size_t edgetch(char *);
+
 void f_delete(void);
 void f_insert(char *);
 void i_calcvlen(Line * l); 
+
+
 bool i_deltext(filepos, filepos);
+bool i_writefile(char *);
+
 void i_die(const char *str, int);
 void i_edit(char *); 
 void i_readfile(char *);
 void i_setup(void); 
 void i_sortpos(filepos *, filepos *);
 void i_update(void); 
-bool i_writefile(char *);
+
 filepos i_addtext(char *, filepos); 
 filepos m_nextchar(filepos);
 filepos m_prevchar(filepos);
 filepos m_nextline(filepos);
 filepos m_prevline(filepos);
+
+
 int getdimensions(void);
 static void sigwinch(int);
 int vlencnt(int, int);
@@ -109,7 +117,7 @@ void *erealloc(void *ptr, size_t size)
 void f_delete(void)
 { 
 	filepos pos0 = fcur;
-	filepos pos1 = (filepos)m_prevchar(fcur);
+	filepos pos1 = m_prevchar(fcur);
 	
 	i_sortpos(&pos0, &pos1);
 	
@@ -143,7 +151,7 @@ filepos i_addtext(char *buf, filepos pos)
 	{ 
 		if(c == '\n' || c == '\r')
 		{
-			lnew = (Line *)ecalloc(1, sizeof(Line));
+			lnew = ecalloc(1, sizeof(Line));
 			lnew->c = ecalloc(1, LINSIZ);
 			lnew->dirty = l->dirty = TRUE;
 			lnew->len = lnew->vlen = 0;
@@ -171,7 +179,7 @@ filepos i_addtext(char *buf, filepos pos)
 		{
 			/* Regular char */
 			if(2 + (l->len) >= LINSIZ * (l->mul))
-				l->c = (char *) erealloc(l->c, LINSIZ * (++(l->mul)));
+				l->c = erealloc(l->c, LINSIZ * (++(l->mul)));
 			memmove(l->c + il + o + 1, l->c + il + o, (1 + l->len - (il + o)));
 			l->c[il + o] = c;
 			l->dirty = TRUE;
@@ -282,7 +290,7 @@ void i_readfile(char *fname)
 void i_setup(void) 
 {
 	Line *l = NULL;
-	l = (Line *) ecalloc(1, sizeof(Line));
+	l = ecalloc(1, sizeof(Line));
 	l->c = ecalloc(1, LINSIZ);
 	l->dirty = FALSE;
 	l->len = l->vlen = 0;
@@ -298,7 +306,6 @@ void i_setup(void)
 void i_sortpos(filepos * pos0, filepos * pos1)
 {
 	filepos p;
-
 	for(p.l = fstline; p.l; p.l = p.l->next)
 	{
 		if(p.l == pos0->l || p.l == pos1->l)
