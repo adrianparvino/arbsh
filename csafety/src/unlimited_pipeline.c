@@ -1,7 +1,10 @@
 /*
-Unix pipelines can be created between utilities without using a buffer of any 
-kind. Using the typical object described earlier in c-safety is simple to store
-the information needed to make the entire process go smoothly.
+Unix pipelines can be created between utilities without using a buffer of any
+kind. Using the typical object it becomes simple to store the information 
+needed to seamlessly connect the stdin and stdout of a series of utilities.
+Pipe() is not set up for the final command in the sequence. Presented below is
+small program that demonstrates the basics needed for writing simple shell that
+supports arbitrary numbers of pipes.
 */
 
 #include <stdlib.h>
@@ -11,12 +14,12 @@ the information needed to make the entire process go smoothly.
 #include <sys/wait.h>
 
 typedef struct{
-	char *cmd[10];
-	int in;
-	int out;
-	pid_t pids;
-	int err;
-	int piped;
+	char *cmd[10];	/* command vector */
+	int in;		/* stdin */
+	int out;	/* stdout */
+	pid_t pids;	/* for waitpid() */
+	int err;	/* for waitpid() */
+	int piped;	/* boolean value */
 } object;
 
 int main(void)
@@ -37,7 +40,7 @@ int main(void)
 		(o+i)->piped = 1;
 	}
 	(o)->cmd[0] = "ls"; /* reset the first command vector to be "ls -la" */
-	(o+i -1)->piped = 0;
+	(o+i -1)->piped = 0; /* the final command is not piped! */
 	
 	for(i=0;i<lim;++i)
 	{ 
