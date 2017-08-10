@@ -915,7 +915,7 @@ Unix pipelines can be created between utilities without using a buffer of any
 kind. Using the typical object it becomes simple to store the information 
 needed to seamlessly connect the stdin and stdout of a series of utilities.
 Pipe() is not set up for the final command in the sequence. Presented below is
-a small program that demonstrates the basics needed for writing simple shell 
+a small program that demonstrates the basics needed for writing a simple shell
 that supports arbitrary numbers of pipes.
 
 
