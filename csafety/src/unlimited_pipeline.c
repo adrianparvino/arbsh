@@ -1,3 +1,9 @@
+/*
+Unix pipelines can be created between utilities without using a buffer of any 
+kind. Using the typical object described earlier in c-safety is simple to store
+the information needed to make the entire process go smoothly.
+*/
+
 #include <stdlib.h>
 #include <stdio.h> 
 #include <unistd.h>
@@ -21,16 +27,16 @@ int main(void)
 
 	object *o = malloc(sizeof(object) * lim);
 	
-	for(i=0;i<lim;++i)
+	for(i=0;i<lim;++i) /* set all command vectors to "wc -l" */
 	{
-		(o+i)->cmd[0] = "wc";
+		(o+i)->cmd[0] = "wc"; 
 		(o+i)->cmd[1] = "-l";
-		(o+i)->cmd[2] = NULL; 
+		(o+i)->cmd[2] = NULL; /* exec* depends in a terminating NULL */
 		(o+i)->in = -1;
 		(o+i)->out = -1;
 		(o+i)->piped = 1;
 	}
-	(o)->cmd[0] = "ls";
+	(o)->cmd[0] = "ls"; /* reset the first command vector to be "ls -la" */
 	(o+i -1)->piped = 0;
 	
 	for(i=0;i<lim;++i)
