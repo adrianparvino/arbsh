@@ -6,7 +6,7 @@
 
 typedef struct{ 
         char **cmd;
-	//char *cmd[10];
+	
 	int in;
 	int out;
 	pid_t pids;
@@ -15,29 +15,31 @@ typedef struct{
 } object;
 
 int main(void)
+
 { 
 	int fildes[2];
 	size_t lim = 10;
 	size_t i = 0;
 
 	object *o = malloc(sizeof(object) * lim);
-	//object o[12];
+	
 	
 	for(i=0;i<lim;++i)
 	{
-		(o+i)->cmd = malloc(sizeof((o+i)->cmd) * 10);
+		(o+i)->cmd = malloc(sizeof(object) * 20);
 		(o+i)->cmd[0] = malloc(sizeof(char) * 10);
 		(o+i)->cmd[1] = malloc(sizeof(char) * 10); 
 		(o+i)->cmd[0] = "wc";
 		(o+i)->cmd[1] = "-l";
+		(o+i)->cmd[2] = NULL; 
 		(o+i)->in = -1;
 		(o+i)->out = -1;
 		(o+i)->piped = 1;
 	}
-	(o)->cmd[0] = "ls"; 
+	(o)->cmd[0] = "ls";
 	(o+i -1)->piped = 0;
 	
-
+	
 	for(i=0;i<lim;++i)
 	{ 
 		if ((o+i)->piped == 1)
@@ -51,13 +53,16 @@ int main(void)
 		{ 
 			dup2((o+i)->in, STDIN_FILENO); 
                         dup2((o+i)->out, STDOUT_FILENO); 
+			
 			execvp((o+i)->cmd[0], (o+i)->cmd); 
 			_exit(1); 
 		} 
 		
-		waitpid((o+i)->pids, &(o+i)->err, 0);
-                close((o+i)->out);
-                close((o+i)->in);
+		waitpid((o+i)->pids, &((o+i)->err), 0);
+		if ((o+i)->out != -1)
+                	close((o+i)->out);
+		if ((o+i)->in != -1)
+              		close((o+i)->in);
 	
 	}
 
