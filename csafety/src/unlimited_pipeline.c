@@ -55,7 +55,7 @@ int main(void)
 			_exit(1); 
 		} 
 		
-		//waitpid((o+i)->pids, &(o+i)->err, 0);
+		waitpid((o+i)->pids, &(o+i)->err, 0);
                 close((o+i)->out);
                 close((o+i)->in);
 	
