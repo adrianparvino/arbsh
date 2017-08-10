@@ -4,9 +4,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-typedef struct{ 
-        char **cmd;
-	
+typedef struct{
+	char *cmd[10];
 	int in;
 	int out;
 	pid_t pids;
@@ -15,7 +14,6 @@ typedef struct{
 } object;
 
 int main(void)
-
 { 
 	int fildes[2];
 	size_t lim = 10;
@@ -23,12 +21,8 @@ int main(void)
 
 	object *o = malloc(sizeof(object) * lim);
 	
-	
 	for(i=0;i<lim;++i)
 	{
-		(o+i)->cmd = malloc(sizeof(object) * 20);
-		(o+i)->cmd[0] = malloc(sizeof(char) * 10);
-		(o+i)->cmd[1] = malloc(sizeof(char) * 10); 
 		(o+i)->cmd[0] = "wc";
 		(o+i)->cmd[1] = "-l";
 		(o+i)->cmd[2] = NULL; 
@@ -38,7 +32,6 @@ int main(void)
 	}
 	(o)->cmd[0] = "ls";
 	(o+i -1)->piped = 0;
-	
 	
 	for(i=0;i<lim;++i)
 	{ 
@@ -63,7 +56,6 @@ int main(void)
                 	close((o+i)->out);
 		if ((o+i)->in != -1)
               		close((o+i)->in);
-	
 	}
 
 	return 0; 
