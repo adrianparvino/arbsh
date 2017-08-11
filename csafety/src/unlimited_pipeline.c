@@ -17,48 +17,47 @@ typedef struct{
 	char *cmd[3];	/* command vector */
 	int in;		/* stdin */
 	int out;	/* stdout */
-	pid_t pids;	/* for waitpid() */
-	int err;	/* for waitpid() */
+	pid_t pids;	/* for waitpid */
+	int err;	/* for waitpid */
 	int piped;	/* boolean value */
 } object;
 
-object *piped(object *p)
+object *piped(object *o)
 {
 	int fildes[2];
-        pipe(fildes);
-        (p+1)->in = fildes[0];
-        p->out = fildes[1];
-	return p;
+	pipe(fildes);
+	(o+1)->in = fildes[0];
+	o->out = fildes[1];
+	return o;
 }
 
-object *child(object *p)
+object *child(object *o)
 {
-       dup2(p->in, STDIN_FILENO);
-       dup2(p->out, STDOUT_FILENO);
-       execvp(p->cmd[0], p->cmd);
-       _exit(1);
-	return p;
+	dup2(o->in, STDIN_FILENO);
+	dup2(o->out, STDOUT_FILENO);
+	execvp(o->cmd[0], o->cmd);
+	_exit(1);
+	return o;
 }
 
-object *execute(object *p, size_t lim)
+object *execute(object *o, size_t lim)
 {
-        if (p->piped == 1)
-              	p = piped(p);
-        if ((p->pids = fork()) == 0) 
-		p = child(p);
-        waitpid(p->pids, &(p->err), 0);
-        if (p->out != -1)
-                close(p->out);
-        if (p->in != -1)
-                close(p->in);
+	if (o->piped == 1)
+	      	o = piped(o);
+	if ((o->pids = fork()) == 0) 
+		o = child(o);
+	waitpid(o->pids, &(o->err), 0);
+	if (o->out != -1)
+		close(o->out);
+	if (o->in != -1)
+		close(o->in);
 	if (lim)
-		return	p = execute(p+1, lim-1); 
+		return o = execute(o+1, lim-1); 
 }
 
 int main(void)
-{ 
-	
-	object o[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1 },
+{
+	object p[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
@@ -69,9 +68,9 @@ int main(void)
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 }};
 
-	object *p = o;
-
-	p = execute(p, 10);
+	object *o = p;
+	// o = parse(o, string);
+	o = execute(o, 10);
 
 	return 0;
 }
