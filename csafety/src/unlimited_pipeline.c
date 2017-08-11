@@ -3,8 +3,8 @@ Unix pipelines can be created between utilities without using a buffer of any
 kind. Using the typical object it becomes simple to store the information 
 needed to seamlessly connect the stdin and stdout of a series of utilities.
 Pipe() is not set up for the final command in the sequence. Presented below is
-small program that demonstrates the basics needed for writing simple shell that
-supports arbitrary numbers of pipes.
+a small program that demonstrates the basics needed for writing a simple shell 
+that supports arbitrary numbers of pipes.
 */
 
 #include <stdlib.h>
@@ -14,7 +14,7 @@ supports arbitrary numbers of pipes.
 #include <sys/wait.h>
 
 typedef struct{
-	char *cmd[10];	/* command vector */
+	char *cmd[3];	/* command vector */
 	int in;		/* stdin */
 	int out;	/* stdout */
 	pid_t pids;	/* for waitpid() */
@@ -28,43 +28,44 @@ int main(void)
 	size_t lim = 10;
 	size_t i = 0;
 
-	object *o = malloc(sizeof(object) * lim);
+	object o[10];
+	object *p = o;
 	
-	for(i=0;i<lim;++i) /* set all command vectors to "wc -l" */
+	for(i=0;i<lim;++i, ++p) /* set all cmd vectors to "wc -l" */
 	{
-		(o+i)->cmd[0] = "wc"; 
-		(o+i)->cmd[1] = "-l";
-		(o+i)->cmd[2] = NULL; /* exec* depends in a terminating NULL */
-		(o+i)->in = -1;
-		(o+i)->out = -1;
-		(o+i)->piped = 1;
+		p->cmd[0] = "wc";
+		p->cmd[1] = "-l";
+		p->cmd[2] = NULL;
+		p->out = p->in = -1;
+		p->piped = 1;
 	}
-	(o)->cmd[0] = "ls"; /* reset the first command vector to be "ls -la" */
-	(o+i -1)->piped = 0; /* the final command is not piped! */
+
+	o->cmd[0] = "ls"; /* reset the first cmd vector to "ls -la" */
+	(p-1)->piped = 0; /* the final command is not piped */
+	p = o;
 	
-	for(i=0;i<lim;++i)
+	for(i=0;i<lim;++i, ++p)
 	{ 
-		if ((o+i)->piped == 1)
+		if (p->piped == 1)
 		{
                		pipe(fildes);
-			(o+(i+1))->in = fildes[0];
-			(o+i)->out = fildes[1];
+			(p+1)->in = fildes[0];
+			(p)->out = fildes[1];
 		}
 	
-		if ( ((o+i)->pids = fork()) == 0)
+		if ((p->pids = fork()) == 0)
 		{ 
-			dup2((o+i)->in, STDIN_FILENO); 
-                        dup2((o+i)->out, STDOUT_FILENO); 
-			
-			execvp((o+i)->cmd[0], (o+i)->cmd); 
+			dup2(p->in, STDIN_FILENO); 
+                        dup2(p->out, STDOUT_FILENO);
+			execvp(p->cmd[0], (o+i)->cmd); 
 			_exit(1); 
 		} 
 		
-		waitpid((o+i)->pids, &((o+i)->err), 0);
-		if ((o+i)->out != -1)
-                	close((o+i)->out);
-		if ((o+i)->in != -1)
-              		close((o+i)->in);
+		waitpid(p->pids, &(p->err), 0);
+		if (p->out != -1)
+                	close(p->out);
+		if (p->in != -1)
+              		close(p->in);
 	}
 
 	return 0; 
