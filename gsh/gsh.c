@@ -132,16 +132,11 @@ int main(int argc, char **argv)
 			close(fp);
 		} 
 		/* get user input */
-		else if ( ! argc ) 
+		else if (!argc) 
 		{ 
-			//if (!(len = greadline(l, GSHPROMPT, GSHPROMPTLEN)))
-			//	continue;
-			//else {
-				l = readline(GSHPROMPT);
-		
-				add_history(l); 
-				++glb.count;
-			//}
+			l = readline(GSHPROMPT);
+			add_history(l);
+			++glb.count;
 		}
 
 		/* interpret the primary input array */
