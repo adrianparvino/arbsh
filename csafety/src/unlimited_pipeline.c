@@ -22,39 +22,42 @@ typedef struct{
 	int piped;	/* boolean value */
 } object;
 
-void piped(object *p)
+object *piped(object *p)
 {
 	int fildes[2];
         pipe(fildes);
         (p+1)->in = fildes[0];
         p->out = fildes[1];
+	return p;
 }
 
-void child(object *p)
+object *child(object *p)
 {
        dup2(p->in, STDIN_FILENO);
        dup2(p->out, STDOUT_FILENO);
        execvp(p->cmd[0], p->cmd);
        _exit(1);
+	return p;
 }
 
-void execute(object *p, size_t lim)
+object *execute(object *p, size_t lim)
 {
         if (p->piped == 1)
-              	piped(p);
+              	p = piped(p);
         if ((p->pids = fork()) == 0) 
-		child(p);
+		p = child(p);
         waitpid(p->pids, &(p->err), 0);
         if (p->out != -1)
                 close(p->out);
         if (p->in != -1)
                 close(p->in);
 	if (lim)
-		execute(++p, lim -1); 
+		return	p = execute(p+1, lim-1); 
 }
 
 int main(void)
 { 
+	
 	object o[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
@@ -66,7 +69,9 @@ int main(void)
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 }};
 
-	execute(o, 10);
+	object *p = o;
+
+	p = execute(p, 10);
 
 	return 0;
 }
