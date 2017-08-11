@@ -58,12 +58,15 @@ object *iterate(object *o)
 
 int main(void)
 { 
-	object *o = malloc(sizeof(object));
+	object *o;
+	if(!(o = malloc(sizeof(object))))
+		return 1;
 	o = obj_init(o);
 	o = obj_addaction(o, obj_pop);
 	o = obj_addaction(o, obj_write);
 	o = o->iterate(o);
 	return 0;
 }
+
 
 
