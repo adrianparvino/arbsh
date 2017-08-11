@@ -18,15 +18,14 @@ typedef struct{
 
 void does_not_work(char *a) 
 {
-	/* Doesn't work! (obviously) */
-	a = "Does not work!";
+	a = "Does not work!";/* Doesn't work! */
 }
 
 void pass_bappt(char **a) 
 { 
 	/*
-		"Pass by value of an address of a pointer to a pointer to a 
-		 type (pass_baapt)"
+		"Pass by value of an address of a pointer to a pointer 
+		to a type (pass_baapt)"
 	*/
 	*a = "hello world";
 }
@@ -34,21 +33,14 @@ void pass_bappt(char **a)
 int main(void)
 { 
 	object *o;
-	o = malloc(sizeof(object)); 
-
-	o->rp = "This pointer to a string literal should be overwritten with a new pointer to the string liternal \"hello world\" ";
-
-     	printf("%s\n", o->rp);
-
-        pass_bappt(&(o->rp)); /* note the '&' */
-   
-    	printf("%s\n", o->rp);
-     
-      	does_not_work(o->rp);  /* Doesn't work! (obviously) */
-	
+	if(!(o = malloc(sizeof(object))))
+		return 1;
+	o->rp = "Pointer to a string literal"; 
+     	printf("%s\n", o->rp); 
+        pass_bappt(&(o->rp)); /* note the '&' */ 
+    	printf("%s\n", o->rp); 
+      	does_not_work(o->rp);  /* Doesn't work! (obviously) */ 
 	printf("%s\n", o->rp);
-	
-
 	free(o);
 	return 0; 
 }
