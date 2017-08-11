@@ -22,6 +22,10 @@ typedef struct{
 	int piped;	/* boolean value */
 } object;
 
+typedef struct {
+	size_t total;
+} state;
+
 object *piped(object *o)
 {
 	int fildes[2];
