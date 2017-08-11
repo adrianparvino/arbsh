@@ -28,7 +28,7 @@ int main(void)
 	size_t lim = 10;
 	size_t i = 0;
 
-	object o[13] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1 },
+	object o[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
@@ -37,7 +37,6 @@ int main(void)
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 },
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 }};
 
 	object *p = o;
@@ -48,25 +47,23 @@ int main(void)
 		{
                		pipe(fildes);
 			(p+1)->in = fildes[0];
-			(p)->out = fildes[1];
+			p->out = fildes[1];
 		}
 	
 		if ((p->pids = fork()) == 0)
 		{ 
 			dup2(p->in, STDIN_FILENO); 
                         dup2(p->out, STDOUT_FILENO);
-			execvp(p->cmd[0], (o+i)->cmd); 
-			_exit(1); 
-		} 
+			execvp(p->cmd[0], p->cmd); 
+			_exit(1);
+		}
 		
 		waitpid(p->pids, &(p->err), 0);
 		if (p->out != -1)
                 	close(p->out);
 		if (p->in != -1)
               		close(p->in);
-	
 	}
-
-	return 0; 
+	return 0;
 }
 
