@@ -28,24 +28,22 @@ int main(void)
 	size_t lim = 10;
 	size_t i = 0;
 
-	object o[10];
+	object o[13] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 },
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 }};
+
 	object *p = o;
 	
-	for(i=0;i<lim;++i, ++p) /* set all cmd vectors to "wc -l" */
-	{
-		p->cmd[0] = "wc";
-		p->cmd[1] = "-l";
-		p->cmd[2] = NULL;
-		p->out = p->in = -1;
-		p->piped = 1;
-	}
-
-	o->cmd[0] = "ls"; /* reset the first cmd vector to "ls -la" */
-	(p-1)->piped = 0; /* the final command is not piped */
-	p = o;
-	
 	for(i=0;i<lim;++i, ++p)
-	{ 
+	{
 		if (p->piped == 1)
 		{
                		pipe(fildes);
@@ -66,6 +64,7 @@ int main(void)
                 	close(p->out);
 		if (p->in != -1)
               		close(p->in);
+	
 	}
 
 	return 0; 
