@@ -1,11 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h> 
-/*
-	
-	The C11 draft states "If ptr is a null pointer, no action occurs."
-	therefore preventing "double frees" is reduced to the simple
-	operation of explicitly setting deallocated variables to NULL.  
-
+/* 
+The C11 draft states "If ptr is a null pointer, no action occurs."
+therefore preventing "double frees" is reduced to the simple
+operation of explicitly setting deallocated variables to NULL.
 */
 
 
@@ -21,15 +19,14 @@ void *safe_free(void *a)
 }
 
 int main(void)
-{
-	char *l; 
+{ 
 	object *o;
-	o = malloc(sizeof(object));
+	if(!(o = malloc(sizeof(object))))
+		return 1;
 	o->rp = malloc(1000); 
 	o->rp = safe_free(o->rp);
 	o->rp = safe_free(o->rp); // does nothing
 	o = safe_free(o);
 	o = safe_free(o); // does nothing
-
 	return 0; 
 }
