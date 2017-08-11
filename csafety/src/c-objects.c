@@ -25,25 +25,27 @@ int main(void)
 	size_t lim = 10;
 
 	/* create an array of objects */
-	object *o = malloc(sizeof(object) * lim); 
+	object *p, *o;
+	if (!(o = p = malloc(sizeof(object) * lim)))
+		return 1;
 
-	/* allocate memory for and populate the members of the array of objects */
-	for ( ; i < lim ; ++i)
+	/* allocate memory and populate array members */
+	for (o=p; i < lim ; ++i, ++o)
 	{
-		(o+i)->rp = malloc(sizeof(char) * 100);
-		(o+i)->len = sprintf((o+i)->rp, "string %zu\n", i); 
+		o->rp = malloc(sizeof(char) * 100);
+		o->len = sprintf(o->rp, "string %zu\n", i); 
 	} 
 
 	/* test the array of objects (fast write!) */
-	for (i=0 ; i < lim ; ++i)
-		write(1, (o+i)->rp, (o+i)->len);
+	for (i=0, o=p; i < lim ; ++i, ++o)
+		write(1, o->rp, o->len);
 
 	/* free the objects' member memory allocations */
-	for (i=0 ; i < lim ; ++i)
-                free((o+i)->rp);
+	for (i=0, o=p; i < lim ; ++i, ++o)
+                free(o->rp);
 
 	/* free the object */
-	free(o);
+	free(p);
 
 	return 0; 
 }
