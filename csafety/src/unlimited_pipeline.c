@@ -12,6 +12,10 @@ that supports arbitrary numbers of pipes.
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 
 typedef struct{
 	char *cmd[3];	/* command vector */
@@ -20,6 +24,9 @@ typedef struct{
 	pid_t pids;	/* for waitpid */
 	int err;	/* for waitpid */
 	int piped;	/* boolean value */
+	char *infp;
+	char *outfp;
+	int outflags;
 } object;
 
 typedef struct {
@@ -46,7 +53,13 @@ object *child(object *o)
 
 object *execute(object *o, size_t lim)
 {
-	if (o->piped == 1)
+	for (;lim--;++o)
+	{
+	if ( o->infp != NULL )	/* < */
+                if( (o->in = open(o->infp, O_RDONLY) ) == -1 );
+        if (o->outfp != NULL )	/* >, >> */
+                if((o->out = open(o->outfp, o->outflags, 0755)) == -1);
+	if (o->piped == 1)	/* | */
 	      	o = piped(o);
 	if ((o->pids = fork()) == 0) 
 		o = child(o);
@@ -55,22 +68,23 @@ object *execute(object *o, size_t lim)
 		close(o->out);
 	if (o->in != -1)
 		close(o->in);
-	if (lim)
-		return o = execute(o+1, lim-1); 
+	}
+
 }
 
 int main(void)
 {
-	object p[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 },
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 }};
+	
+	object p[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 ,NULL, "testfile", O_APPEND|O_RDWR|O_CREAT }};
 
 	object *o = p;
 	// o = parse(o, string);
