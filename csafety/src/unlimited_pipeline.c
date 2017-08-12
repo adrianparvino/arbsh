@@ -31,7 +31,19 @@ typedef struct{
 
 typedef struct {
 	size_t total;
+	int _if;
+	int _else;
+	int _then;
+	int _fi;
+	size_t _while;
+	size_t _for;
+	object *o;
 } state;
+
+state *parse(state *s, object *o, char *str)
+{
+	s->total = 10;
+}
 
 object *piped(object *o)
 {
@@ -62,22 +74,23 @@ object *foreground(object *o)
 
 object *execute(object *o, size_t lim)
 {
-	for (;lim--;++o)
-	{ 
-                if ( o->err == 0 && o->boole == 1 )	/* ||  */
-                        continue; 
-                if ( o->err != 0 && o->boole == 0 )	/* && */
-                        continue;
-		if ( o->infp != NULL )			/* < */
-	                if((o->in = open(o->infp, O_RDONLY)) == -1);
-	        if (o->outfp != NULL )			/* >, >> */
-	       	        if((o->out = open(o->outfp, o->outflags, 0755)) == -1);
-		if (o->piped == 1)			/* | */
-		      	if((o = piped(o)));
-		if ((o->pids = fork()) == 0) 
-			o = child(o);
-		o = foreground(o);
-	}
+	//for (;lim--;++o)
+	//{ 
+        if ( o->err == 0 && o->boole == 1 )	/* ||  */
+                return o;//continue; 
+        if ( o->err != 0 && o->boole == 0 )	/* && */
+                return o;//continue;
+	if ( o->infp != NULL )			/* < */
+	        if((o->in = open(o->infp, O_RDONLY)) == -1);
+	if (o->outfp != NULL )			/* >, >> */
+	        if((o->out = open(o->outfp, o->outflags, 0755)) == -1);
+	if (o->piped == 1)			/* | */
+	      	if((o = piped(o)));
+	if ((o->pids = fork()) == 0) 
+		o = child(o);
+	o = foreground(o);
+	return o;
+	//}
 }
 
 int main(void)
@@ -94,9 +107,16 @@ int main(void)
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 ,NULL, "outfile", O_APPEND|O_RDWR|O_CREAT, -1}};
 
-	object *o = p;
-	// o = parse(o, string);
-	o = execute(o, 10);
+	state q[1] = { 0 };
+	state *s = q;
+	s = parse(s, p, "");
+	
+	s->o = p;
+	
+	for (;s->total--;s->o++)
+	{
+		s->o = execute(s->o, 10);
+	}
 
 	return 0;
 }
