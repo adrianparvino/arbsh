@@ -1,0 +1,45 @@
+
+
+
+if ls
+then
+	ls
+	ls
+	ls 
+else 
+	printf "hello\n"
+	printf "hello\n"
+	printf "hello\n"
+fi
+
+[0] if ls
+[1] then ls
+[2] then ls
+[3] then ls
+[4] else wc
+[5] else wc
+[6] else wc
+[7] fi
+
+if ls
+{
+
+}
+else
+{
+
+}
+
+
+if
+then
+else
+fi
+
+if
+{
+}
+else
+{
+}
+
