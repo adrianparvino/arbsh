@@ -26,6 +26,7 @@ typedef struct{
 	char *infp;
 	char *outfp;
 	int outflags;
+	int boole;
 } object;
 
 typedef struct {
@@ -62,12 +63,16 @@ object *foreground(object *o)
 object *execute(object *o, size_t lim)
 {
 	for (;lim--;++o)
-	{
-		if ( o->infp != NULL )	/* < */
+	{ 
+                if ( o->err == 0 && o->boole == 1 )	/* ||  */
+                        continue; 
+                if ( o->err != 0 && o->boole == 0 )	/* && */
+                        continue;
+		if ( o->infp != NULL )			/* < */
 	                if((o->in = open(o->infp, O_RDONLY)) == -1);
-	        if (o->outfp != NULL )	/* >, >> */
+	        if (o->outfp != NULL )			/* >, >> */
 	       	        if((o->out = open(o->outfp, o->outflags, 0755)) == -1);
-		if (o->piped == 1)	/* | */
+		if (o->piped == 1)			/* | */
 		      	if((o = piped(o)));
 		if ((o->pids = fork()) == 0) 
 			o = child(o);
@@ -78,16 +83,16 @@ object *execute(object *o, size_t lim)
 int main(void)
 {
 	
-	object p[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0},
-	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 ,NULL, "testfile", O_APPEND|O_RDWR|O_CREAT }};
+	object p[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
+	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 ,NULL, "outfile", O_APPEND|O_RDWR|O_CREAT, -1}};
 
 	object *o = p;
 	// o = parse(o, string);
