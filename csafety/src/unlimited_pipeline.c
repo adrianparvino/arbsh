@@ -16,7 +16,6 @@ that supports arbitrary numbers of pipes.
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
 typedef struct{
 	char *cmd[3];	/* command vector */
 	int in;		/* stdin */
@@ -50,26 +49,30 @@ object *child(object *o)
 	_exit(1);
 	return o;
 }
-
-object *execute(object *o, size_t lim)
+object *foreground(object *o)
 {
-	for (;lim--;++o)
-	{
-	if ( o->infp != NULL )	/* < */
-                if( (o->in = open(o->infp, O_RDONLY) ) == -1 );
-        if (o->outfp != NULL )	/* >, >> */
-                if((o->out = open(o->outfp, o->outflags, 0755)) == -1);
-	if (o->piped == 1)	/* | */
-	      	o = piped(o);
-	if ((o->pids = fork()) == 0) 
-		o = child(o);
 	waitpid(o->pids, &(o->err), 0);
 	if (o->out != -1)
 		close(o->out);
 	if (o->in != -1)
 		close(o->in);
-	}
+	return o;
+}
 
+object *execute(object *o, size_t lim)
+{
+	for (;lim--;++o)
+	{
+		if ( o->infp != NULL )	/* < */
+	                if((o->in = open(o->infp, O_RDONLY)) == -1);
+	        if (o->outfp != NULL )	/* >, >> */
+	       	        if((o->out = open(o->outfp, o->outflags, 0755)) == -1);
+		if (o->piped == 1)	/* | */
+		      	if((o = piped(o)));
+		if ((o->pids = fork()) == 0) 
+			o = child(o);
+		o = foreground(o);
+	}
 }
 
 int main(void)
