@@ -73,13 +73,7 @@ object *foreground(object *o)
 }
 
 object *execute(object *o, size_t lim)
-{
-	//for (;lim--;++o)
-	//{ 
-        if ( o->err == 0 && o->boole == 1 )	/* ||  */
-                return o;//continue; 
-        if ( o->err != 0 && o->boole == 0 )	/* && */
-                return o;//continue;
+{ 
 	if ( o->infp != NULL )			/* < */
 	        if((o->in = open(o->infp, O_RDONLY)) == -1);
 	if (o->outfp != NULL )			/* >, >> */
@@ -90,12 +84,11 @@ object *execute(object *o, size_t lim)
 		o = child(o);
 	o = foreground(o);
 	return o;
-	//}
 }
 
 int main(void)
 {
-	
+	size_t i = 0;
 	object p[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1,NULL, NULL, 0, -1},
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
 	{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
@@ -109,12 +102,15 @@ int main(void)
 
 	state q[1] = { 0 };
 	state *s = q;
-	s = parse(s, p, "");
-	
+	s = parse(s, p, ""); 
 	s->o = p;
-	
-	for (;s->total--;s->o++)
+
+	for (;i<s->total;s->o++,++i)
 	{
+        	if ((s->o-1)->err == 0 && (s->o-1)->boole == 1)	/* || */
+	      	        continue; 
+	        if ((s->o-1)->err != 0 && (s->o-1)->boole == 0)	/* && */
+	                continue;
 		s->o = execute(s->o, 10);
 	}
 
