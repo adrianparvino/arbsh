@@ -117,3 +117,147 @@ int main(void)
 	return 0;
 }
 
+
+int parserold(char *l)
+{ 
+	/* grammar */
+	int atoken = 0;
+	int awhite = 1;
+	int aredir = 0; 
+	/* total commands */
+	size_t c = 0; 
+	/* remain at the start of a command sequence */
+	char *last; 
+	/* intialialize a data structure member and the pointer to input */
+	//initialize(c);
+        last = l;
+
+	/* discover tokens and commands */
+        while ( *l )
+        { 
+		if (*l == ';')
+                {
+                        *l = '\0';
+                        //initialize(++c);
+                        last = ( l + 1 ); 
+			atoken = 1;
+			awhite = 0;
+			aredir = 0;
+                }
+		else if (*l == '\n' && *(l + 1) != '\n')
+                { 
+                        *l = '\0'; 
+                       	//initialize(++c);
+                        last = ( l + 1); 
+			atoken = 1;
+                        awhite = 0;
+			aredir = 0;
+                }
+		else if (*l == '\n')
+		{
+			*l = '\0';
+			atoken = 1;
+			awhite = 0;
+			aredir = 0;
+		}
+                else if ( *l == '|' && *(l + 1) == '|' )
+                {
+                        //cmds[c].boole = 1;
+                        *l = '\0';
+                        ++l;
+                        *l = '\0';
+                        //initialize(++c);
+                        last = ( l + 1 ); 
+			atoken = 1;
+			awhite = 0;
+			aredir = 0;
+                }
+                else if (*l == '|')
+                {
+                        //cmds[c].piped = 1;
+                        *l = '\0';
+                        //initialize(++c);
+                        last = (l + 1); 
+			atoken = 1;
+                        awhite = 0;
+			aredir = 0;
+                }
+                else if (*l == '&' && *(l + 1)  == '&')
+                {
+                        //cmds[c].boole = 0;
+                        *l = '\0';
+                        ++l;
+                        *l = '\0';
+                        //initialize(++c);
+                        last = (l + 1); 
+			atoken = 1;
+			awhite = 0;
+			aredir = 0;
+                }
+                else if (*l == '&')
+                {
+                        //cmds[c].bg = 1;
+                        *l = '\0';
+                        //initialize(++c);
+                        last = ( l + 1 ); 
+			atoken = 1;
+			awhite = 0;
+			aredir = 0;
+                }
+                else if (*l == '>' && *(l + 1) == '>')
+                {
+                        *l = '\0';
+                        ++l;
+                        *l = '\0';
+                        //cmds[c].outflags = O_APPEND|O_RDWR|O_CREAT;
+			while ( *( l + 1 ) == ' ') /* strip whitespace */
+                                *l++ = '\0';
+                        //cmds[c].outfp = ( l + 1 );
+			atoken = 1;
+			awhite = 0;
+			aredir = 1;
+                }
+                else if (*l == '>')
+                {
+                        *l = '\0';
+                        //cmds[c].outflags = O_TRUNC|O_RDWR|O_CREAT;
+			while ( *( l + 1 ) == ' ') /* strip whitespace */
+				*l++ = '\0';
+                        //cmds[c].outfp = ( l + 1 );
+			atoken = 1;
+			awhite = 0;
+			aredir = 1;
+                }
+                else if (*l == '<')
+                {
+                        *l = '\0';
+			while ( *( l + 1 ) == ' ') /* strip whitespace */
+                                *l++ = '\0'; 
+                        //cmds[c].infp = ( l + 1 ); 
+			atoken = 1;
+			awhite = 0;
+			aredir = 1;
+                }
+		else if ( *l != ' ' && *l != '\t' )
+		{
+			if (aredir == 0 )
+			{
+				//cmds[c].argv[cmds[c].argc] = last;
+				//cmds[c].argv[cmds[c].argc + 1] = NULL;/* speed up + hack */
+			}
+			awhite = 0;
+			atoken = 0; 
+		}
+		else if ( *l == ' ' || *l == '\t' )
+                { 
+			if ( atoken == 0 && awhite == 0 && aredir == 0)
+				;//cmds[c].argc++; 
+		
+			awhite = 1;
+                       	*l = '\0';
+			last = ( l + 1 );
+                }
+                ++l;
+        } 
+        return 0; 
+}
