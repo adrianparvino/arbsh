@@ -28,8 +28,9 @@ Presented below is a method of "programming with objects" in C.
 		/* allocate memory and populate array members */
 		for (o=p; o-p < lim ; ++o)
 		{
-			o->rp = malloc(sizeof(char) * 100);
-			o->len = sprintf(o->rp, "string %zu\n", o-p); 
+			if (!(o->rp = malloc(sizeof(char) * 100)))
+				return 1;
+			o->len = snprintf(o->rp, 100, "string %zu\n", o-p); 
 		} 
 
 		/* test the array of objects (fast write!) */
