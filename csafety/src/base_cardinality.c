@@ -21,7 +21,7 @@ the total amount of unique values the number can hold is the same.
 This formula (N^C) allows for fast and logical computation of probabilities in
 a non-deterministic setting such as a dice game throwing "random" dice throws.
 
-Here is an explanation of the probablity of obtaining the sequence
+Here is an explanation of the probability of obtaining the sequence
  4, 6, 2, 5, 7, 9, 8 out of a random throwing of 7 dice: 
 
 6 sided dice use a base 5 counting system consisting of the character values 1-6
@@ -46,7 +46,7 @@ log and is not covered here).
 
 	size_t usign_pow(size_t x, size_t n)
 	{
-	        size_t y = 1; 
+	        size_t y = 1;
 	        while (n--)
 	              y *= x;
 	        return y;
@@ -57,6 +57,6 @@ log and is not covered here).
 		size_t base = 2;
 		size_t cardinality = 4;
 		printf("total range of brute elements %zu\n", usign_pow(base, cardinality));
-		
 		return 0;
 	}
+
