@@ -44,18 +44,31 @@ log and is not covered here).
 
 	#include <stdio.h>
 
+	size_t safe_multiply(size_t i, size_t x, size_t lim)
+	{
+	        if (i == 0) /* Handle zero */
+	                return 0;
+	        if (lim / i >= x )
+	        {
+	                fprintf(stderr, "Muliplication proposal accepted\n");
+	                return i * x;
+	        }
+	        fprintf(stderr, "Muliplication proposal rejected\n");
+	        return lim;
+	}
+
 	size_t usign_pow(size_t x, size_t n)
 	{
 	        size_t y = 1;
 	        while (n--)
-	              y *= x;
+			y = safe_multiply(y, x, (size_t)-1);
 	        return y;
 	}
 
 	int main(void)
 	{
 		size_t base = 2;
-		size_t cardinality = 4;
+		size_t cardinality = 12;
 		printf("total range of brute elements %zu\n", usign_pow(base, cardinality));
 		return 0;
 	}
