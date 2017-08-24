@@ -3,7 +3,7 @@
 base^cardinality
 
 The total number of values possible within a given range in base N within a set
-with a cardinality of C would be N^C.
+with a cardinality of C can be expressed as (N^C).
 
 N=2
 C=4
