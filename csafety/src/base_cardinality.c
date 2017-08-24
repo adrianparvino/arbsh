@@ -18,7 +18,7 @@ possible values. In decimal (greater N) or with a greater cardinality (greater
 C) the table of values would be much larger --however the formula for computing
 the total amount of unique values the number can hold is the same.
 
-This formula (N^C) allows for fast and logical computation of probablities in
+This formula (N^C) allows for fast and logical computation of probabilities in
 a non-deterministic setting such as a dice game throwing "random" dice throws.
 
 Here is an explanation of the probablity of obtaining the sequence
