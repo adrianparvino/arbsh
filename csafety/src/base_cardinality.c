@@ -28,7 +28,8 @@ Here is an explanation of the probablity of obtaining the sequence
 (1,2,3,4,5 and 6). Therefore computing the maximum number of possible dice
 combinations in base 5 using 7 dice is simple and can be expressed as the value 
 5555555 (or 6666666). Therefore the entire range of this number system sits
-between 0000000 and 5555555 possibilities in base 5.
+between 0000000 and 5555555 possibilities in base 5. The possibility of such a
+a roll is therefore 1/(5^7).
 
 Normally '^' powers in C are computed using pow() from libm and the math.h
 header. However because we are going to use size_t in this case to represent our
@@ -56,5 +57,6 @@ log and is not covered here).
 		size_t base = 2;
 		size_t cardinality = 4;
 		printf("total range of brute elements %zu\n", usign_pow(base, cardinality));
+		
 		return 0;
 	}
