@@ -41,23 +41,33 @@ log and is not covered here).
 */
 
 
-
 	#include <stdio.h>
 
-	size_t safe_multiply(size_t i, size_t x, size_t lim)
+	size_t safe_division(size_t i, size_t x)
 	{
-	        if (i == 0) /* Handle zero */
-	                return 0;
-	        if (lim / i >= x )
+		if (i==0)
+		{
+			fprintf(stderr, "Divide by zero forced to return 0\n"); 
+			return 0;
+		}
+		return i / x;
+	}
+
+	size_t safe_multiply(size_t i, size_t x, size_t lim)
+	{ 
+	        
+		size_t tmp = safe_division(lim, i);
+		if (tmp >= x)
 	        {
 	                fprintf(stderr, "Muliplication proposal accepted\n");
 	                return i * x;
-	        }
+	        }else if (tmp == 0)
+			return 0;
 	        fprintf(stderr, "Muliplication proposal rejected\n");
 	        return lim;
 	}
 
-	size_t usign_pow(size_t x, size_t n)
+	size_t safe_upow(size_t x, size_t n)
 	{
 	        size_t y = 1;
 	        while (n--)
@@ -68,8 +78,8 @@ log and is not covered here).
 	int main(void)
 	{
 		size_t base = 2;
-		size_t cardinality = 12;
-		printf("total range of brute elements %zu\n", usign_pow(base, cardinality));
+		size_t cardinality = 128;
+		printf("total range of brute elements %zu\n", safe_upow(base, cardinality));
 		return 0;
 	}
 
