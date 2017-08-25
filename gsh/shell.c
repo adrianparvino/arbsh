@@ -144,20 +144,20 @@ int main(void)
 	
 	object *o = p;
 	char str[12] = { 'l', 's', ' ', '|', ' ', 'w', 'c', 0};
-	//char str[12] = { 'l', 's', 0};
+	//char str[12] = { 'l', 's', ' ', '-', 'l', 0};
+	//char str[12] = { 'l', 's', ';', 'l', 's', 0 };
 	
 	for (o=p;i<10;o++,++i)
 		o = init(o);
 	
-	o = parse(o=p, str);
+	parse(o=p, str);
 
 	for (o =p,i=0;i<glb.count;o++,++i)
 	{
        	 	//if (i && (o-1)->err == 0 && (o-1)->boole == 1)	/* || */
 	      	//        continue; 
 	        //if (i && (o-1)->err != 0 && (o-1)->boole == 0)	/* && */
-	        //        continue;
-		
+	        //        continue; 
 		o = execute(o);
 	}
 	
@@ -187,29 +187,6 @@ void verbosity(void)
 	if ( glb.inascript)
 		exit(1);
 }
-
-static void initialize(size_t i)
-{
-        if (!(cmds = realloc(cmds, sizeof(struct commands) * (i + 1))))
-	{
-		perror(" realloc()" );
-		exit(1);
-	}
-
-	cmds[i].cmd[0] = NULL;
-	cmds[i].argc = 0; 
-
-	cmds[i].outflags = O_APPEND|O_RDWR|O_CREAT;
-        cmds[i].outfp = NULL;
-        cmds[i].infp = NULL;
-        cmds[i].in = -1;
-        cmds[i].out = -1;
-        
-        cmds[i].bg = 0;
-        cmds[i].piped = 0;
-        cmds[i].err = 0;
-        cmds[i].boole = -1;
-}
 */
 object *parse(object *o, char *l)
 {
@@ -235,7 +212,7 @@ object *parse(object *o, char *l)
 		if (*l == ';')
                 {
                         *l = '\0';
-			//++o;
+			++o;
                         //initialize(++c);
                         last = ( l + 1 ); 
 			atoken = 1;
@@ -245,7 +222,7 @@ object *parse(object *o, char *l)
 		else if (*l == '\n' && *(l + 1) != '\n')
                 { 
                         *l = '\0'; 
-			//++o;
+			++o;
                        	//initialize(++c);
                         last = ( l + 1); 
 			atoken = 1;
@@ -261,9 +238,9 @@ object *parse(object *o, char *l)
 		}
                 else if ( *l == '|' && *(l + 1) == '|' )
                 {
-                        //cmds[c].boole = 1;
-			//o->boole = 1;
-			//++o;
+                        
+			o->boole = 1;
+			++o;
                         *l = '\0';
                         ++l;
                         *l = '\0';
@@ -275,7 +252,7 @@ object *parse(object *o, char *l)
                 }
                 else if (*l == '|')
                 {
-                        //cmds[c].piped = 1;
+                        
 			o->piped = 1;
 			++o;
 			++c;
@@ -288,8 +265,8 @@ object *parse(object *o, char *l)
                 }
                 else if (*l == '&' && *(l + 1)  == '&')
                 {
-                        //cmds[c].boole = 0;
-			//o->boole = 0;
+                        
+			o->boole = 0;
                         *l = '\0';
                         ++l;
                         *l = '\0';
@@ -300,8 +277,7 @@ object *parse(object *o, char *l)
 			aredir = 0;
                 }
                 else if (*l == '&')
-                {
-                        //cmds[c].bg = 1;
+                { 
 			//o->bg = 1;
                         *l = '\0';
                         //initialize(++c);
@@ -314,26 +290,22 @@ object *parse(object *o, char *l)
                 {
                         *l = '\0';
                         ++l;
-                        *l = '\0';
-                        //cmds[c].outflags = O_APPEND|O_RDWR|O_CREAT;
-			//o->outflags = O_APPEND|O_RDWR|O_CREAT;
+                        *l = '\0'; 
+			o->outflags = O_APPEND|O_RDWR|O_CREAT;
 			while ( *( l + 1 ) == ' ') /* strip whitespace */
-                                *l++ = '\0';
-                        //cmds[c].outfp = ( l + 1 );
-			//o->outfp = ( l + 1 );
+                                *l++ = '\0'; 
+			o->outfp = ( l + 1 );
 			atoken = 1;
 			awhite = 0;
 			aredir = 1;
                 }
                 else if (*l == '>')
                 {
-                        *l = '\0';
-                        //cmds[c].outflags = O_TRUNC|O_RDWR|O_CREAT;
-			//o->outflags = O_TRUNC|O_RDWR|O_CREAT;
+                        *l = '\0'; 
+			o->outflags = O_TRUNC|O_RDWR|O_CREAT;
 			while ( *( l + 1 ) == ' ') /* strip whitespace */
-				*l++ = '\0';
-                        //cmds[c].outfp = ( l + 1 );
-			//o->outfp = ( l + 1 );
+				*l++ = '\0'; 
+			o->outfp = ( l + 1 );
 			atoken = 1;
 			awhite = 0;
 			aredir = 1;
@@ -352,9 +324,7 @@ object *parse(object *o, char *l)
 		else if ( *l != ' ' && *l != '\t' )
 		{
 			if (aredir == 0 )
-			{
-				//cmds[c].cmd[cmds[c].argc] = last;
-				//cmds[c].cmd[cmds[c].argc + 1] = NULL;/* speed up + hack */
+			{ 
 				o->cmd[o->argc] = last;
 				o->cmd[o->argc + 1] = NULL;
 			}
@@ -363,9 +333,10 @@ object *parse(object *o, char *l)
 		}
 		else if ( *l == ' ' || *l == '\t' )
                 { 
-			if ( atoken == 0 && awhite == 0 && aredir == 0 && aquote == 0)
-				//cmds[c].argc++; 
+			if ( atoken == 0 && awhite == 0 && aredir == 0 ) 
 				o->argc++;
+			*l = 0;
+			awhite = 1;
 			last = ( l + 1 );
                 }
                 ++l;
@@ -376,5 +347,5 @@ object *parse(object *o, char *l)
 	//if ( glb.testparse )
 		//verbosity();
 	
-        return 0; 
+        return o; 
 }
