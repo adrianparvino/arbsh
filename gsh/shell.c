@@ -140,25 +140,24 @@ int main(void)
 	size_t i = 0;
 	
 
-	object *p = malloc(sizeof(object) + 10);
+	object *p = malloc(sizeof(object) * 10);
 	
 	object *o = p;
-	//char str[12] = { 'l', 's', ' ', '|', 'w', 'c', 0};
-	char str[12] = { 'l', 's', 0};
+	char str[12] = { 'l', 's', ' ', '|', ' ', 'w', 'c', 0};
+	//char str[12] = { 'l', 's', 0};
+	
+	for (o=p;i<10;o++,++i)
+		o = init(o);
+	
+	o = parse(o=p, str);
 
-	for (o = p;i<10;o++,++i)
-		init(o);
-	o = p;
-	parse(o, str);
-	o = p;
-o = execute(o);
-	return 0;
-	for (i=0,o = p;i<10;o++,++i)
+	for (o =p,i=0;i<glb.count;o++,++i)
 	{
        	 	//if (i && (o-1)->err == 0 && (o-1)->boole == 1)	/* || */
 	      	//        continue; 
 	        //if (i && (o-1)->err != 0 && (o-1)->boole == 0)	/* && */
 	        //        continue;
+		
 		o = execute(o);
 	}
 	
@@ -227,6 +226,7 @@ object *parse(object *o, char *l)
 	
 	/* intialialize a data structure member and the pointer to input */
 	//initialize(c);
+	++c;
         last = l;
 
 	/* discover tokens and commands */
@@ -276,8 +276,9 @@ object *parse(object *o, char *l)
                 else if (*l == '|')
                 {
                         //cmds[c].piped = 1;
-			//o->piped = 1;
-			//++o;
+			o->piped = 1;
+			++o;
+			++c;
                         *l = '\0';
                         //initialize(++c);
                         last = (l + 1); 
