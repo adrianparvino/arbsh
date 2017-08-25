@@ -5,7 +5,7 @@ needed to seamlessly connect the stdin and stdout of a series of utilities.
 Pipe() is not set up for the final command in the sequence. Presented below is
 a small program that demonstrates the basics needed for writing a simple shell
 that supports arbitrary numbers of pipes. The sequence used is equivalent to
-"ls -l | wc -l | wc -l | wc -l | wc -l ..."
+"ls -l | wc -l | wc -l | wc -l | wc -l > outfile"
 */
 
 	#include <stdlib.h>
