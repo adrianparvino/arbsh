@@ -36,8 +36,7 @@ struct glb
 	int inascript;	/* script mode 	*/
 	int testparse;	/* -t mode 	*/
 	int cmode;	/* -c mode 	*/
-}glb = { 0, 0, 0, 0, 0};
-
+}glb = { 0, 0, 0, 0, 0}; 
 
 typedef struct{
 	char *cmd[1024];	/* command vector */
@@ -52,28 +51,8 @@ typedef struct{
 	int outflags;
 	int boole;
 } object; 
-object *parse(object *o, char *l);
 
-struct commands
-{
-	/* commands */
-	char *cmd[1024]; 
-	size_t argc;
-	/* io */
-	char *outfp;
-	char *infp;
-	int outflags;
-	int in;
-	int out;
-	/* pipes */
-	int piped;
-	/* processes */
-	pid_t pids;
-	int bg;
-	int err;
-	/* logic */
-	int boole;	/* controlled by the preceding command */ 
-} *cmds;
+object *parse(object *o, char *l); 
 
 object *piped(object *o)
 {
@@ -165,8 +144,8 @@ int main(void)
 } 
 
 /* functions */
-/*
-void verbosity(void)
+
+void verbosity(object *o)
 {
         size_t i = 0;
         size_t j = 0;
@@ -177,17 +156,17 @@ void verbosity(void)
         {
 		fprintf(stderr, "\n");
 		
-                for ( j = 0; j <= cmds[i].argc ; ++j) 
-                        fprintf(stderr, "%s\t\tcmd           %zu\n", cmds[i].cmd[j], j); 
-                if ( cmds[i].infp != NULL )
-                        fprintf(stderr, "%s\t\tin  <   vector %zu\n", cmds[i].infp, i);
-                if ( cmds[i].outfp != NULL ) 
-                        fprintf(stderr, "%s\t\tout >   vector %zu\n", cmds[i].outfp, i); 
+                for ( j = 0; j <= o->argc ; ++j) 
+                        fprintf(stderr, "%s\t\tcmd           %zu\n", o->cmd[j], j); 
+                if ( o->infp != NULL )
+                        fprintf(stderr, "%s\t\tin  <   vector %zu\n", o->infp, i);
+                if ( o->outfp != NULL ) 
+                        fprintf(stderr, "%s\t\tout >   vector %zu\n", o->outfp, i); 
         }
 	if ( glb.inascript)
 		exit(1);
 }
-*/
+
 object *parse(object *o, char *l)
 {
 	/* grammar */
