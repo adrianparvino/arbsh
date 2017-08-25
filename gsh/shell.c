@@ -163,12 +163,13 @@ void verbosity(object *o)
                 if ( o->outfp != NULL ) 
                         fprintf(stderr, "%s\t\tout >   vector %zu\n", o->outfp, i); 
         }
-	if ( glb.inascript)
-		exit(1);
+	//if ( glb.inascript)
+	//	exit(1);
 }
 
 object *parse(object *o, char *l)
 {
+	object *z = o;
 	/* grammar */
 	int atoken = 0;
 	int awhite = 1;
@@ -324,7 +325,7 @@ object *parse(object *o, char *l)
 	if ( glb.cmode )
 		++glb.count; 
 	//if ( glb.testparse )
-		//verbosity();
+		verbosity(z);
 	
         return o; 
 }
