@@ -20,25 +20,31 @@ typedef struct object{
 	size_t len;
 	size_t actions;
 	object *(*iterate)(object *o); 
-	object *(*f[10])(object *o); 
+	object *(*f[10])(object *o);
 } object;
 
 object *obj_init(object *o)
 {
 	o->iterate = iterate;
-	o->rp = malloc(256);
+	if (o->rp == NULL)	
+
+	if (!(o->rp = malloc(256)))
+		return NULL;
 	o->len = 0;
 	o->actions = 0;
+	return o;
 }
 
 object *obj_pop(object *o)
 {
 	o->len = sprintf(o->rp, "%s\n", "string here");
+	return o;
 }
 
 object *obj_write(object *o)
 {
 	write(1, o->rp, o->len);
+	return o;
 }
 
 object *obj_addaction(object *o, object *(*f)(object *))
@@ -52,19 +58,36 @@ object *iterate(object *o)
 {
 	size_t i = 0;
 	for (; i < o->actions;++i) 
-		o->f[i](o);
+		o = o->f[i](o);
+	return o;
+}
+
+object *obj_free(object *o)
+{
+	free(o->rp);
+	o->rp = NULL;
 	return o;
 }
 
 int main(void)
 { 
 	object *o;
-	if(!(o = malloc(sizeof(object))))
+	object *p;
+	size_t set = 30;
+	size_t i = 0;
+
+	if(!(p = malloc(sizeof(object) * set)))
 		return 1;
-	o = obj_init(o);
-	o = obj_addaction(o, obj_pop);
-	o = obj_addaction(o, obj_write);
-	o = o->iterate(o);
+
+	for(o = p;o-p<set;++o)
+	{
+		o = obj_init(o);
+		o = obj_addaction(o, obj_pop);
+		o = obj_addaction(o, obj_write);
+		o = obj_addaction(o, obj_free);
+		o = o->iterate(o);
+	} 
+	free(o = p);
 	return 0;
 }
 
