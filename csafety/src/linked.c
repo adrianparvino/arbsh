@@ -1,10 +1,7 @@
 /*
-Singly linked lists do not have to ever be reversed because they can instead be
-built up from the tail resulting in a more eay to use data structure which
-can be iterated through "first to last" as opposed to "last to first". The two
-directions of creating a linked list are displayed in the functions forpop and
-backpop (forwards and backwards populate respectively).
+
 */
+
 #include <stdio.h>
 #include <stdlib.h> 
 typedef struct object{ 
@@ -19,6 +16,7 @@ void *safe_free(void *a)
         free(a);
         return NULL;
 }
+
 object *forpop(object *head, size_t item)
 {
 	/* modified linked list "holds hands" forwards */
