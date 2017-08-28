@@ -1,5 +1,10 @@
 /*
-
+Singly linked lists can be created such that the ->next members point in either
+direction. The simplest possible singly linked list builds this chain backwards
+sometimes leading people to believe that it needs to be reversed. Such reversal
+is unneeded as the linked list can be simply created going the opposite
+direction. Presented below are the functions forpop and backpop which create a
+forward and backward populated linked list respectively,
 */
 
 #include <stdio.h>
