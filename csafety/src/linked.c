@@ -1,10 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
-
+#include <stdlib.h> 
 typedef struct object{ 
 	size_t i;
 	struct object *next;
-} object; 
+} object;
 
 object *freeobj(object*);
 
@@ -20,11 +19,11 @@ object *populate(object *head, size_t i)
 	if (!(o = malloc(sizeof(object))))
 	{
 		fprintf(stderr, "Malloc request failed, freeing list\n");
-		return head = freeobj(head);/* NULL */
+		return head = freeobj(head);
 	}
-	o->i = i; 
+	o->i = i;
 	o->next = head;
-	return o; 
+	return o;
 }
 
 void iterate(object* head)
@@ -35,43 +34,41 @@ void iterate(object* head)
 	printf("END\n\n");
 }
 
-object *freeobj(object* head)
+object *placefreeobj(object *hold)
+{
+	if (hold)
+        {
+                printf("free(%zu)-->", hold->i);
+                hold = safe_free(hold);
+        }
+	return hold;
+}
+
+object *freeobj(object *head)
 {
         object *o;
 	object *hold = NULL;
         for(o = head;o;o = o->next)
 	{
-		if (hold) 
-		{
-			printf("free(%zu)-->", hold->i);
-                	hold = safe_free(hold); 
-		}
+		hold = placefreeobj(hold);
 		hold = o; 
 	}
-	if (hold)
-	{
-		printf("free(%zu)-->", hold->i);
-		hold = safe_free(hold);
-	}
+	hold = placefreeobj(hold);
+
 	if (o == head)
 		printf("Nothing to be freed  ");
         printf("END\n\n");
 	return hold;
 }
 
-int main(int argc, char const *argv[])
+int main(void)
 { 
 	size_t i;
-	object* head = NULL;
-
+	object* head = NULL; 
 	for(i = 0; i<=20; i++) 
-		head = populate(head, i);
-	head = populate(head, i);
-	head = populate(head, i);
+		head = populate(head, i); 
+	
 	iterate(head);
-	iterate(head); 
-	head = freeobj(head);
-	head = freeobj(head);
 	head = freeobj(head);
 	return 0;
 }
