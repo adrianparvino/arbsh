@@ -12,8 +12,21 @@ void *safe_free(void *a)
         free(a);
         return NULL;
 }
-
-object *populate(object *head, size_t i)
+object *forpop(object *head, size_t item)
+{
+        static object *tail = NULL;
+        object *ptr = malloc(sizeof(object));
+        ptr->next = NULL;
+        ptr->i = item;
+        if (!(head))
+                tail = head = ptr;
+        else if (tail){
+                tail->next = ptr;
+                tail = ptr;
+        }
+        return head;
+}
+object *backpop(object *head, size_t i)
 {
 	object* o;
 	if (!(o = malloc(sizeof(object))))
@@ -66,7 +79,14 @@ int main(void)
 	size_t i;
 	object* head = NULL; 
 	for(i = 0; i<=20; i++) 
-		head = populate(head, i); 
+		head = forpop(head, i); 
+	
+	iterate(head);
+	head = freeobj(head);
+	
+	for(i = 0; i<=20; i++) 
+		
+		head = backpop(head, i); 
 	
 	iterate(head);
 	head = freeobj(head);
