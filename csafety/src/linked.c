@@ -1,3 +1,10 @@
+/*
+Singly linked lists do not have to ever be reversed because they can instead be
+built up from the tail resulting in a more eay to use data structure which
+can be iterated through "first to last" as opposed to "last to first". The two
+directions of creating a linked list are displayed in the functions forpop and
+backpop (forwards and backwards populate respectively).
+*/
 #include <stdio.h>
 #include <stdlib.h> 
 typedef struct object{ 
@@ -14,8 +21,14 @@ void *safe_free(void *a)
 }
 object *forpop(object *head, size_t item)
 {
+	/* modified linked list "holds hands" forwards */
         static object *tail = NULL;
-        object *ptr = malloc(sizeof(object));
+        object *ptr;
+	if(!(ptr = malloc(sizeof(object))))
+	{
+		fprintf(stderr, "Malloc request failed, freeing list\n");
+		return head = freeobj(head);
+	}
         ptr->next = NULL;
         ptr->i = item;
         if (!(head))
@@ -28,6 +41,7 @@ object *forpop(object *head, size_t item)
 }
 object *backpop(object *head, size_t i)
 {
+	/* simple linked list "holds hands" backwards */
 	object* o;
 	if (!(o = malloc(sizeof(object))))
 	{
@@ -85,7 +99,6 @@ int main(void)
 	head = freeobj(head);
 	
 	for(i = 0; i<=20; i++) 
-		
 		head = backpop(head, i); 
 	
 	iterate(head);
