@@ -54,8 +54,7 @@ log and is not covered here).
 	}
 
 	size_t safe_multiply(size_t i, size_t x, size_t lim)
-	{ 
-	        
+	{
 		size_t tmp = safe_division(lim, i);
 		if (tmp >= x)
 	        {
