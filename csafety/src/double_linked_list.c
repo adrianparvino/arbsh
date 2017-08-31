@@ -2,33 +2,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-typedef struct node {
+typedef struct object {
 	int item;
-	struct node *prev;
-	struct node *next;
-} node;
+	struct object *prev;
+	struct object *next;
+} object;
 
-node *head, *tail;
-
-node *inserthead2(node *tal, node *hed, int item)
+object *inserthead(object *tail, object *head, int item)
 { 
-	node *ptr = malloc(sizeof(node));
-	ptr->item = item;
-	ptr->prev = ptr->next = NULL;
-
-	if (NULL == hed) {
-		hed = tal = ptr; 
-	} else {
-		ptr->next = hed;
-		hed->prev = ptr;
-		hed = ptr;
-	}
-	return hed;
-}
-
-void inserthead(int item)
-{ 
-	node *ptr = malloc(sizeof(node));
+	object *ptr = malloc(sizeof(object));
 	ptr->item = item;
 	ptr->prev = ptr->next = NULL;
 
@@ -39,27 +21,12 @@ void inserthead(int item)
 		head->prev = ptr;
 		head = ptr;
 	}
-}
-
-
-node *inserttail2(node *hed, node *tal, int item)
-{ 
-	node *ptr = malloc(sizeof(node));
-	ptr->item = item;
-	ptr->prev = ptr->next = NULL;
-
-	if (NULL == hed) {
-		hed = tal = ptr;
-	} else {
-		tal->next = ptr;
-		ptr->prev = tal;
-		tal = ptr;
-	} 
-	return tal;
+	return head;
 } 
-void inserttail(int item)
+
+object *inserttail(object *head, object *tail, int item)
 { 
-	node *ptr = malloc(sizeof(node));
+	object *ptr = malloc(sizeof(object));
 	ptr->item = item;
 	ptr->prev = ptr->next = NULL;
 
@@ -70,8 +37,10 @@ void inserttail(int item)
 		ptr->prev = tail;
 		tail = ptr;
 	} 
+	return tail;
 } 
-void listbackward(node *ptr)
+
+void listbackward(object *ptr)
 { 
 	while (NULL != ptr)
 	{
@@ -81,7 +50,7 @@ void listbackward(node *ptr)
 	printf("\n");
 }
 
-void listforward(node *ptr)
+void listforward(object *ptr)
 { 
 	while (NULL != ptr)
 	{
@@ -93,32 +62,23 @@ void listforward(node *ptr)
 
 int main(int argc, char *argv[])
 {
-	size_t i;
+	size_t i = 0;
 
-	node *hed = NULL;
-	node *tal = NULL;
-	tal = hed = inserthead2(tal, hed, 0);
-	for (i = 1; i <= 10; i++)
-		hed = inserthead2(tal, hed, i);
-	listforward(hed);
-	listbackward(tal);
+	object *head = NULL;
+	object *tail = NULL;
+	tail = head = inserthead(tail, head, i);
+	//tail = head = inserttail(tail, head, i); 
 
-
-	for (i; i <= 20; i++)
-		tal = inserttail2(hed, tal, i);
-	listforward(hed);
-	listbackward(tal);
-
-	return 0;
-	for (i = 1; i <= 10; i++)
-		inserthead(i);
-
+	for (i =1; i <= 20; i++)
+		tail = inserttail(head, tail, i);
 	listforward(head);
 	listbackward(tail);
+
 	
-	for (; i <= 20; i++)
-		inserttail(i);
-
+	for (i=100; i <= 110; i++)
+		head = inserthead(tail, head, i);
 	listforward(head);
 	listbackward(tail);
+
+	return 0; 
 }
