@@ -27,38 +27,7 @@ void insert(int item, bool at_tail)
 		head->prev = ptr;
 		head = ptr;
 	}
-}
-
-int delete(bool from_tail)
-{
-	int item;
-	if (NULL == head) {
-		printf("Empty list.\n");
-		exit(1);
-	} else if (from_tail) {
-		node *ptr = tail;
-		item = ptr->item;
-		tail = ptr->prev;
-		if (NULL == tail) 
-			head = tail;
-		else
-			tail->next = NULL;
-		free(ptr);
-		ptr = NULL;
-		return item;
-	} else {
-		node *ptr = head;
-		item = ptr->item;
-		head = ptr->next;
-		if (NULL == head)
-			tail = head;
-		else
-			head->prev = NULL;
-		free(ptr);
-		ptr = NULL;
-		return item;
-	}
-}
+} 
 
 void list()
 {
@@ -78,10 +47,5 @@ int main(int argc, char *argv[])
 	for (i = 1; i <= 10; i++)
 		insert(i, i < 6);
 
-	list(); // 10 9 8 7 6 1 2 3 4 5
-
-	for (i = 1; i <= 4; i++)
-		delete(i < 3);
-
-	list(); // 8 7 6 1 2 3
+	list(); // 10 9 8 7 6 1 2 3 4 5 
 }
