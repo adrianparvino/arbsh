@@ -51,6 +51,7 @@ way as free and realloc in order to present a consistent API.
 	int main(void)
 	{
 		char *a;
+		size_t i = 0;
 		if (!(safe_malloc((void**)&a, 1)))
 			return 1;
 
@@ -60,11 +61,21 @@ way as free and realloc in order to present a consistent API.
 		if (a)
 			printf("a  exists\n");
 	
+		
+		for (i=0;i < 10;++i)
+			a[i];
+		printf("First reallocation successful\n");
+
 		if (!(safe_realloc((void**)&a, (size_t)-1))) // will fail
 			;//return 1
 
 		if (a)
 	                printf("a  exists\n");
+
+		
+		for (i=0;i < 10;++i)
+			a[i];
+		printf("Second reallocation left the pointer unchanged\n");
 
 		if(!(safe_free((void**)&a)))
 			;// NULL pointers passed to free indicate design flaw
