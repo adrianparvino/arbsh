@@ -96,6 +96,14 @@ forward and backward populated linked list respectively,
 		return hold;
 	}
 
+	object *joinobj(object *o)
+	{
+		object *tmp = o->next; 
+		o->next = o->next->next;
+		free(tmp);
+		return o;
+	}
+
 	int main(void)
 	{ 
 		size_t i;
@@ -109,13 +117,15 @@ forward and backward populated linked list respectively,
 	
 		for(i = 0; i<=20; i++) 
 			if (!(head = backpop(head, i)))
-				return 1;
-	
-		iterate(head);
-		head = freeobj(head);
-		char buf[1024];
-		char *num = fread(buf, 1, 1, stdin);
+				return 1; 
+                       
+       		object *o; 
+                for(i=0,o = head;o;o = o->next,++i) 
+			if (i == 10)
+				o = joinobj(o); 
 
+		iterate(head);
+		head = freeobj(head); 
 		return 0;
 	}
 
