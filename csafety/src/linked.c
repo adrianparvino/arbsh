@@ -98,9 +98,14 @@ forward and backward populated linked list respectively,
 
 	object *joinobj(object *o)
 	{
-		object *tmp = o->next; 
-		o->next = o->next->next;
-		tmp = safe_free(tmp);
+		object *tmp = o->next;
+		if (o->next != NULL)
+		{
+			o->next = o->next->next;
+			tmp = safe_free(tmp);
+			
+		} else 
+			fprintf(stderr, "Failed to delete member\n");
 		return o;
 	}
 	
@@ -109,7 +114,7 @@ forward and backward populated linked list respectively,
 		object *tmp;
 		if (!(tmp = verbose_malloc(sizeof(object))))
 		{
-			fprintf(stderr, "Could not create member\n");
+			fprintf(stderr, "Failed to create member\n");
 			return o;
 		}
 		tmp->next = o->next;
@@ -149,6 +154,14 @@ forward and backward populated linked list respectively,
 		iterate(head);
 	
 		head = freeobj(head); 
+
+		
+		for(i = 0; i<=20; i++) 
+			if (!(head = forpop(head, i)))
+				return 1;
+	
+		iterate(head);
+		head = freeobj(head);
 		return 0;
 	}
 
