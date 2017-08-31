@@ -119,12 +119,17 @@ forward and backward populated linked list respectively,
 			if (!(head = backpop(head, i)))
 				return 1; 
                        
+
+		iterate(head);
+
+		
        		object *o; 
                 for(i=0,o = head;o;o = o->next,++i) 
 			if (i == 10)
 				o = joinobj(o); 
 
 		iterate(head);
+	
 		head = freeobj(head); 
 		return 0;
 	}
