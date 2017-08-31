@@ -100,13 +100,18 @@ forward and backward populated linked list respectively,
 	{
 		object *tmp = o->next; 
 		o->next = o->next->next;
-		free(tmp);
+		tmp = safe_free(tmp);
 		return o;
 	}
 	
 	object *createobj(object *o)
 	{ 
-		object *tmp = malloc(sizeof(object));
+		object *tmp;
+		if (!(tmp = verbose_malloc(sizeof(object))))
+		{
+			fprintf(stderr, "Could not create member\n");
+			return o;
+		}
 		tmp->next = o->next;
 		tmp->i = o->i;
 		o->next = tmp;
@@ -127,7 +132,6 @@ forward and backward populated linked list respectively,
 		for(i = 0; i<=20; i++) 
 			if (!(head = backpop(head, i)))
 				return 1; 
-                       
 
 		iterate(head);
 		
