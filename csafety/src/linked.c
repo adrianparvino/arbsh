@@ -103,6 +103,15 @@ forward and backward populated linked list respectively,
 		free(tmp);
 		return o;
 	}
+	
+	object *createobj(object *o)
+	{ 
+		object *tmp = malloc(sizeof(object));
+		tmp->next = o->next;
+		tmp->i = o->i;
+		o->next = tmp;
+		return o;
+	}
 
 	int main(void)
 	{ 
@@ -121,12 +130,17 @@ forward and backward populated linked list respectively,
                        
 
 		iterate(head);
-
 		
        		object *o; 
                 for(i=0,o = head;o;o = o->next,++i) 
-			if (i == 10)
+			if (i >9 && i < 13)
 				o = joinobj(o); 
+		
+		iterate(head);
+
+                for(i=0,o = head;o;o = o->next,++i) 
+			if (i == 10)
+				o = createobj(o); 
 
 		iterate(head);
 	
