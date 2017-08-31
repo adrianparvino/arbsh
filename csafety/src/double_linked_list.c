@@ -11,7 +11,7 @@ typedef struct node {
 node *head, *tail;
 
 void inserthead(int item)
-{
+{ 
 	node *ptr = malloc(sizeof(node));
 	ptr->item = item;
 	ptr->prev = ptr->next = NULL;
@@ -25,7 +25,7 @@ void inserthead(int item)
 	}
 } 
 void inserttail(int item)
-{
+{ 
 	node *ptr = malloc(sizeof(node));
 	ptr->item = item;
 	ptr->prev = ptr->next = NULL;
@@ -39,25 +39,38 @@ void inserttail(int item)
 	} 
 } 
 
-void list(node *ptr)
+
+
+void listbackward(node *ptr)
 { 
-	while (NULL != ptr) {
+	while (NULL != ptr)
+	{
+		printf("%d ", ptr->item);
+		ptr = ptr->prev;
+	} 
+	printf("\n");
+}
+void listforward(node *ptr)
+{ 
+	while (NULL != ptr)
+	{
 		printf("%d ", ptr->item);
 		ptr = ptr->next;
 	} 
 	printf("\n");
 }
-
 int main(int argc, char *argv[])
 {
 	size_t i;
 	for (i = 1; i <= 10; i++)
 		inserthead(i);
 
-	list(head); // 10 9 8 7 6 1 2 3 4 5 
+	listforward(head);
+	listbackward(tail);
 	
 	for (; i <= 20; i++)
 		inserttail(i);
 
-	list(head); // 10 9 8 7 6 1 2 3 4 5 
+	listforward(head);
+	listbackward(tail);
 }
