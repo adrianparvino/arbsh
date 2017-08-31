@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void safe_free(void **a)
+{
+	if (*a == NULL)
+		fprintf(stderr, "Warning: NULL passed to free\n");
+	free(*a);
+	*a = NULL;
+}
+
 int safe_realloc(void **a, size_t i)
 {
 	void *tmp;
@@ -29,7 +37,7 @@ int main(void)
 	if (a)
                 printf("a  exists\n");
 
-	a = safe_free(a);
+	safe_free((void**)&a);
 
 	return 0;
 }
