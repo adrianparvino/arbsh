@@ -29,15 +29,12 @@ void insert(int item, bool at_tail)
 	}
 } 
 
-void list()
-{
-	node *ptr = head;
-
+void list(node *ptr)
+{ 
 	while (NULL != ptr) {
 		printf("%d ", ptr->item);
 		ptr = ptr->next;
-	}
-
+	} 
 	printf("\n");
 }
 
@@ -47,5 +44,5 @@ int main(int argc, char *argv[])
 	for (i = 1; i <= 10; i++)
 		insert(i, i < 6);
 
-	list(); // 10 9 8 7 6 1 2 3 4 5 
+	list(head); // 10 9 8 7 6 1 2 3 4 5 
 }
