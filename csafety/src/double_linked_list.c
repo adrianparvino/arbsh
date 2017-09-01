@@ -8,7 +8,7 @@ typedef struct object {
 	struct object *next;
 } object;
 
-object *createnode(object *o, int item)
+object *insertnode(object *o, int item)
 {
 	object *ptr = malloc(sizeof(object));
 	ptr->item = item;
@@ -95,29 +95,27 @@ int main(int argc, char *argv[])
 	
 	listforward(head);
 	listbackward(tail);
-	/*
+
 	for (i=100; i <= 110; i++)
 		head = inserthead(head, tail, i); 
-	
 
 	listforward(head);
-	listbackward(tail);
-	
+	listbackward(tail); 
 	
         for(i=0,o = head;o;o = o->next,++i)
                 if (i >3 && i < 13)
-			o = deletenode(o);
-               
+			o = deletenode(o); 
 
 	listforward(head);
-	listbackward(tail);
-	*/
-
+	listbackward(tail); 
 	
         for(i=0,o = head;o;o = o->next,++i)
                 if (i >3 && i < 13)
-			o = createnode(o, i);
+			o = insertnode(o, i);
                
+        for(i=0,o = tail;o;o = o->prev,++i)
+                if (i == 10 || i == 11)
+			o = insertnode(o, i);
 
 	listforward(head);
 	listbackward(tail);
