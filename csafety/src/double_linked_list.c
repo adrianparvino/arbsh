@@ -8,6 +8,17 @@ typedef struct object {
 	struct object *next;
 } object;
 
+object *createnode(object *o, int item)
+{
+	object *ptr = malloc(sizeof(object));
+	ptr->item = item;
+	ptr->prev = o;
+	ptr->next = o->next;
+	o->next->prev = ptr;
+	o->next = ptr; 
+	return ptr;
+}
+
 object *deletenode(object *o)
 { 
 	object *tmp = o->prev;
@@ -75,24 +86,24 @@ int main(int argc, char *argv[])
 
 	object *head = NULL;
 	object *tail = NULL;
+	object *o;
 	tail = head = inserthead(head, tail, i);
 	//tail = head = inserttail(tail, head, i); 
 
 	for (i =1; i <= 20; i++) 
-		tail = inserttail(head, tail, i); 
-	
+		tail = inserttail(head, tail, i);
 	
 	listforward(head);
 	listbackward(tail);
-
-	//for (i=100; i <= 110; i++)
-	//	head = inserthead(head, tail, i); 
+	/*
+	for (i=100; i <= 110; i++)
+		head = inserthead(head, tail, i); 
 	
 
-	//listforward(head);
-	//listbackward(tail);
+	listforward(head);
+	listbackward(tail);
 	
-	object *o;
+	
         for(i=0,o = head;o;o = o->next,++i)
                 if (i >3 && i < 13)
 			o = deletenode(o);
@@ -100,5 +111,16 @@ int main(int argc, char *argv[])
 
 	listforward(head);
 	listbackward(tail);
+	*/
+
+	
+        for(i=0,o = head;o;o = o->next,++i)
+                if (i >3 && i < 13)
+			o = createnode(o, i);
+               
+
+	listforward(head);
+	listbackward(tail);
+
 	return 0; 
 }
