@@ -3,15 +3,36 @@
 #include <stdbool.h>
 
 typedef struct object {
-	int item;
+	size_t i;
+	void *addr;
 	struct object *prev;
 	struct object *next;
 } object;
 
-object *insertnode(object *o, int item)
+object *initlist(size_t);
+
+size_t objectsize()
 {
-	object *ptr = malloc(sizeof(object));
-	ptr->item = item;
+	return sizeof(object);
+}
+
+void *safe_free(void *a)
+{
+        free(a);
+        return NULL;
+}
+
+void *verbose_malloc(size_t i)
+{
+        void *ret;
+        if (!(ret = malloc(i)))
+                perror("malloc error: ");
+        return ret;
+}
+
+object *insertnode(object *o, size_t i)
+{ 
+	object *ptr = initlist(i);
 	ptr->prev = o;
 	ptr->next = o->next;
 	o->next->prev = ptr;
@@ -28,76 +49,93 @@ object *deletenode(object *o)
 	return tmp;
 }
 
-object *inserthead(object *head, object *tail, int item)
-{ 
-	object *ptr = malloc(sizeof(object));
-	ptr->item = item;
-	ptr->prev = ptr->next = NULL;
+object *initlist(size_t i)
+{
+	object *ptr = verbose_malloc(objectsize());
+	if (!(ptr))
+		return NULL;
+        ptr->i = i;
+        ptr->prev = ptr->next = NULL;
+	return ptr;
+}
 
-	if (NULL == head) {
-		head = tail = ptr; 
-	} else {
-		ptr->next = head;
-		head->prev = ptr;
-		head = ptr;
-	}
+object *addhead(object *head, object *tail, size_t i)
+{ 
+	object *ptr = initlist(i); 
+	ptr->next = head;
+	head->prev = ptr;
+	head = ptr;
 	return head;
 } 
 
-object *inserttail(object *head, object *tail, int item)
-{ 
-	object *ptr = malloc(sizeof(object));
-	ptr->item = item;
-	ptr->prev = ptr->next = NULL;
-
-	if (NULL == head) {
-		head = tail = ptr;
-	} else {
-		tail->next = ptr;
-		ptr->prev = tail;
-		tail = ptr;
-	} 
+object *addtail(object *head, object *tail, size_t i)
+{
+	object *ptr = initlist(i); 
+	tail->next = ptr;
+	ptr->prev = tail;
+	tail = ptr; 
 	return tail;
 } 
 
 void listbackward(object *ptr)
 { 
-	while (NULL != ptr)
-	{
-		printf("%d ", ptr->item);
-		ptr = ptr->prev;
-	} 
-	printf("\n");
+	for(;ptr;ptr = ptr->prev) 
+		printf("%zu ", ptr->i);
+	printf("\n\n");
 }
+
 
 void listforward(object *ptr)
 { 
-	while (NULL != ptr)
-	{
-		printf("%d ", ptr->item);
-		ptr = ptr->next;
-	} 
-	printf("\n");
+	for(;ptr;ptr = ptr->next) 
+		printf("%zu ", ptr->i);
+	printf("\n\n");
+} 
+
+object *placefreeobj(object *hold)
+{
+        if (hold)
+        {
+                printf("free(%zu)--> ", hold->i);
+                hold = safe_free(hold);
+        }
+        return hold;
+} 
+
+object *freeobj(object *head)
+{
+        object *o;
+        object *hold = NULL;
+        for(o = head;o;o = o->next)
+        {
+                hold = placefreeobj(hold);
+                hold = o;
+        }
+        hold = placefreeobj(hold);
+
+        if (o == head)
+                printf("Nothing to be freed  ");
+        printf("END\n\n");
+        return hold;
 }
 
-int main(int argc, char *argv[])
+int main(void)
 {
 	size_t i = 0;
 
 	object *head = NULL;
 	object *tail = NULL;
 	object *o;
-	tail = head = inserthead(head, tail, i);
-	//tail = head = inserttail(tail, head, i); 
+	tail = head = initlist(i);
 
 	for (i =1; i <= 20; i++) 
-		tail = inserttail(head, tail, i);
+		tail = addtail(head, tail, i);
 	
 	listforward(head);
 	listbackward(tail);
 
-	for (i=100; i <= 110; i++)
-		head = inserthead(head, tail, i); 
+	for (i=30; i <= 40; i++)
+		head = addhead(head, tail, i); 
 
 	listforward(head);
 	listbackward(tail); 
@@ -120,5 +158,6 @@ int main(int argc, char *argv[])
 	listforward(head);
 	listbackward(tail);
 
+	freeobj(head);
 	return 0; 
 }
