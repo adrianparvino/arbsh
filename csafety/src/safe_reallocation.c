@@ -6,7 +6,7 @@ scenarios. One such scenario is to take advantage of the C standard's specified
 behavior for realloc; "If memory for the new object cannot be allocated, the 
 old object is not deallocated and its value is unchanged" in the C11 draft.
 We can therefore reduce this operation to a single line of code using a wrapper
-function. Similiarly, all free'd memory can be explicitly made to point to NULL
+function. Similarly, all freed memory can be explicitly made to point to NULL
 . Malloc in this case performs no special function but is wrapped in the same
 way as free and realloc in order to present a consistent API.
 */
