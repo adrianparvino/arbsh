@@ -7,6 +7,7 @@
 struct tnode { 
 	char *word;
 	int count;
+	size_t depth;
 	struct tnode *left;
 	struct tnode *right;
 };
@@ -15,7 +16,7 @@ struct tnode {
 int getch(void);
 void ungetch(int);
 struct tnode *addtree(struct tnode *, char *);
-void treeprint(struct tnode *);
+void treeprint(struct tnode *, char *);
 int getword(char *, int);
 struct tnode *talloc(void);
 
@@ -36,7 +37,7 @@ int main(void)
 	while (getword(word, MAXWORD) != EOF)
 		if (isalpha(word[0]))
 			root = addtree(root, word);
-	treeprint(root);
+	treeprint(root, "start");
 	return 0;
 }
 
@@ -44,6 +45,7 @@ int main(void)
 struct tnode *addtree(struct tnode *p, char *w)
 {
 	int cond;
+
 	if (p == NULL) {
 		/* a new word has arrived */
 		p = talloc();
@@ -71,14 +73,25 @@ struct tnode *talloc(void)
 }
 
 /* treeprint: in-order print of tree p */
-void treeprint(struct tnode *p)
+void treeprint(struct tnode *p, char *s)
 {
 	if (p != NULL)
 	{
-		treeprint(p->left);
-		printf("%4d %s\n", p->count, p->word);
-		treeprint(p->right);
+		treeprint(p->left, "left");
+		if (!( strcmp(s, "start")))
+			printf("----------\n");
+		else
+			printf("          ");
+		printf("%4d %s   %s --> \n", p->count, p->word, s);
+		
+		if (!( strcmp(s, "start")) )
+			printf("----------\n");
+	//	else
+	//		printf("          ");
+		treeprint(p->right, "right");
 	}
+
+	//printf("\n");
 }
 
 int getword(char *word, int lim)
@@ -96,7 +109,8 @@ int getword(char *word, int lim)
 	}
 	for ( ; --lim > 0; w++)
 	{
-		if (!isalnum(*w = getch())) {
+		if (!isalnum(*w = getch()))
+		{
 			ungetch(*w);
 			break;
 		}
