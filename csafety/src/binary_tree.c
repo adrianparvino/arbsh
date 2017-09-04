@@ -13,11 +13,15 @@ struct tnode {
 };
 
 /* prototypes */
+
+int ngetch(FILE *);
+
+
 int getch(void);
 void ungetch(int);
 struct tnode *addtree(struct tnode *, char *);
 void treeprint(struct tnode *, char *);
-int getword(char *, int);
+int getword(char *, int, FILE *);
 struct tnode *talloc(void);
 
 /* defines */
@@ -31,12 +35,20 @@ int bufp = 0; /* next free position in buf */
 /* word frequency count */
 int main(void)
 {
+	// "now is the time for all good men to come to the aid of their party"
+	
 	struct tnode *root;
 	char word[MAXWORD];
 	root = NULL;
-	while (getword(word, MAXWORD) != EOF)
+	FILE *fp;
+
+	fp = fopen("data.txt", "r");
+	//while (fgets(fp) != NULL)
+		
+	while (getword(word, MAXWORD, fp) != EOF)
 		if (isalpha(word[0]))
 			root = addtree(root, word);
+	
 	treeprint(root, "start");
 	return 0;
 }
@@ -75,30 +87,30 @@ struct tnode *talloc(void)
 /* treeprint: in-order print of tree p */
 void treeprint(struct tnode *p, char *s)
 {
+	int depth = 10;
 	if (p != NULL)
 	{
 		treeprint(p->left, "left");
-		if (!( strcmp(s, "start")))
-			printf("----------\n");
-		else
-			printf("          ");
-		printf("%4d %s   %s --> \n", p->count, p->word, s);
+		if (!(strcmp(s, "start")))
+			depth = 5; 
+		printf("%.*s %4d %s   %s --> \n", depth, "                      ", p->count, p->word, s); 
 		
-		if (!( strcmp(s, "start")) )
-			printf("----------\n");
-	//	else
-	//		printf("          ");
+		if (p->right && p->right->word)
+		printf("         %.*s %s       %s --> \n", depth, "                      ", p->right->word, s); 
+		if (p->left && p->left->word)
+		printf("         %.*s %s       %s --> \n", depth, "                      ", p->left->word, s); 
+		
+		if (!(strcmp(s, "start")))
+			depth = 10;
 		treeprint(p->right, "right");
 	}
-
-	//printf("\n");
 }
 
-int getword(char *word, int lim)
+int getword(char *word, int lim, FILE *fp)
 {
 	int c;
 	char *w = word;
-	while (isspace(c = getch()))
+	while (isspace(c = ngetch(fp)))
 		;
 	if (c != EOF)
 		*w++ = c;
@@ -109,7 +121,7 @@ int getword(char *word, int lim)
 	}
 	for ( ; --lim > 0; w++)
 	{
-		if (!isalnum(*w = getch()))
+		if (!isalnum(*w = ngetch(fp)))
 		{
 			ungetch(*w);
 			break;
@@ -119,9 +131,9 @@ int getword(char *word, int lim)
 	return word[0];
 } 
 
-int getch(void) /* get a (possibly pushed-back) character */
+int ngetch(FILE *fp) /* get a (possibly pushed-back) character */
 {
-	return (bufp > 0) ? buf[--bufp] : getchar();
+	return (bufp > 0) ? buf[--bufp] : fgetc(fp);
 }
 
 void ungetch(int c) /* push character back on input */
