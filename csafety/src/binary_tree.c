@@ -50,13 +50,19 @@ int main(void)
 struct tnode *addtree(struct tnode *p, char *w)
 {
 	int cond;
+	
+	
 
 	if (p == NULL) /* a new word has arrived */
-	{ 
+	{
+		printf("N %s\n", w);
+		
 		p = malloc(sizeof(struct tnode));
 		p->word = strdup(w); /* make a new node */
 		p->count = 1;
 		p->left = p->right = NULL;
+		fflush(stdout);
+		//printf("  P %s\n", p->word);
 	} 
 	else if ((cond = strcmp(w, p->word)) == 0) /* repeated word */ 
 	{
@@ -64,10 +70,19 @@ struct tnode *addtree(struct tnode *p, char *w)
 	}
 	else if (cond < 0) /* less than into left subtree */
 	{ 
+		printf("  P %s\n", p->word);
+		printf("        L %s\n", w);
+		
+		//printf("        L %s\n", p->word);
+		fflush(stdout);
 		p->left = addtree(p->left, w);
 	}
 	else /* greater than into right subtree */
 	{ 
+		printf("  P %s\n", p->word);
+		printf("                R %s\n", w);
+		//printf("                R %s\n", p->word);
+		fflush(stdout);
 		p->right = addtree(p->right, w);
 	}
 	return p;
