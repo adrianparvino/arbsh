@@ -12,44 +12,37 @@ struct tnode {
 	struct tnode *right;
 };
 
-/* prototypes */
-
-int ngetch(FILE *);
-
-
+/* prototypes */ 
+int ngetch(FILE *); 
 int getch(void);
 void ungetch(int);
 struct tnode *addtree(struct tnode *, char *);
-void treeprint(struct tnode *, char *);
+void treeprint(struct tnode *);
 int getword(char *, int, FILE *);
-struct tnode *talloc(void);
 
 /* defines */
 #define MAXWORD 100
 #define BUFSIZE 100
 
 /* globals */
-char buf[BUFSIZE]; /* buffer for ungetch */
-int bufp = 0; /* next free position in buf */
+struct gchbuf{
+	char buf[BUFSIZE]; /* buffer for ungetch */
+	int bufp; /* next free position in buf */
+}gchbuf = { {0}, 0 };
 
 /* word frequency count */
 int main(void)
 {
-	// "now is the time for all good men to come to the aid of their party"
-	
-	struct tnode *root;
+	struct tnode *root = NULL;
 	char word[MAXWORD];
-	root = NULL;
-	FILE *fp;
-
-	fp = fopen("data.txt", "r");
-	//while (fgets(fp) != NULL)
-		
+	FILE *fp = fopen("data.txt", "r");
+	if (!(fp))
+		return 1;
 	while (getword(word, MAXWORD, fp) != EOF)
 		if (isalpha(word[0]))
 			root = addtree(root, word);
 	
-	treeprint(root, "start");
+	treeprint(root);
 	return 0;
 }
 
@@ -58,39 +51,46 @@ struct tnode *addtree(struct tnode *p, char *w)
 {
 	int cond;
 
-	if (p == NULL) {
-		/* a new word has arrived */
-		p = talloc();
-		/* make a new node */
-		p->word = strdup(w);
+	if (p == NULL) /* a new word has arrived */
+	{ 
+		p = malloc(sizeof(struct tnode));
+		p->word = strdup(w); /* make a new node */
 		p->count = 1;
 		p->left = p->right = NULL;
-	} else if ((cond = strcmp(w, p->word)) == 0)
-		p->count++;
-		/* repeated word */
-	else if (cond < 0)
-		/* less than into left subtree */
+	} 
+	else if ((cond = strcmp(w, p->word)) == 0) /* repeated word */ 
+	{
+		p->count++; 
+	}
+	else if (cond < 0) /* less than into left subtree */
+	{ 
 		p->left = addtree(p->left, w);
-	else
-		/* greater than into right subtree */
+	}
+	else /* greater than into right subtree */
+	{ 
 		p->right = addtree(p->right, w);
+	}
 	return p;
 
-}
-
-/* talloc: make a tnode */
-struct tnode *talloc(void)
-{
-	return malloc(sizeof(struct tnode));
-}
+} 
 
 /* treeprint: in-order print of tree p */
-void treeprint(struct tnode *p, char *s)
+void treeprint(struct tnode *p)
 {
 	int depth = 10;
 	if (p != NULL)
 	{
-		treeprint(p->left, "left");
+		treeprint(p->left); 
+		printf("%.*s %4d %s\n", depth, "     ", p->count, p->word); 
+		treeprint(p->right);
+	}
+}
+void treeprint2(struct tnode *p, char *s)
+{
+	int depth = 10;
+	if (p != NULL)
+	{
+		treeprint2(p->left, "left");
 		if (!(strcmp(s, "start")))
 			depth = 5; 
 		printf("%.*s %4d %s   %s --> \n", depth, "                      ", p->count, p->word, s); 
@@ -102,7 +102,7 @@ void treeprint(struct tnode *p, char *s)
 		
 		if (!(strcmp(s, "start")))
 			depth = 10;
-		treeprint(p->right, "right");
+		treeprint2(p->right, "right");
 	}
 }
 
@@ -129,18 +129,18 @@ int getword(char *word, int lim, FILE *fp)
 	}
 	*w = '\0';
 	return word[0];
-} 
+}
 
 int ngetch(FILE *fp) /* get a (possibly pushed-back) character */
 {
-	return (bufp > 0) ? buf[--bufp] : fgetc(fp);
+	return (gchbuf.bufp > 0) ? gchbuf.buf[--gchbuf.bufp] : fgetc(fp);
 }
 
 void ungetch(int c) /* push character back on input */
 {
-	if (bufp >= BUFSIZE)
+	if (gchbuf.bufp >= BUFSIZE)
 		fprintf(stderr, "ungetch: too many characters\n");
 	else
-		buf[bufp++] = c;
+		gchbuf.buf[gchbuf.bufp++] = c;
 }
 
