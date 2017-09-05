@@ -2,7 +2,9 @@
 Dangling pointers can be completely avoided in C by keeping an extra copy of
 the original pointer. The idiom might be "a = b = malloc(..)" as opposed to
 "a = malloc(..)". In this way we always have access to the original pointer
-location and can free it without error.
+location and can free it without error. Presented below is a short program that
+creates a dangling pointer but then uses a copy to the original pointer it had
+saved to free it.
 */
 
 
@@ -12,28 +14,15 @@ location and can free it without error.
 
 int main(void)
 { 
-	char *a;
-	char *b;
+	char *a, *b;
 	const char *string = "This is a string\n";
 
-	a = b = malloc(32); // Always keep at least 2 copies of
-			    // of the original pointer location.
+	a = b = malloc(32); // keep an extra copy
 	while (*string)
-	{
-		*b = *string;
-		++string;
-		++b; // "b" is now a dangling pointer
-		     // and can not be freed
-	}
-
-	
-	write(1, a, b - a); // when "b" is incremented away from "a" and
-			    // becomes a dangling pointer then we can
-			    // calculate the length of the object as b-a.
-
-	free(a); // "a" however points at the original
-		 // location that "b" pointed to and
-		 // can be used to free the memory
-	return 0; 
+		*b++ = *string++; // "b" is now a dangling pointer 
+	write(1, a, b - a); 
+			    
+	free(a);            // "a" however, still points to the original location 
+	return 0;           
 }
 
