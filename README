@@ -15,7 +15,7 @@ HIER:
 
 	
 	libm/
-		Libm mathematics functions which operate on and tranform 
+		Libm mathematics functions which operate on and transform 
 		double precision types. This library covers most of the math.h / 
 		libm normative cases.
 
