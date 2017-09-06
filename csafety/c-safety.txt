@@ -249,7 +249,7 @@ shared.h:
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Creating static libraries with ar 5.0)                         page 6
+c-safety (Creating static libraries with ar 5.0)                         page 5
 
 ar has been around for a long time. and it makes very simple archives. These
 very simple archives happen to be readable by the compiler and we can
@@ -320,7 +320,7 @@ main.c:
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Safe multiplication 6.0)		                         page 7
+c-safety (Safe multiplication 6.0)		                         page 6
 
 
 The C standard specifies that unsigned integer types must wrap around
@@ -372,7 +372,7 @@ below is an idea for safe bounded multiplication.
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Eliminating concern for dangling pointers 7.0)                 page 8
+c-safety (Eliminating concern for dangling pointers 7.0)                 page 7
 
 Dangling pointers can be completely avoided in C by keeping an extra copy of
 the original pointer. The idiom might be "a = b = malloc(..)" as opposed to
@@ -403,7 +403,7 @@ saved to free it.
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Function pointers 8.0) 			                 page 9
+c-safety (Function pointers 8.0) 			                 page 8
 
 Function pointers make objects even more powerful by allowing them to have
 functions assigned to their members. Effectively they take the struct which is 
@@ -466,7 +466,7 @@ the object itself to perform actions.
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Function pointers (arrays of) 8.1) 		                page 10
+c-safety (Function pointers (arrays of) 8.1) 		                 page 9
 
 The concept of function pointers can be extended to an array of function
 pointers within an object. By also including an "iterator" function we can
@@ -538,7 +538,7 @@ array of function pointers
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Creating dynamic libraries 9.0) 		                page 11
+c-safety (Creating dynamic libraries 9.0) 		                page 10
 
 Unlike static libraries, dynamic libraries can not be made using the `ar'
 utility and instead must be constructed by supplying directions to the compiler
@@ -623,7 +623,7 @@ main.c
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Simple objects using typedefed structs 10.0)                  page 12
+c-safety (Simple objects using typedefed structs 10.0)                  page 13
 
 
 It's possible to program using objects in C without all of the complicated
@@ -658,7 +658,7 @@ arrays of typedefed structs.
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Unix pipelines (for a simple shell) 11.0)                     page 13
+c-safety (Unix pipelines (for a simple shell) 11.0)                     page 14
 /*
 Unix pipelines can be created between utilities without using a buffer of any
 kind. Using the typical object it becomes simple to store the information
@@ -770,7 +770,7 @@ that supports arbitrary numbers of pipes. The sequence used is equivalent to
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Unsigned pow 12.0 (base^cardinality))                         page 14
+c-safety (Unsigned pow 12.0 (base^cardinality))                         page 15
 
 
 The total number of values possible within a given range in base N within a set
@@ -857,7 +857,7 @@ log and is not covered here).
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Singly linked lists (13.0))                                   page 15
+c-safety (Singly linked lists (13.0))                                   page 16
 
 Singly linked lists can be created such that the ->next members point in either
 direction. The simplest possible singly linked list builds this chain backwards
