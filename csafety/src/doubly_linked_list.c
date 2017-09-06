@@ -1,3 +1,16 @@
+/*
+[x] prev <-[o]
+           [o]->next = [o]
+           [o] = prev<-[o]
+                       [o]->next = [o]
+                       [o] = prev<-[o]
+                                   [o]->next = [o]
+                                   [o] = prev<-[o] 
+                                               [o]->next = [o]
+                                               [o] = prev<-[o]
+                                                           [o]->next = [x]
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -55,7 +68,8 @@ object *initlist(size_t i)
 	if (!(ptr))
 		return NULL;
         ptr->i = i;
-        ptr->prev = ptr->next = NULL;
+	/* terminal NODES [x]<--[ ]-->[x] */
+        ptr->prev = ptr->next = NULL; 
 	return ptr;
 }
 
@@ -76,9 +90,9 @@ object *addtail(object *o, size_t i)
 } 
 
 void listbackward(object *ptr)
-{
+{ 
 	for(;ptr;ptr = ptr->prev)
-		printf("%zu ", ptr->i);
+		printf("%zu ", ptr->i); 
 	printf("\n\n");
 }
 
@@ -93,9 +107,8 @@ object *placefreeobj(object *hold)
 {
         if (hold) 
         	printf("free(%zu)--> ", hold->i);
-        hold = safe_free(hold);
-        return hold;
-} 
+        return safe_free(hold);
+}
 
 object *freeobj(object *head)
 {
@@ -150,11 +163,7 @@ int main(void)
 	listforward(head);
 	listbackward(tail);
 
-	/* free the list */
-	head = freeobj(head);
-
-	if ( head )
-		fprintf(stderr, "free failed\n");
-
+	/* free the list and NULL the root and tail nodes */
+	tail = head = freeobj(head); 
 	return 0; 
 }
