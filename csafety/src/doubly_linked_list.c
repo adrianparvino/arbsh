@@ -1,8 +1,8 @@
 /*
 A doubly linked list is a data structure of nodes linked together in both
 directions. These node creation and traversal directions are accessed with the
-structure members "prev" and "next". NULL is used as the linked list terminal
-end point.
+structure members "prev" and "next". NULL is used for the linked list terminal
+end points.
 
 [x] prev <-[o]
            [o]->next = [o]
@@ -18,7 +18,6 @@ end point.
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct object {
 	size_t i;
@@ -69,12 +68,12 @@ object *deletenode(object *o)
 
 object *initlist(size_t i)
 {
-	object *ptr = verbose_malloc(objectsize());
-	if (!(ptr))
+	object *o = verbose_malloc(objectsize());
+	if (!(o))
 		return NULL;
-        ptr->i = i;
-        ptr->prev = ptr->next = NULL; /* terminal NODES */
-	return ptr;
+        o->i = i;
+        o->prev = o->next = NULL; /* terminal NODES */
+	return o;
 }
 
 object *delhead(object *o)
