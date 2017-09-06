@@ -59,22 +59,20 @@ object *initlist(size_t i)
 	return ptr;
 }
 
-object *addhead(object *head, size_t i)
+object *addhead(object *o, size_t i)
 { 
 	object *ptr = initlist(i); 
-	ptr->next = head;
-	head->prev = ptr;
-	head = ptr;
-	return head;
+	ptr->next = o;
+	o->prev = ptr;
+	return ptr;
 } 
 
-object *addtail(object *tail, size_t i)
+object *addtail(object *o, size_t i)
 {
 	object *ptr = initlist(i); 
-	ptr->prev = tail;
-	tail->next = ptr;
-	tail = ptr;
-	return tail;
+	ptr->prev = o;
+	o->next = ptr;
+	return ptr;
 } 
 
 void listbackward(object *ptr)
@@ -93,11 +91,9 @@ void listforward(object *ptr)
 
 object *placefreeobj(object *hold)
 {
-        if (hold)
-        {
-                printf("free(%zu)--> ", hold->i);
-                hold = safe_free(hold);
-        }
+        if (hold) 
+        	printf("free(%zu)--> ", hold->i);
+        hold = safe_free(hold);
         return hold;
 } 
 
