@@ -4,12 +4,11 @@
 #include <stdbool.h>
 
 #define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0]) 
-#define ALPHABET_SIZE (26) 
+size_t alphasize = 26;
 
-typedef struct object
-{
+typedef struct object {
+	int leaf;
 	struct object **children; 
-	bool leaf;
 }object;
 
 object *initnode(void)
@@ -18,59 +17,61 @@ object *initnode(void)
 	object *o = malloc(sizeof(object)); 
 	if (!(o))
 		return NULL;
-	o->leaf = false;
-	o->children = malloc(sizeof(object*) * ALPHABET_SIZE);
+	o->leaf = 0;
+	o->children = malloc(sizeof(object*) * alphasize);
 	if (!(o->children))
 		return NULL;
-	for (i = 0; i < ALPHABET_SIZE; i++) 
+	for (i = 0; i < alphasize; i++) 
 		o->children[i] = NULL; 
 	return o;
 } 
 
-void insert(object *root, const char *key)
+void insert(object *o, const char *pat)
 {
-	size_t level; 
-	size_t index; 
-	object *o = root;
-	for (level = 0; key[level]; level++)
+	size_t i; 
+	size_t ind; 
+	for (i = 0; pat[i]; i++)
 	{ 
-		index = key[level] - 'a';
-		if (!o->children[index])
-			o->children[index] = initnode(); 
-		o = o->children[index];
+		ind = pat[i] - 'a';
+		if (!o->children[ind])
+			o->children[ind] = initnode(); 
+		o = o->children[ind];
 	}
-	o->leaf = true;
+	o->leaf = 1;
 } 
 
-bool search(object *root, const char *key)
+int search(object *o, const char *pat)
 {
-	size_t level;
-	size_t index;
-	object *o = root; 
-	for (level = 0; key[level]; level++)
+	size_t i;
+	size_t ind; 
+	for (i = 0; pat[i]; i++)
 	{ 
-		index = key[level] - 'a';
-		if (!o->children[index])
-			return false; 
-		o = o->children[index];
+		ind = pat[i] - 'a';
+		if (!o->children[ind])
+			return 0; 
+		o = o->children[ind];
 	} 
-	return (o != NULL && o->leaf);
+	if ( o != NULL && o->leaf)
+		return 1;
+	return 0; 
 }
 
 int main(void)
 { 
 	size_t i;
-	char keys[][8] = {"the", "a", "there", "answer", "any", "by", "bye", "their"}; 
-	char output[][32] = {"Not present in trie", "Present in trie"}; 
+	char patterns[][10] = {"the", "a", "there", "answer", "any", "by", "bye", "their"}; 
+	char queries[][10] = {"the", "thaw", "their", "these"};
+
 	object *root = initnode(); 
-	
-	for (i = 0; i < ARRAY_SIZE(keys); i++)
-		insert(root, keys[i]); 
 
-	printf("%s --- %s\n", "the", output[search(root, "the")] );
-	printf("%s --- %s\n", "these", output[search(root, "these")] );
-	printf("%s --- %s\n", "their", output[search(root, "their")] );
-	printf("%s --- %s\n", "thaw", output[search(root, "thaw")] );
-
+	for (i=0; i < sizeof(patterns)/sizeof(patterns[0]); ++i)
+		insert(root, patterns[i]); 
+	for (i=0; i < sizeof(queries)/sizeof(queries[0]); ++i)
+	{ 
+                if (!( search(root, queries[i])))
+			printf("%s --  Not found\n", queries[i]);
+		else
+			printf("%s --  Found\n", queries[i]);
+	} 
 	return 0;
 }
