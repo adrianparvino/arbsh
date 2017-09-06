@@ -11,7 +11,7 @@ typedef struct object {
 
 object *initlist(size_t);
 
-size_t objectsize()
+size_t objectsize(void)
 {
 	return sizeof(object);
 }
@@ -45,7 +45,7 @@ object *deletenode(object *o)
 	object *tmp = o->prev;
 	o->prev->next = o->next;
 	o->next->prev = o->prev; 
-	free(o);
+	safe_free(o);
 	return tmp;
 }
 
@@ -59,7 +59,7 @@ object *initlist(size_t i)
 	return ptr;
 }
 
-object *addhead(object *head, object *tail, size_t i)
+object *addhead(object *head, size_t i)
 { 
 	object *ptr = initlist(i); 
 	ptr->next = head;
@@ -68,29 +68,28 @@ object *addhead(object *head, object *tail, size_t i)
 	return head;
 } 
 
-object *addtail(object *head, object *tail, size_t i)
+object *addtail(object *tail, size_t i)
 {
 	object *ptr = initlist(i); 
-	tail->next = ptr;
 	ptr->prev = tail;
-	tail = ptr; 
+	tail->next = ptr;
+	tail = ptr;
 	return tail;
 } 
 
 void listbackward(object *ptr)
-{ 
-	for(;ptr;ptr = ptr->prev) 
+{
+	for(;ptr;ptr = ptr->prev)
 		printf("%zu ", ptr->i);
 	printf("\n\n");
 }
 
-
 void listforward(object *ptr)
-{ 
-	for(;ptr;ptr = ptr->next) 
+{
+	for(;ptr;ptr = ptr->next)
 		printf("%zu ", ptr->i);
 	printf("\n\n");
-} 
+}
 
 object *placefreeobj(object *hold)
 {
@@ -121,43 +120,45 @@ object *freeobj(object *head)
 
 int main(void)
 {
-	size_t i = 0;
-
+	size_t i = 0; 
 	object *head = NULL;
 	object *tail = NULL;
 	object *o;
+
+	/* create */
 	tail = head = initlist(i);
 
+	/* add to tail */
 	for (i =1; i <= 20; i++) 
-		tail = addtail(head, tail, i);
-	
+		tail = addtail(tail, i); 
 	listforward(head);
 	listbackward(tail);
 
+	/* add to head */
 	for (i=30; i <= 40; i++)
-		head = addhead(head, tail, i); 
-
+		head = addhead(head, i); 
 	listforward(head);
 	listbackward(tail); 
 	
+	/* node deletion */
         for(i=0,o = head;o;o = o->next,++i)
                 if (i >3 && i < 13)
 			o = deletenode(o); 
-
 	listforward(head);
 	listbackward(tail); 
-	
+
+	/* node insertion */
         for(i=0,o = head;o;o = o->next,++i)
                 if (i >3 && i < 13)
-			o = insertnode(o, i);
-               
-        for(i=0,o = tail;o;o = o->prev,++i)
-                if (i == 10 || i == 11)
-			o = insertnode(o, i);
-
+			o = insertnode(o, i); 
 	listforward(head);
 	listbackward(tail);
 
-	freeobj(head);
+	/* free the list */
+	head = freeobj(head);
+
+	if ( head )
+		fprintf(stderr, "free failed\n");
+
 	return 0; 
 }
