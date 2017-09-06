@@ -1,4 +1,9 @@
 /*
+A doubly linked list is a data structure of nodes linked together in both
+directions. These node creation and traversal directions are accessed with the
+structure members "prev" and "next". NULL is used as the linked list terminal
+end point.
+
 [x] prev <-[o]
            [o]->next = [o]
            [o] = prev<-[o]
@@ -58,7 +63,7 @@ object *deletenode(object *o)
 	object *tmp = o->prev;
 	o->prev->next = o->next;
 	o->next->prev = o->prev; 
-	safe_free(o);
+	o = safe_free(o); 
 	return tmp;
 }
 
@@ -68,9 +73,24 @@ object *initlist(size_t i)
 	if (!(ptr))
 		return NULL;
         ptr->i = i;
-	/* terminal NODES [x]<--[ ]-->[x] */
-        ptr->prev = ptr->next = NULL; 
+        ptr->prev = ptr->next = NULL; /* terminal NODES */
 	return ptr;
+}
+
+object *delhead(object *o)
+{ 
+        object *tmp = o->next;
+        o->next->prev = NULL; 
+        o = safe_free(o);
+        return tmp;
+}
+
+object *deltail(object *o)
+{ 
+        object *tmp = o->prev;
+        o->prev->next = NULL; 
+        o = safe_free(o);
+        return tmp;
 }
 
 object *addhead(object *o, size_t i)
@@ -159,10 +179,21 @@ int main(void)
 	/* node insertion */
         for(i=0,o = head;o;o = o->next,++i)
                 if (i >3 && i < 13)
-			o = insertnode(o, i); 
+			o = insertnode(o, i);
+
+	
 	listforward(head);
 	listbackward(tail);
 
+
+	head = delhead(head);
+	head = delhead(head);
+
+	tail = deltail(tail);
+	tail = deltail(tail);
+	
+	listforward(head);
+	listbackward(tail);
 	/* free the list and NULL the root and tail nodes */
 	tail = head = freeobj(head); 
 	return 0; 
