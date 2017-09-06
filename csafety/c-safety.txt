@@ -51,21 +51,7 @@ Presented below is a method of "programming with objects" in C.
 		free(o);
 	
 		return 0; 
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	} 
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -130,11 +116,7 @@ pointer to a pointer to a type).
 Note that this creates an "anti-pattern" within the C programming language.
 Ideally values are saved using a different mechanism such as passing an object 
 with mutable members to a function and then returning that object to the caller
-(the calling function).
-
-
-
-
+(the calling function).  
 
 
 -------------------------------------------------------------------------------
@@ -173,38 +155,7 @@ operation of explicitly setting deallocated variables to NULL.
 		o = safe_free(o); // does nothing
 
 		return 0; 
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	} 
 
 
 -------------------------------------------------------------------------------
@@ -260,7 +211,7 @@ use the library as a library of opaque objects. The canonical example of the
 opaque object in C is the FILE * structure from stdio.  
 
 
-opaque.c (part 1):
+opaque.c :
 	#include <stdlib.h>
 	#include <stdio.h>
 	#include <unistd.h>
@@ -273,15 +224,6 @@ opaque.c (part 1):
 		size_t len;
 	}; 
 
-
-
-
-
--------------------------------------------------------------------------------
--------------------------------------------------------------------------------
-c-safety (Opaque objects and pointers 4.0)                               page 5
-
-opaque.c (part 2):
 	size_t object_size(void)
 	{
 		return sizeof(object);
@@ -319,32 +261,7 @@ shared.h:
 	object *object_init(object *);
 	object *object_populate(object *, char *);
 	void object_write(object *);
-	void object_free(object *);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	void object_free(object *); 
 
 
 -------------------------------------------------------------------------------
@@ -467,24 +384,7 @@ below is an idea for safe bounded multiplication.
 		printf("%u\n", b);
 
 		return 0;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	} 
 
 
 -------------------------------------------------------------------------------
@@ -528,33 +428,7 @@ saved to free it.
 			 // location that "b" pointed to and
 			 // can be used to free the memory
 		return 0; 
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	} 
 
 
 -------------------------------------------------------------------------------
@@ -618,14 +492,7 @@ the object itself to perform actions.
 		free(o);
 
 		return 0;
-	}
-
-
-
-
-
-
-
+	} 
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -697,6 +564,8 @@ array of function pointers
 		o = o->iterate(o);
 		return 0;
 	}
+
+
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 c-safety (Creating dynamic libraries 9.0) 		                page 11
@@ -764,13 +633,6 @@ swan.c:
 	{
 		return d + 1;
 	}
-
-main.c: (next page)
-
--------------------------------------------------------------------------------
--------------------------------------------------------------------------------
-c-safety (Creating dynamic libraries 9.0) 		                page 12
-
 main.c
 	#include <stdio.h>
 	#include "animals.h"
@@ -786,55 +648,7 @@ main.c
 		printf("Number of swans %d\n", swans);
 		printf("Number of frogs %d\n", frogs); 
 		return 0; 
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	} 
 
 
 -------------------------------------------------------------------------------
@@ -868,43 +682,7 @@ arrays of typedefed structs.
 			write(1, (o+i)->rp, (o+i)->len); 
 
 		return 0; 
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	} 
 
 
 -------------------------------------------------------------------------------
@@ -977,6 +755,8 @@ that supports arbitrary numbers of pipes. The sequence used is equivalent to
 		} 
 		return 0; 
 	}
+
+
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 c-safety (Unsigned pow 12.0 (base^cardinality))                         page 14
@@ -1023,29 +803,46 @@ consisting of fractional parts. (support for fractions in pow requires exp and
 log and is not covered here).
 
 
-	#include <stdio.h>
+        #include <stdio.h>
 
-	size_t usign_pow(size_t x, size_t n)
-	{
-	        size_t y = 1;
-	        while (n--)
-	              y *= x;
-	        return y;
-	}
+        size_t safe_division(size_t i, size_t x)
+        {
+                if (i==0)
+                {
+                        fprintf(stderr, "Divide by zero forced to return 0\n");
+                        return 0;
+                }
+                return i / x;
+        }
 
-	int main(void)
-	{
-		size_t base = 2;
-		size_t cardinality = 4;
-		printf("Total brute range %zu\n", usign_pow(base, cardinality));
-		return 0;
-	}
+        size_t safe_multiply(size_t i, size_t x, size_t lim)
+        {
+                size_t tmp = safe_division(lim, i);
+                if (tmp >= x)
+                {
+                        fprintf(stderr, "Muliplication proposal accepted\n");
+                        return i * x;
+                }else if (tmp == 0)
+                        return 0;
+                fprintf(stderr, "Muliplication proposal rejected\n");
+                return lim;
+        }
 
+        size_t safe_upow(size_t x, size_t n)
+        {
+                size_t y = 1;
+                while (n--)
+                        y = safe_multiply(y, x, (size_t)-1);
+                return y;
+        }
 
-
-
-
-
+        int main(void)
+        {
+                size_t base = 2;
+                size_t cardinality = 128;
+                printf("total range of brute elements %zu\n", safe_upow(base, cardinality));
+                return 0;
+        }
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -1116,11 +913,7 @@ forward and backward populated linked list respectively.
 	void iterate(object* head)
 	{
 		object *o;
-		for(o = head;o;o = o->next)
--------------------------------------------------------------------------------
--------------------------------------------------------------------------------
-c-safety (Singly linked lists (13.0 (continued)))                       page 16
-
+		for(o = head;o;o = o->next) 
 			printf("(%zu)-->", o->i); 
 		printf("END\n\n");
 	}
@@ -1171,21 +964,7 @@ c-safety (Singly linked lists (13.0 (continued)))                       page 16
 		head = freeobj(head);
 
 		return 0;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	} 
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -1257,6 +1036,209 @@ way as free and realloc in order to present a consistent API.
 			;// NULL pointers passed to free indicate design flaw 
 		return 0;
 	}
--------------------------------------------------------------------------------
--------------------------------------------------------------------------------
 
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+c-safety (Doubly linked list)                                           page 18
+
+A doubly linked list is a data structure of nodes linked together in both
+directions. These node creation and traversal directions are accessed with the
+structure members "prev" and "next". NULL is used for the linked list terminal
+end points.
+	
+[x] prev <-[o]
+           [o]->next = [o]
+           [o] = prev<-[o]
+                       [o]->next = [o]
+                       [o] = prev<-[o]
+                                   [o]->next = [o]
+                                   [o] = prev<-[o] 
+                                               [o]->next = [o]
+                                               [o] = prev<-[o]
+                                                           [o]->next = [x]
+
+Here is a program to implement a basic doubly linked list with node insertion
+and deletion;
+	
+	#include <stdio.h>
+	#include <stdlib.h>
+	
+	typedef struct object {
+		size_t i;
+		struct object *prev;
+		struct object *next;
+	} object;
+	
+	object *initlist(size_t);
+	
+	size_t objectsize(void)
+	{
+		return sizeof(object);
+	}
+	
+	void *safe_free(void *a)
+	{
+	        free(a);
+	        return NULL;
+	}
+	
+	void *verbose_malloc(size_t i)
+	{
+	        void *ret;
+	        if (!(ret = malloc(i)))
+	                perror("malloc error: ");
+	        return ret;
+	}
+	
+	object *insertnode(object *o, size_t i)
+	{ 
+		object *ptr = initlist(i);
+		ptr->prev = o;
+		ptr->next = o->next;
+		o->next->prev = ptr;
+		o->next = ptr; 
+		return ptr;
+	}
+	
+	object *deletenode(object *o)
+	{ 
+		object *tmp = o->prev;
+		o->prev->next = o->next;
+		o->next->prev = o->prev; 
+		o = safe_free(o); 
+		return tmp;
+	}
+	
+	object *initlist(size_t i)
+	{ 
+		object *o = verbose_malloc(objectsize()); 
+		if (!(o))
+			return NULL; 
+	        o->i = i;
+	        o->prev = o->next = NULL; /* terminal NODES */
+		return o;
+	}
+	
+	object *delhead(object *o)
+	{ 
+	        object *tmp = o->next;
+	        o->next->prev = NULL; 
+	        o = safe_free(o);
+	        return tmp;
+	}
+	
+	object *deltail(object *o)
+	{ 
+	        object *tmp = o->prev;
+	        o->prev->next = NULL; 
+	        o = safe_free(o);
+	        return tmp;
+	}
+	
+	object *addhead(object *o, size_t i)
+	{ 
+		object *ptr = initlist(i); 
+		ptr->next = o;
+		o->prev = ptr;
+		return ptr;
+	} 
+	
+	object *addtail(object *o, size_t i)
+	{
+		object *ptr = initlist(i); 
+		ptr->prev = o;
+		o->next = ptr;
+		return ptr;
+	} 
+	
+	void listbackward(object *ptr)
+	{ 
+		for(;ptr;ptr = ptr->prev)
+			printf("%zu ", ptr->i); 
+		printf("\n\n");
+	}
+	
+	void listforward(object *ptr)
+	{
+		for(;ptr;ptr = ptr->next)
+			printf("%zu ", ptr->i);
+		printf("\n\n");
+	}
+	
+	object *placefreeobj(object *hold)
+	{
+	        if (hold) 
+	        	printf("free(%zu)--> ", hold->i);
+	        return safe_free(hold);
+	}
+	
+	object *freeobj(object *head)
+	{
+	        object *o;
+	        object *hold = NULL;
+	        for(o = head;o;o = o->next)
+	        {
+	                hold = placefreeobj(hold);
+	                hold = o;
+	        }
+	        hold = placefreeobj(hold);
+	
+	        if (o == head)
+	                printf("Nothing to be freed  ");
+	        printf("END\n\n");
+	        return hold;
+	}
+	
+	int main(void)
+	{
+		size_t i = 0; 
+		object *head = NULL;
+		object *tail = NULL;
+		object *o;
+	
+		/* create */
+		tail = head = initlist(i);
+	
+		/* add to tail */
+		for (i =1; i <= 20; i++) 
+			tail = addtail(tail, i); 
+		listforward(head);
+		listbackward(tail);
+	
+		/* add to head */
+		for (i=30; i <= 40; i++)
+			head = addhead(head, i); 
+		listforward(head);
+		listbackward(tail); 
+		
+		/* node deletion */
+	        for(i=0,o = head;o;o = o->next,++i)
+	                if (i >3 && i < 13)
+				o = deletenode(o); 
+		listforward(head);
+		listbackward(tail); 
+	
+		/* node insertion */
+	        for(i=0,o = head;o;o = o->next,++i)
+	                if (i >3 && i < 13)
+				o = insertnode(o, i);
+		
+		listforward(head);
+		listbackward(tail);
+	
+		/* delete from head */
+		head = delhead(head);
+		head = delhead(head);
+	
+		/* delete from tail */
+		tail = deltail(tail);
+		tail = deltail(tail);
+		
+		listforward(head);
+		listbackward(tail);
+	
+		/* free the list and NULL the root and tail nodes */
+		tail = head = freeobj(head); 
+		return 0; 
+	}
