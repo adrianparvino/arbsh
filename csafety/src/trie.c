@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
 
-#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0]) 
 size_t alphasize = 26;
 
 typedef struct object {
