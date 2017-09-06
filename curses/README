@@ -31,8 +31,8 @@ Building:
 		make install
 
 	Gcurses should now be installed to grafland/lib and its header files
-	installed to grafland/include and you can proceed to use test the 
-	library grafland/lib/libgcurses.a. The simplest way to test gcusers is
+	installed to grafland/include and you can proceed to use and test the 
+	library grafland/lib/libgcurses.a. The simplest way to test gcurses is
 	by compiling it into the test editor that is supplied at
 	grafland/editor. Compile the editor with the "native" argument so that
 	it knows to use gcurses instead of the system curses.
