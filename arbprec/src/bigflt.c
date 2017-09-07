@@ -26,6 +26,18 @@ bigflt *arbprec_setsign(bigflt *flt)
 	return flt;
 }
 
+int convert_to_base(int a)
+{
+	int idiom[1024] = { 	'0', '1', '2', '3', '4', '5', '6', '7', '8',
+				'9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+				'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+				'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+				'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+				'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+				'S', 'T', 'U', 'V', 'X', 'Y', 'Z', '+', '/', '='};
+	return idiom[a];
+}
+
 bigflt *arbprec_print(bigflt *flt)
 { 
 	/* Print a bigflt in chunks of BUFSIZ */
@@ -51,7 +63,8 @@ bigflt *arbprec_print(bigflt *flt)
 	{
 		if (flt->float_pos == i)
 			putchar('.');
-		putchar((flt->number[i] + '0'));
+		putchar(convert_to_base((flt->number[i]) ));//+ '0'));
+		//putchar((flt->number[i] ));//+ '0'));
 	}
 	end:
 	putchar('\n');
