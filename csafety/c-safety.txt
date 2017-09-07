@@ -1,3 +1,17 @@
+C-Safety   An intermediate level guide for C programmers wishing to learn 
+idiomatic C with pointers. Topics of safe boundary arithmetic and abstract data
+structures are covered with example programs. Strategies for creating meaningful
+checks and diagnostics to ensure reasonable levels of c safety have been
+devised and incorporated into the examples.
+
+
+
+
+(C) 2017 Christopher Michael Graff
+
+
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 c-safety (programming with abstract objects 1.0)		page 1
 
 The C standard identifies objects in a very broad sense and applies the
