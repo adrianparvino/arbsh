@@ -55,6 +55,10 @@ REFERENCES:
 
 	https://gmplib.org/manual/Multiplication-Algorithms.html#Multiplication-Algorithms
 
+	An RFC about base64 encoding:
+
+	http://www.rfc-editor.org/rfc/rfc4648.txt
+
 
 CONTACT:
 --------
