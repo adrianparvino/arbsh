@@ -54,6 +54,18 @@ int search(object *o, const char *pat)
 	return 0; 
 }
 
+void free_trie(object* root)
+{ 
+	size_t i;
+	for (i = 0; i < alphasize; i++)
+	{
+		if (root->children[i])
+			free_trie(root->children[i]);
+	}
+	free(root->children);
+	free(root);
+}
+
 void display(object* root, char *str, size_t level)
 { 
 	size_t i;
@@ -93,5 +105,6 @@ int main(void)
 			printf("%s  -- Found\n", queries[i]);
 	} 
 	display(root, str, level);
+	free_trie(root);
 	return 0;
 }
