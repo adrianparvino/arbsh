@@ -66,9 +66,11 @@ void free_trie(object* root)
 	free(root);
 }
 
-void display(object* root, char *str, size_t level)
+void display(object* root, size_t level)
 { 
-	size_t i;
+	size_t i; 
+	static char str[100];
+
 	if (root->leaf)
 	{
 		str[level] = '\0';
@@ -79,19 +81,20 @@ void display(object* root, char *str, size_t level)
 	{ 
 		if (root->children[i])
 		{
-			str[level] = i;
-			display(root->children[i], str, level + 1);
+			str[level] = i; 
+			display(root->children[i], level + 1); 
 		}
 	}
+	
 }
 
 int main(void)
 { 
 	size_t i;
-	char patterns[][10] = {"The!", "a", "there", "answer", "any", "by", "bye", "th@eir", "123", "~~~"}; 
-	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~"};
+	char patterns[][10] = {"The!", "a", "there", "answer", "any", "by", "bye", "th@eir", "123", "~~~", "zzzzz"}; 
+	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~", "zzzzzz"};
 	size_t level = 0;
-	char str[20];
+	
 
 	object *root = initnode(); 
 
@@ -104,7 +107,7 @@ int main(void)
 		else
 			printf("%s  -- Found\n", queries[i]);
 	} 
-	display(root, str, level);
+	display(root, 0);
 	free_trie(root);
 	return 0;
 }
