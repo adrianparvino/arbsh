@@ -1,13 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int arba_idioma(int a, int s)
-{
-	/* Convert ascii to integer values with
-	   an offset of 32. Octal is used to make
-	   the formatting nice
-	*/
-	static int iisca[300] = { 
+int asciioff(int a)
+{ 
+	static int b[300] = { 
 	000, 000, 000, 000, 000, 000, 000, 000, 
 	000, 000, 000, 000, 000, 000, 000, 000, 
 	000, 000, 000, 000, 000, 000, 000, 000, 
@@ -38,7 +34,7 @@ int arba_idioma(int a, int s)
 	167, 170, 171, 172, 173, 174, 175, 176, 
 	177, 200, 201 }; 
 
-	return iisca[a];
+	return b[a];
 }
 
 size_t alphasize = 64;
@@ -69,7 +65,7 @@ void insert(object *o, const char *pat)
 	size_t ind; 
 	for (i = 0; pat[i]; i++)
 	{
-		ind = arba_idioma(pat[i], 1);
+		ind = asciioff(pat[i]);
 		if (!o->children[ind])
 			o->children[ind] = initnode(); 
 		o = o->children[ind];
@@ -83,7 +79,7 @@ int search(object *o, const char *pat)
 	size_t ind; 
 	for (i = 0; pat[i]; i++)
 	{ 
-		ind = arba_idioma(pat[i], 1);
+		ind = asciioff(pat[i]);
 		if (!o->children[ind])
 			return 0; 
 		o = o->children[ind];
