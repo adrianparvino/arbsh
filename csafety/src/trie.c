@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-size_t alphasize = 256;
+/* alphasize must be sufficient to map all ASCII values to an indice */
+size_t alphasize = 128;
 
 typedef struct object {
 	int leaf;
@@ -15,7 +16,7 @@ object *initnode(void)
 	if (!(o))
 		return NULL;
 	o->leaf = 0;
-	o->children = malloc(sizeof(object*) * alphasize);
+	o->children = malloc(sizeof(object) * alphasize);
 	if (!(o->children))
 		return NULL;
 	for (i = 0; i < alphasize; i++) 
@@ -56,8 +57,8 @@ int search(object *o, const char *pat)
 int main(void)
 { 
 	size_t i;
-	char  patterns[][10] = {"The!", "a", "there", "answer", "any", "by", "bye", "th@eir", "123"}; 
-	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123"};
+	char patterns[][10] = {"The!", "a", "there", "answer", "any", "by", "bye", "th@eir", "123", "~~~"}; 
+	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~"};
 
 	object *root = initnode(); 
 
