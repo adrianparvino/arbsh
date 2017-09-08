@@ -92,7 +92,7 @@ int main(void)
 { 
 	size_t i;
 	char patterns[][10] = {"The!", "a", "there", "answer", "any", "by", "bye", "th@eir", "123", "~~~", "zzzzz"}; 
-	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~", "zzzzzz"};
+	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~", "zzzzz"};
 	size_t level = 0;
 	
 
@@ -102,7 +102,7 @@ int main(void)
 		insert(root, patterns[i]); 
 	for (i=0; i < sizeof(queries)/sizeof(queries[0]); ++i)
 	{ 
-                if (!( search(root, queries[i])))
+                if (!(search(root, queries[i])))
 			printf("%s  -- Not found\n", queries[i]);
 		else
 			printf("%s  -- Found\n", queries[i]);
