@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-size_t alphasize = 256;
+size_t alphasize = 128;
 
 typedef struct object {
 	int leaf;
