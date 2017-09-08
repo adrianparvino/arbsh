@@ -9,7 +9,7 @@ typedef struct object {
 	struct object **children; 
 }object;
 
-object *initnode(void)
+object *trie_init(void)
 {
 	size_t i = 0; 
 	object *o = malloc(sizeof(object)); 
@@ -24,7 +24,7 @@ object *initnode(void)
 	return o;
 } 
 
-void insert(object *o, const char *pat)
+void trie_insert(object *o, const char *pat)
 {
 	size_t i; 
 	size_t ind; 
@@ -32,13 +32,13 @@ void insert(object *o, const char *pat)
 	{
 		ind = pat[i]; 
 		if (!o->children[ind])
-			o->children[ind] = initnode(); 
+			o->children[ind] = trie_init(); 
 		o = o->children[ind];
 	}
 	o->leaf = 1;
 } 
 
-int search(object *o, const char *pat)
+int trie_search(object *o, const char *pat)
 {
 	size_t i;
 	size_t ind; 
@@ -54,22 +54,52 @@ int search(object *o, const char *pat)
 	return 0; 
 }
 
-void free_trie(object* root)
+void trie_free(object* root)
 { 
 	size_t i;
 	for (i = 0; i < alphasize; i++)
 	{
 		if (root->children[i])
-			free_trie(root->children[i]);
+			trie_free(root->children[i]);
 	}
 	free(root->children);
 	free(root);
 }
 
-void display(object* root, size_t level)
+void trie_histogram(object* root, size_t level)
 { 
 	size_t i; 
 	static char str[100];
+	
+	static int once = 1;
+	if (once)
+	{
+		printf("root\n|\n|\n|");
+		once = 0;
+	}
+
+	if (root->leaf)
+	{
+		str[level] = '\0';
+		printf("    -->(%s)\n|", str); 
+	} 
+    
+	for (i = 0; i < alphasize; i++)
+	{ 
+		
+		if (root->children[i])
+		{
+			printf("-%c", (int)i);
+			str[level] = i; 
+			trie_histogram(root->children[i], level + 1);
+		}
+	}
+}
+
+void trie_display(object* root, size_t level)
+{ 
+	size_t i; 
+	static char str[100]; 
 
 	if (root->leaf)
 	{
@@ -79,35 +109,36 @@ void display(object* root, size_t level)
     
 	for (i = 0; i < alphasize; i++)
 	{ 
+		
 		if (root->children[i])
-		{
+		{ 
 			str[level] = i; 
-			display(root->children[i], level + 1); 
+			trie_display(root->children[i], level + 1);
 		}
 	}
-	
 }
 
 int main(void)
 { 
 	size_t i;
-	char patterns[][10] = {"The!", "a", "there", "answer", "any", "by", "bye", "th@eir", "123", "~~~", "zzzzz"}; 
+	char patterns[][10] = {"The!", "the", "there", "answer", "any", "by", "bye", "th@eir", "123", "~~~", "zzzzz"}; 
 	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~", "zzzzz"};
-	size_t level = 0;
-	
 
-	object *root = initnode(); 
+	object *root = trie_init(); 
 
 	for (i=0; i < sizeof(patterns)/sizeof(patterns[0]); ++i)
-		insert(root, patterns[i]); 
+		trie_insert(root, patterns[i]); 
 	for (i=0; i < sizeof(queries)/sizeof(queries[0]); ++i)
 	{ 
-                if (!(search(root, queries[i])))
+                if (!(trie_search(root, queries[i])))
 			printf("%s  -- Not found\n", queries[i]);
 		else
 			printf("%s  -- Found\n", queries[i]);
 	} 
-	display(root, 0);
-	free_trie(root);
+	printf("\n\n\n");
+	trie_display(root, 0);
+	printf("\n\n\n");
+	trie_histogram(root, 0);
+	trie_free(root);
 	return 0;
 }
