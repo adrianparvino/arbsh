@@ -5,7 +5,7 @@
 size_t alphasize = 128;
 
 typedef struct object {
-	int leaf;
+	int leaf; 
 	struct object **children; 
 }object;
 
@@ -15,7 +15,7 @@ object *initnode(void)
 	object *o = malloc(sizeof(object)); 
 	if (!(o))
 		return NULL;
-	o->leaf = 0;
+	o->leaf = 0; 
 	o->children = malloc(sizeof(object) * alphasize);
 	if (!(o->children))
 		return NULL;
@@ -30,7 +30,7 @@ void insert(object *o, const char *pat)
 	size_t ind; 
 	for (i = 0; pat[i]; i++)
 	{
-		ind = pat[i];
+		ind = pat[i]; 
 		if (!o->children[ind])
 			o->children[ind] = initnode(); 
 		o = o->children[ind];
@@ -54,11 +54,32 @@ int search(object *o, const char *pat)
 	return 0; 
 }
 
+void display(object* root, char *str, size_t level)
+{ 
+	size_t i;
+	if (root->leaf)
+	{
+		str[level] = '\0';
+		printf("%s\n", str); 
+	} 
+    
+	for (i = 0; i < alphasize; i++)
+	{ 
+		if (root->children[i])
+		{
+			str[level] = i;
+			display(root->children[i], str, level + 1);
+		}
+	}
+}
+
 int main(void)
 { 
 	size_t i;
 	char patterns[][10] = {"The!", "a", "there", "answer", "any", "by", "bye", "th@eir", "123", "~~~"}; 
 	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~"};
+	size_t level = 0;
+	char str[20];
 
 	object *root = initnode(); 
 
@@ -71,6 +92,6 @@ int main(void)
 		else
 			printf("%s  -- Found\n", queries[i]);
 	} 
-
+	display(root, str, level);
 	return 0;
 }
