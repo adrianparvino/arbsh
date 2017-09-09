@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include <stdlib.h> 
 #include <string.h>
 
 /* alphasize must be sufficient to map all ASCII values to an indice */
@@ -28,7 +27,7 @@ int trie_isfreenode(object *o)
         return 1;
 }
 
-bool trie_nodel(object *o, char key[], size_t level, size_t len)
+int trie_nodel(object *o, char key[], size_t level, size_t len)
 {
         size_t index;
         if(o)
@@ -39,8 +38,8 @@ bool trie_nodel(object *o, char key[], size_t level, size_t len)
                         {
                                 o->leaf = 0;
                                 if( trie_isfreenode(o))
-                                        return true;
-                                return false;
+                                        return 1;
+                                return 0;
                         }
                 }
                 else
@@ -54,7 +53,7 @@ bool trie_nodel(object *o, char key[], size_t level, size_t len)
                         }
                 }
         }
-        return false;
+        return 0;
 }
 
 object *trie_init(void)
