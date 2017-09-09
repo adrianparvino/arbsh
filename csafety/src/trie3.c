@@ -7,50 +7,42 @@
  
 // Alphabet size (# of symbols)
  
-int alphasize = 26;
-#define INDEX(c) ((int)c - (int)'a')
+size_t alphasize = 26;
+
+#define INDEX(c) ((size_t)c - (size_t)'a')
  
 #define FREE(p) \
 	free(p);	\
 	p = NULL;
  
 // forward declration
-typedef struct object object;
- 
-// trie node
-typedef struct object
+typedef struct object object; 
+
+typedef struct object // trie node
 {
-	int leaf; // non zero if leaf
+	size_t leaf; // non zero if leaf
 	object *children[26];
-} object;
- 
-// trie ADT
-typedef struct trie trie_t;
+} object; 
+
+typedef struct trie trie_t; // trie ADT
  
 struct trie
 {
 	object *root;
-	int count;
+	size_t count;
 };
  
 object *getNode(void)
 {
 	object *o = NULL;
- 
-	o = malloc(sizeof(object));
- 
+	size_t i = 0; 
+	o = malloc(sizeof(object)); 
 	if( o )
-	{
-		int i;
- 
-		o->leaf   = 0;
- 
-		for(i = 0; i < alphasize; i++)
-		{
-			o->children[i] = NULL;
-		}
-	}
- 
+	{ 
+		o->leaf = 0; 
+		for(i = 0; i < alphasize; i++) 
+			o->children[i] = NULL; 
+	} 
 	return o;
 }
  
@@ -62,9 +54,9 @@ void initialize(trie_t *pTrie)
  
 void insert(trie_t *pTrie, char key[])
 {
-	int level;
-	int length = strlen(key);
-	int index;
+	size_t level;
+	size_t length = strlen(key);
+	size_t index;
 	object *pCrawl;
  
 	pTrie->count++;
@@ -75,27 +67,24 @@ void insert(trie_t *pTrie, char key[])
 		index = INDEX(key[level]);
  
 		if( pCrawl->children[index] )
-		{
-			// Skip current node
-			pCrawl = pCrawl->children[index];
+		{ 
+			pCrawl = pCrawl->children[index]; // Skip current node
 		}
-		else
-		{
-			// Add new node
+		else // Add new node
+		{ 
 			pCrawl->children[index] = getNode();
 			pCrawl = pCrawl->children[index];
 		}
-	}
- 
-	// mark last node as leaf (non zero)
-	pCrawl->leaf = pTrie->count;
+	} 
+	
+	pCrawl->leaf = pTrie->count; // mark last node as leaf (non zero)
 }
  
-int search(trie_t *pTrie, char key[])
+size_t search(trie_t *pTrie, char key[])
 {
-	int level;
-	int length = strlen(key);
-	int index;
+	size_t level;
+	size_t length = strlen(key);
+	size_t index;
 	object *pCrawl;
  
 	pCrawl = pTrie->root;
@@ -115,14 +104,14 @@ int search(trie_t *pTrie, char key[])
 	return (0 != pCrawl && pCrawl->leaf);
 }
  
-int leafNode(object *o)
+size_t leafNode(object *o)
 {
 	return (o->leaf != 0);
 }
  
-int isItFreeNode(object *o)
+size_t isItFreeNode(object *o)
 {
-	int i;
+	size_t i;
 	for(i = 0; i < alphasize; i++)
 	{
 		if( o->children[i] )
@@ -132,48 +121,36 @@ int isItFreeNode(object *o)
 	return 1;
 }
  
-bool deleteHelper(object *o, char key[], int level, int len)
+bool deleteHelper(object *o, char key[], size_t level, size_t len)
 {
 	if( o )
-	{
-		// Base case
-		if( level == len )
+	{ 
+		if( level == len ) // Base case
 		{
 			if( o->leaf )
-			{
-				// Unmark leaf node
-				o->leaf = 0;
- 
-				// If empty, node to be deleted
-				if( isItFreeNode(o) )
-				{
-					return true;
-				}
- 
+			{ 
+				o->leaf = 0; // Unmark leaf node 
+				if( isItFreeNode(o) ) 	// If empty, node to be deleted 
+					return true; 
 				return false;
 			}
 		}
 		else // Recursive case
 		{
-			int index = INDEX(key[level]);
- 
+			size_t index = INDEX(key[level]); 
 			if( deleteHelper(o->children[index], key, level+1, len) )
-			{
-				// last node marked, delete it
-				FREE(o->children[index]);
- 
-				// recursively climb up, and delete eligible nodes
-				return ( !leafNode(o) && isItFreeNode(o) );
+			{ 
+				FREE(o->children[index]); 	// last node marked, delete it 
+				return ( !leafNode(o) && isItFreeNode(o) ); 	// recursively climb up, and delete eligible nodes
 			}
 		}
-	}
- 
+	} 
 	return false;
 }
  
 void deleteKey(trie_t *pTrie, char key[])
 {
-	int len = strlen(key);
+	size_t len = strlen(key);
  
 	if( len > 0 )
 	{
@@ -181,20 +158,18 @@ void deleteKey(trie_t *pTrie, char key[])
 	}
 }
  
-int main()
+size_t main()
 {
 	char keys[][8] = {"she", "sells", "sea", "shore", "the", "by", "sheer"};
 	trie_t trie;
+	size_t i = 0;
  
 	initialize(&trie);
  
-	for(int i = 0; i < ARRAY_SIZE(keys); i++)
-	{
-		insert(&trie, keys[i]);
-	}
+	for(i = 0; i < ARRAY_SIZE(keys); i++) 
+		insert(&trie, keys[i]); 
  
-	deleteKey(&trie, keys[0]);
- 
+	deleteKey(&trie, keys[0]); 
 	printf("%s %s\n", "she", search(&trie, "she") ? "Present in trie" : "Not present in trie");
  
 	return 0;
