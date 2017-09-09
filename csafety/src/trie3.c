@@ -1,4 +1,4 @@
-#include <stdio.h>/
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
@@ -11,7 +11,7 @@ size_t alphasize = 26;
 	free(p);	\
 	p = NULL;
 
- 
+typedef struct object object;
 typedef struct object // trie node
 {
 	size_t leaf; // non zero if leaf
@@ -137,17 +137,7 @@ bool deleteHelper(object *o, char key[], size_t level, size_t len)
 		}
 	}
 	return false;
-}
- 
-void deleteKey(trie_t *pTrie, char key[])
-{
-	size_t len = strlen(key);
- 
-	if( len > 0 )
-	{
-		deleteHelper(pTrie->root, key, 0, len);
-	}
-}
+} 
  
 size_t main()
 {
@@ -160,7 +150,8 @@ size_t main()
 	for(i = 0; i < ARRAY_SIZE(keys); i++) 
 		insert(&trie, keys[i]); 
  
-	deleteKey(&trie, keys[0]); 
+	//deleteKey(&trie, keys[0]); 
+	deleteHelper((trie.root), keys[0], 0, strlen(keys[0]));
 	printf("%s %s\n", "she", search(&trie, "she") ? "Present in trie" : "Not present in trie");
  
 	return 0;
