@@ -6,10 +6,7 @@
 
 size_t alphasize = 26;
 #define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0]) 
-#define INDEX(c) ((size_t)c - (size_t)'a')
-#define FREE(p) \
-	free(p);	\
-	p = NULL;
+#define INDEX(c) ((size_t)c - (size_t)'a') 
 
 typedef struct object object;
 typedef struct object // trie node
@@ -131,7 +128,8 @@ bool deleteHelper(object *o, char key[], size_t level, size_t len)
 			index = INDEX(key[level]); 
 			if( deleteHelper(o->children[index], key, level+1, len) )
 			{ 
-				FREE(o->children[index]); 	// last node marked, delete it 
+				free(o->children[index]);// last node marked, delete it 
+				o->children[index] = NULL;
 				return ( !leafNode(o) && isItFreeNode(o) ); 	// recursively climb up, and delete eligible nodes
 			}
 		}
