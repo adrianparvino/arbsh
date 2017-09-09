@@ -1,23 +1,17 @@
-#include <stdio.h>
+#include <stdio.h>/
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
- 
-#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
- 
-// Alphabet size (# of symbols)
- 
-size_t alphasize = 26;
 
+
+size_t alphasize = 26;
+#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0]) 
 #define INDEX(c) ((size_t)c - (size_t)'a')
- 
 #define FREE(p) \
 	free(p);	\
 	p = NULL;
- 
-// forward declration
-typedef struct object object; 
 
+ 
 typedef struct object // trie node
 {
 	size_t leaf; // non zero if leaf
@@ -57,27 +51,27 @@ void insert(trie_t *pTrie, char key[])
 	size_t level;
 	size_t length = strlen(key);
 	size_t index;
-	object *pCrawl;
+	object *o;
  
 	pTrie->count++;
-	pCrawl = pTrie->root;
+	o = pTrie->root;
  
 	for( level = 0; level < length; level++ )
 	{
 		index = INDEX(key[level]);
  
-		if( pCrawl->children[index] )
+		if( o->children[index] )
 		{ 
-			pCrawl = pCrawl->children[index]; // Skip current node
+			o = o->children[index]; // Skip current node
 		}
 		else // Add new node
 		{ 
-			pCrawl->children[index] = getNode();
-			pCrawl = pCrawl->children[index];
+			o->children[index] = getNode();
+			o = o->children[index];
 		}
 	} 
 	
-	pCrawl->leaf = pTrie->count; // mark last node as leaf (non zero)
+	o->leaf = pTrie->count; // mark last node as leaf (non zero)
 }
  
 size_t search(trie_t *pTrie, char key[])
@@ -85,23 +79,19 @@ size_t search(trie_t *pTrie, char key[])
 	size_t level;
 	size_t length = strlen(key);
 	size_t index;
-	object *pCrawl;
+	object *o;
  
-	pCrawl = pTrie->root;
+	o = pTrie->root;
  
 	for( level = 0; level < length; level++ )
 	{
-		index = INDEX(key[level]);
- 
-		if( !pCrawl->children[index] )
-		{
-			return 0;
-		}
- 
-		pCrawl = pCrawl->children[index];
+		index = INDEX(key[level]); 
+		if( !o->children[index])
+			return 0; 
+		o = o->children[index];
 	}
  
-	return (0 != pCrawl && pCrawl->leaf);
+	return (0 != o && o->leaf);
 }
  
 size_t leafNode(object *o)
@@ -123,12 +113,13 @@ size_t isItFreeNode(object *o)
  
 bool deleteHelper(object *o, char key[], size_t level, size_t len)
 {
+	size_t index;
 	if( o )
-	{ 
+	{
 		if( level == len ) // Base case
 		{
 			if( o->leaf )
-			{ 
+			{
 				o->leaf = 0; // Unmark leaf node 
 				if( isItFreeNode(o) ) 	// If empty, node to be deleted 
 					return true; 
@@ -137,14 +128,14 @@ bool deleteHelper(object *o, char key[], size_t level, size_t len)
 		}
 		else // Recursive case
 		{
-			size_t index = INDEX(key[level]); 
+			index = INDEX(key[level]); 
 			if( deleteHelper(o->children[index], key, level+1, len) )
 			{ 
 				FREE(o->children[index]); 	// last node marked, delete it 
 				return ( !leafNode(o) && isItFreeNode(o) ); 	// recursively climb up, and delete eligible nodes
 			}
 		}
-	} 
+	}
 	return false;
 }
  
