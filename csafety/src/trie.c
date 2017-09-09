@@ -11,12 +11,12 @@ typedef struct object {
 	struct object **children; 
 }object;
 
-size_t leafNode(object *o)
+int trie_isleaf(object *o)
 {
         return (o->leaf != 0);
 }
 
-size_t trie_isfreenode(object *o)
+int trie_isfreenode(object *o)
 {
         size_t i;
         for(i = 0; i < alphasize; i++)
@@ -28,29 +28,29 @@ size_t trie_isfreenode(object *o)
         return 1;
 }
 
-bool deleteHelper(object *o, char key[], size_t level, size_t len)
+bool trie_nodel(object *o, char key[], size_t level, size_t len)
 {
         size_t index;
-        if( o )
+        if(o)
         {
-                if( level == len ) // Base case
+                if(level == len)
                 {
-                        if( o->leaf )
+                        if(o->leaf)
                         {
-                                o->leaf = 0; // Unmark leaf node 
-                                if( trie_isfreenode(o) )        // If empty, node to be deleted 
+                                o->leaf = 0;
+                                if( trie_isfreenode(o))
                                         return true;
                                 return false;
                         }
                 }
-                else // Recursive case
+                else
                 {
                         index = key[level];
-                        if( deleteHelper(o->children[index], key, level+1, len) )
+                        if( trie_nodel(o->children[index], key, level+1, len))
                         {
-                                free(o->children[index]);// last node marked, delete it 
+                                free(o->children[index]);
                                 o->children[index] = NULL;
-                                return ( !leafNode(o) && trie_isfreenode(o) );  // recursively climb up, and delete eligible nodes
+                                return ( !trie_isleaf(o) && trie_isfreenode(o));
                         }
                 }
         }
@@ -100,55 +100,7 @@ int trie_search(object *o, const char *pat)
 	if ( o != NULL && o->leaf)
 		return 1;
 	return 0; 
-}
-
-object *trie_nodel(object *o, const char *pat)
-{
-	object *t = o;
-        size_t i;
-	size_t j = 0;
-        size_t ind; 
-	object *n[10024] = { NULL } ;
-        for (i = 0; pat[i]; i++)
-        {
-                ind = pat[i];
-                if (!o->children[ind])
-			break;
-			
-                        //return 0; 
-		object *tmp = o;
-		
-		if (o)
-		{
-		n[j++] = o->children[ind];
-		o->leaf = 0;
-		}
-                o = o->children[ind];
-		
-		
-
-	
-		//free(tmp);
-		//free(o->children);
-        } 
-	for (j=0;j<i; ++j)
-	{
-		if (n[j])
-		{
-		
-		free(n[j]);
-		//n[j] = NULL;
-		//n[j]->leaf = 0;
-		
-		
-	
-		
-		}
-	}
-     return t;
-      
-       
-}
+} 
 
 void trie_free(object* root)
 { 
@@ -230,8 +182,8 @@ int main(void)
 		else
 			printf("%s  -- Found\n", queries[i]);
 	} 
-	//trie_nodel(root, "the");
-	deleteHelper((root), patterns[1] , 0, strlen(patterns[1]));
+	
+	trie_nodel((root), patterns[1] , 0, strlen(patterns[1]));
 	printf("\n\n\n");
 	trie_display(root, 0);
 	printf("\n\n\n");
