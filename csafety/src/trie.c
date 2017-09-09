@@ -30,29 +30,26 @@ int trie_isfreenode(object *o)
 int trie_nodel(object *o, char key[], size_t level, size_t len)
 {
         size_t index;
-        if(o)
+        if(!(o))
+   		return 0;
+        if(level == len)
         {
-                if(level == len)
+                if(o->leaf)
                 {
-                        if(o->leaf)
-                        {
-                                o->leaf = 0;
-                                if( trie_isfreenode(o))
-                                        return 1;
-                                return 0;
-                        }
+                        o->leaf = 0;
+                        if( trie_isfreenode(o))
+                                return 1; 
                 }
-                else
-                {
-                        index = key[level];
-                        if( trie_nodel(o->children[index], key, level+1, len))
-                        {
-                                free(o->children[index]);
-                                o->children[index] = NULL;
-                                return ( !trie_isleaf(o) && trie_isfreenode(o));
-                        }
-                }
-        }
+		return 0;
+        } 
+
+        index = key[level];
+        if( trie_nodel(o->children[index], key, level+1, len))
+        {
+                free(o->children[index]);
+                o->children[index] = NULL;
+                return (!trie_isleaf(o) && trie_isfreenode(o));
+        } 
         return 0;
 }
 
@@ -155,7 +152,6 @@ void trie_display(object* root, size_t level)
     
 	for (i = 0; i < alphasize; i++)
 	{ 
-		
 		if (root->children[i])
 		{ 
 			str[level] = i; 
@@ -181,7 +177,7 @@ int main(void)
 		else
 			printf("%s  -- Found\n", queries[i]);
 	} 
-	
+	trie_display(root, 0);
 	trie_nodel((root), patterns[1] , 0, strlen(patterns[1]));
 	printf("\n\n\n");
 	trie_display(root, 0);
