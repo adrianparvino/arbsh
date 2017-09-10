@@ -1,3 +1,32 @@
+/*
+Retrieval trees (trie) offer O(1) lookup time after fully populated.
+
+andy
+android
+ant
+andrew
+androgen
+
+       [a]
+        |
+       [n] 
+        |  \
+       [d] [t]
+     /  |    
+   [y] [r] 
+        |  \
+       [e] [o]
+        |   | \
+       [w] [i] [g]
+            |   |
+           [d] [e]
+                |
+               [n]
+
+*/
+
+
+
 #include <stdio.h>
 #include <stdlib.h> 
 #include <string.h>
@@ -18,12 +47,9 @@ int trie_isleaf(object *o)
 int trie_isfreenode(object *o)
 {
         size_t i;
-        for(i = 0; i < alphasize; i++)
-        {
-                if( o->children[i] )
+        for(i = 0; i < alphasize; i++) 
+                if(o->children[i])
                         return 0;
-        }
-
         return 1;
 }
 
@@ -44,7 +70,7 @@ int trie_nodel(object *o, char key[], size_t level, size_t len)
         } 
 
         index = key[level];
-        if( trie_nodel(o->children[index], key, level+1, len))
+        if(trie_nodel(o->children[index], key, level+1, len))
         {
                 free(o->children[index]);
                 o->children[index] = NULL;
