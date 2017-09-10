@@ -59,7 +59,7 @@ int trie_isfreenode(object *o)
         return 1;
 }
 
-int trie_nodel(object *o, char key[], size_t level, size_t len)
+int trie_nodel(object *o, char *key, size_t level, size_t len)
 {
         size_t index;
         if(!(o))
