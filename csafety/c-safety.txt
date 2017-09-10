@@ -1072,16 +1072,16 @@ directions. These node creation and traversal directions are accessed with the
 structure members "prev" and "next". NULL is used for the linked list terminal
 end points.
 
-[x] prev <-[o]
-           [o]->next = [o]
-           [o] = prev<-[o]
-                       [o]->next = [o]
-                       [o] = prev<-[o]
-                                   [o]->next = [o]
-                                   [o] = prev<-[o] 
-                                               [o]->next = [o]
-                                               [o] = prev<-[o]
-                                                           [o]->next = [x]
+[x] = prev <-[o]
+             [o]->next = [o]
+             [o] = prev<-[o]
+                         [o]->next = [o]
+                         [o] = prev<-[o]
+                                     [o]->next = [o]
+                                     [o] = prev<-[o] 
+                                                 [o]->next = [o]
+                                                 [o] = prev<-[o]
+                                                             [o]->next = [x]
 
 Here is a program to implement a basic doubly linked list with node insertion
 and deletion;
