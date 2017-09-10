@@ -1,5 +1,5 @@
 /*
-Retrieval trees (trie) offer O(1) lookup time after fully populated.
+Retrieval trees (trie) offer O(1) lookup time after fully populated. 
 
 andy
 android
@@ -7,21 +7,27 @@ ant
 andrew
 androgen
 
-       [a]
-        |
-       [n] 
-        |  \
-       [d] [t]
-     /  |    
-   [y] [r] 
-        |  \
-       [e] [o]
-        |   | \
-       [w] [i] [g]
-            |   |
-           [d] [e]
-                |
-               [n]
+barry
+barnacle
+barney
+
+             [root]
+          /          \
+       [a]            [b]
+        |              |
+       [n]            [a]
+        |  \           |
+       [d] [t]        [r]
+     /  |              |  \
+   [y] [r]            [r] [n]
+        |  \           |   |  \
+       [e] [o]        [y] [a] [e]
+        |   | \            |   |
+       [w] [i] [g]        [c] [y]
+            |   |          |
+           [d] [e]        [l]
+         /      |          |
+       [s]     [n]        [e]
 
 */
 
@@ -190,7 +196,7 @@ int main(void)
 { 
 	size_t i;
 	char patterns[][10] = {"The!", "the", "there", "answer", "any", "by", "bye", "th@eir", "123", "~~~", "zzzzz"}; 
-	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~", "zzzzz"};
+	char queries[][10] = {"The!", "thaw", "th@eir", "these", "123", "~~~", "zzzzz", "th"};
 
 	object *root = trie_init(); 
 
