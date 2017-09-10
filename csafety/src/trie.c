@@ -142,17 +142,10 @@ void trie_free(object* root)
 	free(root);
 }
 
-void trie_histogram(object* root, size_t level)
+void _trie_histogram(object* root, size_t level)
 { 
 	size_t i; 
-	static char str[100];
-	
-	static int once = 1;
-	if (once)
-	{
-		printf("root\n|\n|\n|");
-		once = 0;
-	}
+	static char str[100]; 
 
 	if (root->leaf)
 	{
@@ -166,9 +159,15 @@ void trie_histogram(object* root, size_t level)
 		{
 			printf("-%c", (int)i);
 			str[level] = i; 
-			trie_histogram(root->children[i], level + 1);
+			_trie_histogram(root->children[i], level + 1);
 		}
 	}
+}
+
+void trie_histogram(object* root, size_t level)
+{
+	printf("root\n|\n|\n|");
+	_trie_histogram(root, 0);
 }
 
 void trie_display(object* root, size_t level)
