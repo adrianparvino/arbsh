@@ -1,5 +1,5 @@
 /*
-Retrieval trees (trie) offer O(1) lookup time after fully populated. 
+Retrieval tree (trie).
 
 andy
 android
@@ -45,11 +45,6 @@ typedef struct object {
 	struct object **children; 
 }object;
 
-int trie_isleaf(object *o)
-{
-        return (o->leaf != 0);
-}
-
 int trie_isfreenode(object *o)
 {
         size_t i;
@@ -59,30 +54,36 @@ int trie_isfreenode(object *o)
         return 1;
 }
 
-int trie_nodel(object *o, char *key, size_t level, size_t len)
-{
+int _trie_nodel(object *o, char *key, size_t level)
+{ 
         size_t index;
         if(!(o))
    		return 0;
-        if(level == len)
+        if(key[level] == 0)
         {
                 if(o->leaf)
                 {
                         o->leaf = 0;
-                        if( trie_isfreenode(o))
+                        if(trie_isfreenode(o))
                                 return 1; 
                 }
 		return 0;
         } 
 
         index = key[level];
-        if(trie_nodel(o->children[index], key, level+1, len))
+        if(_trie_nodel(o->children[index], key, level+1))
         {
                 free(o->children[index]);
                 o->children[index] = NULL;
-                return (!trie_isleaf(o) && trie_isfreenode(o));
+                return (!o->leaf && trie_isfreenode(o));
         } 
         return 0;
+}
+
+int trie_nodel(object *o, char *key)
+{
+	size_t level = 0;
+	_trie_nodel(o, key, level);
 }
 
 object *trie_init(void)
@@ -164,13 +165,13 @@ void _trie_histogram(object* root, size_t level)
 	}
 }
 
-void trie_histogram(object* root, size_t level)
+void trie_histogram(object* root)
 {
 	printf("root\n|\n|\n|");
 	_trie_histogram(root, 0);
 }
 
-void trie_display(object* root, size_t level)
+void _trie_display(object* root, size_t level)
 { 
 	size_t i; 
 	static char str[100]; 
@@ -186,9 +187,15 @@ void trie_display(object* root, size_t level)
 		if (root->children[i])
 		{ 
 			str[level] = i; 
-			trie_display(root->children[i], level + 1);
+			_trie_display(root->children[i], level + 1);
 		}
 	}
+}
+
+void trie_display(object* root)
+{
+	size_t level = 0;
+	_trie_display(root, level);
 }
 
 int main(void)
@@ -207,13 +214,14 @@ int main(void)
 			printf("%s  -- Not found\n", queries[i]);
 		else
 			printf("%s  -- Found\n", queries[i]);
-	} 
-	trie_display(root, 0);
-	trie_nodel((root), patterns[1] , 0, strlen(patterns[1]));
+	}
+
+	trie_display(root);
+	trie_nodel((root), patterns[1]);
 	printf("\n\n\n");
-	trie_display(root, 0);
+	trie_display(root);
 	printf("\n\n\n");
-	trie_histogram(root, 0);
+	trie_histogram(root);
 	trie_free(root);
 	return 0;
 }
