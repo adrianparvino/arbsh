@@ -9,6 +9,10 @@ effectiveness.
                  (Sedgewick, "Algorithms" 4th ed. pg730)
 
 
+Typically in depictions of tries NULL nodes are not shown, as is the case in
+the depiction below:
+
+
              [root]                   andy
           /          \                android
        [a]            [b]             ant
@@ -27,8 +31,10 @@ effectiveness.
          /      |          |
        [s]     [n]        [e]
 
+
 The program below presents an R-way trie. Insertion, deletion, searching,
-printing and a histogram functions are supplied.
+printing and histogram functions are supplied.
+
 
 */
 
@@ -215,12 +221,12 @@ int main(void)
 		else
 			printf("%s  -- Found\n", queries[i]);
 	}
-	fflush(stdout);
+	
 	trie_display(root);
 	trie_nodel((root), patterns[1]);
-	printf("\n\n\n");
+	printf("\n");
 	trie_display(root);
-	printf("\n\n\n");
+	printf("\n");
 	trie_histogram(root);
 	trie_free(root);
 	return 0;
