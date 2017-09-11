@@ -1273,9 +1273,9 @@ and deletion;
 -------------------------------------------------------------------------------
 c-safety (Tries, R-way trie)                                            page 19
 
-Retrieval trees (tries) offer 0(N) search and insertion time. Tries have the
-unique property of aborting upon an "early miss", which greatly increases their
-effectiveness.  
+Retrieval trees (tries) offer 0(N) time complexity on lookup operations. Tries 
+have the unique property of aborting upon an "early miss", which greatly 
+increases their effectiveness.  
 
         "Proposition G. The number of array accesses when 
          searching in a trie or inserting a key into a trie
@@ -1289,14 +1289,14 @@ the depiction below:
 
              [root]                   andy
           /          \                android
-       [a]            [b]             ant
+       [a]            [b]             androids
         |              |              andrew
        [n]            [a]             androgen
-        |  \           |
-       [d] [t]        [r]             barry
+        |  \           |              ant
+       [d] [t]        [r]
      /  |              |  \           barnacle
    [y] [r]            [r] [n]         barney
-        |  \           |   |  \
+        |  \           |   |  \       barry
        [e] [o]        [y] [a] [e]
         |   | \            |   |
        [w] [i] [g]        [c] [y]
@@ -1304,8 +1304,12 @@ the depiction below:
            [d] [e]        [l]
          /      |          |
        [s]     [n]        [e]
-	
-	
+
+A trie carries no data in the structure members of its nodes. Instead, the data
+is implied by mapping an element of the key to a node thus rendering the node
+no longer NULL.
+
+
 The program below presents an R-way trie. Insertion, deletion, searching,
 printing and histogram functions are supplied.
 
