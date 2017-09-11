@@ -50,6 +50,9 @@ HIER:
 		A cross compiling toolchain and package build system similiar
 		to buildroot or yocto but much simpler. 
 
+	csafety/
+		C-safety is an educational pamphlet on C programming, 
+		C safety and data structures.
 
 
 	Grafland will also retrieve and build a collection of heavily modified
