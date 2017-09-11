@@ -1,25 +1,23 @@
 /*
-Retrieval tree (trie).
+Retrieval trees (tries) offer 0(N) search and insertion time. Tries have the
+unique property of aborting upon an "early miss", which greatly increases their
+effectiveness.  
 
-andy
-android
-ant
-andrew
-androgen
+        "Proposition G. The number of array accesses when 
+         searching in a trie or inserting a key into a trie
+         is at most 1 plus the length of the key." 
+                 (Sedgewick, "Algorithms" 4th ed. pg730)
 
-barry
-barnacle
-barney
 
-             [root]
-          /          \
-       [a]            [b]
-        |              |
-       [n]            [a]
+             [root]                   andy
+          /          \                android
+       [a]            [b]             ant
+        |              |              andrew
+       [n]            [a]             androgen
         |  \           |
-       [d] [t]        [r]
-     /  |              |  \
-   [y] [r]            [r] [n]
+       [d] [t]        [r]             barry
+     /  |              |  \           barnacle
+   [y] [r]            [r] [n]         barney
         |  \           |   |  \
        [e] [o]        [y] [a] [e]
         |   | \            |   |
@@ -28,6 +26,9 @@ barney
            [d] [e]        [l]
          /      |          |
        [s]     [n]        [e]
+
+The program below presents an R-way trie. Insertion, deletion, searching,
+printing and a histogram functions are supplied.
 
 */
 
@@ -92,9 +93,8 @@ object *trie_init(void)
 	object *o = malloc(sizeof(object)); 
 	if (!(o))
 		return NULL;
-	o->leaf = 0; 
-	o->children = malloc(sizeof(object) * alphasize);
-	if (!(o->children))
+	o->leaf = 0;
+	if (!(o->children = malloc(sizeof(object) * alphasize)))
 		return NULL;
 	for (i = 0; i < alphasize; i++) 
 		o->children[i] = NULL; 
@@ -151,9 +151,9 @@ void _trie_histogram(object* root, size_t level)
 	if (root->leaf)
 	{
 		str[level] = '\0';
-		printf("    -->(%s)\n|", str); 
+		printf("\t\t\t    -->(%s)\n|", str); 
 	} 
-    
+ 
 	for (i = 0; i < alphasize; i++)
 	{ 
 		if (root->children[i])
@@ -215,7 +215,7 @@ int main(void)
 		else
 			printf("%s  -- Found\n", queries[i]);
 	}
-
+	fflush(stdout);
 	trie_display(root);
 	trie_nodel((root), patterns[1]);
 	printf("\n\n\n");
