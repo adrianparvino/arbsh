@@ -21,19 +21,19 @@
 */
 
 /* structs */
-typedef struct Line{		/** The internal representation of a line of text */
-	char *c;	/* Line content */
-	size_t len;	/* Line byte length */
-	size_t vlen;	/* On-screen line-length */
-	size_t mul;	/* How many times LINSIZ is c malloc'd to */
-	bool dirty;	/* screen should be repainted */
-	struct Line *next;	/* Next line, NULL if last */
-	struct Line *prev;	/* Previous line, NULL if first */
+typedef struct Line{
+	char *c;
+	size_t len;
+	size_t vlen;
+	size_t mul;
+	bool dirty;
+	struct Line *next;
+	struct Line *prev;
 } Line;
 
-typedef struct {	/** A position in the file */
-	Line *l;	/* Line */
-	size_t o;	/* Offset inside the line */
+typedef struct {
+	Line *l;
+	size_t o;
 } filepos;
 
 /* Globals */
@@ -51,33 +51,24 @@ int tabstop = 8;
 
 /* function prototypes */
 size_t edgetch(char *);
-
-
 void *ecalloc(size_t, size_t);
-void *erealloc(void *, size_t); 
-
+void *erealloc(void *, size_t);
 void f_delete(void);
 void f_insert(char *);
-void i_calcvlen(Line * l); 
-
-
+void i_calcvlen(Line * l);
 bool i_deltext(filepos, filepos);
 bool i_writefile(char *);
-
 void i_die(const char *str, int);
-void i_edit(char *); 
+void i_edit(char *);
 void i_readfile(char *);
-void i_setup(void); 
+void i_setup(void);
 void i_sortpos(filepos *, filepos *);
-void i_update(void); 
-
-filepos i_addtext(char *, filepos); 
+void i_update(void);
+filepos i_addtext(char *, filepos);
 filepos m_nextchar(filepos);
 filepos m_prevchar(filepos);
 filepos m_nextline(filepos);
 filepos m_prevline(filepos);
-
-
 int getdimensions(void);
 static void sigwinch(int);
 int vlencnt(int, int);
@@ -271,12 +262,11 @@ void i_readfile(char *fname)
 {
 	int fd;
 	ssize_t n;
-	char *buf = NULL; 
+	static char buf[BUFSIZ + 1];
 
 	if((fd = open(fname, O_RDONLY)) == -1)
 		i_die("unable to open file\n", 1);
 
-	buf = ecalloc(1, BUFSIZ + 1);
 	while((n = read(fd, buf, BUFSIZ)) > 0)
 	{
 		buf[n] = DELIM;
