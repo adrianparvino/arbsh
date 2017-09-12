@@ -11,13 +11,54 @@ struct tnode {
 	struct tnode *left;
 	struct tnode *right;
 };
-
+void MorrisTraversal(struct tnode *root)
+{
+  struct tnode *current,*pre;
+ 
+  if(root == NULL)
+     return; 
+ 
+  current = root;
+  while(current != NULL)
+  {                 
+    if(current->left == NULL)
+    {
+      printf("%s ", current->word);
+      current = current->right;      
+    }    
+    else
+    {
+      /* Find the inorder predecessor of current */
+      pre = current->left;
+      while(pre->right != NULL && pre->right != current)
+        pre = pre->right;
+ 
+      /* Make current as right child of its inorder predecessor */
+      if(pre->right == NULL)
+      {
+        pre->right = current;
+        current = current->left;
+      }
+             
+      /* Revert the changes made in if part to restore the original 
+        tree i.e., fix the right child of predecssor */   
+      else 
+      {
+        pre->right = NULL;
+        printf("%s ",current->word);
+        current = current->right;      
+      } /* End of if condition pre->right == NULL */
+    } /* End of if condition current->left == NULL*/
+  } /* End of while */
+}
+ 
 /* prototypes */ 
 int ngetch(FILE *); 
 int getch(void);
 void ungetch(int);
 struct tnode *addtree(struct tnode *, char *);
 void treeprint(struct tnode *);
+void treeprint_inter(struct tnode *);
 int getword(char *, int, FILE *);
 
 /* defines */
@@ -43,6 +84,7 @@ int main(void)
 			root = addtree(root, word);
 	
 	treeprint(root);
+	MorrisTraversal(root);
 	return 0;
 }
 
@@ -55,13 +97,13 @@ struct tnode *addtree(struct tnode *p, char *w)
 
 	if (p == NULL) /* a new word has arrived */
 	{
-		printf("N %s\n", w);
+	//	printf("N %s\n", w);
 		
 		p = malloc(sizeof(struct tnode));
 		p->word = strdup(w); /* make a new node */
 		p->count = 1;
 		p->left = p->right = NULL;
-		fflush(stdout);
+	//	fflush(stdout);
 		//printf("  P %s\n", p->word);
 	} 
 	else if ((cond = strcmp(w, p->word)) == 0) /* repeated word */ 
@@ -70,25 +112,54 @@ struct tnode *addtree(struct tnode *p, char *w)
 	}
 	else if (cond < 0) /* less than into left subtree */
 	{ 
-		printf("  P %s\n", p->word);
-		printf("        L %s\n", w);
+		//printf("  P %s\n", p->word);
+		//printf("        L %s\n", w);
 		
 		//printf("        L %s\n", p->word);
-		fflush(stdout);
+		//fflush(stdout);
 		p->left = addtree(p->left, w);
 	}
 	else /* greater than into right subtree */
 	{ 
-		printf("  P %s\n", p->word);
-		printf("                R %s\n", w);
+		//printf("  P %s\n", p->word);
+		//printf("                R %s\n", w);
 		//printf("                R %s\n", p->word);
-		fflush(stdout);
+		//fflush(stdout);
 		p->right = addtree(p->right, w);
 	}
 	return p;
 
 } 
 
+void treeprint_inter(struct tnode *p)
+{
+	int depth = 10;
+	struct tnode *o = p;
+	if (p != NULL)
+	{
+		while (p && o)
+		{ 
+		        if (p->left)
+			{ 
+				p = p->left;
+				printf("%4d %s\n", p->count, p->word); 
+				o = p;
+			}
+			
+			
+		        if (o->right)
+			{
+				printf("%4d %s\n",o->count, o->word);
+				o = o->right;
+				p = o;
+			}
+			
+		}
+	//	treeprint(p->left); 
+		//printf("%.*s %4d %s\n", depth, "     ", p->count, p->word); 
+	//	treeprint(p->right);
+	}
+}
 /* treeprint: in-order print of tree p */
 void treeprint(struct tnode *p)
 {
