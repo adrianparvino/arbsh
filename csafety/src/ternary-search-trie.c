@@ -4,72 +4,72 @@
 
 typedef struct tstnode{
         char data;
-        bool bEOS;
-        struct tstnode* left;   //All character data less than this node
-        struct tstnode* eq;  //All character data equal to this node
-        struct tstnode* right; //All character data greater than this node
+        bool eos;
+        struct tstnode* left;		/* data less than current node */
+        struct tstnode* eq;		/* data eq to current node */
+        struct tstnode* right;		/* data greater than current node */
 }tstnode; 
 
-tstnode* Insert(tstnode* root, char* str); 
-void PrintAllStringsInTST(tstnode* root); 
-int MaxLenStringLen(tstnode *root); 
-void DeleteTST(tstnode *root); 
-bool SearchTST(tstnode *root, char* pattern);
+tstnode* tst_insert(tstnode* root, char* str); 
+void tst_tprint(tstnode* root); 
+int tst_glength(tstnode *root); 
+void tst_delete(tstnode *root); 
+bool tst_search(tstnode *root, char* pattern);
 
 #define MAX_LEN 1024 
 #define MAX( a, b, c ) ((a)>(b) ? ((a)>(c) ? (a):(c)) : ( (b)>(c) ? (b):(c) )) 
 	
-tstnode* Insert(tstnode* root, char* str)
+tstnode* tst_insert(tstnode* root, char* str)
 {
 	if(root == NULL)
 	{
 		if (!(root = (tstnode*)malloc(sizeof(tstnode))))
 			return NULL;
-		root->data = *str;  //Insert first character of string in the root node
-		root->bEOS = false;
+		root->data = *str;  // insert first character of string in the root node
+		root->eos = false;
 		root->left = root->eq = root->right = NULL;
 	}
 
 	if(*str < root->data)
-		root->left = Insert(root->left, str);
+		root->left = tst_insert(root->left, str);
 	else if (*str == root->data)
 	{
 		if(*(str + 1))
-			root->eq = Insert(root->eq, str + 1);
+			root->eq = tst_insert(root->eq, str + 1);
 		else
-			root->bEOS = true;
+			root->eos = true;
 	}
 	else
-		root->right = Insert(root->right, str);
+		root->right = tst_insert(root->right, str);
 
 	return root; 
 }
 	
 //Helper to print the strings in TST
-static void PrintHelper(tstnode* root, char* buffer, int depth)
+static void _tst_tprint(tstnode* root, char* buffer, int depth)
 {
 	if (root)
 	{ 
-		PrintHelper(root->left, buffer, depth); 
+		_tst_tprint(root->left, buffer, depth); 
 		buffer[depth] = root->data;
-		if (root->bEOS) //Once end of string flag is encountered, print the string
+		if (root->eos) //Once end of string flag is encountered, print the string
 		{
 			buffer[depth + 1] = '\0';
 			printf("%s\n", buffer);
 		} 
-		PrintHelper(root->eq, buffer, depth + 1);
-		PrintHelper(root->right, buffer, depth);
+		_tst_tprint(root->eq, buffer, depth + 1);
+		_tst_tprint(root->right, buffer, depth);
 	}
 }
 	
 // Function to print TST's strings
-void PrintAllStringsInTST(tstnode* root)
+void tst_tprint(tstnode* root)
 {
 	char buffer[MAX_LEN];
-	PrintHelper(root, buffer, 0);
+	_tst_tprint(root, buffer, 0);
 }
 	
-bool SearchTST(tstnode *root, char* pattern)
+bool tst_search(tstnode *root, char* pattern)
 {
 	while (root != NULL)
 	{
@@ -77,7 +77,7 @@ bool SearchTST(tstnode *root, char* pattern)
 			root = root->left;
 		else if (*pattern == root->data)
 		{
-			if (root->bEOS && *(pattern + 1) == '\0')
+			if (root->eos && *(pattern + 1) == '\0')
 			 return true;
 			pattern++;
 			root = root->eq;
@@ -90,26 +90,26 @@ bool SearchTST(tstnode *root, char* pattern)
 }
 	
 //Function to determine largest 
-int MaxLenStringLen(tstnode *root)
+int tst_glength(tstnode *root)
 {
 	if (root == NULL)
 		return 0;
 	
-	int leftLen = MaxLenStringLen(root->left);
-	int middleLen = MaxLenStringLen(root->eq) + 1;
-	int rightLen = MaxLenStringLen(root->right);
+	int leftLen = tst_glength(root->left);
+	int middleLen = tst_glength(root->eq) + 1;
+	int rightLen = tst_glength(root->right);
 	
 	return MAX( leftLen, middleLen, rightLen);
 }
 	
-void DeleteTST(tstnode *root)
+void tst_delete(tstnode *root)
 {
 	tstnode *tmp = root;
 	if (tmp)
 	{
-		DeleteTST(tmp->left);
-		DeleteTST(tmp->eq);
-		DeleteTST(tmp->right);
+		tst_delete(tmp->left);
+		tst_delete(tmp->eq);
+		tst_delete(tmp->right);
 		free(tmp);
 	}
 } 
@@ -119,24 +119,24 @@ int main(int argc, char** argv)
 	char *str = "hello";
 	char *str1 = "bat";
 	tstnode *root = NULL;
-	root = Insert(root, "boats");
-	root = Insert(root, "boat");
-	root = Insert(root, "bat");
-	root = Insert(root, "bats");
-	root = Insert(root, "stages");
+	root = tst_insert(root, "boats");
+	root = tst_insert(root, "boat");
+	root = tst_insert(root, "bat");
+	root = tst_insert(root, "bats");
+	root = tst_insert(root, "stages");
 
-	PrintAllStringsInTST(root);
+	tst_tprint(root);
 
-	if (SearchTST(root, str) == false)
+	if (tst_search(root, str) == false)
 		printf("%s not found\n", str);
 	else
 		printf("%s found\n", str);
 
-	if (SearchTST(root, str1) == false)
+	if (tst_search(root, str1) == false)
 		printf("%s not found\n", str1);
 	else
 		printf("%s found\n", str1);
 
-	DeleteTST(root);
+	tst_delete(root);
 	return 0;
 }
