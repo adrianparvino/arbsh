@@ -11,8 +11,8 @@ typedef struct tstnode{
 }tstnode; 
 
 tstnode* tst_insert(tstnode* root, char* str); 
-void tst_tprint(tstnode* root); 
-int tst_glength(tstnode *root); 
+void tst_tprsize_t(tstnode* root); 
+size_t tst_glength(tstnode *root); 
 void tst_delete(tstnode *root); 
 bool tst_search(tstnode *root, char* pattern);
 
@@ -45,28 +45,28 @@ tstnode* tst_insert(tstnode* root, char* str)
 	return root; 
 }
 	
-//Helper to print the strings in TST
-static void _tst_tprint(tstnode* root, char* buffer, int depth)
+//Helper to prsize_t the strings in TST
+static void _tst_tprsize_t(tstnode* root, char* buffer, size_t depth)
 {
 	if (root)
 	{ 
-		_tst_tprint(root->left, buffer, depth); 
+		_tst_tprsize_t(root->left, buffer, depth); 
 		buffer[depth] = root->data;
 		if (root->eos) //Once end of string flag is encountered, print the string
 		{
 			buffer[depth + 1] = '\0';
 			printf("%s\n", buffer);
 		} 
-		_tst_tprint(root->eq, buffer, depth + 1);
-		_tst_tprint(root->right, buffer, depth);
+		_tst_tprsize_t(root->eq, buffer, depth + 1);
+		_tst_tprsize_t(root->right, buffer, depth);
 	}
 }
 	
 // Function to print TST's strings
-void tst_tprint(tstnode* root)
+void tst_tprsize_t(tstnode* root)
 {
 	char buffer[MAX_LEN];
-	_tst_tprint(root, buffer, 0);
+	_tst_tprsize_t(root, buffer, 0);
 }
 	
 bool tst_search(tstnode *root, char* pattern)
@@ -90,14 +90,14 @@ bool tst_search(tstnode *root, char* pattern)
 }
 	
 //Function to determine largest 
-int tst_glength(tstnode *root)
+size_t tst_glength(tstnode *root)
 {
 	if (root == NULL)
 		return 0;
 	
-	int leftLen = tst_glength(root->left);
-	int middleLen = tst_glength(root->eq) + 1;
-	int rightLen = tst_glength(root->right);
+	size_t leftLen = tst_glength(root->left);
+	size_t middleLen = tst_glength(root->eq) + 1;
+	size_t rightLen = tst_glength(root->right);
 	
 	return MAX( leftLen, middleLen, rightLen);
 }
@@ -114,7 +114,7 @@ void tst_delete(tstnode *root)
 	}
 } 
 	
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
 	char *str = "hello";
 	char *str1 = "bat";
@@ -125,7 +125,7 @@ int main(int argc, char** argv)
 	root = tst_insert(root, "bats");
 	root = tst_insert(root, "stages");
 
-	tst_tprint(root);
+	tst_tprsize_t(root);
 
 	if (tst_search(root, str) == false)
 		printf("%s not found\n", str);
