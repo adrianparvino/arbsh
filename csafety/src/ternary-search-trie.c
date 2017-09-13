@@ -5,19 +5,16 @@
 typedef struct tstnode{
         char data;
         bool eos;
-        struct tstnode* left;		/* data less than current node */
-        struct tstnode* eq;		/* data eq to current node */
-        struct tstnode* right;		/* data greater than current node */
+        struct tstnode* left;
+        struct tstnode* eq;
+        struct tstnode* right;
 }tstnode; 
 
 tstnode* tst_insert(tstnode* root, char* str); 
 void tst_tprsize_t(tstnode* root); 
 size_t tst_glength(tstnode *root); 
 void tst_delete(tstnode *root); 
-bool tst_search(tstnode *root, char* pattern);
-
-#define MAX_LEN 1024 
-#define MAX( a, b, c ) ((a)>(b) ? ((a)>(c) ? (a):(c)) : ( (b)>(c) ? (b):(c) )) 
+bool tst_search(tstnode *root, char* pattern); 
 	
 tstnode* tst_insert(tstnode* root, char* str)
 {
@@ -25,7 +22,7 @@ tstnode* tst_insert(tstnode* root, char* str)
 	{
 		if (!(root = (tstnode*)malloc(sizeof(tstnode))))
 			return NULL;
-		root->data = *str;  // insert first character of string in the root node
+		root->data = *str;
 		root->eos = false;
 		root->left = root->eq = root->right = NULL;
 	}
@@ -44,15 +41,13 @@ tstnode* tst_insert(tstnode* root, char* str)
 
 	return root; 
 }
-	
-//Helper to prsize_t the strings in TST
 static void _tst_tprsize_t(tstnode* root, char* buffer, size_t depth)
 {
 	if (root)
 	{ 
 		_tst_tprsize_t(root->left, buffer, depth); 
 		buffer[depth] = root->data;
-		if (root->eos) //Once end of string flag is encountered, print the string
+		if (root->eos)
 		{
 			buffer[depth + 1] = '\0';
 			printf("%s\n", buffer);
@@ -60,15 +55,12 @@ static void _tst_tprsize_t(tstnode* root, char* buffer, size_t depth)
 		_tst_tprsize_t(root->eq, buffer, depth + 1);
 		_tst_tprsize_t(root->right, buffer, depth);
 	}
-}
-	
-// Function to print TST's strings
+} 
 void tst_tprsize_t(tstnode* root)
 {
-	char buffer[MAX_LEN];
+	char buffer[1024];
 	_tst_tprsize_t(root, buffer, 0);
-}
-	
+} 
 bool tst_search(tstnode *root, char* pattern)
 {
 	while (root != NULL)
@@ -88,8 +80,6 @@ bool tst_search(tstnode *root, char* pattern)
 	
 	return false;
 }
-	
-//Function to determine largest 
 size_t tst_glength(tstnode *root)
 {
 	if (root == NULL)
@@ -98,7 +88,7 @@ size_t tst_glength(tstnode *root)
 	size_t leftLen = tst_glength(root->left);
 	size_t middleLen = tst_glength(root->eq) + 1;
 	size_t rightLen = tst_glength(root->right);
-	
+	#define MAX( a, b, c ) ((a)>(b) ? ((a)>(c) ? (a):(c)) : ( (b)>(c) ? (b):(c) )) 
 	return MAX( leftLen, middleLen, rightLen);
 }
 	
