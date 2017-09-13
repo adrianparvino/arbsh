@@ -54,7 +54,7 @@ int main(void)
 	tnode *root = NULL;
 	char word[MAXWORD];
 	FILE *fp = fopen("data.txt", "r");
-	size_t i ;
+
 	if (!(fp))
 		return 1;
 	while (getword(word, MAXWORD, fp) != EOF)
@@ -74,8 +74,14 @@ int main(void)
 	
 	root = treetolist(root);
 	tnode *o = root;
-	for(i=0,o=root;o &&i<10;o=o->large, ++i) 
+	tnode *last = NULL;
+	for(o=root;o;o=o->large) 
+	{
 		printf("(%s)--> ", o->word);
+		if (o == last)
+			break;
+		last = root;
+	}
 	printf("\n\n");
 	return 0;
 }
