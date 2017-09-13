@@ -74,7 +74,7 @@ int main(void)
 	tnode *last = NULL;
 	for(o=root;o;o=o->large) 
 	{
-		printf("(%s)--> ", o->word);
+		printf("(%d %s))--> ", o->count, o->word);
 		if (o == last)
 			break;
 		last = root;
@@ -231,9 +231,14 @@ void treeprint_postorder(tnode* node)
 {
 	if (node == NULL)
 		return; 
-	treeprint(node->small);
-	treeprint(node->large);
+	static int i = 0;
+	if (i == 0 && ++i )
 	printf("\t[%s]\n", node->word);
+
+	treeprint(node->small);
+	printf("\n");
+	treeprint(node->large);
+	
 }
 
 void printpaths(tnode* node)
