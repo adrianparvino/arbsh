@@ -32,11 +32,8 @@ void join(tnode *, tnode *);
 tnode *append(tnode *, tnode *);
 tnode *treetolist(tnode *); 
 void treeprint_postorder(tnode*);
-
 void printpaths(tnode* node);
 void _printpaths(tnode* node, char *, int pathLen);
-
-
 
 /* defines */
 #define MAXWORD 100
@@ -131,12 +128,12 @@ void treeprint_iter(tnode *root)
 		return; 
 	current = root;
 	while(current != NULL)
-	{                 
+	{				 
 		if(current->small == NULL)
 		{
 			printf("\t%d %s\n", current->count, current->word);
-			current = current->large;      
-		}    
+			current = current->large;	  
+		}	
 		else
 		{ 
 			pre = current->small;
@@ -151,7 +148,7 @@ void treeprint_iter(tnode *root)
 			{
 				pre->large = NULL;
 				printf("\t%d %s\n", current->count, current->word);
-				current = current->large;      
+				current = current->large;	  
 			}
 		} 
 	} 
@@ -197,45 +194,45 @@ void ungetch(int c) /* push character back on input */
 
 void join(tnode *a, tnode *b)
 {
-    a->large = b;
-    b->small = a;
+	a->large = b;
+	b->small = a;
 }
 
 tnode *append(tnode *a, tnode *b)
 {
-    tnode *aLast, *bLast;
-    if (a==NULL) return(b);
-    if (b==NULL) return(a);
-    aLast = a->small;
-    bLast = b->small;
-    join(aLast, b);
-    join(bLast, a);
-    return(a);
+	tnode *aLast, *bLast;
+	if (a==NULL) return(b);
+	if (b==NULL) return(a);
+	aLast = a->small;
+	bLast = b->small;
+	join(aLast, b);
+	join(bLast, a);
+	return(a);
 }
 
 tnode *treetolist(tnode *root)
 {
-    tnode *aList, *bList;
-    if (root==NULL) return(NULL);
-    // recursively solve subtrees -- leap of faith!
-    aList = treetolist(root->small);
-    bList = treetolist(root->large);
-    // Make a length-1 list ouf of the root 
-    root->small = root;
-    root->large = root;
-    // Append everything together in sorted order 
-    aList = append(aList, root);
-    aList = append(aList, bList);
-    return(aList);
+	tnode *aList, *bList;
+	if (root==NULL)
+	return(NULL);
+
+	aList = treetolist(root->small);
+	bList = treetolist(root->large);
+ 
+	root->small = root;
+	root->large = root;
+  
+	aList = append(aList, root);
+	aList = append(aList, bList);
+	return(aList);
 }
 
 void treeprint_postorder(tnode* node)
 {
-	if (node == NULL) return;
-	// first recur on both subtrees
+	if (node == NULL)
+		return; 
 	treeprint(node->small);
 	treeprint(node->large);
-	// then deal with the node
 	printf("\t[%s]\n", node->word);
 }
 
@@ -249,7 +246,7 @@ void _printpaths(tnode* node, char *path, int pathLen)
 {
 	if (node==NULL)
 		return; 
-	pathLen += sprintf(path + pathLen, "%s-->", node->word);
+	pathLen += sprintf(path + pathLen, "%s--> ", node->word);
 
 	if (node->small==NULL && node->large==NULL) { 
 		printf("%s\n", path);
