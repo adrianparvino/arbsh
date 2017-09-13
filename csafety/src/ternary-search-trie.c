@@ -11,7 +11,7 @@ typedef struct tstnode{
 }tstnode; 
 
 tstnode* tst_insert(tstnode* root, char* str); 
-void tst_tprsize_t(tstnode* root); 
+void tst_tprint(tstnode* root); 
 size_t tst_glength(tstnode *root); 
 void tst_delete(tstnode *root); 
 bool tst_search(tstnode *root, char* pattern); 
@@ -41,26 +41,29 @@ tstnode* tst_insert(tstnode* root, char* str)
 
 	return root; 
 }
-static void _tst_tprsize_t(tstnode* root, char* buffer, size_t depth)
+
+static void _tst_tprint(tstnode* root, char* buffer, size_t depth)
 {
 	if (root)
 	{ 
-		_tst_tprsize_t(root->left, buffer, depth); 
+		_tst_tprint(root->left, buffer, depth); 
 		buffer[depth] = root->data;
 		if (root->eos)
 		{
 			buffer[depth + 1] = '\0';
 			printf("%s\n", buffer);
 		} 
-		_tst_tprsize_t(root->eq, buffer, depth + 1);
-		_tst_tprsize_t(root->right, buffer, depth);
+		_tst_tprint(root->eq, buffer, depth + 1);
+		_tst_tprint(root->right, buffer, depth);
 	}
 } 
-void tst_tprsize_t(tstnode* root)
+
+void tst_tprint(tstnode* root)
 {
 	char buffer[1024];
-	_tst_tprsize_t(root, buffer, 0);
+	_tst_tprint(root, buffer, 0);
 } 
+
 bool tst_search(tstnode *root, char* pattern)
 {
 	while (root != NULL)
@@ -80,16 +83,16 @@ bool tst_search(tstnode *root, char* pattern)
 	
 	return false;
 }
+
 size_t tst_glength(tstnode *root)
 {
 	if (root == NULL)
 		return 0;
-	
-	size_t leftLen = tst_glength(root->left);
-	size_t middleLen = tst_glength(root->eq) + 1;
-	size_t rightLen = tst_glength(root->right);
-	#define MAX( a, b, c ) ((a)>(b) ? ((a)>(c) ? (a):(c)) : ( (b)>(c) ? (b):(c) )) 
-	return MAX( leftLen, middleLen, rightLen);
+
+	size_t x = tst_glength(root->left);
+	size_t y = tst_glength(root->eq) + 1;
+	size_t z = tst_glength(root->right); 
+	return ((x)>(y) ? ((x)>(z) ? (x):(z)) : ( (y)>(z) ? (y):(z) ));
 }
 	
 void tst_delete(tstnode *root)
@@ -115,7 +118,7 @@ int main(int argc, char **argv)
 	root = tst_insert(root, "bats");
 	root = tst_insert(root, "stages");
 
-	tst_tprsize_t(root);
+	tst_tprint(root);
 
 	if (tst_search(root, str) == false)
 		printf("%s not found\n", str);
