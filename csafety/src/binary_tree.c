@@ -46,11 +46,18 @@ struct gchbuf{
 }gchbuf = { {0}, 0 };
 
 /* word frequency count */
-int main(void)
+int main(int argc, char **argv)
 {
 	tnode *root = NULL;
 	char word[MAXWORD];
-	FILE *fp = fopen("data.txt", "r");
+	//FILE *fp = fopen("data.txt", "r");
+	FILE *fp;
+	if ( argc != 2 )
+	{
+		printf("needs a file containing words\n");
+		return 1;
+	}
+	fp = fopen(argv[1], "r");
 
 	if (!(fp))
 		return 1;
