@@ -79,7 +79,7 @@ printing and histogram functions are supplied.
 		if(_trie_nodel(o->children[index], key, level+1))
 		{
 			free(o->children[index]);
-			o->children[index] = NULL;
+			o->children[index] = NULL; /* FIXME !!  _trie_nodel should return an object * */
 			return (!o->leaf && trie_isfreenode(o));
 		} 
 		return 0;
