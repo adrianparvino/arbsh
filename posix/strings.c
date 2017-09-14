@@ -8,7 +8,7 @@
 #include <ctype.h>
 
 /*
-	Copyright 2016, 'strings.c', C. Graff
+	Copyright 2016-2017, 'strings.c', C. Graff
 
 	"strings - find printable strings in files"
 
@@ -76,19 +76,16 @@ int strings(char *file, size_t number, char format)
 	size_t offset;
 	size_t len;
 
-
-	if (!(buffer = malloc(number * (sizeof buffer))))
+	if (!(buffer = malloc(number)))
 		return 1;
 
-	if (!(buf = malloc(4096 * (sizeof buf))))
-		return 1; 
+	if (!(buf = malloc(4096)))
+		return 1;
 
 	if (file && (fd = open(file, O_RDONLY)) == -1 )
 		return 1;
 
-
 	ret = i = j = offset = inastring = 0;
-
 
 	while ((ret = read(fd, buf, 4096)) > 0) 
 	{
