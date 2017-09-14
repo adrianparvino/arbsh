@@ -3,33 +3,33 @@ Retrieval trees (tries) offer 0(N) search and insertion time. Tries have the
 unique property of aborting upon an "early miss", which greatly increases their
 effectiveness.  
 
-        "Proposition G. The number of array accesses when 
-         searching in a trie or inserting a key into a trie
-         is at most 1 plus the length of the key." 
-                 (Sedgewick, "Algorithms" 4th ed. pg730)
+	"Proposition G. The number of array accesses when 
+	 searching in a trie or inserting a key into a trie
+	 is at most 1 plus the length of the key." 
+		 (Sedgewick, "Algorithms" 4th ed. pg730)
 
 
 Typically in depictions of tries NULL nodes are not shown, as is the case in
 the depiction below:
 
 
-             [root]                   andy
-          /          \                android
-       [a]            [b]             ant
-        |              |              andrew
-       [n]            [a]             androgen
-        |  \           |
-       [d] [t]        [r]             barry
-     /  |              |  \           barnacle
-   [y] [r]            [r] [n]         barney
-        |  \           |   |  \
-       [e] [o]        [y] [a] [e]
-        |   | \            |   |
-       [w] [i] [g]        [c] [y]
-            |   |          |
-           [d] [e]        [l]
-         /      |          |
-       [s]     [n]        [e]
+	     [root]		   andy
+	  /	  \		android
+       [a]	    [b]	     ant
+	|	      |	      andrew
+       [n]	    [a]	     androgen
+	|  \	   |
+       [d] [t]	[r]	     barry
+     /  |	      |  \	   barnacle
+   [y] [r]	    [r] [n]	 barney
+	|  \	   |   |  \
+       [e] [o]	[y] [a] [e]
+	|   | \	    |   |
+       [w] [i] [g]	[c] [y]
+	    |   |	  |
+	   [d] [e]	[l]
+	 /      |	  |
+       [s]     [n]	[e]
 	
 	
 The program below presents an R-way trie. Insertion, deletion, searching,
@@ -52,37 +52,37 @@ printing and histogram functions are supplied.
 	
 	int trie_isfreenode(object *o)
 	{
-	        size_t i;
-	        for(i = 0; i < alphasize; i++) 
-	                if(o->children[i])
-	                        return 0;
-	        return 1;
+		size_t i;
+		for(i = 0; i < alphasize; i++) 
+			if(o->children[i])
+				return 0;
+		return 1;
 	}
 	
 	int _trie_nodel(object *o, char *key, size_t level)
 	{ 
-	        size_t index;
-	        if(!(o))
+		size_t index;
+		if(!(o))
 	   		return 0;
-	        if(key[level] == 0)
-	        {
-	                if(o->leaf)
-	                {
-	                        o->leaf = 0;
-	                        if(trie_isfreenode(o))
-	                                return 1; 
-	                }
+		if(key[level] == 0)
+		{
+			if(o->leaf)
+			{
+				o->leaf = 0;
+				if(trie_isfreenode(o))
+					return 1; 
+			}
 			return 0;
-	        } 
+		} 
 	
-	        index = key[level];
-	        if(_trie_nodel(o->children[index], key, level+1))
-	        {
-	                free(o->children[index]);
-	                o->children[index] = NULL;
-	                return (!o->leaf && trie_isfreenode(o));
-	        } 
-	        return 0;
+		index = key[level];
+		if(_trie_nodel(o->children[index], key, level+1))
+		{
+			free(o->children[index]);
+			o->children[index] = NULL;
+			return (!o->leaf && trie_isfreenode(o));
+		} 
+		return 0;
 	}
 	
 	int trie_nodel(object *o, char *key)
@@ -178,20 +178,20 @@ printing and histogram functions are supplied.
 	void _trie_display(object* root, size_t level)
 	{ 
 		size_t i; 
-		static char str[100]; 
+		static char str[1024];
 	
 		if (root->leaf)
 		{
 			str[level] = '\0';
 			printf("%s\n", str); 
-		} 
+		}
 	    
 		for (i = 0; i < alphasize; i++)
-		{ 
+		{
 			if (root->children[i])
-			{ 
-				str[level] = i; 
-				_trie_display(root->children[i], level + 1);
+			{
+				str[level] = i;
+				_trie_display(root->children[i], level + 1); 
 			}
 		}
 	}
@@ -216,7 +216,7 @@ printing and histogram functions are supplied.
 			trie_insert(root, patterns[i]); 
 		for (i=0; i < sizeof(queries)/sizeof(queries[0]); ++i)
 		{ 
-	                if (!(trie_search(root, queries[i])))
+			if (!(trie_search(root, queries[i])))
 				printf("%s  -- Not found\n", queries[i]);
 			else
 				printf("%s  -- Found\n", queries[i]);
