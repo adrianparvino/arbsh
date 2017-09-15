@@ -13,23 +13,23 @@ Typically in depictions of tries NULL nodes are not shown, as is the case in
 the depiction below:
 
 
-	     [root]		   andy
-	  /	  \		android
-       [a]	    [b]	     ant
-	|	      |	      andrew
-       [n]	    [a]	     androgen
+	    [root]           andy
+	  /	  \          android
+       [a]        [b]	     ant
+	|          |         andrew
+       [n]        [a]	     androgen
 	|  \	   |
-       [d] [t]	[r]	     barry
-     /  |	      |  \	   barnacle
-   [y] [r]	    [r] [n]	 barney
+       [d] [t]    [r]	     barry
+     /  |          |  \	     barnacle
+   [y] [r]        [r] [n]    barney
 	|  \	   |   |  \
-       [e] [o]	[y] [a] [e]
-	|   | \	    |   |
-       [w] [i] [g]	[c] [y]
-	    |   |	  |
-	   [d] [e]	[l]
-	 /      |	  |
-       [s]     [n]	[e]
+       [e] [o]    [y] [a] [e]
+	|   | \        |   |
+       [w] [i] [g]    [c] [y]
+	    |   |      |
+	   [d] [e]    [l]
+	 /      |      |
+       [s]     [n]    [e]
 	
 	
 The program below presents an R-way trie. Insertion, deletion, searching,
