@@ -12,44 +12,38 @@
 #include <stdlib.h>
 
 /* structures */
-typedef struct tnode { 
+typedef struct bstnode { 
 	char *word;
-	int count;
-	size_t depth;
-	struct tnode *small;
-	struct tnode *large;
-}tnode;
+	size_t count;
+	struct bstnode *small;/* left */
+	struct bstnode *large;/* right */
+}bstnode;
  
 /* prototypes */ 
 int ngetch(FILE *); 
 int getch(void);
 void ungetch(int);
-tnode *addtree(tnode *, char *);
-void treeprint(tnode *);
-void treeprint_iter(tnode *);
+bstnode *addtree(bstnode *, char *);
+void treeprint(bstnode *);
+void treeprint_iter(bstnode *);
 int getword(char *, int, FILE *);
-void join(tnode *, tnode *);
-tnode *append(tnode *, tnode *);
-tnode *treetolist(tnode *); 
-void treeprint_postorder(tnode*);
-void printpaths(tnode* node);
-void _printpaths(tnode* node, char *, int pathLen);
-
-/* defines */
-#define MAXWORD 100
-#define BUFSIZE 100 
-
+void join(bstnode *, bstnode *);
+bstnode *append(bstnode *, bstnode *);
+bstnode *treetolist(bstnode *); 
+void treeprint_postorder(bstnode*);
+void printpaths(bstnode* node);
+void _printpaths(bstnode* node, char *, int pathLen); 
 
 int main(int argc, char **argv)
 {
-	tnode *root = NULL;
-	char word[MAXWORD];
+	bstnode *root = NULL;
+	char word[100];
 	FILE *fp = stdin;
 	if ( argc == 2 ) 
 		if (!(fp = fopen(argv[1], "r")))
 			return 1;
 
-	while (getword(word, MAXWORD, fp) != EOF)
+	while (getword(word, 100, fp) != EOF)
 			root = addtree(root, word);
 
 	treeprint(root);
@@ -64,11 +58,11 @@ int main(int argc, char **argv)
 
 	
 	root = treetolist(root);
-	tnode *o = root;
-	tnode *last = NULL;
+	bstnode *o = root;
+	bstnode *last = NULL;
 	for(o=root;o;o=o->large) 
 	{
-		printf("(%d %s))--> ", o->count, o->word);
+		printf("(%zu %s))--> ", o->count, o->word);
 		if (o == last)
 			break;
 		last = root;
@@ -78,12 +72,12 @@ int main(int argc, char **argv)
 }
 
 /* addtree: add a node with w, at or below p */
-tnode *addtree(tnode *p, char *w)
+bstnode *addtree(bstnode *p, char *w)
 {
 	int cond;
 	if (p == NULL) /* a new word has arrived */
 	{ 
-		p = malloc(sizeof(tnode));
+		p = malloc(sizeof(bstnode));
 		p->word = strdup(w);
 		p->count = 1;
 		p->small = p->large = NULL; 
@@ -103,21 +97,21 @@ tnode *addtree(tnode *p, char *w)
 	return p;
 }
 
-void treeprint(tnode *p)
+void treeprint(bstnode *p)
 {
 	/* recursive tree printing */
 	if (p != NULL)
 	{
 		treeprint(p->small); 
-		printf("\t%d %s\n", p->count, p->word); 
+		printf("\t%zu %s\n", p->count, p->word); 
 		treeprint(p->large);
 	}
 }
 
-void treeprint_iter(tnode *root)
+void treeprint_iter(bstnode *root)
 {
 	/* Morris traversal */
-	tnode *current,*pre; 
+	bstnode *current,*pre; 
 	if(root == NULL)
 		return; 
 	current = root;
@@ -125,7 +119,7 @@ void treeprint_iter(tnode *root)
 	{				 
 		if(current->small == NULL)
 		{
-			printf("\t%d %s\n", current->count, current->word);
+			printf("\t%zu %s\n", current->count, current->word);
 			current = current->large;	  
 		}	
 		else
@@ -141,7 +135,7 @@ void treeprint_iter(tnode *root)
 			else 
 			{
 				pre->large = NULL;
-				printf("\t%d %s\n", current->count, current->word);
+				printf("\t%zu %s\n", current->count, current->word);
 				current = current->large;	  
 			}
 		} 
@@ -167,15 +161,15 @@ int getword(char *word, int lim, FILE *fp)
 	return word[0];
 }
 
-void join(tnode *a, tnode *b)
+void join(bstnode *a, bstnode *b)
 {
 	a->large = b;
 	b->small = a;
 }
 
-tnode *append(tnode *a, tnode *b)
+bstnode *append(bstnode *a, bstnode *b)
 {
-	tnode *aLast, *bLast;
+	bstnode *aLast, *bLast;
 	if (a==NULL) return(b);
 	if (b==NULL) return(a);
 	aLast = a->small;
@@ -185,9 +179,9 @@ tnode *append(tnode *a, tnode *b)
 	return(a);
 }
 
-tnode *treetolist(tnode *root)
+bstnode *treetolist(bstnode *root)
 {
-	tnode *aList, *bList;
+	bstnode *aList, *bList;
 	if (root==NULL)
 	return(NULL);
 
@@ -202,27 +196,25 @@ tnode *treetolist(tnode *root)
 	return(aList);
 }
 
-void treeprint_postorder(tnode* node)
+void treeprint_postorder(bstnode* node)
 {
 	if (node == NULL)
 		return; 
 	static int i = 0;
-	if (i == 0 && ++i )
-	printf("\t[%s]\n", node->word);
-
+	if (i == 0 && ++i)
+		printf("\t[%s]\n", node->word);
 	treeprint(node->small);
 	printf("\n");
 	treeprint(node->large);
-	
 }
 
-void printpaths(tnode* node)
+void printpaths(bstnode* node)
 {
 	char path[1000] = { 0 };
 	_printpaths(node, path, 0);
 } 
 
-void _printpaths(tnode* node, char *path, int pathLen)
+void _printpaths(bstnode* node, char *path, int pathLen)
 {
 	if (node==NULL)
 		return; 
