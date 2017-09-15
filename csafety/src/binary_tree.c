@@ -50,7 +50,6 @@ int main(int argc, char **argv)
 			return 1;
 
 	while (getword(word, MAXWORD, fp) != EOF)
-		if (isprint(word[0]))
 			root = addtree(root, word);
 
 	treeprint(root);
