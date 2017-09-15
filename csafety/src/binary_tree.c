@@ -26,13 +26,13 @@ void ungetch(int);
 bstnode *addtree(bstnode *, char *);
 void treeprint(bstnode *);
 void treeprint_iter(bstnode *);
-int getword(char *, int, FILE *);
+int getword(char *, size_t, FILE *);
 void join(bstnode *, bstnode *);
 bstnode *append(bstnode *, bstnode *);
 bstnode *treetolist(bstnode *); 
 void treeprint_postorder(bstnode*);
-void printpaths(bstnode* node);
-void _printpaths(bstnode* node, char *, int pathLen); 
+void bst_printpaths(bstnode* node);
+void _bst_printpaths(bstnode* node, char *, size_t, size_t); 
 
 int main(int argc, char **argv)
 {
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 	treeprint_iter(root);
 	printf("\n\n");
 
-	printpaths(root);
+	bst_printpaths(root);
 	treeprint(root);
 	printf("\n\n");
 	treeprint_postorder(root);
@@ -142,7 +142,7 @@ void treeprint_iter(bstnode *root)
 	} 
 }
 
-int getword(char *word, int lim, FILE *fp)
+int getword(char *word, size_t lim, FILE *fp)
 {
 	int c;
 	char *w = word;
@@ -208,24 +208,26 @@ void treeprint_postorder(bstnode* node)
 	treeprint(node->large);
 }
 
-void printpaths(bstnode* node)
-{
-	char path[1000] = { 0 };
-	_printpaths(node, path, 0);
+void bst_printpaths(bstnode* node)
+{ 
+	char path[1024] = { 0 };
+	_bst_printpaths(node, path, 0, 1024);
 } 
 
-void _printpaths(bstnode* node, char *path, int pathLen)
-{
+void _bst_printpaths(bstnode* node, char *p, size_t len, size_t lim)
+{ 
 	if (node==NULL)
 		return; 
-	pathLen += sprintf(path + pathLen, "%s--> ", node->word);
-
+	char *n = node->word;
+	len += snprintf(p+len, len-lim, "\"%s\"--> ", n);
+	if ( len == lim)
+		{ fprintf(stderr, "word is too large\n"); return;}
 	if (node->small == NULL && node->large==NULL) { 
-		printf("%s\n", path);
+		printf("%s\n", p);
 	}
 	else { 
-		_printpaths(node->small, path, pathLen);
-		_printpaths(node->large, path, pathLen);
+		_bst_printpaths(node->small, p, len, lim);
+		_bst_printpaths(node->large, p, len, lim);
 	}
 }
 
