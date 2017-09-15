@@ -39,22 +39,16 @@ void _printpaths(tnode* node, char *, int pathLen);
 #define MAXWORD 100
 #define BUFSIZE 100 
 
-/* word frequency count */
+
 int main(int argc, char **argv)
 {
 	tnode *root = NULL;
 	char word[MAXWORD];
-	//FILE *fp = fopen("data.txt", "r");
-	FILE *fp;
-	if ( argc != 2 )
-	{
-		printf("needs a file containing words\n");
-		return 1;
-	}
-	fp = fopen(argv[1], "r");
+	FILE *fp = stdin;
+	if ( argc == 2 ) 
+		if (!(fp = fopen(argv[1], "r")))
+			return 1;
 
-	if (!(fp))
-		return 1;
 	while (getword(word, MAXWORD, fp) != EOF)
 		if (isprint(word[0]))
 			root = addtree(root, word);
