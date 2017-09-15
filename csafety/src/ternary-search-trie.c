@@ -15,9 +15,9 @@ typedef struct tstnode {
 tstnode* tst_insert(tstnode* root, char* str); 
 void tst_tprint(tstnode* root); 
 size_t tst_glength(tstnode *root); 
-void tst_delete(tstnode *root); 
+void tst_destroy(tstnode *root); 
 bool tst_search(tstnode *root, char* pattern); 
-int getword(char *, int, FILE *);
+int getword(char *, size_t, FILE *);
 
 int main(int argc, char **argv)
 { 
@@ -30,10 +30,21 @@ int main(int argc, char **argv)
                         return 1;
 
         while (getword(word, 100, fp) != EOF)
-		root= tst_insert(root, word);
+		root = tst_insert(root, word);
+
+	if (fp!=stdin)rewind(fp);
+
+        while (getword(word, 100, fp) != EOF)
+	{
+		if (tst_search(root, word))
+			printf("found %s\n", word);
+		else
+			printf("not found %s\n", word);
+	
+	}
 
 	tst_tprint(root); 
-	tst_delete(root);
+	tst_destroy(root);
 	return 0;
 }
 	
@@ -63,26 +74,29 @@ tstnode* tst_insert(tstnode* root, char* str)
 	return root; 
 }
 
-static void _tst_tprint(tstnode* root, char* buffer, size_t depth)
+static void _tst_tprint(tstnode* root, char* buffer, size_t depth, size_t lim)
 {
+	if ( lim == depth)
+		{ fprintf(stderr, "Buffer exhausted\n"); return; }
+
 	if (root)
 	{ 
-		_tst_tprint(root->left, buffer, depth); 
+		_tst_tprint(root->left, buffer, depth, lim); 
 		buffer[depth] = root->data;
 		if (root->eos)
 		{
 			buffer[depth + 1] = '\0';
-			printf("%s\n", buffer);
+			printf("(%s)\n", buffer);
 		} 
-		_tst_tprint(root->eq, buffer, depth + 1);
-		_tst_tprint(root->right, buffer, depth);
+		_tst_tprint(root->eq, buffer, depth + 1, lim);
+		_tst_tprint(root->right, buffer, depth, lim);
 	}
 } 
 
 void tst_tprint(tstnode* root)
 {
 	char buffer[1024];
-	_tst_tprint(root, buffer, 0);
+	_tst_tprint(root, buffer, 0, 1024);
 } 
 
 bool tst_search(tstnode *root, char* pattern)
@@ -94,7 +108,7 @@ bool tst_search(tstnode *root, char* pattern)
 		else if (*pattern == root->data)
 		{
 			if (root->eos && *(pattern + 1) == '\0')
-			 return true;
+				return true;
 			pattern++;
 			root = root->eq;
 		}
@@ -114,21 +128,22 @@ size_t tst_glength(tstnode *root)
 	x = tst_glength(root->left);
 	y = tst_glength(root->eq) + 1;
 	z = tst_glength(root->right); 
-	return ((x)>(y) ? ((x)>(z) ? (x):(z)) : ( (y)>(z) ? (y):(z) ));
+	return ((x)>(y)?((x)>(z)?(x):(z)):((y)>(z)?(y):(z)));
 }
 	
-void tst_delete(tstnode *root)
+void tst_destroy(tstnode *root)
 {
 	tstnode *tmp = root;
 	if (tmp)
 	{
-		tst_delete(tmp->left);
-		tst_delete(tmp->eq);
-		tst_delete(tmp->right);
+		tst_destroy(tmp->left);
+		tst_destroy(tmp->eq);
+		tst_destroy(tmp->right);
 		free(tmp);
 	}
-} 
-int getword(char *word, int lim, FILE *fp)
+}
+
+int getword(char *word, size_t lim, FILE *fp)
 {
         int c;
         char *w = word;
