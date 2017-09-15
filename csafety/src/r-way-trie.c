@@ -37,28 +37,33 @@ printing and histogram functions are supplied.
 	
 	
 */ 
-	
+
 	#include <stdio.h>
 	#include <stdlib.h> 
 	#include <string.h>
-	
+	#include <ctype.h>
+
 	/* map all ASCII values to an indice */
 	size_t alphasize = 128;
-	
+
 	typedef struct object {
 		int leaf; 
 		struct object **children; 
 	}object;
-	
+
 	int trie_isfreenode(object *o)
 	{
 		size_t i;
 		for(i = 0; i < alphasize; i++) 
 			if(o->children[i])
+			{
+				
 				return 0;
+			}
+				//return 0;
 		return 1;
 	}
-	
+
 	int _trie_nodel(object *o, char *key, size_t level)
 	{ 
 		size_t index;
@@ -71,26 +76,30 @@ printing and histogram functions are supplied.
 				o->leaf = 0;
 				if(trie_isfreenode(o))
 					return 1; 
+				
 			}
 			return 0;
+			
 		} 
 	
 		index = key[level];
 		if(_trie_nodel(o->children[index], key, level+1))
 		{
 			free(o->children[index]);
-			o->children[index] = NULL; /* FIXME !!  _trie_nodel should return an object * */
+			o->children[index] = NULL;
+			
 			return (!o->leaf && trie_isfreenode(o));
 		} 
 		return 0;
-	}
 	
+	}
+
 	int trie_nodel(object *o, char *key)
 	{
 		size_t level = 0;
 		_trie_nodel(o, key, level);
 	}
-	
+
 	object *trie_init(void)
 	{
 		size_t i = 0; 
@@ -118,7 +127,7 @@ printing and histogram functions are supplied.
 		}
 		o->leaf = 1;
 	} 
-	
+
 	int trie_search(object *o, const char *pat)
 	{
 		size_t i;
@@ -134,7 +143,7 @@ printing and histogram functions are supplied.
 			return 1;
 		return 0; 
 	} 
-	
+
 	void trie_free(object* root)
 	{ 
 		size_t i;
@@ -146,7 +155,7 @@ printing and histogram functions are supplied.
 		free(root->children);
 		free(root);
 	}
-	
+
 	void _trie_histogram(object* root, size_t level)
 	{ 
 		size_t i; 
@@ -168,7 +177,7 @@ printing and histogram functions are supplied.
 			}
 		}
 	}
-	
+
 	void trie_histogram(object* root)
 	{
 		printf("root\n|\n|\n|");
@@ -195,39 +204,76 @@ printing and histogram functions are supplied.
 			}
 		}
 	}
-	
+
 	void trie_display(object* root)
 	{
 		size_t level = 0;
 		_trie_display(root, level);
 	}
-	
-	int main(void)
+
+	int getword(char *word, size_t lim, FILE *fp)
+	{
+	        int c;
+	        char *w = word;
+	        while (isspace(c = fgetc(fp)));
+		        if (c != EOF)
+	                *w++ = c;
+	        if (!isalnum(c) && !ispunct(c))
+	                { *w = '\0'; return c; }
+	        for ( ; --lim > 0; w++)
+	        {
+	                *w = fgetc(fp);
+	                if (!isalnum(*w) && !ispunct(*w))
+	                        { ungetc(*w, fp); break; }
+	        }
+	        *w = '\0';
+	        return word[0];
+	}
+
+	int main(int argc, char *argv[])
 	{ 
-		size_t i;
-		char patterns[][10] = {"The!", "the", "there", "answer",
-		 "any", "by", "bye", "th@eir", "123", "~~~", "zzzzz"}; 
-		char queries[][10] = {"The!", "thaw", "th@eir", "these",
-		 "123", "~~~", "zzzzz", "th"};
-	
+		size_t i = 0;
+		char word[100];
+	        FILE *fp = stdin;
+	        if ( argc == 2 )
+	                if (!(fp = fopen(argv[1], "r")))
+	                        return 1;
+
 		object *root = trie_init(); 
-	
-		for (i=0; i < sizeof(patterns)/sizeof(patterns[0]); ++i)
-			trie_insert(root, patterns[i]); 
-		for (i=0; i < sizeof(queries)/sizeof(queries[0]); ++i)
-		{ 
-			if (!(trie_search(root, queries[i])))
-				printf("%s  -- Not found\n", queries[i]);
-			else
-				printf("%s  -- Found\n", queries[i]);
-		}
-		
+		while (getword(word, 100, fp) != EOF)
+			trie_insert(root, word);
+
+	        if (fp!=stdin)rewind(fp);
+
+	        while (getword(word, 100, fp) != EOF)
+	        {
+	                if (trie_search(root, word))
+	                        printf("found %s\n", word);
+	                else
+	                        printf("not found %s\n", word);
+
+	        }
 		trie_display(root);
-		trie_nodel((root), patterns[1]);
+
+		if (fp!=stdin)rewind(fp);
+		while (getword(word, 100, fp) != EOF)
+		{
+			//++i;
+			//if ( i > 3)
+				if (trie_nodel((root), word))
+					fprintf(stderr, "unable to free node\n");
+		} 
+
+		if (fp!=stdin)rewind(fp);
+		//while (getword(word, 100, fp) != EOF)
+		//	trie_insert(root, word);
+		trie_display(root);
+		//trie_nodel((root), patterns[1]);
 		printf("\n");
 		trie_display(root);
 		printf("\n");
 		trie_histogram(root);
-		trie_free(root);
+		//trie_free(root);
 		return 0;
 	}
+
