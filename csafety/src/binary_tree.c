@@ -15,8 +15,8 @@
 typedef struct bstnode { 
 	char *word;
 	size_t count;
-	struct bstnode *small;/* left */
-	struct bstnode *large;/* right */
+	struct bstnode *small;/* left/prev */
+	struct bstnode *large;/* right/next */
 }bstnode;
  
 /* prototypes */ 
