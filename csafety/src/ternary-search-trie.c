@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h> 
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
 
-typedef struct tstnode{
+typedef struct tstnode {
         char data;
         bool eos;
         struct tstnode* left;
@@ -15,6 +17,25 @@ void tst_tprint(tstnode* root);
 size_t tst_glength(tstnode *root); 
 void tst_delete(tstnode *root); 
 bool tst_search(tstnode *root, char* pattern); 
+int getword(char *, int, FILE *);
+
+int main(int argc, char **argv)
+{ 
+	tstnode *root = NULL; 
+
+	char word[100];
+        FILE *fp = stdin;
+        if ( argc == 2 )
+                if (!(fp = fopen(argv[1], "r")))
+                        return 1;
+
+        while (getword(word, 100, fp) != EOF)
+		root= tst_insert(root, word);
+
+	tst_tprint(root); 
+	tst_delete(root);
+	return 0;
+}
 	
 tstnode* tst_insert(tstnode* root, char* str)
 {
@@ -80,18 +101,19 @@ bool tst_search(tstnode *root, char* pattern)
 		else
 			root = root->right;
 	}
-	
 	return false;
 }
 
 size_t tst_glength(tstnode *root)
 {
+	size_t x, y, z;
+
 	if (root == NULL)
 		return 0;
 
-	size_t x = tst_glength(root->left);
-	size_t y = tst_glength(root->eq) + 1;
-	size_t z = tst_glength(root->right); 
+	x = tst_glength(root->left);
+	y = tst_glength(root->eq) + 1;
+	z = tst_glength(root->right); 
 	return ((x)>(y) ? ((x)>(z) ? (x):(z)) : ( (y)>(z) ? (y):(z) ));
 }
 	
@@ -106,30 +128,22 @@ void tst_delete(tstnode *root)
 		free(tmp);
 	}
 } 
-	
-int main(int argc, char **argv)
+int getword(char *word, int lim, FILE *fp)
 {
-	char *str = "hello";
-	char *str1 = "bat";
-	tstnode *root = NULL;
-	root = tst_insert(root, "boats");
-	root = tst_insert(root, "boat");
-	root = tst_insert(root, "bat");
-	root = tst_insert(root, "bats");
-	root = tst_insert(root, "stages");
-
-	tst_tprint(root);
-
-	if (tst_search(root, str) == false)
-		printf("%s not found\n", str);
-	else
-		printf("%s found\n", str);
-
-	if (tst_search(root, str1) == false)
-		printf("%s not found\n", str1);
-	else
-		printf("%s found\n", str1);
-
-	tst_delete(root);
-	return 0;
+        int c;
+        char *w = word;
+        while (isspace(c = fgetc(fp)));
+        if (c != EOF)
+                *w++ = c;
+        if (!isalnum(c) && !ispunct(c))
+                { *w = '\0'; return c; }
+        for ( ; --lim > 0; w++)
+        {
+                *w = fgetc(fp);
+                if (!isalnum(*w) && !ispunct(*w))
+                        { ungetc(*w, fp); break; }
+        }
+        *w = '\0';
+        return word[0];
 }
+
