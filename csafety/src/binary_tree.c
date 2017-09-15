@@ -37,13 +37,7 @@ void _printpaths(tnode* node, char *, int pathLen);
 
 /* defines */
 #define MAXWORD 100
-#define BUFSIZE 100
-
-/* globals */
-struct gchbuf{
-	char buf[BUFSIZE]; /* buffer for ungetch */
-	int bufp; /* next free position in buf */
-}gchbuf = { {0}, 0 };
+#define BUFSIZE 100 
 
 /* word frequency count */
 int main(int argc, char **argv)
@@ -62,9 +56,9 @@ int main(int argc, char **argv)
 	if (!(fp))
 		return 1;
 	while (getword(word, MAXWORD, fp) != EOF)
-		if (isalpha(word[0]))
+		if (isprint(word[0]))
 			root = addtree(root, word);
-	
+
 	treeprint(root);
 	printf("\n\n");
 	treeprint_iter(root);
@@ -165,39 +159,20 @@ int getword(char *word, int lim, FILE *fp)
 {
 	int c;
 	char *w = word;
-	while (isspace(c = ngetch(fp)))
-		;
+	while (isspace(c = fgetc(fp)));
 	if (c != EOF)
 		*w++ = c;
-	if (!isalpha(c))
-	{
-		*w = '\0';
-		return c;
-	}
+	if (!isalnum(c) && !ispunct(c)) 
+		{ *w = '\0'; return c; }
 	for ( ; --lim > 0; w++)
 	{
-		if (!isalnum(*w = ngetch(fp)))
-		{
-			ungetch(*w);
-			break;
-		}
+		*w = fgetc(fp);
+		if (!isalnum(*w) && !ispunct(*w)) 
+			{ ungetc(*w, fp); break; }
 	}
 	*w = '\0';
 	return word[0];
 }
-
-int ngetch(FILE *fp) /* get a (possibly pushed-back) character */
-{
-	return (gchbuf.bufp > 0) ? gchbuf.buf[--gchbuf.bufp] : fgetc(fp);
-}
-
-void ungetch(int c) /* push character back on input */
-{
-	if (gchbuf.bufp >= BUFSIZE)
-		fprintf(stderr, "ungetch: too many characters\n");
-	else
-		gchbuf.buf[gchbuf.bufp++] = c;
-} 
 
 void join(tnode *a, tnode *b)
 {
@@ -260,7 +235,7 @@ void _printpaths(tnode* node, char *path, int pathLen)
 		return; 
 	pathLen += sprintf(path + pathLen, "%s--> ", node->word);
 
-	if (node->small==NULL && node->large==NULL) { 
+	if (node->small == NULL && node->large==NULL) { 
 		printf("%s\n", path);
 	}
 	else { 
