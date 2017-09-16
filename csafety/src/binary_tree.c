@@ -19,18 +19,15 @@ typedef struct bstnode {
 	struct bstnode *large;/* right/next */
 }bstnode;
  
-/* prototypes */ 
-int ngetch(FILE *); 
-int getch(void);
-void ungetch(int);
-bstnode *addtree(bstnode *, char *);
-void treeprint(bstnode *);
-void treeprint_iter(bstnode *);
+/* prototypes */
+bstnode *bst_add(bstnode *, char *);
+void bst_print(bstnode *);
+void bst_print_iter(bstnode *);
 int getword(char *, size_t, FILE *);
-void join(bstnode *, bstnode *);
-bstnode *append(bstnode *, bstnode *);
-bstnode *treetolist(bstnode *); 
-void treeprint_postorder(bstnode*);
+void bst_join(bstnode *, bstnode *);
+bstnode *bst_append(bstnode *, bstnode *);
+bstnode *bst_to_list(bstnode *); 
+void bst_print_postorder(bstnode*);
 void bst_printpaths(bstnode* node);
 void _bst_printpaths(bstnode* node, char *, size_t, size_t); 
 
@@ -44,20 +41,20 @@ int main(int argc, char **argv)
 			return 1;
 
 	while (getword(word, 100, fp) != EOF)
-			root = addtree(root, word);
+			root = bst_add(root, word);
 
-	treeprint(root);
+	bst_print(root);
 	printf("\n\n");
-	treeprint_iter(root);
+	bst_print_iter(root);
 	printf("\n\n");
 
 	bst_printpaths(root);
-	treeprint(root);
+	bst_print(root);
 	printf("\n\n");
-	treeprint_postorder(root);
+	bst_print_postorder(root);
 
 	
-	root = treetolist(root);
+	root = bst_to_list(root);
 	bstnode *o = root;
 	bstnode *last = NULL;
 	for(o=root;o;o=o->large) 
@@ -71,8 +68,8 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-/* addtree: add a node with w, at or below p */
-bstnode *addtree(bstnode *p, char *w)
+/* bst_add: add a node with w, at or below p */
+bstnode *bst_add(bstnode *p, char *w)
 {
 	int cond;
 	if (p == NULL) /* a new word has arrived */
@@ -88,27 +85,27 @@ bstnode *addtree(bstnode *p, char *w)
 	}
 	else if (cond < 0)
 	{ 
-		p->small = addtree(p->small, w);
+		p->small = bst_add(p->small, w);
 	}
 	else
 	{ 
-		p->large = addtree(p->large, w);
+		p->large = bst_add(p->large, w);
 	}
 	return p;
 }
 
-void treeprint(bstnode *p)
+void bst_print(bstnode *p)
 {
 	/* recursive tree printing */
 	if (p != NULL)
 	{
-		treeprint(p->small); 
+		bst_print(p->small); 
 		printf("\t%zu %s\n", p->count, p->word); 
-		treeprint(p->large);
+		bst_print(p->large);
 	}
 }
 
-void treeprint_iter(bstnode *root)
+void bst_print_iter(bstnode *root)
 {
 	/* Morris traversal */
 	bstnode *current,*pre; 
@@ -161,51 +158,51 @@ int getword(char *word, size_t lim, FILE *fp)
 	return word[0];
 }
 
-void join(bstnode *a, bstnode *b)
+void bst_join(bstnode *a, bstnode *b)
 {
 	a->large = b;
 	b->small = a;
 }
 
-bstnode *append(bstnode *a, bstnode *b)
+bstnode *bst_append(bstnode *a, bstnode *b)
 {
 	bstnode *aLast, *bLast;
 	if (a==NULL) return(b);
 	if (b==NULL) return(a);
 	aLast = a->small;
 	bLast = b->small;
-	join(aLast, b);
-	join(bLast, a);
+	bst_join(aLast, b);
+	bst_join(bLast, a);
 	return(a);
 }
 
-bstnode *treetolist(bstnode *root)
+bstnode *bst_to_list(bstnode *root)
 {
 	bstnode *aList, *bList;
 	if (root==NULL)
 	return(NULL);
 
-	aList = treetolist(root->small);
-	bList = treetolist(root->large);
+	aList = bst_to_list(root->small);
+	bList = bst_to_list(root->large);
  
 	root->small = root;
 	root->large = root;
   
-	aList = append(aList, root);
-	aList = append(aList, bList);
+	aList = bst_append(aList, root);
+	aList = bst_append(aList, bList);
 	return(aList);
 }
 
-void treeprint_postorder(bstnode* node)
+void bst_print_postorder(bstnode* node)
 {
 	if (node == NULL)
 		return; 
 	static int i = 0;
 	if (i == 0 && ++i)
 		printf("\t[%s]\n", node->word);
-	treeprint(node->small);
+	bst_print(node->small);
 	printf("\n");
-	treeprint(node->large);
+	bst_print(node->large);
 }
 
 void bst_printpaths(bstnode* node)
