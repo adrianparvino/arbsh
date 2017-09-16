@@ -1,0 +1,197 @@
+graflibc
+
+DESCRIPTION:
+------------
+
+	graflibc is an experimental libc targeted at the linux kernel's syscall
+	ABI. It is a standalone libc which supports i386, x86_64 and arm 
+	architectures. graflibc can be compiled with either gcc or the llvm/
+	clang compiler.
+
+
+BUILDING:
+---------
+
+	graflibc contains a shell script wrapper for gcc called gcc-wrap. This
+	allows it to be easily installed and used from your home directory
+	without the need for root privilege.
+
+		cd graflibc 
+		./configure --prefix=/home/$USER/buildarea 
+		make 
+		make install
+
+	Test the installation:
+
+		cd /home/$USER/buildarea 
+		./bin/gcc-wrap tests/pow_test.c -static
+
+	Make sure you are using the -static argument whenever you compile
+	anything using the gcc wrapper because graflibc only supports static
+	linking at this time. Or delete the libc.so stub in the lib/ directory
+	which will cause the compiler to statically link to the libc.a by
+	default.
+
+
+STRUCTURE:
+----------
+
+	musllibc/
+		Source code original to the musl C library
+
+	graflibc/
+		Source code original to the graflibc C library.
+
+	fdlibm/
+		Source code original to the Sun libm math library
+
+	tests/
+		Various test binaries
+
+	crt/
+		Crt stuff startup assembly code
+
+	include/
+		Header files.
+
+	arch/
+		Architecture specific header files.
+
+	tools/
+		several tools including the gcc-wrap wrapper script
+
+
+LINKING TO OUTSIDE LIBC:
+------------------------
+
+	Many people wish to know the internal magic behind using the gcc-wrap
+	wrapper script. Instead of going into much detail I will offer some
+	instructions on linking against an outside libc (namely ours) without
+	using this wrapper:
+
+		git clone https://www.github.com/cmgraff/graflibc 
+		cd graflibc 
+		./configure 
+		make
+
+		gcc -nostdinc -nostdlib -I./include tests/cat.c lib/Scrt1.o lib/libc.a -o cat
+
+			or  ...
+
+		gcc -nostdinc -nostdlib -I./include tests/cat.c lib/crt*.o  lib/libc.a -o cat
+
+		./cat
+
+	Basically we tell the compiler to "-nostdinc (do not include any host 
+	headers)", "'-nostdlib' (don't include any host libraries)" "-I./include
+	 (use our header files)" and then finally "(link in our crt stuff) 
+	lib/Scrt1.o" and "(link in our libc) lib/libc.a" 
+
+	The libc itself is of course at lib/libc.a But the "crt stuff" crt 
+	start up files are also needed. These files are written in assembly 
+	code and their source code is located at graflibc/crt/*.
+
+
+AUTOMATIC TESTING:
+------------------
+	
+	Use the following instructions to retrieve, build and run graflibc 
+	and the graflibc test suite.
+
+		git clone https://www.githuc.com/cmgraff/graflibc
+		cd graflibc
+		make test
+
+	If all ran successfully there should be no significant errors and
+	a confirmation notice containing the results of the test suite 
+	will be printed to screen looking something like this:
+
+		==========COMPILING TEST SUITE==============================
+		============================================================
+		==========TEST SUITE START==================================
+		This number should be (16.000000): 16.000000    (4^3)
+		This number should be (15.580524): 15.580524    (3.3^2.3)
+		The `cat' utility successfully copied a file
+		The `malloc_driver' test utility successfully iterated th..
+		The `popen_driver' test utility successfully ran `du' on..
+		============================================================
+		============================================================
+		   If all was successful your compiler will be located at:
+		              ./usr/bin/gcc-wrap
+		============================================================
+
+	If any compiler or linker errors occur within this report then the libc
+	has changed and likely regressed or otherwise lost a functionality.
+
+	If you wish to add a new test to the test suite simply put the program
+	under tests/ and it will be compiled along with the other tests. There
+	are no automatic mechanisms for running supplied tests. As of this time
+	each actual test (and diff if required) must be scripted into 
+	tools/build.sh.
+
+
+USING LLVM/CLANG:
+-----------------
+
+	llvm/clang can be used to build graflibc. If your default libc happens
+	to be something other than clang then you can set CC as an environment
+	variable.
+
+		CC=clang ./configure
+
+		CC=clang make
+
+		make install
+
+	llvm/clang does not work with a specs file wrapper so the gcc-wrap
+	conveniece compiler wrapper can not be used at this time. Instead
+	one must link to the libc.a "by hand" as follows:
+
+		clang -nostdinc -nostdlib -I./include tests/cat.c lib/crt*.o lib/libc.a -o cat
+
+
+REVISION CONTROL:
+-----------------
+
+	https://github.com/cmgraff/graflibc
+
+
+WEB HOME:
+---------
+
+	http://www.csit.parkland.edu/~cgraff1/graflibc
+
+
+CONTACT:
+--------
+
+	cm0graff@gmail.com
+
+
+IRC:
+----
+
+	##programming on irc.freenode.net 
+	#oszero on irc.freenode.net
+	#musl on irc.freenode.net
+	#graflibc on irc.freenode.net
+
+
+REFERENCES:
+-----------
+
+	Some useful sites from the people on ##c irc.freenode.net
+
+		http://www.iso-9899.info
+
+		http://www.iso-9899.info/wiki/Books
+
+	An early book about the history of unix:
+
+		ftp://minnie.tuhs.org/UnixArchive/Documentation/Books/Life_with_Unix.pdf
+
+	Some small articles pertaining to the book "Software tools" by Kernighan and Plauger
+
+		phk.freebsd.dk/pubs/EuroBSDcon2010_SoftwareTools.pdf
+
+		alumnus.caltech.edu/~copeland/work/PDF/1999-08-ppt.pdf
