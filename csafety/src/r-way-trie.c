@@ -26,7 +26,6 @@ size_t alphasize = 128;
 typedef struct object {
 	int leaf; 
 	struct object **children; 
-	//struct object *children[128];
 }object;
 
 int trie_childfree(object *o)
@@ -57,28 +56,16 @@ int _trie_nodel(object *o, char *key, size_t level)
 		{
 			o->leaf = 0;
 			if(trie_isfreenode(o))
-				return 1; 
-		
-		}
-		//trie_childfree(o->children[index]);
-		return 0 ;
-		
+				return 1;
+		} 
+		return 0 ; 
 	} 
 	index = key[level];
 	if(_trie_nodel(o->children[index], key, level+1))
-	{
-		//if(o->leaf)
-		//	o->leaf = 0;
-		//trie_childfree(o->children[index]);
-		//if (o->children[index]->children)
+	{ 
 		free(o->children[index]->children);
 		free(o->children[index]);
-	
-		o->children[index] = NULL; 
-		//_trie_nodel(o, key, level+1);
-		//free(o->children);
-		
-		//return 1;
+		o->children[index] = NULL; // fixme
 		return (!o->leaf && trie_isfreenode(o));
 	}
 	return 0;
@@ -265,6 +252,7 @@ int main(int argc, char *argv[])
                         return 1;
 
 	object *root = trie_init(); 
+	object *p = root;
 	while (getword(word, 100, fp) != EOF)
 		trie_insert(root, word);
 
@@ -296,7 +284,7 @@ int main(int argc, char *argv[])
 	printf("\n");
 	trie_histogram(root);
 	trie_free(root);
-	
+	if (fp!=stdin)fclose(fp);
 	return 0;
 }
 
