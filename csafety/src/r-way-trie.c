@@ -104,42 +104,7 @@ void trie_insert(object *o, const char *pat)
 	}
 	o->leaf = 1;
 } 
-int trie_newdel(object *o, const char *pat)
-{
-        size_t i;
-	size_t j = 0;
-        size_t ind;
-	object *p[1024];
-        for (i = 0; pat[i]; i++)
-        {
-                ind = pat[i];
-                if (!o->children[ind])
-			break;
-                  //      return;
-		if(!trie_isfreenode(o))
-			o->leaf = 1;
-		p[j++] = o;
-		//object *tmp = o;
-                o = o->children[ind];
-		
 
-		
-		//	free(tmp);
-        }
-     	//for(i=0; i<j; ++i)
-	for (;j--;)
-	{
-		if (p[j]->leaf == 1)
-		free(p[j]);
-		
-		//if(!trie_isfreenode(p[j]))
-		//	p[j]->leaf = 0;
-		
-		//p[j] = NULL;
-	}
-      
-       
-}
 int trie_search(object *o, const char *pat)
 {
 	size_t i;
@@ -172,13 +137,11 @@ void _trie_histogram(object* root, size_t level)
 { 
 	size_t i; 
 	static char str[100]; 
-
 	if (root->leaf)
 	{
 		str[level] = '\0';
 		printf("\t\t\t    -->(%s)\n|", str); 
-	} 
- 
+	}
 	for (i = 0; i < alphasize; i++)
 	{ 
 		if (root->children[i])
@@ -198,15 +161,13 @@ void trie_histogram(object* root)
 
 void _trie_display(object* root, size_t level)
 { 
-	size_t i; 
+	size_t i;
 	static char str[1024];
-
 	if (root->leaf)
 	{
 		str[level] = '\0';
 		printf("%s\n", str); 
-	}
-    
+	} 
 	for (i = 0; i < alphasize; i++)
 	{
 		if (root->children[i])
@@ -266,23 +227,15 @@ int main(int argc, char *argv[])
                         printf("not found %s\n", word);
 
         }
-	trie_display(root);
-
+	trie_display(root); 
+	trie_histogram(root); 
 	if (fp!=stdin)rewind(fp);
 	while (getword(word, 100, fp) != EOF) 
-			trie_nodel(root, word);
-	
-		
-
-	if (fp!=stdin)rewind(fp);
-	//while (getword(word, 100, fp) != EOF)
-	//	trie_insert(root, word);
-	trie_display(root);
-	//trie_nodel((root), patterns[1]);
-	printf("\n");
+			trie_nodel(root, word); 
+	if (fp!=stdin)rewind(fp); 
 	trie_display(root);
 	printf("\n");
-	trie_histogram(root);
+	trie_histogram(root); 
 	trie_free(root);
 	if (fp!=stdin)fclose(fp);
 	return 0;
