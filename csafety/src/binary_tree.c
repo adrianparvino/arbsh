@@ -18,17 +18,8 @@ typedef struct bstnode {
 	struct bstnode *small;/* left/prev */
 	struct bstnode *large;/* right/next */
 }bstnode;
-void treefree(bstnode *p)
-{
-        if (p != NULL) {
-                treefree(p->small);
-                free(p->word);
-                treefree(p->large);
-                free(p->large);
-                free(p->small);
-        }
-}
 /* prototypes */
+void treefree(bstnode *);
 bstnode *bst_add(bstnode *, char *);
 void bst_print(bstnode *);
 void bst_print_iter(bstnode *);
@@ -241,3 +232,13 @@ void _bst_printpaths(bstnode* node, char *p, size_t len, size_t lim)
 	}
 }
 
+void treefree(bstnode *p)
+{
+        if (p != NULL) {
+                treefree(p->small);
+                free(p->word);
+                treefree(p->large);
+                free(p->large);
+                free(p->small);
+        }
+}
