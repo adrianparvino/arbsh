@@ -18,7 +18,16 @@ typedef struct bstnode {
 	struct bstnode *small;/* left/prev */
 	struct bstnode *large;/* right/next */
 }bstnode;
- 
+void treefree(bstnode *p)
+{
+        if (p != NULL) {
+                treefree(p->small);
+                free(p->word);
+                treefree(p->large);
+                free(p->large);
+                free(p->small);
+        }
+}
 /* prototypes */
 bstnode *bst_add(bstnode *, char *);
 void bst_print(bstnode *);
@@ -53,7 +62,7 @@ int main(int argc, char **argv)
 	printf("\n\n");
 	bst_print_postorder(root);
 
-	
+	/*
 	root = bst_to_list(root);
 	bstnode *o = root;
 	bstnode *last = NULL;
@@ -64,7 +73,11 @@ int main(int argc, char **argv)
 			break;
 		last = root;
 	}
+	*/
+	treefree(root);
+	free(root);
 	printf("\n\n");
+	if (fp!=stdin)fclose(fp);
 	return 0;
 }
 
