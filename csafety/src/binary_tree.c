@@ -18,7 +18,9 @@ typedef struct bstnode {
 	struct bstnode *small;/* left/prev */
 	struct bstnode *large;/* right/next */
 }bstnode;
+
 /* prototypes */
+size_t bst_maxdepth(bstnode *);
 void treefree(bstnode *);
 bstnode *bst_add(bstnode *, char *);
 void bst_print(bstnode *);
@@ -77,24 +79,18 @@ bstnode *bst_add(bstnode *p, char *w)
 {
 	int cond;
 	if (p == NULL) /* a new word has arrived */
-	{ 
+	{
 		p = malloc(sizeof(bstnode));
 		p->word = strdup(w);
 		p->count = 1;
-		p->small = p->large = NULL; 
-	} 
+		p->small = p->large = NULL;
+	}
 	else if ((cond = strcmp(w, p->word)) == 0)
-	{
-		p->count++; 
-	}
+		p->count++;
 	else if (cond < 0)
-	{ 
 		p->small = bst_add(p->small, w);
-	}
-	else
-	{ 
+	else 
 		p->large = bst_add(p->large, w);
-	}
 	return p;
 }
 
@@ -242,3 +238,19 @@ void treefree(bstnode *p)
                 free(p->small);
         }
 }
+
+size_t bst_maxdepth(bstnode *p)
+{
+	size_t small, large;
+	if (p == NULL)
+		return 0;
+	else { 
+		small = bst_maxdepth(p->small);
+		large = bst_maxdepth(p->large); 
+		if (small > large) 
+			return(small + 1);
+		else 
+			return(large + 1);
+	}
+}
+
