@@ -13,6 +13,8 @@ The program below presents an R-way trie. Insertion, deletion, searching,
 printing and histogram functions are supplied.
 
 
+References:
+	tsearch and gdbm and berkeley db and lmdb/leveldb
 */ 
 
 #include <stdio.h>
@@ -204,7 +206,7 @@ int getword(char *word, size_t lim, FILE *fp)
 }
 
 int main(int argc, char *argv[])
-{ 
+{
 	size_t i = 0;
 	char word[100];
         FILE *fp = stdin;
@@ -212,7 +214,7 @@ int main(int argc, char *argv[])
                 if (!(fp = fopen(argv[1], "r")))
                         return 1;
 
-	object *root = trie_init(); 
+	object *root = trie_init();
 	object *p = root;
 	while (getword(word, 100, fp) != EOF)
 		trie_insert(root, word);
@@ -225,13 +227,12 @@ int main(int argc, char *argv[])
                         printf("found %s\n", word);
                 else
                         printf("not found %s\n", word);
-
         }
 	trie_display(root); 
 	trie_histogram(root); 
 	if (fp!=stdin)rewind(fp);
 	while (getword(word, 100, fp) != EOF) 
-			trie_nodel(root, word); 
+		trie_nodel(root, word); 
 	if (fp!=stdin)rewind(fp); 
 	trie_display(root);
 	printf("\n");
