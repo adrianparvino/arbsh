@@ -45,6 +45,7 @@ int main(int argc, char **argv)
 
 	tst_tprint(root); 
 	tst_destroy(root);
+	if (fp!=stdin)fclose(fp);
 	return 0;
 }
 	
