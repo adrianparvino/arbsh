@@ -30,14 +30,6 @@ typedef struct object {
 	struct object **children; 
 }object;
 
-int trie_childfree(object *o)
-{
-	size_t i;
-	for(i = 0; i < alphasize; i++)
-		if(o->children[i])
-			free(o->children[i]);
-	return 1;
-}
 int trie_isfreenode(object *o)
 {
 	size_t i;
