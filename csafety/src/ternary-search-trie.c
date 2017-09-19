@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
         while (getword(word, 100, fp) != EOF)
 		root = tst_insert(root, word);
-
+	
 	if (fp!=stdin)rewind(fp);
 
         while (getword(word, 100, fp) != EOF)
@@ -39,12 +39,13 @@ int main(int argc, char **argv)
 		if (tst_search(root, word))
 			printf("found %s\n", word);
 		else
-			printf("not found %s\n", word);
-	
+			printf("not found %s\n", word); 
 	}
-
+	tst_tprint(root);
+	if (fp!=stdin)rewind(fp);
+	printf("====\n");
 	tst_tprint(root); 
-	tst_destroy(root);
+	//tst_destroy(root);
 	if (fp!=stdin)fclose(fp);
 	return 0;
 }
@@ -53,7 +54,7 @@ tstnode* tst_insert(tstnode* root, char* str)
 {
 	if(root == NULL)
 	{
-		if (!(root = (tstnode*)malloc(sizeof(tstnode))))
+		if (!(root = malloc(sizeof(tstnode))))
 			return NULL;
 		root->data = *str;
 		root->eos = false;
@@ -162,4 +163,3 @@ int getword(char *word, size_t lim, FILE *fp)
         *w = '\0';
         return word[0];
 }
-
