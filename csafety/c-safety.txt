@@ -265,10 +265,10 @@ shared.h:
 -------------------------------------------------------------------------------
 c-safety (Creating static libraries with ar 5.0)                         page 5
 
-ar has been around for a long time. and it makes very simple archives. These
+ar has been around for a long time, and it makes very simple archives. These
 very simple archives happen to be readable by the compiler and we can
-concatenate object code more or less endlessly into one of these .a and then
-use it as a "library". Another type of library is called a dynamic library and
+concatenate object code (using ar, not cat) endlessly into one of these .a and
+then use it as a "library". Another type of library is called a dynamic library and
 they end with .so.
 
 Static libraries get the entire archive of object code linked into the executable.
@@ -784,11 +784,11 @@ that supports arbitrary numbers of pipes. The sequence used is equivalent to
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Unsigned pow 12.0 (base^cardinality))                         page 15
+c-safety (Unsigned pow 12.0 (base^(log10(x)+1)))                         page 15
 
 
-The total number of values possible within a given range in base N within a set
-with a cardinality of C can be expressed as (N^C).
+The total number of values possible within a given range in base N can be 
+expressed as (N^(log10(x)+1)) or (N^C) where C is the cardinality of the set.
 
 N=2
 C=4
@@ -806,26 +806,6 @@ Using binary counting it is easy to prove this formula by iterating through all
 possible values. In decimal (greater N) or with a greater cardinality (greater 
 C) the table of values would be much larger --however the formula for computing
 the total amount of unique values the number can hold is the same.
-
-This formula (N^C) allows for fast and logical computation of probabilities in
-a non-deterministic setting such as a dice game throwing "random" dice throws.
-
-Here is an explanation of the probability of obtaining any given sequence from a
-random throwing of 7, 6 sided dice.
-
-6 sided dice use a base 6 counting system consisting of the character values 1-6
-(1,2,3,4,5 and 6). Therefore computing the maximum number of possible dice
-combinations in base 6 using 7 dice is simple and can be expressed as the value 
-5555555 (or 6666666). Therefore the entire range of this number system sits
-between 0000000 and 5555555 possibilities in base 6. The possibility of such a
-a roll is therefore 1/(6^7).
-
-Normally '^' powers in C are computed using pow() from libm and the math.h
-header. However because we are going to use size_t in this case to represent our
-counting base pow() itself is unsuitable. The function usign_pow presented below
-is sufficient for calculating base*cardinality which is never negative nor
-consisting of fractional parts. (support for fractions in pow requires exp and
-log and is not covered here).
 
 
         #include <stdio.h>
