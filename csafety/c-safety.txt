@@ -976,11 +976,11 @@ forward and backward populated linked list respectively.
 c-safety (Safe reallocation)                                            page 17
 
 There are very few tricks that universally apply to all C memory management. By
-using the idiom of passing the value of a pointer to a pointer to a type to a
+using the idiom of passing the "value of a pointer to a pointer to a type" to a
 wrapper for free, realloc and malloc however, one can force a number of useful
 scenarios. One such scenario is to take advantage of the C standard's specified
 behavior for realloc; "If memory for the new object cannot be allocated, the 
-old object is not deallocated and its value is unchanged" in the C11 draft.
+old object is not deallocated and its value is unchanged" (from the C11 draft).
 We can therefore reduce this operation to a single line of code using a wrapper
 function. Similarly, all freed memory can be explicitly made to point to NULL
 . Malloc in this case performs no special function but is wrapped in the same
@@ -1285,10 +1285,9 @@ the depiction below:
          /      |          |
        [s]     [n]        [e]
 
-A trie carries no data in the structure members of its nodes. Instead, the data
-is implied by mapping an element of the key to a node thus rendering the node
-no longer NULL.
-
+An r-way trie carries no data in the structure members of its nodes. Instead,
+the data is implied by mapping an element of the key to a node thus rendering 
+the node no longer NULL. 
 
 The program below presents an R-way trie. Insertion, deletion, searching,
 printing and histogram functions are supplied.
