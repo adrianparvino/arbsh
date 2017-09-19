@@ -5,16 +5,16 @@
 #include <ctype.h>
 
 typedef struct tstnode {
-        char data;
-        bool eos;
-        struct tstnode* left;
-        struct tstnode* eq;
-        struct tstnode* right;
+	char data;
+	bool eos;
+	struct tstnode* left;
+	struct tstnode* eq;
+	struct tstnode* right;
 }tstnode; 
 
 tstnode *tst_insert(tstnode *, char *);
 void tst_tprint(tstnode *);
-static void _tst_tprint(tstnode *, char *, size_t, size_t);
+void _tst_tprint(tstnode *, char *, size_t, size_t);
 size_t tst_glength(tstnode *);
 void tst_destroy(tstnode *);
 bool tst_search(tstnode *, char *);
@@ -26,17 +26,17 @@ int main(int argc, char **argv)
 	tstnode *root = NULL; 
 
 	char word[100];
-        FILE *fp = stdin;
-        if ( argc == 2 )
-                if (!(fp = fopen(argv[1], "r")))
-                        return 1;
+	FILE *fp = stdin;
+	if ( argc == 2 )
+		if (!(fp = fopen(argv[1], "r")))
+			return 1;
 
-        while (getword(word, 100, fp) != EOF)
+	while (getword(word, 100, fp) != EOF)
 		root = tst_insert(root, word);
 	
 	if (fp!=stdin)rewind(fp);
 
-        while (getword(word, 100, fp) != EOF)
+	while (getword(word, 100, fp) != EOF)
 	{
 		if (tst_search(root, word))
 			printf("found %s\n", word);
@@ -54,20 +54,20 @@ int main(int argc, char **argv)
 
 tstnode *_tst_initnode(int s)
 {
-        tstnode *root;
-        if (!(root = malloc(sizeof(tstnode))))
-                return NULL;
-        root->data = s;
-        root->eos = false;
-        root->left = root->eq = root->right = NULL;
-        return root;
+	tstnode *root;
+	if (!(root = malloc(sizeof(tstnode))))
+		return NULL;
+	root->data = s;
+	root->eos = false;
+	root->left = root->eq = root->right = NULL;
+	return root;
 }
 	
 tstnode* tst_insert(tstnode* root, char* str)
 { 
-        if(root == NULL)
-                if(!((root = _tst_initnode(*str))))
-                        return NULL;
+	if(!(root))
+		if(!((root = _tst_initnode(*str))))
+			return NULL;
 
 	if(*str < root->data)
 		root->left = tst_insert(root->left, str);
@@ -84,9 +84,9 @@ tstnode* tst_insert(tstnode* root, char* str)
 	return root; 
 }
 
-static void _tst_tprint(tstnode* root, char* buffer, size_t depth, size_t lim)
+void _tst_tprint(tstnode* root, char* buffer, size_t depth, size_t lim)
 {
-	if ( lim == depth)
+	if (lim == depth)
 		{ fprintf(stderr, "Buffer exhausted\n"); return; }
 
 	if (root)
@@ -155,19 +155,19 @@ void tst_destroy(tstnode *root)
 
 int getword(char *word, size_t lim, FILE *fp)
 {
-        int c;
-        char *w = word;
-        while (isspace(c = fgetc(fp)));
-        if (c != EOF)
-                *w++ = c;
-        if (!isalnum(c) && !ispunct(c))
-                { *w = '\0'; return c; }
-        for ( ; --lim > 0; w++)
-        {
-                *w = fgetc(fp);
-                if (!isalnum(*w) && !ispunct(*w))
-                        { ungetc(*w, fp); break; }
-        }
-        *w = '\0';
-        return word[0];
+	int c;
+	char *w = word;
+	while (isspace(c = fgetc(fp)));
+	if (c != EOF)
+		*w++ = c;
+	if (!isalnum(c) && !ispunct(c))
+		{ *w = '\0'; return c; }
+	for ( ; --lim > 0; w++)
+	{
+		*w = fgetc(fp);
+		if (!isalnum(*w) && !ispunct(*w))
+			{ ungetc(*w, fp); break; }
+	}
+	*w = '\0';
+	return word[0];
 }
