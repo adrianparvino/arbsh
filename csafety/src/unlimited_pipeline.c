@@ -1,6 +1,6 @@
 /*
 Unix pipelines can be created between utilities without using a buffer of any
-kind. Using the typical shell it becomes simple to store the information
+kind. Using the typical object it becomes simple to store the information
 needed to seamlessly connect the stdin and stdout of a series of utilities.
 Pipe() is not set up for the final command in the sequence. Presented below is
 a small program that demonstrates the basics needed for writing a simple shell
@@ -79,7 +79,8 @@ that supports arbitrary numbers of pipes. The sequence used is equivalent to
 	int main(void)
 	{
 		size_t i = 0;
-		shell p[10] = {{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1,NULL, NULL, 0, -1},
+		shell p[10] = 
+		{{{ "ls", "-l", NULL}, -1, -1, 0, 0, 1,NULL, NULL, 0, -1},
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
@@ -88,7 +89,8 @@ that supports arbitrary numbers of pipes. The sequence used is equivalent to
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
-		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 ,NULL, "outfile", O_APPEND|O_RDWR|O_CREAT, -1}};
+		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 ,NULL, "outfile", 
+		O_APPEND|O_RDWR|O_CREAT, -1}};
 	
 		shell *o = p;
 	
@@ -103,4 +105,7 @@ that supports arbitrary numbers of pipes. The sequence used is equivalent to
 	
 		return 0;
 	}
-
+/*
+-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------
+*/
