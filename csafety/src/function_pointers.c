@@ -9,10 +9,9 @@ seperate and functions are added with the obj_addaction function.
 
 #include <stdlib.h>
 #include <stdio.h> 
-#include <unistd.h> 
+#include <unistd.h>
 
 typedef struct object object;
-
 object *iterate(object *o);
 
 typedef struct object{
@@ -20,7 +19,7 @@ typedef struct object{
 	size_t len;
 	size_t actions;
 	object *(*iterate)(object *o); 
-	object *(*f[10])(object *o);
+	object *(*f[10])(object *o); 
 } object;
 
 void *safe_free(void *a)
@@ -84,14 +83,12 @@ object *obj_free(object *o)
 int main(void)
 { 
 	object *o;
-	object *p;
-	size_t set = 10;
-	size_t i = 0;
+	object *p; 
 
-	if (!(p = verbose_malloc(sizeof(object) * set)))
+	if (!(p = verbose_malloc(sizeof(object) * 10)))
 		return 1;
 
-	for(o = p;o-p<set;++o)
+	for(o=p; o-p < 10;++o)
 	{
 		o = obj_init(o);
 		o = obj_addaction(o, obj_pop);
@@ -99,7 +96,7 @@ int main(void)
 		o = obj_addaction(o, obj_free);
 		o = o->iterate(o);
 	}
-	free(o = p);
+	free(p);
 	return 0;
 }
 
