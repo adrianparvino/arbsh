@@ -12,12 +12,14 @@ typedef struct tstnode {
         struct tstnode* right;
 }tstnode; 
 
-tstnode* tst_insert(tstnode* root, char* str); 
-void tst_tprint(tstnode* root); 
-size_t tst_glength(tstnode *root); 
-void tst_destroy(tstnode *root); 
-bool tst_search(tstnode *root, char* pattern); 
+tstnode *tst_insert(tstnode *, char *);
+void tst_tprint(tstnode *);
+static void _tst_tprint(tstnode *, char *, size_t, size_t);
+size_t tst_glength(tstnode *);
+void tst_destroy(tstnode *);
+bool tst_search(tstnode *, char *);
 int getword(char *, size_t, FILE *);
+tstnode *_tst_initnode(int);
 
 int main(int argc, char **argv)
 { 
@@ -45,21 +47,27 @@ int main(int argc, char **argv)
 	if (fp!=stdin)rewind(fp);
 	printf("====\n");
 	tst_tprint(root); 
-	//tst_destroy(root);
+	tst_destroy(root);
 	if (fp!=stdin)fclose(fp);
 	return 0;
 }
+
+tstnode *_tst_initnode(int s)
+{
+        tstnode *root;
+        if (!(root = malloc(sizeof(tstnode))))
+                return NULL;
+        root->data = s;
+        root->eos = false;
+        root->left = root->eq = root->right = NULL;
+        return root;
+}
 	
 tstnode* tst_insert(tstnode* root, char* str)
-{
-	if(root == NULL)
-	{
-		if (!(root = malloc(sizeof(tstnode))))
-			return NULL;
-		root->data = *str;
-		root->eos = false;
-		root->left = root->eq = root->right = NULL;
-	}
+{ 
+        if(root == NULL)
+                if(!((root = _tst_initnode(*str))))
+                        return NULL;
 
 	if(*str < root->data)
 		root->left = tst_insert(root->left, str);
