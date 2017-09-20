@@ -1,4 +1,4 @@
-CFLAGS := -I./include/ -Wall -Wextra -static
+CFLAGS := -I./include/ -Wall -Wextra -static -nostdinc
 
 LDFLAGS := 
 
