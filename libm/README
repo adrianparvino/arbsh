@@ -20,3 +20,19 @@ Clean:
 
 	make clean
 
+
+Description:
+------------
+
+	Graff's libm is derived from Sun's fdlibm (Freely Distributable libm). 
+	Unlike many vendors the goal of this distribution is not to add 
+	architectures or functionalities. Indeed, all architecture specific 
+	support has been removed from this version of libm such that it can be 
+	compiled and used for most any architecture that supports floating 
+	point. The primary focus of this project is to remove enough cruft from
+	fdlibm that the underlying algorithms ( which are implemented in plain
+	C) can be more easily understood.
+
+	
+	
+
