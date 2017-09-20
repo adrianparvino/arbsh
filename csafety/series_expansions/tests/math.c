@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
 	printf("\n\n");
 	//printf("libc tanh =    %19.19f\n", tanh(x));
 	//printf("libc tan =     %19.19f\n", tan(x)); 
+	
+	printf("libc atan =     %19.19f\n", atan(x)); 
 
 
         return 0;
