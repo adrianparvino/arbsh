@@ -20,7 +20,7 @@
 
 #include "longdbl.h"
 
-#include "libc.h"
+//#include "libc.h"
 
 union fshape {
 	float value;
