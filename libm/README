@@ -1,0 +1,22 @@
+
+
+Graff's libm
+
+
+Building:
+---------
+
+	make static
+
+
+Installation:
+-------------
+
+	make install DESTDIR=/path/to/installation
+
+
+Clean:
+------
+
+	make clean
+
