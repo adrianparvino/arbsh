@@ -23,20 +23,6 @@ are original works Copyright © 2005-2012 Rich Felker,
 	Nicholas J. Kain (musllibc/*/x86_64/)
 
 
-Mathematics Library (fdlibm/)
------------------------------
-The mathematics library was written at Sun laboratories and is licensed 
-with the MIT licence.
-
-	Contributors to Sun's fdlibm
-	----------------------------
-	Copyright © 1993,2004 Sun Microsystems or
-	Copyright © 2003-2011 David Schultz or
-	Copyright © 2003-2009 Steven G. Kargl or
-	Copyright © 2003-2009 Bruce D. Evans or
-	Copyright © 2008 Stephen L. Moshier
-
-
 Header files (include/)
 -----------------------
 Public domain header files from musl-0.9.0 and grafland libc 
