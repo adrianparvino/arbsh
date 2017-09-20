@@ -8,17 +8,15 @@ double atan(double x)
         int sign = -1;
         double y = x;
 
-        /* x = x - x^3/3 + x^3/3 - x^3/3 + ...  */
-        while (x < 1.0 && x > -1.0 &&  1)
-        {
-                y += (gpow(x, j)/(j) * sign);
-                if (z == y)
-                        break;
-                z = y;
-                j += 2;
-                sign = -sign;
-
-        }
+        /* atan(x) = x - x^3/3 + x^5/5 - x^7/7 + ...  */
+        while (x < 1.0 && x > -1.0 &&  1) 
+	{
+		y += (pow(x, j)/(j) * sign);
+		if (z == y) break;
+		z = y;
+		j += 2;
+		sign = -sign; 
+	}
         /* x = pi/2 .... if >= 1. */
         if (x >= 1. )
         {
@@ -32,7 +30,7 @@ double atan(double x)
         /* ... 1/x + 1/(3*(x^3)) - 1/(5*x^5) + 1/(7*x^7) - ...  */
         for (j = 1; (x >= 1. || x <= -1.) && 1;)
         {
-                y += (1/ (j *(gpow(x, j)))) * sign;
+                y += (1/ (j *(pow(x, j)))) * sign;
                 if (z == y)
                         break;
                 z = y;
