@@ -8,7 +8,18 @@ double atan(double x)
         int sign = -1;
         double y = x;
 
-        /* atan(x) = x - x^3/3 + x^5/5 - x^7/7 + ...  */
+        /* 
+		atan(x) = x - x^3/3 + x^5/5 - x^7/7 + x^9/9 - ...  = 
+		 inf
+		____
+		\
+		 >   (-1)^(n-1)
+		/
+		----
+		 n=1
+
+		Range:   |-1,1|
+	*/
         while (x < 1.0 && x > -1.0 &&  1) 
 	{
 		y += (pow(x, j)/(j) * sign);
