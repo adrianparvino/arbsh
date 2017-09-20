@@ -1,7 +1,22 @@
-The MIT License (MIT)
+
+
+Mathematics Library (fdlibm)
+----------------------------
+The mathematics library was written at Sun laboratories and is licensed
+with the MIT licence.
+
+        Contributors to Sun's fdlibm
+        ----------------------------
+        Copyright © 1993,2004 Sun Microsystems or
+        Copyright © 2003-2011 David Schultz or
+        Copyright © 2003-2009 Steven G. Kargl or
+        Copyright © 2003-2009 Bruce D. Evans or
+        Copyright © 2008 Stephen L. Moshier
 
 Copyright (c) 2016-2017, CM Graff et al.
 
+
+The MIT License (MIT)
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
