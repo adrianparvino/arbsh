@@ -1,5 +1,5 @@
 /*
-c-safety (Unsigned pow 12.0 (base^(log10(x)+1)))                        page 15
+c-safety (Unsigned pow 12.0 (base^(log10(x)+1)) and safe mul)           page 15
 
 
 The total number of values possible within a given range in base N can be
@@ -35,17 +35,23 @@ the total amount of unique values the number can hold is the same.
 		}
 		return i / x;
 	}
-
+/*
+The C standard specifies that unsigned integer types must wrap around when they
+hit their maximum limit. However it is possible to keep this from happening by 
+carefully precomputing each calculation to see that it can fit.  The limit of a
+given size is computed with (T)-1. The function safe_multiply provides safe
+bounded multiplication.
+*/
 	size_t safe_multiply(size_t i, size_t x, size_t lim)
 	{
 		size_t tmp = safe_division(lim, i);
 		if (tmp >= x)
 	        {
-	                fprintf(stderr, "Muliplication proposal accepted\n");
+	                fprintf(stderr, "Multiplication proposal accepted\n");
 	                return i * x;
 	        }else if (tmp == 0)
 			return 0;
-	        fprintf(stderr, "Muliplication proposal rejected\n");
+	        fprintf(stderr, "Multiplication proposal rejected\n");
 	        return lim;
 	}
 
