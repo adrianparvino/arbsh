@@ -48,6 +48,8 @@ int tabstop = 8;
 /* macros */
 #define	LINSIZ 128
 #define DELIM 0
+#define TRUE 1
+#define FALSE 0
 
 /* function prototypes */
 size_t edgetch(char *);
