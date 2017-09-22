@@ -14,10 +14,10 @@ size_t safe_multiply(size_t i, size_t x, size_t lim)
 		return 0;
 	if (lim / i >= x ) 
 	{
-		fprintf(stderr, "Muliplication proposal accepted\n");
+		fprintf(stderr, "Multiplication proposal accepted\n");
 		return i * x;
 	}
-	fprintf(stderr, "Muliplication proposal rejected\n");
+	fprintf(stderr, "Multiplication proposal rejected\n");
 	return lim;
 }
 
