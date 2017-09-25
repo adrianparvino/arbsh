@@ -1,6 +1,6 @@
 #include <readline/readline.h>
 
-size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
+size_t greadgetch(char *l, char *prompt, size_t plen)
 {
         static size_t len = 0;
 	static size_t ret = 0;
@@ -76,7 +76,7 @@ size_t greadgetch(char *l, size_t linelen, char *prompt, size_t plen)
 		}
 		memcpy(pat, l + (len -y) + 1, y + 1);
 		pat[(y -point)] = 0; 
-		if ((line = find_pattern(pat, strlen(pat), l +  (len -point) + 1, strlen(l +  (len -point) + 1))))
+		if ((line = find_pattern(pat, l + (len-point) + 1, strlen(l + (len -point) + 1))))
 		{ 
 			sprintf(l + (len -y) + 1, "%s", line);
 			len = strlen(l);
