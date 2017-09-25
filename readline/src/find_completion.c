@@ -1,11 +1,10 @@
 #include <readline/readline.h>
 
-char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
+char * find_pattern(char *path, char *pat, size_t patlen)
 {
         DIR *dir;
         struct dirent *d;
         size_t dlen = 0;
-	size_t last;
 	size_t matches = 0;
 	char *match = NULL;
 	char **names;
@@ -30,9 +29,9 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                            ( strcmp( "..", d->d_name)) )
                         {
 				if ((pp && path[pp-1] == '/'))
-					tot = sprintf(names[n], "%s%s", path, d->d_name); 
+					sprintf(names[n], "%s%s", path, d->d_name); 
 				else 
-					tot = sprintf(names[n], "%s/%s", path, d->d_name);
+					sprintf(names[n], "%s/%s", path, d->d_name);
 
 				lever = 0;
 				if (dlen < patlen)
