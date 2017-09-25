@@ -9,7 +9,7 @@ size_t ircline(char *l, char *prompt, size_t promptlen)
 	{ 
 		determinewin();
 		ircprint(l, len, prompt, promptlen);
-		len = greadgetch(l, len, prompt, promptlen);
+		len = greadgetch(l, prompt, promptlen);
 	}
 
 	return len;
