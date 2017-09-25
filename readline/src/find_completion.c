@@ -56,10 +56,15 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
                 } 
 		if ( matches == 1 ) 
 		{
+			char *str;
 			for(z= 0; z < n;++z) 
-				if (names[z] != match)
-					free(names[z]);
-			return match; 
+			{
+				if (names[z] == match)
+					str = strdup(names[z]);
+				free(names[z]);
+			}
+			free(names);
+			return str; 
 		} else{
 			printf("\n");
 			for(z= 0; z < n;++z )
@@ -67,6 +72,7 @@ char * find_pattern(char *path, size_t tot, char *pat, size_t patlen)
 				printf("%s\n", names[z]);
 				free(names[z]);
 			}
+			free(names);
 		}
         }
         closedir(dir);
