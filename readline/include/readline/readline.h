@@ -18,12 +18,12 @@ size_t ircline(char *, char *, size_t);
 void ircprint(char *, size_t, char *, size_t); 
 void determinewin(void); 
 int readchar(void); 
-size_t greadgetch(char *, size_t, char *, size_t);
+size_t greadgetch(char *, char *, size_t);
 void greadprint(char *, size_t, char *, size_t);
 
 char *readline(char *);
 extern void add_history(const char *);
-char * find_pattern(char *path, size_t tot, char *pat, size_t patlen);
+char * find_pattern(char *path, char *pat, size_t patlen);
 
 /* structures */
 struct hglb {		/* globals	*/
