@@ -1327,14 +1327,14 @@ printing and histogram functions are supplied.
 				if(trie_isfreenode(o))
 					return 1;
 			} 
-			return 0 ; 
-		} 
+			return 0; 
+		}
 		index = key[level];
 		if(_trie_nodel(o->children[index], key, level+1))
 		{ 
 			free(o->children[index]->children);
 			free(o->children[index]);
-			o->children[index] = NULL; // fixme
+			o->children[index] = NULL;
 			return (!o->leaf && trie_isfreenode(o));
 		}
 		return 0;
