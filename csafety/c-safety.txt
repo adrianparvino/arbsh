@@ -10,57 +10,69 @@ devised and incorporated into the examples.
 (C) 2017 Christopher Michael Graff
 
 
+
+
+
+
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
 c-safety (programming with abstract objects 1.0)		page 1
 
-The C standard identifies objects in a very broad sense and applies the term to 
-"any object in memory". However this definition of object does not address the 
-power that C has to create and use objects in a modern sense of it being the 
-primary predecessor to "object oriented programing".
+Though C does not support OOP construction explicitly it does "permit OOP" in
+the form of "object oriented patterns".  The C standard identifies objects in a
+very broad sense and applies the term to any region of memory used for data 
+storage;
+
+	"3.15 object region of data storage in the execution environment, 
+	the contents of which can represent value". (C11 draft)
+
+However this definition of an "object" does not address the power that C has to
+create and use objects in a modern sense of it being the primary predecessor of
+"object oriented programing". The initial AT&T C++ was implemented as CFront,
+and output C. There are object orientated patterns in C.
 
 Presented below is a method of "programming with objects" in C.
 
 
-        #include <stdlib.h>
-        #include <stdio.h>
-        #include <unistd.h>
+	#include <stdlib.h>
+	#include <stdio.h> 
+	#include <unistd.h>
 
-        typedef struct{
-                char *rp;
-                size_t len;
-        } object;
+	typedef struct{ 
+	        char *rp; 
+		size_t len;
+	} object; 
 
-        int main(void)
-        {
-                size_t lim = 10;
+	int main(void)
+	{
+		size_t lim = 10;
+	
+		/* create an "array" of objects */
+		object *p, *o;
+		if (!(o = p = malloc(sizeof(object) * lim)))
+			return 1;
 
-                /* create an array of objects */
-                object *p, *o;
-                if (!(o = p = malloc(sizeof(object) * lim)))
-                        return 1;
+		/* allocate memory and populate "array" members */
+		for (o=p; (size_t)(o-p) < lim ; ++o)
+		{
+			if (!(o->rp = malloc(sizeof(char) * 100)))
+				return 1;
+			o->len = snprintf(o->rp, 100, "string %zu\n", o-p); 
+		} 
 
-                /* allocate memory and populate array members */
-                for (o=p; o-p < lim ; ++o)
-                {
-                        if (!(o->rp = malloc(sizeof(char) * 100)))
-                                return 1;
-                        o->len = snprintf(o->rp, 100, "string %zu\n", o-p);
-                }
+		/* test the "array" of objects (fast write!) */
+		for (o=p; (size_t)(o-p) < lim ; ++o)
+			write(1, o->rp, o->len);
 
-                /* test the array of objects (fast write!) */
-                for (o=p; o-p < lim ; ++o)
-                        write(1, o->rp, o->len);
+		/* free the objects' member memory allocations */
+		for (o=p; (size_t)(o-p) < lim ; ++o)
+	                free(o->rp);
 
-                /* free the objects' member memory allocations */
-                for (o=p; o-p < lim ; ++o)
-                        free(o->rp);
+		/* free the object */
+		free(p);
 
-                /* free the object */
-                free(p);
-
-                return 0;
-        }
+		return 0; 
+	}
 
 
 -------------------------------------------------------------------------------
@@ -68,13 +80,13 @@ Presented below is a method of "programming with objects" in C.
 c-safety (Pass by address of a pointer to a pointer 2.0)	         page 2
 
 
-C does not support "pass by reference" nonetheless by passing the value of an 
+C does not support "pass by reference". Nonetheless, by passing the value of an
 address to a function which accepts a pointer to a pointer to a type we can 
-modify a value in C similar to C++'s "pass by reference".  The canonical 
+modify a value in C similar to C++'s "pass by reference".  The canonical
 example of this is getline() from the C standard library.
 
 Presented below is the function pass_bappt() (Pass by address of a pointer to a
- pointer to a type).
+pointer to a type).
 
 
 	#include <stdlib.h>
