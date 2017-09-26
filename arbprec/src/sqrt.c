@@ -25,8 +25,6 @@ bigflt *arbprec_sqrt(bigflt *x, bigflt *c)
 	start:
 	sum = arbprec_expand_vector(sum, c->len + x->len);
 	quo = arbprec_expand_vector(quo, c->len + x->len);
-	
-
 	quo = arbprec_div(x, c, quo); 
 	sum = arbprec_add(quo, c, sum); 
 	c = arbprec_div(sum, two, c);
