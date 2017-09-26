@@ -3,7 +3,7 @@
 void _simple_refresh(WINDOW *win)
 {
         size_t i, j, k;
-        for (i=0, j=1, k=1;i < (win->rp - win->buf) ; ++i)
+        for (i=0, j=1, k=1;i < (size_t)(win->rp - win->buf) ; ++i)
         {
                 if (win->last[i] != win->buf[i] )
                 {
