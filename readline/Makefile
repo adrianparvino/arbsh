@@ -85,5 +85,5 @@ create_uninstall:
 uninstall:
 
 	chmod +x uninstall
-	./uninstall
+	-./uninstall
 	rm uninstall
