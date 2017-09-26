@@ -34,9 +34,10 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         } 
         if (borrow == -1)
 	{ 
-		swap = c->number;
-		c->number = c->mirror;
-		c->mirror = swap;
+		//swap = c->number;
+		//c->number = c->mirror;
+		//c->mirror = swap;
+		copyarray(c->number, c->mirror, c->len);
 		arbprec_setsign(c);
 	}
 

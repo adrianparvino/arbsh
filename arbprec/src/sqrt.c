@@ -17,12 +17,15 @@ bigflt *arbprec_sqrt(bigflt *x, bigflt *c)
 		c->nan = 1;
 		return c;
 	} 
-
-	bigflt *sum = arbprec_expand_vector(NULL, c->len + x->len);
-	bigflt *quo = arbprec_expand_vector(NULL, c->len + x->len);
 	bigflt *two = str_to_bigflt("2");
 
+
+	bigflt *sum = NULL;// = arbprec_expand_vector(NULL, c->len + x->len);
+	bigflt *quo = NULL;// = arbprec_expand_vector(NULL, c->len + x->len);
 	start:
+	sum = arbprec_expand_vector(sum, c->len + x->len);
+	quo = arbprec_expand_vector(quo, c->len + x->len);
+	
 
 	quo = arbprec_div(x, c, quo); 
 	sum = arbprec_add(quo, c, sum); 
