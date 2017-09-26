@@ -21,11 +21,9 @@ all:
 	-$(MAKE) -C posix
 	-$(MAKE) -C irc
 	-$(MAKE) install
-
-	#install the outside projects last for now
+	#install the outside projects last
 	-$(MAKE) get_graflibc
 	-$(MAKE) make_graflibc
-	-$(MAKE) get_ash
 	-$(MAKE) make_ash
 	# it's unlikely that the game builds on the user's target
 	-$(MAKE) make_grafcube
@@ -33,7 +31,7 @@ all:
 renew:
 
 	rm -rf libc
-	make get_graflibc
+	$(MAKE) get_graflibc
 	$(MAKE) -C libc test
 
 get_graflibc:
@@ -53,6 +51,7 @@ get_ash:
 
 make_ash:
 
+	-$(MAKE) get_ash
 	-$(MAKE) -C ash install
 
 make_grafcube:
@@ -71,7 +70,10 @@ clean:
 	-$(MAKE) -C gsh clean
 	-$(MAKE) -C editor clean
 	-$(MAKE) -C arbprec clean
-	-$(RM) -r include lib bin ash libc
+	-$(MAKE) -C libc clean
+	-$(MAKE) -C ash clean
+	-$(MAKE) -C game clean
+	-$(RM) -r include lib bin
 
 
 install:
@@ -92,13 +94,13 @@ toolchainclean:
 
 	$(MAKE) -C toolchain clean 
 
-buildenvvars:
+buildenvars:
 
-	$(MAKE) -s -C toolchain buildenvars
+	@$(MAKE) -s -C toolchain buildenvars
 
-clearenvvars:
+clearenvars:
 
-	$(MAKE) -s -C toolchain clearenvars
+	@$(MAKE) -s -C toolchain clearenvars
 
 release:
 
