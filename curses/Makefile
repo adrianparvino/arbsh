@@ -45,5 +45,6 @@ install:
 	mkdir -p $(DESTDIR)/lib/
 	mkdir -p $(DESTDIR)/include/
 	cp $(STATLIB) $(DESTDIR)/lib/
-	cp -r include/* $(DESTDIR)/include/ 
+	cp -r include/* $(DESTDIR)/include/
+
 
