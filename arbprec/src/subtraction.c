@@ -7,7 +7,6 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         int mir = 0;
         int borrow = 0;
         int carry = -1;
-	int *swap; 
         size_t i = 0;
 
 	c->float_pos = MAX(rl(a), rl(b)); 
@@ -33,10 +32,7 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
                 c->mirror[c->len] = (base-1) - mir; 
         } 
         if (borrow == -1)
-	{ 
-		//swap = c->number;
-		//c->number = c->mirror;
-		//c->mirror = swap;
+	{
 		copyarray(c->number, c->mirror, c->len);
 		arbprec_setsign(c);
 	}
