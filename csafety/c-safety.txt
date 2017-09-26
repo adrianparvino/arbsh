@@ -14,11 +14,10 @@ devised and incorporated into the examples.
 -------------------------------------------------------------------------------
 c-safety (programming with abstract objects 1.0)		page 1
 
-The C standard identifies objects in a very broad sense and applies the
-term to "any object in memory". However this definition of object does
-not address the power that C has to create and use objects in a modern
-sense of it being the primary predecessor to "object oriented
-programing".
+The C standard identifies objects in a very broad sense and applies the term to 
+"any object in memory". However this definition of object does not address the 
+power that C has to create and use objects in a modern sense of it being the 
+primary predecessor to "object oriented programing".
 
 Presented below is a method of "programming with objects" in C.
 
@@ -69,13 +68,13 @@ Presented below is a method of "programming with objects" in C.
 c-safety (Pass by address of a pointer to a pointer 2.0)	         page 2
 
 
-C does not support "pass by reference" nonetheless by passing the value
-of an address to a function which accepts a pointer to a pointer to a 
-type we can modify a value in C similar to C++'s "pass by reference". 
-The canonical example of this is getline() from the C standard library.
+C does not support "pass by reference" nonetheless by passing the value of an 
+address to a function which accepts a pointer to a pointer to a type we can 
+modify a value in C similar to C++'s "pass by reference".  The canonical 
+example of this is getline() from the C standard library.
 
-Presented below is the function pass_bappt() (Pass by address of a
-pointer to a pointer to a type).
+Presented below is the function pass_bappt() (Pass by address of a pointer to a
+ pointer to a type).
 
 
 	#include <stdlib.h>
@@ -121,9 +120,9 @@ with mutable members to a function and then returning that object to the caller
 c-safety (Prevent double frees 3.0)	   	              		page 3
 
 
-The C11 draft states "If ptr is a null pointer, no action occurs."
-therefore preventing "double frees" is reduced to the simple
-operation of explicitly setting deallocated variables to NULL.  
+The C11 draft states "If ptr is a null pointer, no action occurs." therefore 
+preventing "double frees" is reduced to the simple operation of explicitly 
+setting deallocated variables to NULL.  
 
 
 	#include <stdlib.h>
@@ -159,11 +158,10 @@ operation of explicitly setting deallocated variables to NULL.
 ------------------------------------------------------------------------------- 
 c-safety (Opaque objects and pointers 4.0)                               page 4
 
-This program (main.c) attempts to use the opaque-objects we create.
-It has the ability to access and use the type "object" but not its
-structure members. The opaque object can only be manipulated via
-its API. Which in this case are the simple functions object_init ..
-and so on.
+This program (main.c) attempts to use the opaque-objects we create.  It has the
+ability to access and use the type "object" but not its structure members. The
+opaque object can only be manipulated via its API. Which in this case are the
+simple functions object_init ..  and so on.
 
 main.c:
 	#include "shared.h"
@@ -268,13 +266,14 @@ c-safety (Creating static libraries with ar 5.0)                         page 5
 ar has been around for a long time, and it makes very simple archives. These
 very simple archives happen to be readable by the compiler and we can
 concatenate object code (using ar, not cat) endlessly into one of these .a and
-then use it as a "library". Another type of library is called a dynamic library and
-they end with .so.
+then use it as a "library". Another type of library is called a dynamic library
+and they end with .so.
 
-Static libraries get the entire archive of object code linked into the executable.
-Conversely, dynamic libraries sit in /lib and are loaded at runtime. Static 
-binaries will work in a chroot with no other libs at all. However, they may still
-have other dependencies such as /proc or the terminfo database.
+Static libraries get the entire archive of object code linked into the 
+executable.  Conversely, dynamic libraries sit in /lib and are loaded at 
+runtime. Static binaries will work in a chroot with no other libs at all. 
+However, they may still have other dependencies such as /proc or the terminfo 
+database.
 
 
 Makefile:
@@ -337,11 +336,11 @@ main.c:
 c-safety (Safe multiplication 6.0)		                         page 6
 
 
-The C standard specifies that unsigned integer types must wrap around
-when they hit their maximum limit. However it is possible to keep this
-from happening by carefully precomputing each calculation to see that
-it can fit. The limit of a given size is computed with (T)-1. Presented 
-below is an idea for safe bounded multiplication.
+The C standard specifies that unsigned integer types must wrap around when they 
+hit their maximum limit. However it is possible to keep this from happening by 
+carefully precomputing each calculation to see that it can fit. The limit of a 
+given size is computed with (T)-1. Presented below is an idea for safe bounded 
+multiplication.
 	
 
 	#include <stdio.h>
