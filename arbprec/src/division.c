@@ -12,6 +12,8 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	int *tmir = arbprec_malloc(sizeof(int) * width);
 	int sum = 0;
 	int rec = 0;
+	a = strip_zeros(a);
+	b = strip_zeros(b);
 
 	arbprec_init(c);
 
