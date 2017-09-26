@@ -354,8 +354,8 @@ bigflt *strip_zeros(bigflt *b)
         {
 		
        	       // b->number = b->number + 1;
-		memmove(b->number, b->number + 1, b->len);
-		//copyarray(b->number, b->number + 1, b->len);
+		//memmove(b->number, b->number + 1, b->len);
+		copyarray(b->number, b->number + 1, b->len);
        		b->len -= 1; 
                	b->float_pos -= 1;
         } 
