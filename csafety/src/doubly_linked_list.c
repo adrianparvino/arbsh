@@ -21,7 +21,6 @@ end points.
 	
 	typedef struct object {
 		size_t i;
-		void *addr;
 		struct object *prev;
 		struct object *next;
 	} object;
