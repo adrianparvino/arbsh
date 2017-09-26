@@ -8,11 +8,11 @@
 bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 {
 
-	size_t j = 90;
+	size_t j = 1000;
 
 	bigflt *s = str_to_bigflt("1.0");
 	bigflt *four = str_to_bigflt("4.00000");
-	bigflt *i = str_to_bigflt("90.00000");
+	bigflt *i = str_to_bigflt("1000.00000");
 	bigflt *two = str_to_bigflt("2.00000");
 	bigflt *r = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *prod = arbprec_expand_vector(NULL, x->len + scale);
@@ -72,7 +72,7 @@ bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 		sum2 = arbprec_add(prod, r, sum2);
 		c = arbprec_div(sum1, sum2, c);
 	}
-	/*
+
 	arba_free(s);
 	arba_free(four);
 	arba_free(i);
@@ -81,7 +81,7 @@ bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 	arba_free(quo);
 	arba_free(sum1);
 	arba_free(sum2);
-	*/
+	
 	return c;
 }
 
