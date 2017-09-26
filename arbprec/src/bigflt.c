@@ -146,8 +146,6 @@ void arba_free(bigflt *flt)
 bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 {
 	/* Enlarge or create a bigflt */
-	size_t chunks = 0;
-	
 	if (flt == NULL)
 	{
 		flt = arba_alloc(request);
@@ -349,13 +347,18 @@ int arpbrec_equals(bigflt *a, bigflt *b, size_t precision)
 }
 
 bigflt *strip_zeros(bigflt *b)
-{ 
-	while (b->float_pos > 0 && b->len > 0 && b->number[0] == 0)
+{
+	//return b
+	
+	while (b->float_pos > 0&& b->len > 0 && b->number[0] == 0)
         {
-       	        b->number = b->number + 1; 
+		
+       	       // b->number = b->number + 1;
+		memmove(b->number, b->number + 1, b->len);
+		//copyarray(b->number, b->number + 1, b->len);
        		b->len -= 1; 
                	b->float_pos -= 1;
-        }
+        } 
 	return b;
 }
 
