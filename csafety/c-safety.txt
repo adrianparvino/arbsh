@@ -1309,7 +1309,6 @@ printing and histogram functions are supplied.
 	#include <string.h>
 	#include <ctype.h>
 	
-	/* map all ASCII values to an indice */
 	size_t alphasize = 128;
 	
 	typedef struct object {
