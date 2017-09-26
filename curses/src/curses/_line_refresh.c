@@ -6,7 +6,7 @@ void _line_refresh(WINDOW *win)
         char lines[4096];
 	memset(lines, 0, 4096);
 
-        for (i=0, j=1, k=1;i < (win->rp - win->buf) ; ++i)
+        for (i=0, j=1, k=1;i < (size_t)(win->rp - win->buf) ; ++i)
         {
                 /* a character is dirty mark the current line for redrawing */
                 if (win->last[i] != win->buf[i] )
@@ -22,7 +22,7 @@ void _line_refresh(WINDOW *win)
                         ++j;
         }
         /* iterate through all lines */
-        for (i=0,j=1; i<(win->rp - win->buf);i+=(win->x), ++j)
+        for (i=0,j=1; i<(size_t)(win->rp - win->buf);i+=(win->x), ++j)
         {
                 /* A line was dirty, position the cursor and redraw it */
                 if (lines[j])
