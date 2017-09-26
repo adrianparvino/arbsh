@@ -22,6 +22,9 @@ all:
 	-$(MAKE) -C irc
 	-$(MAKE) install
 	#install the outside projects last
+
+outside:
+
 	-$(MAKE) get_graflibc
 	-$(MAKE) make_graflibc
 	-$(MAKE) make_ash
