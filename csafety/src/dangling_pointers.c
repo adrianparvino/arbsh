@@ -15,14 +15,15 @@ saved to free it.
 int main(void)
 { 
 	char *a, *b;
-	const char *string = "This is a string\n";
-
-	a = b = malloc(32); // keep an extra copy
+	char *string = "This is a string\n";
+	
+	if (!(a = b = malloc(32))) /* keep an extra copy */
+		return 1;
 	while (*string)
-		*b++ = *string++; // "b" is now a dangling pointer 
+		*b++ = *string++; /* "b" is now a dangling pointer */
 	write(1, a, b - a); 
 			    
-	free(a);            // "a" however, still points to the original location 
+	free(a); /* However, "a" can still be freed */
 	return 0;           
 }
 
