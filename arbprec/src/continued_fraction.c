@@ -76,11 +76,14 @@ bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 	arba_free(s);
 	arba_free(four);
 	arba_free(i);
+	arba_free(two);
 	arba_free(r);
 	arba_free(prod);
+	arba_free(prod2);
 	arba_free(quo);
 	arba_free(sum1);
 	arba_free(sum2);
+	arba_free(negx);
 	
 	return c;
 }
