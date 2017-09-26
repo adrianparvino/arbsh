@@ -18,8 +18,6 @@ bigflt *arbprec_sqrt(bigflt *x, bigflt *c)
 		return c;
 	} 
 	bigflt *two = str_to_bigflt("2");
-
-
 	bigflt *sum = NULL;// = arbprec_expand_vector(NULL, c->len + x->len);
 	bigflt *quo = NULL;// = arbprec_expand_vector(NULL, c->len + x->len);
 	start:
