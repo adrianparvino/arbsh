@@ -17,6 +17,8 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         {
                 sum = place(a, i) - place(b, i) + borrow;
                 mir = place(a, i) - place(b, i) + carry;
+		//sum = a->number[a->len - i] - b->number[b->len - i] +borrow;
+		//mir = a->number[a->len - i] - b->number[b->len - i] +carry;
                 carry = borrow = 0;
                 if(sum < 0)
                 {
@@ -34,6 +36,7 @@ bigflt *arbprec_sub_inter(bigflt *a, bigflt *b, bigflt *c)
         if (borrow == -1)
 	{
 		copyarray(c->number, c->mirror, c->len);
+		//memmove(c->number, c->mirror, c->len);
 		arbprec_setsign(c);
 	}
 
