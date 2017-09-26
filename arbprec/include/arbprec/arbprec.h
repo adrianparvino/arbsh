@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /* Macros */
 #define MAX(a,b) ((a) > (b) ? a : b)
