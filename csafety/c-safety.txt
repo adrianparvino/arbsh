@@ -983,7 +983,7 @@ old object is not deallocated and its value is unchanged" (from the C11 draft).
 We can therefore reduce this operation to a single line of code using a wrapper
 function. Similarly, all freed memory can be explicitly made to point to NULL
 . Malloc in this case performs no special function but is wrapped in the same
-way as free and realloc in order to present a consistent API.
+way as free and realloc so as to present a consistent API.
 
 	#include <stdio.h>
 	#include <stdlib.h>
