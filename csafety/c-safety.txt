@@ -1,5 +1,5 @@
 C-Safety   An intermediate level guide for C programmers wishing to learn 
-idiomatic C with pointers. Topics of safe boundary arithmetic and abstract data
+idiomatic C with pointers.  Topics of safe boundary arithmetic and abstract data
 structures are covered with example programs. Strategies for creating meaningful
 checks and diagnostics to ensure reasonable levels of c safety have been
 devised and incorporated into the examples.
@@ -28,8 +28,7 @@ storage;
 
 However this definition of an "object" does not address the power that C has to
 create and use objects in a modern sense of it being the primary predecessor of
-"object oriented programing". The initial AT&T C++ was implemented as CFront,
-and output C. There are object orientated patterns in C.
+"object oriented programing". 
 
 Presented below is a method of "programming with objects" in C.
 
