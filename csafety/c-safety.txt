@@ -274,15 +274,14 @@ shared.h:
 -------------------------------------------------------------------------------
 c-safety (Creating static libraries with ar 5.0)                         page 5
 
-ar has been around for a long time, and it makes very simple archives. These
-very simple archives happen to be readable by the compiler and we can
-concatenate object code (using ar, not cat) endlessly into one of these .a and
-then use it as a "library". Another type of library is called a dynamic library
-and they end with .so.
+Ar, is a POSIX specified archiving utility. The simple archives it creates are 
+readable by the compiler and can be used to store object code. The static 
+libraries made by `ar' end with a ".a". If the library's name is "foo" then the 
+resulting static library should be called libfoo.a.  
 
 Static libraries get the entire archive of object code linked into the 
-executable.  Conversely, dynamic libraries sit in /lib and are loaded at 
-runtime. Static binaries will work in a chroot with no other libs at all. 
+executable.  Conversely, dynamic libraries (which end in .o) are loaded at 
+runtime. Static binaries will work in a chroot with no other libraries at all. 
 However, they may still have other dependencies such as /proc or the terminfo 
 database.
 
