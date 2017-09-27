@@ -9,3 +9,4 @@ int inc_swans(int);
 int inc_frogs(int);
 
 #endif
+
