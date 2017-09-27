@@ -4,6 +4,7 @@
 	#include <stdlib.h>
 	#include <stdio.h> 
 	#include <unistd.h>
+	#include <stddef.h>
 
 	typedef struct{ 
 	        char *rp; 
@@ -12,7 +13,7 @@
 
 	int main(void)
 	{
-		size_t lim = 10;
+		ptrdiff_t lim = 10;
 	
 		/* create an "array" of objects */
 		object *p, *o;
@@ -20,7 +21,7 @@
 			return 1;
 
 		/* allocate memory and populate "array" members */
-		for (o=p; (size_t)(o-p) < lim ; ++o)
+		for (o=p; (o-p) < lim ; ++o)
 		{
 			if (!(o->rp = malloc(sizeof(char) * 100)))
 				return 1;
@@ -28,11 +29,11 @@
 		} 
 
 		/* test the "array" of objects (fast write!) */
-		for (o=p; (size_t)(o-p) < lim ; ++o)
+		for (o=p; (o-p) < lim ; ++o)
 			write(1, o->rp, o->len);
 
 		/* free the objects' member memory allocations */
-		for (o=p; (size_t)(o-p) < lim ; ++o)
+		for (o=p; (o-p) < lim ; ++o)
 	                free(o->rp);
 
 		/* free the object */
