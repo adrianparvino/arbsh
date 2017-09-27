@@ -1,20 +1,4 @@
 /*
-Retrieval trees (tries) offer 0(N) search and insertion time. Tries have the
-unique property of aborting upon an "early miss", which greatly increases their
-effectiveness.  
-
-"Proposition G. The number of array accesses when 
- searching in a trie or inserting a key into a trie
- is at most 1 plus the length of the key." 
-	 (Sedgewick, "Algorithms" 4th ed. pg730)
-
-
-The program below presents an R-way trie. Insertion, deletion, searching,
-printing and histogram functions are supplied.
-
-
-References:
-	tsearch and gdbm and berkeley db and lmdb/leveldb
 */ 
 
 #include <stdio.h>
@@ -22,7 +6,6 @@ References:
 #include <string.h>
 #include <ctype.h>
 
-/* map all ASCII values to an indice */
 size_t alphasize = 128;
 
 typedef struct object {
