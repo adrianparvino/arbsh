@@ -20,15 +20,15 @@ c-safety (programming with abstract objects 1.0)		page 1
 
 Though C does not support OOP construction explicitly it does "permit OOP" in
 the form of "object oriented patterns".  The C standard identifies objects in a
-very broad sense and applies the term to any region of memory used for data 
+very broad sense and applies the term to any region of memory used for data
 storage;
 
-	"3.15 object region of data storage in the execution environment, 
+	"3.15 object region of data storage in the execution environment,
 	the contents of which can represent value". (C11 draft)
 
 However this definition of an "object" does not address the power that C has to
 create and use objects in a modern sense of it being the primary predecessor of
-"object oriented programing". 
+"object oriented programing".
 
 Presented below is a method of "programming with objects" in C.
 
@@ -1299,7 +1299,11 @@ the data is implied by mapping an element of the key to a node thus rendering
 the node no longer NULL. 
 
 The program below presents an R-way trie. Insertion, deletion, searching,
-printing and histogram functions are supplied.
+printing and histogram functions are supplied. The function getword() was
+adapted from K&R2 so that the dictionary algorithm can compare a file of words
+against itself or multiple lines supplied interactively by entering them and
+then ctrl-d. Getword is simply a driver to assist main.
+
 
 
 	#include <stdio.h>
@@ -1451,7 +1455,7 @@ printing and histogram functions are supplied.
 			if (root->children[i])
 			{
 				str[level] = i;
-				_trie_display(root->children[i], level + 1); 
+				_trie_display(root->children[i], level + 1);
 			}
 		}
 	}
