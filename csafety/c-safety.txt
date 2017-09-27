@@ -283,48 +283,54 @@ Static libraries get the entire archive of object code linked into the
 executable.  Conversely, dynamic libraries (which end in .o) are loaded at 
 runtime. Static binaries will work in a chroot with no other libraries at all. 
 However, they may still have other dependencies such as /proc or the terminfo 
-database.
+database. Put the following six files into their own directories and invoke
+`make' to create the example static library libanimals.a
 
 
-Makefile:
-	all: 
-
-		# create the object code
-		gcc -c frog.c dog.c swan.c -static
-		# Here we use `ar' to create the static library "libanimals.a"
-		ar -cvq libanimals.a frog.o dog.o swan.o 
-		# And finally link it into our executable test driver "main.c"
-		gcc main.c libanimals.a -o main -static
-
-	clean:
-
-		rm frog.o dog.o swan.o libanimals.a main
 
 dog.c:
-	int dogs = 10;
 
+	int dogs = 10;
+	
 	int inc_dogs(int d)
 	{
 		return d + 1;
 	}
 
 frog.c:
-	int frogs = 10;
 
+	int frogs = 10;
+	
 	int inc_frogs(int d)
 	{
 		return d + 1;
 	}
 
 swan.c:
-	int swans = 10;
 
+	int swans = 10;
+	
 	int inc_swans(int d)
 	{
 		return d + 1;
 	}
 
+animals.h:
+
+	#ifndef _ANIMALS_
+	#define _ANIMALS_
+	
+	extern int dogs;
+	extern int swans;
+	extern int frogs;
+	int inc_dogs(int);
+	int inc_swans(int);
+	int inc_frogs(int);
+	
+	#endif
+	
 main.c:
+
 	#include <stdio.h>
 	#include "animals.h"
 	int main(void)
@@ -333,13 +339,31 @@ main.c:
 		printf("Number of swans %d\n", swans);
 		printf("Number of frogs %d\n", frogs);
 		dogs = inc_dogs(dogs);
-		swans = inc_dogs(swans);
-		frogs = inc_dogs(frogs); 
+		swans = inc_swans(swans);
+		frogs = inc_frogs(frogs); 
 		printf("Number of dogs %d\n", dogs);
 		printf("Number of swans %d\n", swans);
 		printf("Number of frogs %d\n", frogs); 
 		return 0; 
 	}
+
+Makefile:
+
+	
+	all: 
+	
+		# create the object code
+		gcc -c frog.c dog.c swan.c -static
+		# Here we use `ar' to create the static library "libanimals.a"
+		ar -cvq libanimals.a frog.o dog.o swan.o 
+		# And finally link it into our executable test driver "main.c"
+		gcc main.c libanimals.a -o main -static 
+	
+	clean:
+	
+		rm frog.o dog.o swan.o libanimals.a main
+	
+
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
