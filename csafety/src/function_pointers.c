@@ -82,13 +82,13 @@ object *obj_free(object *o)
 
 int main(void)
 { 
-	object *o;
-	object *p; 
+	object *o, *p;
+	ptrdiff_t lim = 10;
 
-	if (!(p = verbose_malloc(sizeof(object) * 10)))
+	if (!(o = p = verbose_malloc(sizeof(object) * lim)))
 		return 1;
 
-	for(o=p; o-p < 10;++o)
+	for(o=p; o-p < lim;++o)
 	{
 		o = obj_init(o);
 		o = obj_addaction(o, obj_pop);
