@@ -21,7 +21,7 @@
 			return 1;
 
 		/* allocate memory and populate "array" members */
-		for (o=p; (o-p) < lim ; ++o)
+		for (o=p; o-p < lim ; ++o)
 		{
 			if (!(o->rp = malloc(sizeof(char) * 100)))
 				return 1;
@@ -29,11 +29,11 @@
 		} 
 
 		/* test the "array" of objects (fast write!) */
-		for (o=p; (o-p) < lim ; ++o)
+		for (o=p; o-p < lim ; ++o)
 			write(1, o->rp, o->len);
 
 		/* free the objects' member memory allocations */
-		for (o=p; (o-p) < lim ; ++o)
+		for (o=p; o-p < lim ; ++o)
 	                free(o->rp);
 
 		/* free the object */
