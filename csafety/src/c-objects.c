@@ -15,12 +15,12 @@
 	{
 		ptrdiff_t lim = 10;
 	
-		/* create an "array" of objects */
+		/* create a group or "array" of objects */
 		object *p, *o;
 		if (!(o = p = malloc(sizeof(object) * lim)))
 			return 1;
 
-		/* allocate memory and populate "array" members */
+		/* allocate memory and populate the group's members */
 		for (o=p; o-p < lim ; ++o)
 		{
 			if (!(o->rp = malloc(sizeof(char) * 100)))
@@ -28,7 +28,7 @@
 			o->len = snprintf(o->rp, 100, "string %zu\n", o-p); 
 		} 
 
-		/* test the "array" of objects (fast write!) */
+		/* test the group or "array" of objects (fast write!) */
 		for (o=p; o-p < lim ; ++o)
 			write(1, o->rp, o->len);
 
