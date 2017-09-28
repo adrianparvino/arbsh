@@ -18,13 +18,13 @@ devised and incorporated into the examples.
 -------------------------------------------------------------------------------
 c-safety (programming with abstract objects 1.0)		page 1
 
-Though C does not support OOP construction explicitly it does "permit OOP" in
+Though C does not support OOP constructions explicitly it does "permit OOP" in
 the form of "object oriented patterns".  The C standard identifies objects in a
 very broad sense and applies the term to any region of memory used for data
 storage;
 
-	"3.15 object region of data storage in the execution environment,
-	the contents of which can represent value". (C11 draft)
+	"3.15 object [...] region of data storage in the execution 
+	environment, the contents of which can represent value". (C11 draft)
 
 However this definition of an "object" does not address the power that C has to
 create and use objects in a modern sense of it being the primary predecessor of
@@ -46,12 +46,12 @@ Presented below is a method of "programming with objects" in C.
 	{
 		size_t lim = 10;
 	
-		/* create an "array" of objects */
+		/* create a group or "array" of objects */
 		object *p, *o;
 		if (!(o = p = malloc(sizeof(object) * lim)))
 			return 1;
 
-		/* allocate memory and populate "array" members */
+		/* allocate memory and populate struct members */
 		for (o=p; (size_t)(o-p) < lim ; ++o)
 		{
 			if (!(o->rp = malloc(sizeof(char) * 100)))
@@ -59,7 +59,7 @@ Presented below is a method of "programming with objects" in C.
 			o->len = snprintf(o->rp, 100, "string %zu\n", o-p); 
 		} 
 
-		/* test the "array" of objects (fast write!) */
+		/* test the group or "array" of objects (fast write!) */
 		for (o=p; (size_t)(o-p) < lim ; ++o)
 			write(1, o->rp, o->len);
 
