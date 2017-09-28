@@ -369,55 +369,10 @@ Makefile:
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
-c-safety (Safe multiplication 6.0)		                         page 6
+c-safety (6.0)		                         page 6
 
-
-The C standard specifies that unsigned integer types must wrap around when they 
-hit their maximum limit. However it is possible to keep this from happening by 
-carefully precomputing each calculation to see that it can fit. The limit of a 
-given size is computed with (T)-1. Presented below is an idea for safe bounded 
-multiplication.
-	
-
-	#include <stdio.h>
-	size_t safe_multiply(size_t i, size_t x, size_t lim)
-	{
-		if (i == 0) /* Handle zero */
-			return 0;
-		if (lim / i >= x ) 
-		{
-			fprintf(stderr, "Muliplication proposal accepted\n");
-			return i * x;
-		}
-		fprintf(stderr, "Muliplication proposal rejected\n");
-		return lim;
-	}
-
-	int main(void)
-	{
-		size_t a = (size_t) -1; 
-		a = safe_multiply(a, 123123, (size_t) -1); 
-		printf("%zu\n", a);
-	
-		a = (size_t) -1 / 10;
-		a = safe_multiply(a, 123123, (size_t) -1);
-		printf("%zu\n", a);
-
-		unsigned int b = (unsigned int) -1;
-		b = safe_multiply(b, 123123, (unsigned int) -1);
-		printf("%u\n", b); 
-	
-		b = 500;
-		b = safe_multiply(b, 1000000, (unsigned int) -1);
-		printf("%u\n", b);
-		
-		b = (unsigned int) -1;
-		b = safe_multiply(b, b - 123, (unsigned int) -1);
-		printf("%u\n", b);
-
-		return 0;
-	} 
-
+Ths section's material was absorbed by another section in c-safety. It is now
+free for future ideas / implementations.
 
 -------------------------------------------------------------------------------
 -------------------------------------------------------------------------------
@@ -522,8 +477,8 @@ pointers within an object. By also including an "iterator" function we can
 effectively add functions into the array one at a time and then execute them
 all at once with the iterator function. The initializer function is left
 separate and functions are added with the obj_addaction function. Presented
-below is a program that demonstrates how to create a powerful object using an 
-array of function pointers
+below is a program that demonstrates how to create a more powerful object by 
+using an array of function pointers within it.
 
 	#include <stdlib.h>
 	#include <stdio.h> 
