@@ -7,7 +7,7 @@
 	it can fit. The limit of a given size is computed with (T)-1. Presented 
 	below is an idea for safe bounded multiplication.
 	
-*/ 
+*/
 size_t safe_multiply(size_t i, size_t x, size_t lim)
 {
 	if (i == 0) /* Handle zero */
