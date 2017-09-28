@@ -89,7 +89,7 @@ that supports arbitrary numbers of pipes. The sequence used is equivalent to
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
 		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 1 ,NULL, NULL, 0, -1},
-		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 ,NULL, "outfile", 
+		{{ "wc", "-l", NULL}, -1, -1, 0, 0, 0 ,NULL, "outfile",
 		O_APPEND|O_RDWR|O_CREAT, -1}};
 	
 		shell *o = p;

@@ -792,10 +792,11 @@ notation   decimal    binary
                       0011 (4)  0111 (8)  1011 (12)  1111 (16)
 
 
-Using binary counting it is easy to prove this formula by iterating through all
-possible values. In decimal (greater N) or with a greater cardinality (greater
-C) the table of values would be much larger -- however the formula for computing
-the total amount of unique values the number can hold is the same.
+Using binary counting it is easy to naively prove this formula by iterating 
+through all possible values. In decimal (greater N) or with a greater 
+cardinality (greater C) the table of values would be much larger -- however the
+formula for computing the total amount of unique values the number can hold is
+ the same.
 
 
 	#include <stdio.h>
