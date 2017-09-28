@@ -1,9 +1,9 @@
 /*
-c-safety (Unsigned pow 12.0 (base^(log10(x)+1)) and safe mul)           page 15
-
+c-safety (Unsigned pow 12.0 ((pow(base, floor(log10(x))+1)-1)))          page 15
 
 The total number of values possible within a given range in base N can be
-expressed as (N^(log10(x)+1)) or (N^C) where C is the cardinality of the set.
+expressed as ((pow(base, floor(log10(x))+1)-1)) or (N^C) where C is the 
+cardinality of the set.
 
 N=2
 C=4
@@ -28,10 +28,10 @@ the total amount of unique values the number can hold is the same.
 
 	size_t safe_division(size_t i, size_t x)
 	{
-		if (i==0)
+		if (x==0)
 		{
-			fprintf(stderr, "Divide by zero forced to return 0\n"); 
-			return 0;
+			fprintf(stderr, "Divide by zero rejected\n");
+			return i;
 		}
 		return i / x;
 	}
@@ -55,19 +55,19 @@ bounded multiplication.
 	        return lim;
 	}
 
-	size_t safe_upow(size_t x, size_t n)
+	size_t safe_upow(size_t b, size_t c)
 	{
-	        size_t y = 1;
-	        while (n--)
-			y = safe_multiply(y, x, (size_t)-1);
-	        return y;
+	        size_t ret = 1;
+	        while (c--)
+			ret = safe_multiply(ret, b, (size_t)-1);
+	        return ret;
 	}
 
 	int main(void)
 	{
-		size_t n = 2;
-		size_t c = 128;
-		printf("total range of brute elements %zu\n", safe_upow(n, c));
+		size_t b = 2;
+		size_t c = 4;
+		printf("total range of brute elements %zu\n", safe_upow(b, c));
 		return 0;
 	}
 
