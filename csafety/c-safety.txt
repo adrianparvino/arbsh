@@ -33,9 +33,11 @@ create and use objects in a modern sense of it being the primary predecessor of
 Presented below is a method of "programming with objects" in C.
 
 
+
 	#include <stdlib.h>
 	#include <stdio.h> 
 	#include <unistd.h>
+	#include <stddef.h>
 
 	typedef struct{ 
 	        char *rp; 
@@ -44,15 +46,15 @@ Presented below is a method of "programming with objects" in C.
 
 	int main(void)
 	{
-		size_t lim = 10;
+		ptrdiff_t lim = 10;
 	
 		/* create a group or "array" of objects */
 		object *p, *o;
 		if (!(o = p = malloc(sizeof(object) * lim)))
 			return 1;
 
-		/* allocate memory and populate struct members */
-		for (o=p; (size_t)(o-p) < lim ; ++o)
+		/* allocate memory and populate the group's members */
+		for (o=p; o-p < lim ; ++o)
 		{
 			if (!(o->rp = malloc(sizeof(char) * 100)))
 				return 1;
@@ -60,11 +62,11 @@ Presented below is a method of "programming with objects" in C.
 		} 
 
 		/* test the group or "array" of objects (fast write!) */
-		for (o=p; (size_t)(o-p) < lim ; ++o)
+		for (o=p; o-p < lim ; ++o)
 			write(1, o->rp, o->len);
 
 		/* free the objects' member memory allocations */
-		for (o=p; (size_t)(o-p) < lim ; ++o)
+		for (o=p; o-p < lim ; ++o)
 	                free(o->rp);
 
 		/* free the object */
@@ -1553,3 +1555,7 @@ then ctrl-d. Getword is simply a driver to assist main.
 		if (fp!=stdin)fclose(fp);
 		return 0;
 	}
+
+
+
+
