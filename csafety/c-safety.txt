@@ -848,7 +848,7 @@ the total amount of unique values the number can hold is the same.
 
 	size_t safe_division(size_t i, size_t x)
 	{
-		if (i==0)
+		if (x==0)
 		{
 			fprintf(stderr, "Divide by zero forced to return 0\n");
 			return 0;
