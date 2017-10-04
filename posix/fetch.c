@@ -17,7 +17,7 @@
 
 /* 
 	Copyright 2015-2017, "fetch.c", Christopher M. Graff
-	Usage: fetch http://www.gnu.org/index.html
+	Usage: fetch http://www.csit.parkland.edu/~cgraff1/graflibc/README.html
 */
 
 void parseurl(char *);
@@ -27,7 +27,7 @@ void writeout(int, int);
 int main (int argc, char *argv[])
 { 
 	if ( argc == 1 )
-		cutilerror("Usage: fetch http://www.gnu.org/index.html\n", -1); 
+		cutilerror("Usage: ./fetch http://www.csit.parkland.edu/~cgraff1/graflibc/README.html\n", -1); 
 	++argv;
 	while (*argv) 
 		parseurl(*argv++); 
