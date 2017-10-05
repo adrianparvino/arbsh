@@ -13,6 +13,7 @@ char * find_pattern(char *path, char *pat, size_t patlen)
 	int lever = 0;
 	size_t z = 0;
 	size_t pp = strlen(path);
+	int wasadir = 0;
 	if (!(names = malloc (sizeof(*names))))
 		return NULL;
 	if (!(names[n] = malloc(256)))
@@ -42,7 +43,11 @@ char * find_pattern(char *path, char *pat, size_t patlen)
 				if ( lever == 0)
 				{ 
 					if (match == NULL) 
+					{
 						match = names[n];
+						if (DT_DIR == d->d_type)
+							wasadir = 1;
+					}
 					++matches;
 					if (!(names = realloc(names, sizeof(*names) * (n++ + 10))))
 						return NULL;
@@ -59,7 +64,17 @@ char * find_pattern(char *path, char *pat, size_t patlen)
 			for(z= 0; z < n;++z) 
 			{
 				if (names[z] == match)
+				{
+					if (!(wasadir))
 					str = strdup(names[z]);
+					else {
+					size_t h = strlen(names[z]);
+					str = malloc(h + 2);
+					memcpy(str, names[z], h);
+					str[h] = '/';
+					str[h+ 1] = '\0';
+					}
+				}
 				free(names[z]);
 			}
 			free(names);
