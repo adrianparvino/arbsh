@@ -11,7 +11,7 @@ void catfold(FILE *, int *);
 int main(int argc, char *argv[])
 { 
 	if (!setlocale(LC_CTYPE, ""))
-                fprintf(stderr, "unable to set locale\n");
+		fprintf(stderr, "unable to set locale\n");
 
 	int o, opt[3] = { 80, 0, 0 }; /* width, bytes, spaces */ 
 
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 		} 
 	
 	argv += optind;
-        argc -= optind;
+	argc -= optind;
 
 	if ( argc == 0 )
 		catfold(stdin, opt);
@@ -53,59 +53,59 @@ void catfold(FILE *fp, int *opt)
 	if (!(fp))
 		return;
 
-        i = column = hold = 0;
+	i = column = hold = 0;
 
-        splitable = -1;
+	splitable = -1;
 
-        while ((wc = getc(fp)) >= 0) 
-        {
-                buf[i++] = wc; 
-                pass = 0;
-                if (wc == '\n') 
+	while ((wc = getc(fp)) >= 0) 
+	{
+		buf[i++] = wc; 
+		pass = 0;
+		if (wc == '\n') 
 		{ 
-                        column = 0;
-                        pass = 1;
-                        splitable =-1;
-                }
-                else {
-                        if (opt[1])
-                                w = 1;
-                        else if (wc == '\t') 
-                        { 
+			column = 0;
+			pass = 1;
+			splitable =-1;
+		}
+		else {
+			if (opt[1])
+				w = 1;
+			else if (wc == '\t') 
+			{ 
 				w = 8 - (column % 8); 
-                                if (w > opt[0] - column)
-                                        w = 8;
-                        }
-                        else if (wc == '\r') 
-                                column = w = 0;
-                        else if (wc == '\b') 
-                        {
-                                if (column)
-                                       column--;
-                                w = 0;
-                        }
-                        else
-                                w = 1; 
+				if (w > opt[0] - column)
+					w = 8;
+			}
+			else if (wc == '\r') 
+				column = w = 0;
+			else if (wc == '\b') 
+			{
+				if (column)
+				       column--;
+				w = 0;
+			}
+			else
+				w = 1; 
 
-                        if (column && w > opt[0] - column)
-                        {
-                                printf("\n");
-                                column -= hold;
-                                splitable = -1;
-                        }
-                        column += w; 
+			if (column && w > opt[0] - column)
+			{
+				printf("\n");
+				column -= hold;
+				splitable = -1;
+			}
+			column += w; 
 			if (opt[2] && (wc == '\t' || wc == ' ')) 
-                                splitable = 1;
-                }
-                if (splitable || pass == 1)
-                { 
-                        for (j = 0; j < i; j++)
-                                printf("%c", (buf[j]));
-                        i = 0;
-                        hold = column; 
+				splitable = 1;
+		}
+		if (splitable || pass == 1)
+		{ 
+			for (j = 0; j < i; j++)
+				printf("%c", (buf[j]));
+			i = 0;
+			hold = column; 
 			splitable = -1; 
-                } 
-        }
-        fclose(fp); 
+		} 
+	}
+	fclose(fp); 
 } 
 
