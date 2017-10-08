@@ -1,38 +1,35 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"> <pre>
-<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Irc client</strong></dl><pre></dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Graff's irc client</strong></dl><pre></dl><pre>
 
-<br clear="left"/></pre><dl>Irc client -- An irc client without dependencies.:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Graff's irc client -- An irc client without dependencies:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
         
-	*) Colorful ascii and ansi escape sequence based interface.
-        *) Portable self contained ANSI terminal handling library. 
+	*) Colorful interface.
         *) Supports multiple servers and channels.
         *) Keybind based channel toggling.
 	*) Looks and feels like irssi.
 	*) Uninterupted multiplexing asynchronous user input.
 
-
-
 	
-<br clear="left"/></pre><dl>Command line options:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Command line options:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 		server=
 		port=
 		nick=
 		channel=
 
-<br clear="left"/></pre><dl>Use command line options to connect to freenode:</dl><pre>
+
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Use command line options to connect to freenode:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	./irc \
 	server='irc.freenode.net' \
 	port=6667 \
 	nick="$USER" \
-	channel="#irctest" 
-			
+	channel="#irctest"
 
 
-<br clear="left"/></pre><dl>Builtin irc commands:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Builtin irc commands:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
         ctrl-n                  Toggle between channels.
@@ -70,10 +67,10 @@
 
 
 	
-<br clear="left"/></pre><dl>Examples:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Examples:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 	
-<br clear="left"/></pre><dl>Connect to oftc:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Connect to oftc:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	./irc \
@@ -83,7 +80,7 @@
 
 	/j #moocows
 
-<br clear="left"/></pre><dl>Set up multiple connections from the user interface:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Set up multiple connections from the user interface:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	./irc
@@ -99,50 +96,12 @@
 	[[]]>> /j #frogs
 
 
-
-<br clear="left"/></pre><dl>Minimal support for raw CTCP commands:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>About this project:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
-	Irc is programmed to respond to CTCP VERSION requests
-	automatically. However other than this functionality there 
-	is no built in support for CTCP (client to client protocol) 
-	except as follows:
-
-	Send a CTCP based notice:
-	-------------------------
-		/z NOTICE otheruser :
-		/x
-		/z VERSION
-		/x
-		/y
-		What are these commands?
-		------------------------
-			These commands allow a person to hack out
-			CTCP protocol commands despite the client
-			not supporting them. Their internal
-			meaning is as follows:
-				/z	Simply outputs data to the current server
-				/x	Prints a '\001' char CTCP message delimiter
-				/y	Prints "\r\n" which ends the message.
-
-
-
-
-<br clear="left"/></pre><dl>About this project:</dl><pre>
-</pre><dd><hr/></dd><pre>
-
-	Irc client is more than just a replacement for other irc clients.
-	It is a paradigmatic replacement for curses/ncurses as well. The
-	library hexen.h has many useful ANSI escape sequences which 
-	can be used in conjunction with the provided termplex() function to
-	create an asynchronous multiplexing user interface which recognizes
-	and responds to keystrokes.
-	(read; this irc client can be ran with nothing but a kernel and a C
-	 library.).
-
-
+	This irc client can be ran with nothing but a kernel and a C library.
 	
-<br clear="left"/></pre><dl>Building:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Building:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	git clone <a href="https://github.com/cmgraff/grafland">https://github.com/cmgraff/grafland</a>
@@ -150,67 +109,19 @@
 	make
 
 
-
-<br clear="left"/></pre><dl>Installation:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Installation:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
-	make install DESTDIR=<a href="/path/to/installation/">/path/to/installation/</a>
+	make install DESTDIR=/path/to/installation
 
 
-
-<br clear="left"/></pre><dl>Uninstallation:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Uninstallation:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	make uninstall
 
 
-
-<br clear="left"/></pre><dl>Static linking:</dl><pre>
-</pre><dd><hr/></dd><pre>
-	
-	Simple way:
-	
-		Use a C library that supports static linking of getaddrinfo()
-		like musl or uClibc-ng and then:
-
-			make CFLAGS=-static
-
-	Hard way:
-
-		Use a C library that _does not_ support static linking of 
-		getaddrinfo() like glibc and then remove getaddrinfo() as
-		follows:
-		
-		
-		In the library dial.h there is a function called dialip(), 
-		comment out everything but this function.
-		
-		Then in irc.c change the dialurl() function to dialip():
-			sed -i 's|dialurl|dialip|g' irc.c
-		
-		Compile statically:
-			make CFLAGS=-static
-
-		Start the client by specifying an ip address instead of a url.
-			./irc \
-        		server=38.229.70.22 \
-        		port=6667 \
-        		nick=somenickasd \
-        		channel='#irctest'
-
-		This produces a rather deficient client as the user must always
-		specify an ip address. However it suffices for statically
-		linking against glibc or any other libc that are picky about
-		statically linking getaddrinf().
-	
-
-<br clear="left"/></pre><dl>Releases:</dl><pre>
-</pre><dd><hr/></dd><pre>
-
-	Releases will be available as part of stable grafland releases. 
-
-
-<br clear="left"/></pre><dl>References:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>References:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	RFC2812 protocol
@@ -223,13 +134,13 @@
 	<a href="https://www.alien.net.au/irc/irc2numerics.html">https://www.alien.net.au/irc/irc2numerics.html</a>
 
 
-<br clear="left"/></pre><dl>Images:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>Images:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	</pre><dl><img src="irc.png" style="float:left;height:15em;margin-right:1em"></img><pre></dl>
 
 
-<br clear="left"/></pre><dl>LIcense and copying:</dl><pre>
+<br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>License and copying:</strong></dl><pre></dl><pre>
 </pre><dd><hr/></dd><pre>
 
 	2015 (C) Copyright, CM Graff MIT/BSD Licensed 
