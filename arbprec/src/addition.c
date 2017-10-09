@@ -2,8 +2,7 @@
 
 bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 { 
-	size_t width = 0; 
-	size_t diff = 0;
+	size_t width = 0;
 	size_t i = 0;
 	int sum = 0;
 	int carry = 0;
@@ -12,7 +11,7 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	c->float_pos = MAX(rl(a), rl(b));
 	width = MAX(a->len, b->len);
 
-        for( ; c->len < width + diff ; c->len++, i++)
+        for( ; c->len < width ; c->len++, i++)
 	{ 
 		sum = place(a, i) + place(b, i) + carry;
                 carry = 0;
