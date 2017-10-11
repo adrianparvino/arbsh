@@ -24,9 +24,7 @@
 	(Copyright) 2014-2017, "shell.c", CM Graff
 */
 
-
 #define GSHPROMPT	"gsh>> "
-#define GSHPROMPTLEN	6
 
 struct glb
 { 
