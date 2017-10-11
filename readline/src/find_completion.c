@@ -29,10 +29,10 @@ char * find_pattern(char *path, char *pat, size_t patlen)
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
                         {
-				if ((pp && path[pp-1] == '/'))
+				//if ((pp && path[pp-1] == '/'))
 					sprintf(names[n], "%s%s", path, d->d_name); 
-				else 
-					sprintf(names[n], "%s/%s", path, d->d_name);
+				//else 
+				//	sprintf(names[n], "%s/%s", path, d->d_name);
 
 				lever = 0;
 				if (dlen < patlen)
