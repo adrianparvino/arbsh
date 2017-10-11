@@ -1,6 +1,6 @@
 #include <readline/readline.h>
 
-char * find_pattern(char *path, char *pat, size_t patlen)
+char *find_pattern(char *path, char *pat, size_t patlen)
 {
         DIR *dir;
         struct dirent *d;
@@ -11,9 +11,8 @@ char * find_pattern(char *path, char *pat, size_t patlen)
 	size_t n = 0;
 	size_t i = 0;
 	int lever = 0;
-	size_t z = 0;
-	size_t pp = strlen(path);
 	int wasadir = 0;
+
 	if (!(names = malloc (sizeof(*names))))
 		return NULL;
 	if (!(names[n] = malloc(256)))
