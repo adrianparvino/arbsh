@@ -6,11 +6,12 @@ size_t greadgetch(char *l, char *prompt, size_t plen)
 	static size_t ret = 0;
         int c;
 	char *line = NULL;
+	
 	char pat[4096] = { 0 };
 	size_t z = 0;
 	size_t y = 0;
 	size_t point = 0; 
-	c = readchar();
+	c = readchar(); 
         
         switch (c) { 
 	case K_ESCAPE:
@@ -64,10 +65,8 @@ size_t greadgetch(char *l, char *prompt, size_t plen)
 	case '\t':
 		l[len] = 0;
 		pat[0] = 0;
-		greadprint(l, len, prompt, plen);
-		int one = 0;
-	
-		if ((l[0] == '/' && l[1] != '/' ))
+		greadprint(l, len, prompt, plen); 
+		if (l[0] == '/' && l[1] != '/' )
 		{
 			memcpy(pat, l , 1);
 			pat[1] = 0; 
@@ -75,26 +74,18 @@ size_t greadgetch(char *l, char *prompt, size_t plen)
 	                        sprintf(l + 1, "%s", line);
 			goto end;
 		}
-		
 		for (point=0,y=0,z=len ;z > 0;--z ,++y)
 		{
 			if (l[z] == '/' && point == 0)
-			{
 				point = y;
-				if ( l[0] == '.')
-				{
-					point = len;
-					one = 1;
-				}
-			}
 			if (l[z] == ' ' )
 				break;
 		}
-		memcpy(pat, l + (len -y) + 1 + one, y + 1 + one); 
+		memcpy(pat, l + (len -y) + 1, y + 1); 
 		pat[(y-point)] = 0; 
 		
-		if ((line = find_pattern(pat, l + (len-point) + 1 + one, strlen(l + (len -point) + 1 + one)))) 
-			sprintf(l + (len -y) + 1 + one, "%s", line); 
+		if ((line = find_pattern(pat, l + (len-point) + 1, strlen(l + (len -point) + 1)))) 
+			sprintf(l + (len -y) + 1, "%s", line); 
 		end:
 	        len = strlen(l);
 	        free(line);
