@@ -1,6 +1,6 @@
 #include <readline/readline.h>
 
-char *find_pattern(char *path, char *pat, size_t patlen)
+char * find_pattern(char *path, char *pat, size_t patlen)
 {
         DIR *dir;
         struct dirent *d;
@@ -11,9 +11,9 @@ char *find_pattern(char *path, char *pat, size_t patlen)
 	size_t n = 0;
 	size_t i = 0;
 	int lever = 0;
-	int wasadir = 0;
 	size_t z = 0;
-
+	size_t pp = strlen(path);
+	int wasadir = 0;
 	if (!(names = malloc (sizeof(*names))))
 		return NULL;
 	if (!(names[n] = malloc(256)))
@@ -28,8 +28,11 @@ char *find_pattern(char *path, char *pat, size_t patlen)
                         dlen = strlen(d->d_name); 
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
-                        { 
-				sprintf(names[n], "%s%s", path, d->d_name);
+                        {
+				//if ((pp && path[pp-1] == '/'))
+					sprintf(names[n], "%s%s", path, d->d_name); 
+				//else 
+				//	sprintf(names[n], "%s/%s", path, d->d_name);
 
 				lever = 0;
 				if (dlen < patlen)
@@ -50,8 +53,8 @@ char *find_pattern(char *path, char *pat, size_t patlen)
 						return NULL;
 					if (!(names[n] = malloc(256)))
 						return NULL;
-					names[n][0] = 0;
-				}
+					names[n][0] = 0; 
+				} 
                         }
                         d = readdir(dir);
                 } 
@@ -63,13 +66,13 @@ char *find_pattern(char *path, char *pat, size_t patlen)
 				if (names[z] == match)
 				{
 					if (!(wasadir))
-						str = strdup(names[z]);
+					str = strdup(names[z]);
 					else {
-						size_t h = strlen(names[z]);
-						str = malloc(h + 2);
-						memcpy(str, names[z], h);
-						str[h] = '/';
-						str[h+ 1] = '\0';
+					size_t h = strlen(names[z]);
+					str = malloc(h + 2);
+					memcpy(str, names[z], h);
+					str[h] = '/';
+					str[h+ 1] = '\0';
 					}
 				}
 				free(names[z]);
