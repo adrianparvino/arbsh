@@ -30,6 +30,7 @@ bigflt *arbprec_fma(bigflt *a, bigflt *b, bigflt *c)
 	{
 		//for ( j = z->len , k = i + j + 1, carry = 0; j >= 0 ; j--, k--)
 		//printf("high\n");
+		carry = 0;
 		for ( j = z->len -1, k = i + j + 1 ; j >= 0 ; j--, k--)
 		{
 			//printf("low\n");
@@ -38,15 +39,17 @@ bigflt *arbprec_fma(bigflt *a, bigflt *b, bigflt *c)
 			
 			//carry = sum / base;
 			//c->number[k] = (sum % base);
+			//c->number[k] = carry / base;
 			carry = 0;
 			if (sum >= base)
 			{
 				sum -= base;
-				carry =1;
+				//carry = 1;
+				carry = (base - sum);
 			}
 			c->number[k] = sum;
 		}
-		//c->number[k] += carry;
+		c->number[k] += carry;
 	}
 	c->len = a->len + b->len;
 	c->float_pos = rl(a) + rl(b);
