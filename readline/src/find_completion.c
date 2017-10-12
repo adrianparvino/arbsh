@@ -12,6 +12,7 @@ char *find_pattern(char *path, char *pat, size_t patlen)
 	size_t i = 0;
 	int lever = 0;
 	int wasadir = 0;
+	size_t z = 0;
 
 	if (!(names = malloc (sizeof(*names))))
 		return NULL;
