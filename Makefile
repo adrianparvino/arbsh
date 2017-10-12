@@ -1,7 +1,7 @@
 .SILENT: buildenvvars clearenvvars
 .PHONY: toolchain
 
-RELEASE = grafland-0.3e.tar.gz
+RELEASE = grafland-0.4a.tar.gz
 WEBSITE = http://www.csit.parkland.edu/~cgraff1
 SPWD = $(shell pwd)
 NAME = $(shell basename $(SPWD))
