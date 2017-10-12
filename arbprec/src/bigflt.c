@@ -62,7 +62,7 @@ bigflt *arbprec_print(bigflt *flt)
 		goto end;
 	}
 	
-        //for (i = 0; i < flt->len && i < scale; ++i)
+	//for (i = 0; i < flt->len && i < scale; ++i)
 	for (i = 0; i < flt->len ; ++i)
 	{
 		if (flt->float_pos == i)
@@ -241,15 +241,15 @@ void arbprec_match_precision(bigflt *a, bigflt *b)
 		reallocating sufficent memory for it and then appending 0s */
 	size_t off = 0;
 	if (rr(b) < rr(a))
-        {
-                off = rr(a) - rr(b);
+	{
+		off = rr(a) - rr(b);
 		b = arbprec_add_precision(b, off); 
-        } 
-        else if (rr(b) > rr(a))
-        {
-                off = rr(b) - rr(a);
+	} 
+	else if (rr(b) > rr(a))
+	{
+		off = rr(b) - rr(a);
 		a = arbprec_add_precision(a, off); 
-        } 
+	} 
 }
 
 bigflt *arbprec_add_precision(bigflt *flt, size_t off)
@@ -269,23 +269,23 @@ void arbprec_die(char *message)
 
 int arbprec_isnegati(bigflt *flt)
 {
-        if ( flt->sign == '-' )
-                return 1;
-        return 0;
+	if ( flt->sign == '-' )
+		return 1;
+	return 0;
 }
 
 void arbprec_reverse(int *x, size_t lim)
 {
-        size_t i = 0;
-        int swap = 0;
-        size_t half = lim / 2;
+	size_t i = 0;
+	int swap = 0;
+	size_t half = lim / 2;
 
-        for ( ; i < half ; i++)
-        {
-                swap = x[i];
-                x[i] = x[lim - i - 1];
-                x[lim - i - 1] = swap;
-        }
+	for ( ; i < half ; i++)
+	{
+		swap = x[i];
+		x[i] = x[lim - i - 1];
+		x[lim - i - 1] = swap;
+	}
 }
 
 void *arbprec_malloc(size_t len)
@@ -313,9 +313,9 @@ void copyarray(int *answer, int *from, size_t len)
 
 int place(bigflt *flt, size_t idx)
 {
-        if (idx < flt->len)
-                return flt->number[flt->len - idx - 1];
-        return 0;
+	if (idx < flt->len)
+		return flt->number[flt->len - idx - 1];
+	return 0;
 } 
 
 int iszero(int *answer, size_t lim)
@@ -347,18 +347,13 @@ int arpbrec_equals(bigflt *a, bigflt *b, size_t precision)
 }
 
 bigflt *strip_zeros(bigflt *b)
-{
-	//return b
-	
+{ 
 	while (b->float_pos > 0&& b->len > 0 && b->number[0] == 0)
-        {
-		
-       	       // b->number = b->number + 1;
-		//memmove(b->number, b->number + 1, b->len);
+	{ 
 		copyarray(b->number, b->number + 1, b->len);
        		b->len -= 1; 
-               	b->float_pos -= 1;
-        } 
+		b->float_pos -= 1;
+	} 
 	return b;
 }
 
