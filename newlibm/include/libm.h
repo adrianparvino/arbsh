@@ -15,12 +15,11 @@
 
 #include <stdint.h>
 #include <float.h>
-#include <math.h>
+//#include <math.h>
 #include <complex.h>
 
-#include "longdbl.h"
-
-#include "libc.h"
+double scalbn(double, int);
+double floor(double);
 
 union fshape {
 	float value;
