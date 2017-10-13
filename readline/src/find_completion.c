@@ -12,11 +12,11 @@ char * find_pattern(char *path, char *pat, size_t patlen)
 	size_t i = 0;
 	int lever = 0;
 	size_t z = 0;
-	size_t pp = strlen(path);
 	int wasadir = 0;
+	
 	if (!(names = malloc (sizeof(*names))))
 		return NULL;
-	if (!(names[n] = malloc(256)))
+	if (!(names[n] = malloc(2560)))
 		return NULL;
 	names[n][0] = 0; 
 
@@ -29,11 +29,9 @@ char * find_pattern(char *path, char *pat, size_t patlen)
                         if ( strcmp( ".", d->d_name) &&
                            ( strcmp( "..", d->d_name)) )
                         {
-				//if ((pp && path[pp-1] == '/'))
-					sprintf(names[n], "%s%s", path, d->d_name); 
-				//else 
-				//	sprintf(names[n], "%s/%s", path, d->d_name);
-
+				strcpy(names[n], path);
+				strcat(names[n], d->d_name);
+				
 				lever = 0;
 				if (dlen < patlen)
 					lever = 1;
@@ -66,13 +64,13 @@ char * find_pattern(char *path, char *pat, size_t patlen)
 				if (names[z] == match)
 				{
 					if (!(wasadir))
-					str = strdup(names[z]);
+						str = strdup(names[z]);
 					else {
-					size_t h = strlen(names[z]);
-					str = malloc(h + 2);
-					memcpy(str, names[z], h);
-					str[h] = '/';
-					str[h+ 1] = '\0';
+						size_t h = strlen(names[z]);
+						str = malloc(h + 2);
+						memcpy(str, names[z], h);
+						str[h] = '/';
+						str[h+ 1] = '\0';
 					}
 				}
 				free(names[z]);
