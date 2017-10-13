@@ -1,13 +1,8 @@
-CFLAGS := -I./include/ -Wall -Wextra -static
-#CFLAGS := -Wall -Wextra -static
+CFLAGS += -Wall -Wextra -I./include/ -O3
 
-LDFLAGS := 
-
-CC := gcc
+LDFLAGS += "-Wl,-rpath=$(PWD)" 
 
 OBJ = $(shell for i in src/*.c ; do echo $${i%.c}.o ; done )
-
-AR := ar
 
 LIBNAME = m
 
@@ -17,60 +12,47 @@ DYNLIB = lib$(LIBNAME).so
 
 DYNCC = CC="$(CC) -fpic"
 
-DESTDIR := ../
+DESTDIR ?= ../
 
 .PHONY: uninstall
 
-INCLUDES =  $(shell for i in include/*.h ; do echo $$i ; done )
+PREFIX ?= /src/
 
-INCLUDES_TARG =  $(shell for i in include/*.h ; do echo $(DESTDIR)/$$i ; done )
+INCLUDES = $(shell for i in include/$(PREFIX)/*.h ; do echo $$i ; done )
+
+INCLUDES_TARG = $(shell for i in include/$(PREFIX)/*.h ; do echo $(DESTDIR)/$$i ; done )
 
 TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
 
-LDLIBS = -L. -lm
+LDLIBS += -L. -l$(LIBNAME)
 
 all:
 
 	$(MAKE) static
-	#$(MAKE) cleanobj
-	#$(MAKE) dynamic
-
+	$(MAKE) cleanobj
+	$(MAKE) dynamic
+	$(MAKE) create_test
 
 static: $(OBJ)
 
 	$(MAKE) static_link
-	$(MAKE) static_create
-
-
 
 dynwrap: $(OBJ)
 
-	
 dynamic: 
 
 	$(MAKE) $(DYNCC) dynwrap
 	$(MAKE) dynamic_link
-	#$(MAKE) dynamic_create
-
-
 
 static_link:
 
 	$(AR) -cvq $(STATLIB) $(OBJ)
 
-
 dynamic_link:
 
 	$(CC) -shared -Wl,-soname,$(DYNLIB) -o $(DYNLIB) $(OBJ)
 
-
-static_create: $(TEST_OBJ)
-
-dynamic_create: $(TEST_OBJ)
-
-exec_dyn:
-
-	LD_LIBRARY_PATH=. ./tests/driver
+create_test: $(TEST_OBJ)
 
 cleanobj:
 
@@ -78,24 +60,27 @@ cleanobj:
 
 clean:
 	$(MAKE) cleanobj
-	$(RM) $(DYNLIB)
-	$(RM) $(STATLIB)
-	$(RM) $(TEST_OBJ) uninstall
+	$(RM) $(DYNLIB) 
+	$(RM) $(STATLIB) 
+	$(RM) $(TEST_OBJ)
+	$(RM) uninstall
 
 install:
 
 	mkdir -p $(DESTDIR)/lib/
-	mkdir -p $(DESTDIR)/include/
+	mkdir -p $(DESTDIR)/include/$(PREFIX)
 	cp $(STATLIB) $(DESTDIR)/lib/
 	cp $(DYNLIB) $(DESTDIR)/lib/
-	cp $(INCLUDES) $(DESTDIR)/include/
+	cp $(INCLUDES) $(DESTDIR)/include/$(PREFIX)
+	$(MAKE) create_uninstall
+
+create_uninstall:
 
 	echo "#!/bin/sh" > uninstall
 	echo "set -x" >> uninstall
 	echo "rm $(INCLUDES_TARG)" >> uninstall
 	echo "rm $(DESTDIR)/lib/$(STATLIB)" >> uninstall
 	echo "rm $(DESTDIR)/lib/$(DYNLIB)" >> uninstall
-
 	
 uninstall:
 
