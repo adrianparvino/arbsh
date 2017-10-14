@@ -134,21 +134,13 @@ int    ____rem_pio2(double,double*);
 double ____sin(double,double,int);
 double ____cos(double,double);
 double ____tan(double,double,int);
-long double ____sinl(long double, long double, int);
-long double ____cosl(long double, long double);
 
-
-// FIXME: not needed when -fexcess-precision=standard is supported (>=gcc4.5)
-/*
- * Attempt to get strict C99 semantics for assignment with non-C99 compilers.
- */
-#if 1
 #define STRICT_ASSIGN(type, lval, rval) do {    \
         volatile type ____v = (rval);             \
         (lval) = ____v;                           \
 } while (0)
-#else
-#define STRICT_ASSIGN(type, lval, rval) ((lval) = (type)(rval))
-#endif 
+
+//#define STRICT_ASSIGN(type, lval, rval) ((lval) = (type)(rval))
+
 
 #endif
