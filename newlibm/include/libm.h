@@ -14,7 +14,7 @@
 #define _LIBM_H
 
 #include <stdint.h>
-#include <float.h>
+//#include <float.h> /* this should probably be removed -- CM Graff */
 
 double scalbn(double, int);
 double floor(double);
