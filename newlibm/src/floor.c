@@ -69,7 +69,7 @@ double floor(double x)
 					i0++;
 				else {
 					j = i1+(1<<(52-j0));
-					if (j < i1)
+					if (j < (uint32_t)i1)
 						i0++; /* got a carry */
 					i1 = j;
 				}
