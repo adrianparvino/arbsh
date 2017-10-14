@@ -15,8 +15,6 @@
 
 #include <stdint.h>
 #include <float.h>
-//#include <math.h>
-#include <complex.h>
 
 double scalbn(double, int);
 double floor(double);
@@ -132,29 +130,13 @@ do {                                                            \
 /* fdlibm kernel functions */
 
 int    ____rem_pio2_large(double*,double*,int,int,int);
-
 int    ____rem_pio2(double,double*);
 double ____sin(double,double,int);
 double ____cos(double,double);
 double ____tan(double,double,int);
-double ____expo2(double);
-double complex ____ldexp_cexp(double complex,int);
-
-int    ____rem_pio2f(float,double*);
-float  ____sindf(double);
-float  ____cosdf(double);
-float  ____tandf(double,int);
-float  ____expo2f(float);
-float complex ____ldexp_cexpf(float complex,int);
-
-int ____rem_pio2l(long double, long double *);
 long double ____sinl(long double, long double, int);
 long double ____cosl(long double, long double);
-long double ____tanl(long double, long double, int);
 
-/* polynomial evaluation */
-long double ____polevll(long double, const long double *, int);
-long double ____p1evll(long double, const long double *, int);
 
 // FIXME: not needed when -fexcess-precision=standard is supported (>=gcc4.5)
 /*
