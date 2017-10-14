@@ -1,4 +1,4 @@
-CFLAGS += -Wall -Wextra -I./include/ -O3
+CFLAGS += -Wall -Wextra -I./include/
 
 LDFLAGS += "-Wl,-rpath=$(PWD)" 
 
@@ -56,7 +56,7 @@ create_test: $(TEST_OBJ)
 
 cleanobj:
 
-	$(RM) $(OBJ) 
+	$(RM) $(OBJ) $(OBJ) 
 
 clean:
 	$(MAKE) cleanobj
