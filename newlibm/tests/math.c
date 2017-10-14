@@ -1,7 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+double mysin(double);
 int main(int argc, char *argv[])
 {
         double x;
@@ -16,7 +16,9 @@ int main(int argc, char *argv[])
 	y[1] = x;
         printf("sin(%lf) =     %19.19lf\n", x, sin(x)); 
 	printf("floor(%lf) =     %19.19lf\n", x, floor(x)); 
-	printf("floor(%lf) =     %d\n", x, ____rem_pio2(x, y));
+	printf("repio(%lf) =     %d\n", x, ____rem_pio2(x, y));
+	____rem_pio2(x, y);
+	printf("mysin() =   %19.19lf  \n", mysin(y[0]));
 	/*
         printf("cos =     %19.19f\n", cos(x));
         printf("sinh =    %19.19f\n", sinh(x));
