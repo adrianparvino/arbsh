@@ -70,6 +70,7 @@ double series_func_driver(double x, int selector)
 	        y[1] = x; 
 	        n = ____rem_pio2(x, y);
 		switch (n&3) {
+		
 		        case 0: return series_func(y[0], 1, 1, 0); // ____sin(y[0], y[1], 1);
 		        case 1: return series_func(y[0], 0, 1, 0); // ____cos(y[0], y[1]);
 		        case 2: return - series_func(y[0], 1, 1, 0); //-____sin(y[0], y[1], 1);
