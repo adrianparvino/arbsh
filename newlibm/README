@@ -18,9 +18,11 @@ Description:
 
 	Graff's libm is an extremely minimal derivative of Sun's fdlibm with a
 	focus on doing a complete rewrite of libm for the purposes of example
-	and education. At this time only sin, floor and the Remez algorithm are
-	available. It is my hope that they will slowly be rewritten in my own
-	words and understanding.
+	and education.
+
+	At this time only cos, sin, floor and the Remez algorithm are available
+	. It is my hope that they will slowly be rewritten in my own words and 
+	understanding.
 
 
 	Libm uses the Remez algorithm with polynomial series epxansions to
