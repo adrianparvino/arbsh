@@ -1,6 +1,8 @@
 #include <math.h>
 #include <stdint.h>
 #include <limits.h>
+#include <stddef.h>
+#include "libm.h"
 /*
 	Series function. 
 	CM Graff, 2017
@@ -23,7 +25,7 @@
 
 */
 #define PI 3.14159265358979323846
-#define size_t uint32_t
+
 double series_func(double x, int one, int toggler, int exp);
 double series_func_driver(double x, int selector);
 double mysin(double x);
@@ -65,7 +67,7 @@ double series_func_driver(double x, int selector)
 	int n = 0;
 	if ( selector == 0 || selector == 2)
 	{
-        	//x = _arg_reduction(x);
+		/* argument range reduction */
 	        y[0] = x;
 	        y[1] = x; 
 	        n = ____rem_pio2(x, y); 
@@ -77,8 +79,7 @@ double series_func_driver(double x, int selector)
 		sum = series_func(x, 0, 0, 0);/* cosh */
 	if ( selector == 2 ) /* sin */ 
 	{
-		switch (n&3) {
-
+		switch (n&3) { 
                         case 0: return series_func(y[0], 1, 1, 0);  //  sin
                         case 1: return series_func(y[0], 0, 1, 0);  //  cos
                         case 2: return -series_func(y[0], 1, 1, 0); // -sin
@@ -102,8 +103,8 @@ double series_func(double x, int one, int toggler, int exp)
         double sum = 0;
         double last = 0;
 	int toggle = 1;
-	size_t inner = 0;
-	size_t outer = 0;
+	//size_t inner = 0;
+	//size_t outer = 0;
 
         for (i = 0; i < SIZE_MAX; i++)
         {
