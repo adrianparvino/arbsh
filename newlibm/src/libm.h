@@ -141,6 +141,6 @@ double ____tan(double,double,int);
 } while (0)
 
 //#define STRICT_ASSIGN(type, lval, rval) ((lval) = (type)(rval))
-
+int _check_tolerance(double x, double y);
 
 #endif
