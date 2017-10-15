@@ -20,8 +20,9 @@ int main(int argc, char *argv[])
 	//____rem_pio2(x, y);
 	//printf("mysin() =   %19.19lf  \n", mysin(y[0]));
 	printf("mysin() =   %19.19lf  \n", mysin(x));
-	/*
+	
         printf("cos =     %19.19f\n", cos(x));
+	/*
         printf("sinh =    %19.19f\n", sinh(x));
         printf("cosh =    %19.19f\n", cosh(x));
 	printf("log =     %19.19f\n", log(x));
