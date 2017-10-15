@@ -68,24 +68,25 @@ double series_func_driver(double x, int selector)
         	//x = _arg_reduction(x);
 	        y[0] = x;
 	        y[1] = x; 
-	        n = ____rem_pio2(x, y);
-		switch (n&3) {
-		
-		        case 0: return series_func(y[0], 1, 1, 0); // ____sin(y[0], y[1], 1);
-		        case 1: return series_func(y[0], 0, 1, 0); // ____cos(y[0], y[1]);
-		        case 2: return - series_func(y[0], 1, 1, 0); //-____sin(y[0], y[1], 1);
-		        default:
-	                return -series_func(y[0], 0, 1, 0);//-____cos(y[0], y[1]);
-	        }
+	        n = ____rem_pio2(x, y); 
 	}
-        //printf("mysin() =   %19.19lf  \n", mysin(y[0]));
 
 	if ( selector == 0 ) 
 		sum = series_func(x, 0, 1, 0);/* cos */ 
 	if ( selector == 1 )
 		sum = series_func(x, 0, 0, 0);/* cosh */
-	if ( selector == 2 ) 
-		sum = series_func(y[0], 1, 1, 0);/* sin */ 
+	if ( selector == 2 ) /* sin */ 
+	{
+		switch (n&3) {
+
+                        case 0: return series_func(y[0], 1, 1, 0);  //  sin
+                        case 1: return series_func(y[0], 0, 1, 0);  //  cos
+                        case 2: return -series_func(y[0], 1, 1, 0); // -sin
+                        default:
+                                return -series_func(y[0], 0, 1, 0) ;// -cos
+                }
+
+	}
 	if ( selector == 3 )
 		sum = series_func(x, 1, 0, 0);/* sinh */
 	if ( selector == 4 )
