@@ -36,4 +36,8 @@ NOTES:
 
 	Horner's method for polynomial evaluation.
 
+	Chebyshev polynomials.
 
+	Fourier-Chebyshev series. 
+
+	https://math.stackexchange.com/questions/1344627/how-to-use-chebyshev-polynomials-to-approximate-sinx-and-cosx-within-t
