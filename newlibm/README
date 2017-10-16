@@ -24,9 +24,12 @@ Description:
 	. It is my hope that they will slowly be rewritten in my own words and 
 	understanding.
 
-
 	Libm uses the Remez algorithm with polynomial series epxansions to
 	obtain its aproximations of transcendental functions.
 
 
 
+NOTES:
+------
+
+	Obtain a copy of "Computer aproximations" by John Hart.
