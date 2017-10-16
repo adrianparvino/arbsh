@@ -187,7 +187,7 @@ bstnode *bst_to_list(bstnode *root)
 {
 	bstnode *aList, *bList;
 	if (root==NULL)
-	return(NULL);
+		return(NULL);
 
 	aList = bst_to_list(root->small);
 	bList = bst_to_list(root->large);
@@ -225,13 +225,13 @@ void _bst_printpaths(bstnode* node, char *p, size_t len, size_t lim)
 
 void treefree(bstnode *p)
 {
-	   if (p != NULL) {
-			 treefree(p->small);
-			 free(p->word);
-			 treefree(p->large);
-			 free(p->large);
-			 free(p->small);
-	   }
+	if (p == NULL)
+		return;
+	treefree(p->small);
+	free(p->word);
+	treefree(p->large);
+	free(p->large);
+	free(p->small);
 }
 
 size_t bst_maxdepth(bstnode *p)
@@ -239,14 +239,13 @@ size_t bst_maxdepth(bstnode *p)
 	size_t small, large;
 	if (p == NULL)
 		return 0;
-	else { 
-		small = bst_maxdepth(p->small);
-		large = bst_maxdepth(p->large); 
-		if (small > large) 
-			return(small + 1);
-		else 
-			return(large + 1);
-	}
+	
+	small = bst_maxdepth(p->small);
+	large = bst_maxdepth(p->large); 
+	if (small > large) 
+		return(small + 1);
+	else 
+		return(large + 1);
 }
 
 void bst_inorder(bstnode* p)
