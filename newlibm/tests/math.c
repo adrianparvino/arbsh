@@ -13,9 +13,7 @@ int main(int argc, char *argv[])
 
         printf("sin(%lf) =     %19.19lf\n", x, sin(x));
 	printf("floor(%lf) =     %19.19lf\n", x, floor(x));
-#ifdef mysin
 	printf("mysin() =   %19.19lf  \n", mysin(x));
-#endif
         printf("cos =     %19.19f\n", cos(x));
 	/*
         printf("sinh =    %19.19f\n", sinh(x));
