@@ -25,15 +25,15 @@ void treefree(bstnode *);
 bstnode *bst_add(bstnode *, char *);
 void bst_print(bstnode *);
 void bst_print_iter(bstnode *);
+void bst_preorder(bstnode*);
 int getword(char *, size_t, FILE *);
 void bst_join(bstnode *, bstnode *);
 bstnode *bst_append(bstnode *, bstnode *);
-bstnode *bst_to_list(bstnode *); 
-void bst_print_postorder(bstnode*);
-void bst_printpaths(bstnode* node);
-void _bst_printpaths(bstnode* node, char *, size_t, size_t); 
-void bst_inorder(bstnode* node);
-void bst_post(bstnode* node);
+bstnode *bst_to_list(bstnode *);
+void bst_printpaths(bstnode *);
+void _bst_printpaths(bstnode *, char *, size_t, size_t); 
+void bst_inorder(bstnode *);
+void bst_post(bstnode *);
 
 
 int main(int argc, char **argv)
@@ -53,15 +53,15 @@ int main(int argc, char **argv)
 	printf("\n\n");
 	bst_print_iter(root);
 	printf("\n\n");
-
 	bst_printpaths(root);
 	bst_print(root);
-	printf("\n\npost\n");
-	bst_print_postorder(root);
 	printf("\n\nin\n");
 	bst_inorder(root);
-	printf("\n\nnewpost\n");
+	printf("\n\npost\n");
 	bst_post(root);
+	
+	printf("\n\npre\n");
+	bst_preorder(root);
 	/*
 	root = bst_to_list(root);
 	bstnode *o = root;
@@ -200,18 +200,6 @@ bstnode *bst_to_list(bstnode *root)
 	return(aList);
 }
 
-void bst_print_postorder(bstnode* node)
-{
-	if (node == NULL)
-		return; 
-	static int i = 0;
-	if (i == 0 && ++i)
-		printf("\t[%s]\n", node->word);
-	bst_print(node->small);
-	printf("\n");
-	bst_print(node->large);
-}
-
 void bst_printpaths(bstnode* node)
 { 
 	char path[1024] = { 0 };
@@ -265,23 +253,26 @@ void bst_inorder(bstnode* p)
 {
 	if (p == NULL)
 		return;
-	
 	bst_inorder(p->small);
 	printf("%s ", p->word);
 	bst_inorder(p->large);
 }
 
-void bst_post(bstnode* node)
+void bst_post(bstnode* p)
 {
-     if (node == NULL)
-        return;
-
-     // first recur on left subtree
-     bst_post(node->small);
-
-     // then recur on right subtree
-     bst_post(node->large);
-
-     // now deal with the node
-     printf("%s ", node->word);
+	if (p == NULL)
+		return; 
+	bst_post(p->small); 
+	bst_post(p->large);
+	printf("%s ", p->word);
 }
+
+void bst_preorder(bstnode* p)
+{
+	if (p == NULL)
+		return;
+	printf("%s ", p->word);
+	bst_preorder(p->small);
+	bst_preorder(p->large);
+}
+
