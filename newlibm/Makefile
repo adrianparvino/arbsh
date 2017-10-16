@@ -1,6 +1,6 @@
 CFLAGS += -Wall -Wextra -I./include/
 
-LDFLAGS += "-Wl,-rpath=$(PWD)" 
+LDFLAGS += "-Wl,-rpath=$(PWD)"
 
 OBJ = $(shell for i in src/*.c ; do echo $${i%.c}.o ; done )
 
