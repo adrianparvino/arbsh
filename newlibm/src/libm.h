@@ -29,17 +29,17 @@ union dshape {
 	uint64_t bits;
 };
 
-#define FORCE_EVAL(x){			\
-	if (sizeof(x) == sizeof(float)) {	\
-		volatile float ____x;		 \
-		____x = (x);			\
-	} else if (sizeof(x) == sizeof(double)) {\
-		volatile double ____x;		\
-		____x = (x);			\
-	} else {				\
-		volatile long double ____x;	\
-		____x = (x);			\
-	}					\
+#define FORCE_EVAL(x){					\
+	if (sizeof(x) == sizeof(float)) {		\
+		volatile float ____x;			\
+		____x = (x);				\
+	} else if (sizeof(x) == sizeof(double)) {	\
+		volatile double ____x;			\
+		____x = (x);				\
+	} else {					\
+		volatile long double ____x;		\
+		____x = (x);				\
+	}						\
 }
 
 /* Get two 32 bit ints from a double.*/
@@ -47,7 +47,7 @@ union dshape {
 {							\
 union dshape ____u;					\
 ____u.value = (d);					\
-(hi) = ____u.bits >> 32;					\
+(hi) = ____u.bits >> 32;				\
 (lo) = (uint32_t)____u.bits;				\
 }
 
@@ -64,7 +64,7 @@ ____u.value = (d);					\
 {							\
 union dshape ____u;					\
 ____u.value = (d);					\
-(i) = ____u.bits >> 32;					 \
+(i) = ____u.bits >> 32;					\
 }
 
 /* Get the less significant 32 bit int from a double.*/
@@ -129,15 +129,15 @@ ____u.bits = (i);					\
 
 /* fdlibm kernel functions */
 
-int ____rem_pio2_large(double*,double*,int,int,int);
-int ____rem_pio2(double,double*);
-double ____sin(double,double,int);
-double ____cos(double,double);
-double ____tan(double,double,int);
+int ____rem_pio2_large(double *, double *, int, int, int);
+int ____rem_pio2(double, double *);
+double ____sin(double, double, int);
+double ____cos(double, double);
+double ____tan(double, double, int);
 
-#define STRICT_ASSIGN(type, lval, rval){\
-	volatile type ____v = (rval);	\
-	(lval) = ____v;			\
+#define STRICT_ASSIGN(type, lval, rval){		\
+	volatile type ____v = (rval);			\
+	(lval) = ____v;					\
 }
 
 //#define STRICT_ASSIGN(type, lval, rval) ((lval) = (type)(rval))
