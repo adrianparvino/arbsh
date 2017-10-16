@@ -32,6 +32,9 @@ bstnode *bst_to_list(bstnode *);
 void bst_print_postorder(bstnode*);
 void bst_printpaths(bstnode* node);
 void _bst_printpaths(bstnode* node, char *, size_t, size_t); 
+void bst_inorder(bstnode* node);
+void bst_post(bstnode* node);
+
 
 int main(int argc, char **argv)
 {
@@ -45,6 +48,7 @@ int main(int argc, char **argv)
 	while (getword(word, 100, fp) != EOF)
 			root = bst_add(root, word);
 
+
 	bst_print(root);
 	printf("\n\n");
 	bst_print_iter(root);
@@ -52,9 +56,12 @@ int main(int argc, char **argv)
 
 	bst_printpaths(root);
 	bst_print(root);
-	printf("\n\n");
+	printf("\n\npost\n");
 	bst_print_postorder(root);
-
+	printf("\n\nin\n");
+	bst_inorder(root);
+	printf("\n\nnewpost\n");
+	bst_post(root);
 	/*
 	root = bst_to_list(root);
 	bstnode *o = root;
@@ -230,13 +237,13 @@ void _bst_printpaths(bstnode* node, char *p, size_t len, size_t lim)
 
 void treefree(bstnode *p)
 {
-        if (p != NULL) {
-                treefree(p->small);
-                free(p->word);
-                treefree(p->large);
-                free(p->large);
-                free(p->small);
-        }
+	   if (p != NULL) {
+			 treefree(p->small);
+			 free(p->word);
+			 treefree(p->large);
+			 free(p->large);
+			 free(p->small);
+	   }
 }
 
 size_t bst_maxdepth(bstnode *p)
@@ -254,3 +261,27 @@ size_t bst_maxdepth(bstnode *p)
 	}
 }
 
+void bst_inorder(bstnode* p)
+{
+	if (p == NULL)
+		return;
+	
+	bst_inorder(p->small);
+	printf("%s ", p->word);
+	bst_inorder(p->large);
+}
+
+void bst_post(bstnode* node)
+{
+     if (node == NULL)
+        return;
+
+     // first recur on left subtree
+     bst_post(node->small);
+
+     // then recur on right subtree
+     bst_post(node->large);
+
+     // now deal with the node
+     printf("%s ", node->word);
+}
