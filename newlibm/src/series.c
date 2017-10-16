@@ -91,7 +91,7 @@ double series_func_driver(double x, int selector)
 	if ( selector == 3 )
 		sum = series_func(x, 1, 0, 0);/* sinh */
 	if ( selector == 4 )
-		sum = series_func(x, 0, 0, 1);/* exp  >> 1*/ 
+		sum = series_func(x, 0, 0, 1);/* exp >> 1*/ 
         return sum;
 } 
 
