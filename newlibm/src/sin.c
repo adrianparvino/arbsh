@@ -68,10 +68,10 @@ double sin(double x)
 	/* argument reduction needed */
 	n = ____rem_pio2(x, y);
 	switch (n&3) {
-	case 0: return  ____sin(y[0], y[1], 1);
-	case 1: return  ____cos(y[0], y[1]);
-	case 2: return -____sin(y[0], y[1], 1);
-	default:
-		return -____cos(y[0], y[1]);
+		case 0: return  ____sin(y[0], y[1], 1);
+		case 1: return  ____cos(y[0], y[1]);
+		case 2: return -____sin(y[0], y[1], 1);
+		default:
+			return -____cos(y[0], y[1]);
 	}
 }

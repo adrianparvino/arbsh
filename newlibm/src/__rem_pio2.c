@@ -111,6 +111,7 @@ int ____rem_pio2(double x, double *y)
 	if (ix < 0x413921fb) {  /* |x| ~< 2^20*(pi/2), medium size */
 		uint32_t high;
 medium:
+		fprintf(stderr, "large argument passed to medium: mode\n");
 		/* Use a specialized rint() to get fn.  Assume round-to-nearest. */
 		STRICT_ASSIGN(double, fn, x*invpio2 + 0x1.8p52);
 		fn = fn - 0x1.8p52;
@@ -145,6 +146,7 @@ medium:
 	/*
 	 * all other (large) arguments
 	 */
+	fprintf(stderr, "very large argument passed to end mode\n");
 	if (ix >= 0x7ff00000) {  /* x is inf or NaN */
 		y[0] = y[1] = x - x;
 		return 0;
