@@ -14,6 +14,7 @@
 #define _LIBM_H
 
 #include <stdint.h>
+#include <stdio.h>
 //#include <float.h> /* this should probably be removed -- CM Graff */
 
 double scalbn(double, int);
@@ -65,6 +66,7 @@ union dshape {
 	union dshape ____u;					\
 	____u.value = (d);					\
 	(i) = ____u.bits >> 32;					\
+	printf("GET_HIGH_WORD %d\n", i); \
 }
 
 /* Get the less significant 32 bit int from a double.*/
@@ -73,6 +75,7 @@ union dshape {
 	union dshape ____u;					\
 	____u.value = (d);					\
 	(i) = (uint32_t)____u.bits;				\
+	printf("GET_LOW_WORD %d\n", i); \
 }
 
 /* Set a double from two 32 bit ints.*/
@@ -81,6 +84,7 @@ union dshape {
 	union dshape ____u;					\
 	____u.bits = ((uint64_t)(hi) << 32) | (uint32_t)(lo);	\
 	(d) = ____u.value;					\
+	printf("INSERT_WORDS %lf\n", d); \
 }
 
 /* Set a double from a 64 bit int.*/
@@ -99,6 +103,7 @@ union dshape {
 	____u.bits &= 0xffffffff;				\
 	____u.bits |= (uint64_t)(hi) << 32;			\
 	(d) = ____u.value;					\
+	printf("SET_HIGH_WORD %d\n", i); \
 }
 
 /* Set the less significant 32 bits of a double from an int.*/
@@ -109,9 +114,10 @@ union dshape {
 	____u.bits &= 0xffffffff00000000ull;			\
 	____u.bits |= (uint32_t)(lo);				\
 	(d) = ____u.value;					\
+	printf("SET_LOW_WORD %d\n", i); \
 }
 
-/* Get a 32 bit int from a float.*/
+/* Get a 32 bit int from a float. */
 #define GET_FLOAT_WORD(i,d)					\
 {								\
 	union fshape ____u;					\
@@ -119,7 +125,7 @@ union dshape {
 	(i) = ____u.bits;					\
 }
 
-/* Set a float from a 32 bit int.*/
+/* Set a float from a 32 bit int. */
 #define SET_FLOAT_WORD(d,i)					\
 {								\
 	union fshape ____u;					\
@@ -128,7 +134,6 @@ union dshape {
 }
 
 /* fdlibm kernel functions */
-
 int ____rem_pio2_large(double *, double *, int, int, int);
 int ____rem_pio2(double, double *);
 double ____sin(double, double, int);
@@ -138,6 +143,7 @@ double ____tan(double, double, int);
 #define STRICT_ASSIGN(type, lval, rval){			\
 	volatile type ____v = (rval);				\
 	(lval) = ____v;						\
+	printf("STRICT_ASSIGN  lval %19.19lf   rval %19.19lf\n", lval, rval); \
 }
 
 //#define STRICT_ASSIGN(type, lval, rval) ((lval) = (type)(rval))
