@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <limits.h>
 #include <stddef.h>
+#include <float.h>
 #include "libm.h"
 /*
 	Series function. 
@@ -60,6 +61,8 @@ double cosh(double x)
 	return series_func(x, 0, 0, 0);
 } 
 */
+
+int why = 0;
 double series_func_driver(double x, int selector)
 { 
         double sum = 0;
@@ -70,7 +73,9 @@ double series_func_driver(double x, int selector)
 		/* argument range reduction */
 	        y[0] = x;
 	        y[1] = x; 
-	        n = ____rem_pio2(x, y); 
+	        n = ____rem_pio2(x, y);
+		why = y[1];
+		printf("rem_pio n = %19d, y[0] = %19.19lf, y[1] = %19.19lf\n", n, y[0], y[1]);
 	}
 
 	if ( selector == 0 ) 
@@ -102,31 +107,31 @@ double series_func(double x, int one, int toggler, int exp)
         double product = 1.0;
         double sum = 0;
         double last = 0;
+	double mega = 0;
 	int toggle = 1;
-	//size_t inner = 0;
-	//size_t outer = 0;
+	size_t in = 0;
+	size_t out = 0;
 
         for (i = 0; i < SIZE_MAX; i++)
         {
-               	for (j = (2*i) + one, product = 1.0; j > 0 ; j--) 
-		{
-			//printf("outer %zu\n", outer++);
+               	for (j = (2*i) + one, product = 1.0; j > 0 ; j--, in++) 
                 	product *= x / j;
-		}
-		//printf("inner %zu\n", inner++);
-               	sum += product * toggle;
 
+		out++;
+		sum += product * toggle;
+		//printf("sum is %19.19lf\n", sum);
 		if ( toggler != 0 )
 			toggle = -toggle; 
 
-                if (_check_tolerance(last, sum))
-                        break;
-
+                if (_check_tolerance(last, sum)) 
+                        break; 
                 last = sum; 
         }
 
 	if ( exp )
 		sum *=2;
-
+	
+	printf("outer %zu\n", out);
+	printf("inner %zu\n", in); 
         return sum;
 }
