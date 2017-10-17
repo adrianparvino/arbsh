@@ -43,3 +43,7 @@ NOTES:
 	https://math.stackexchange.com/questions/1344627/how-to-use-chebyshev-polynomials-to-approximate-sinx-and-cosx-within-t
 
 	http://mathworld.wolfram.com/ChebyshevPolynomialoftheFirstKind.html
+
+
+	sin(123)        -0.4599034906895912512924357152932318108085806073810425809277428680299586433593856839980894189805519976
+  	from arbprec    -0.4599034906895912512924357152932318108085806073810425809277
