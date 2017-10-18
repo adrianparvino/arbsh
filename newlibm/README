@@ -66,3 +66,8 @@ NOTES:
 	remainder formulae tell us about the error in this approximation. In 
 	particular they tell us that higher degree polynomials provide better 
 	local approximations to a function.
+
+	https://math.stackexchange.com/questions/1308992/why-doesnt-a-taylor-series-converge-always
+
+
+	dalias: the number of bits of pi you need is roughly equal to the max exponent

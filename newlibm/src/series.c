@@ -62,7 +62,7 @@ double cosh(double x)
 } 
 */
 
-int why = 0;
+double why = 0;
 double series_func_driver(double x, int selector)
 { 
         double sum = 0;
@@ -107,21 +107,21 @@ double series_func(double x, int one, int toggler, int exp)
         double product = 1.0;
         double sum = 0;
         double last = 0;
-	double mega = 0;
 	int toggle = 1;
 	size_t in = 0;
 	size_t out = 0;
 
-        for (i = 0; i < SIZE_MAX; i++)
+
+
+        for (i = 0; i < SIZE_MAX; i++, out++)
         {
                	for (j = (2*i) + one, product = 1.0; j > 0 ; j--, in++) 
                 	product *= x / j;
-
-		out++;
+	
 		sum += product * toggle;
-		//printf("sum is %19.19lf\n", sum);
+		
 		if ( toggler != 0 )
-			toggle = -toggle; 
+			toggle = -toggle;
 
                 if (_check_tolerance(last, sum)) 
                         break; 
@@ -131,7 +131,8 @@ double series_func(double x, int one, int toggler, int exp)
 	if ( exp )
 		sum *=2;
 	
-	printf("outer %zu\n", out);
-	printf("inner %zu\n", in); 
+	fprintf(stderr, "outer %zu\n", out);
+	fprintf(stderr, "inner %zu\n", in); 
+	
         return sum;
 }
