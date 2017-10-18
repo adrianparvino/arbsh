@@ -30,19 +30,6 @@ union dshape {
 	uint64_t bits;
 };
 
-#define FORCE_EVAL(x){						\
-	if (sizeof(x) == sizeof(float)) {			\
-		volatile float ____x;				\
-		____x = (x);					\
-	} else if (sizeof(x) == sizeof(double)) {		\
-		volatile double ____x;				\
-		____x = (x);					\
-	} else {						\
-		volatile long double ____x;			\
-		____x = (x);					\
-	}							\
-}
-
 /* Get two 32 bit ints from a double.*/
 #define EXTRACT_WORDS(hi,lo,d)					\
 {								\
