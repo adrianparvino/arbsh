@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+double trigfunc(int p, double x);
 double mysin(double);
 int main(int argc, char *argv[])
 {
@@ -18,6 +19,7 @@ int main(int argc, char *argv[])
 	printf("floor(%lf) =     %19.19lf\n", x, floor(x));
 	printf("mysin() =   %19.25lf  \n", mysin(x));
         printf("cos =     %19.19f\n", cos(x));
+	printf("trigfunc = %19.25f\n", trigfunc(1, x));
 	/*
         printf("sinh =    %19.19f\n", sinh(x));
         printf("cosh =    %19.19f\n", cosh(x));
@@ -30,7 +32,7 @@ int main(int argc, char *argv[])
 	printf("atan =    %19.19f\n", atan(x));
 	*/
 	printf("DBL_DIG %d\n", DBL_DIG);
-	printf("DBL_EPSILON %19.19lf\n", DBL_EPSILON);
+	printf("DBL_EPSILON %19.25lf\n", DBL_EPSILON);
         return 0;
 }
 
