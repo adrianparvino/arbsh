@@ -50,9 +50,13 @@ double cos(double x)
 	GET_HIGH_WORD(ix, x);
 
 	/* |x| ~< pi/4 */
-	ix &= 0x7fffffff;
-	if (ix <= 0x3fe921fb) {
-		if (ix < 0x3e46a09e)  /* if x < 2**-27 * sqrt(2) */
+	//ix &= 0x7fffffff;
+	ix &= 2147483647;
+	//if (ix <= 0x3fe921fb)
+	if (ix <= 1072243195)
+	{
+		//if (ix < 0x3e46a09e)  /* if x < 2**-27 * sqrt(2) */
+		if (ix < 1044816030)
 			/* raise inexact if x != 0 */
 			if ((int)x == 0)
 				return 1.0;
@@ -60,16 +64,18 @@ double cos(double x)
 	}
 
 	/* cos(Inf or NaN) is NaN */
-	if (ix >= 0x7ff00000)
+	//if (ix >= 0x7ff00000)
+	if (ix >=2146435072)
 		return x-x;
 
 	/* argument reduction needed */
 	n = ____rem_pio2(x, y);
-	switch (n&3) {
-	case 0: return  ____cos(y[0], y[1]);
-	case 1: return -____sin(y[0], y[1], 1);
-	case 2: return -____cos(y[0], y[1]);
-	default:
-		return  ____sin(y[0], y[1], 1);
+	switch (n&3)
+	{
+		case 0: return  ____cos(y[0], y[1]);
+		case 1: return -____sin(y[0], y[1], 1);
+		case 2: return -____cos(y[0], y[1]);
+		default:
+			return  ____sin(y[0], y[1], 1);
 	}
 }
