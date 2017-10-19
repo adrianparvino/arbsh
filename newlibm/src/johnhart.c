@@ -3,12 +3,14 @@
 // we'll adjust the argument and call the cosine approximation.
 //
 #include <math.h>
+#include "libm.h"
 float sin_32(float x);
 float cos_32(float x);
 float cos_32s(float x);
 float cos_52s(float x);
 double cos_73s(double x);
 double cos_121s(double x);
+double cos20(double x);
 double driver(double x);
 // Math constants 
 double const pi=3.1415926535897932384626433;// pi
@@ -31,20 +33,38 @@ float sin_32(float x){
 //float cos_32(float x)
 double driver(double x)
 {
+	int n;
 	int quad;
-
-	x=fmod(x, twopi);
+	double y[2];
+	int32_t ix;
+	GET_HIGH_WORD(ix, x);
+		/*
+                ix &= 2147483647;
+                if (ix <= 1072243195)
+                {       
+                        if (ix < 1045430272)  
+                                if ((int)x == 0) 
+                                        return x; 
+                        return series_func(x, 1, 1, 0);
+                }
+		*/
+                y[0] = x;
+                y[1] = x;
+                n = ____rem_pio2(x, y);
+	//x=fmod(x, twopi);
 
 	if(x<0)x= - x;
 // cos( - x) = cos(x)
-	quad=(int)(x/halfpi);
+	//quad=(int)(x/halfpi);
 	// Get quadrant # (0 to 3)
-	switch (quad){
-		case 0: return  cos_121s(x);
-		case 1: return - cos_121s(pi - x);
-		case 2: return - cos_121s(x - pi);
-		case 3: return  cos_121s(twopi - x);
-	}
+	//switch (quad){
+	//	case 0: return  cos_121s(y[0]);
+	//	case 1: return - cos_121s(pi - y[0]);
+	//	case 2: return - cos_121s(y[0] - pi);
+	//	case 3: return  cos_121s(twopi - y[0]);
+	//}
+	//return cos_121s(y[0]);
+	return cos20(y[0]);
 }
 
 // cos_32s computes cosine (x)
@@ -145,9 +165,26 @@ double cos_121s(double x)
 	return (c1 + x2*(c2 + x2*(c3 + x2*(c4 + x2*(c5 + x2*(c6 + c7*x2))))));
 }
 
-
-int main(void)
+double cos20(double x)
 {
-	printf("%19.19lf\n", driver(123));
-	return 0;
+double c1 = 0.9999999999999999999936329;
+double c2 = - 0.49999999999999999948362843;
+double c3 = 0.04166666666666665975670054;
+double c4 = - 0.00138888888888885302082298;
+double c5 = 0.000024801587301492746422297;
+double c6 = - 0.00000027557319209666748555;
+double c7 = 0.0000000020876755667423458605;
+double c8 = - 0.0000000000114706701991777771;
+double c9 = 0.0000000000000477687298095717;
+double c10= - 0.00000000000000015119893746887;
+double x2;
+        // The input argument squared
+        x2=x * x;
+return c1 + x2 *(c2 + x2 *(c3 + x2 *(c4 + x2 *(c5 + x2 *(c6 + x2 *(c7 + x2 *(c8 + x2 *(c9 + x2 *c10))))))));
 }
+
+//int main(void)
+//{
+//	printf("%19.19lf\n", driver(123));
+//	return 0;
+//}
