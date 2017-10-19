@@ -73,25 +73,15 @@ double series_func_driver(double x, int selector)
 		/* argument range reduction */
 		int32_t ix;
 	       
-	        GET_HIGH_WORD(ix, x);
-
-	       
+	        GET_HIGH_WORD(ix, x); 
 	        ix &= 2147483647;
 	        if (ix <= 1072243195)
-	        {
-			
-	                if (ix < 1045430272)
-			{
-	                        if ((int)x == 0)
-				{
-				
-	                                return x;
-				}
-	                }
-			
+	        { 
+	                if (ix < 1045430272) 
+	                        if ((int)x == 0) 
+	                                return x; 
 	                return series_func(x, 1, 1, 0);
-	        }
-      	
+	        } 
 	        y[0] = x;
 	        y[1] = x; 
 	        n = ____rem_pio2(x, y);
