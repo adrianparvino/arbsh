@@ -7,8 +7,9 @@ float sin_32(float x);
 float cos_32(float x);
 float cos_32s(float x);
 float cos_52s(float x);
-
-
+double cos_73s(double x);
+double cos_121s(double x);
+double driver(double x);
 // Math constants 
 double const pi=3.1415926535897932384626433;// pi
 //double const twopi=2.0*pi;
@@ -19,7 +20,7 @@ double const halfpi= 1.5707963267948966192313216500;
 
 
 float sin_32(float x){
-	return cos_32(halfpi - x);
+	return driver(halfpi - x);
 }
 // pi divided by 2
 //
@@ -27,7 +28,8 @@ float sin_32(float x){
 // It reduces the input argument's range to [0, pi/2],
 // and then calls the approximator. 
 //
-float cos_32(float x)
+//float cos_32(float x)
+double driver(double x)
 {
 	int quad;
 
@@ -38,10 +40,10 @@ float cos_32(float x)
 	quad=(int)(x/halfpi);
 	// Get quadrant # (0 to 3)
 	switch (quad){
-		case 0: return  cos_52s(x);
-		case 1: return - cos_52s(pi - x);
-		case 2: return - cos_52s(x - pi);
-		case 3: return  cos_52s(twopi - x);
+		case 0: return  cos_121s(x);
+		case 1: return - cos_121s(pi - x);
+		case 2: return - cos_121s(x - pi);
+		case 3: return  cos_121s(twopi - x);
 	}
 }
 
@@ -114,9 +116,38 @@ double cos_73s(double x)
 	x2=x * x;
 	return (c1 + x2*(c2 + x2*(c3 + x2*(c4 + c5*x2))));
 }
+// cos_121s computes cosine (x)
+//
+//  Accurate to about 12.1 decimal digits over the range [0, pi/2].
+//  The input argument is in radians.
+//
+//  Algorithm:
+// cos(x)= c1+c2*x**2+c3*x**4+c4*x**6+c5*x**8+c6*x**10+c7*x**12
+//   which is the same as:
+// cos(x)= c1+x**2 (c2+c3*x**2+c4*x**4+c5*x**6+c6*x**8+c7*x**10)
+// cos(x)= c1+x**2(c2+x**2(c3+c4*x**2+c5*x**4+c6*x**6+c7*x**8 ))
+// cos(x)= c1+x**2(c2+x**2(c3+x**2(c4+c5*x**2+c6*x**4+c7*x**6 )))
+// cos(x)= c1+x**2(c2+x**2(c3+x**2(c4+x**2(c5+c6*x**2+c7*x**4 ))))
+// cos(x)= c 1+x**2(c2+x**2(c3+x**2(c4+x**2(c5+x**2(c6+c7*x**2 )))))
+//
+double cos_121s(double x)
+{
+	const double c1= 0.99999999999925182;
+	const double c2= - 0.49999999997024012;
+	const double c3= 0.041666666473384543;
+	const double c4= - 0.001388888418000423;
+	const double c5 = 0.0000248010406484558;
+	const double c6= - 0.0000002752469638432;
+	const double c7= 0.0000000019907856854;
+	double x2;
+	// The input argument squared
+	x2=x * x;
+	return (c1 + x2*(c2 + x2*(c3 + x2*(c4 + x2*(c5 + x2*(c6 + c7*x2))))));
+}
+
 
 int main(void)
 {
-	printf("%lf\n", cos_32(123));
+	printf("%19.19lf\n", driver(123));
 	return 0;
 }
