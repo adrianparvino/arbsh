@@ -9,6 +9,7 @@
 
 double trigfunc(int p, double x)
 {
+	int ss = x;
 	double yy[2];
 	yy[0] = x;
         yy[1] = x;
@@ -16,7 +17,7 @@ double trigfunc(int p, double x)
         n = ____rem_pio2(x, yy);
 
 	x = yy[0];
-	size_t i = 90;
+	size_t i = 30;
 	double r = 0;
 	double s = 0;
 	double y = 0;
@@ -24,6 +25,15 @@ double trigfunc(int p, double x)
 	double ZZ= 0;
 	double sum1 = 0;
 	double sum2 = 0;
+
+	switch (n&3) {
+                        case 0: p = 1;  //  sin
+                        case 1: p = 2;  //  cos
+                        case 2: p = 1; // -sin
+                        default:
+                                p = 2;// -cos
+                }
+
 
 	if ( p == 5)
 		Z=x; 
@@ -35,7 +45,7 @@ double trigfunc(int p, double x)
 	else 
 		r = x * x;      /* hyperbolic */
 	
-	//s = 4 * i + 2;
+	s = 4 * i + 2;
 
 	if ( p < 4 || p > 5 )	/* ! log */
 		for (; i > 0; i--) 
@@ -51,6 +61,7 @@ double trigfunc(int p, double x)
 	}
 
 	switch (p % 6)
+
 	{
 		case 0 : 
 			y = (s + x)/(s - x);		/* exp */
