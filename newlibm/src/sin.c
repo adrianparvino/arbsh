@@ -51,12 +51,9 @@ double sin(double x)
 	GET_HIGH_WORD(ix, x);
 
 	/* |x| ~< pi/4 */
-	//ix &= 0x7fffffff;
 	ix &= 2147483647;
-	//if (ix <= 0x3fe921fb)
 	if (ix <= 1072243195)
-	{
-		//if (ix < 0x3e500000) {  /* |x| < 2**-26 */
+	{ 
 		if (ix < 1045430272) {  /* |x| < 2**-26 */
 			/* raise inexact if x != 0 */
 			if ((int)x == 0)
@@ -66,7 +63,6 @@ double sin(double x)
 	}
 
 	/* sin(Inf or NaN) is NaN */
-	//if (ix >= 0x7ff00000)
 	if (ix >=2146435072)
 		return x - x;
 
