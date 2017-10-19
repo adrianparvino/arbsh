@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <float.h>
+
 double trigfunc(int p, double x);
 double mysin(double);
 int main(int argc, char *argv[])
@@ -15,11 +16,12 @@ int main(int argc, char *argv[])
 
 	printf("sin(123) solution is -0.4599034906895912512924357152932318108085806073810425809277\n");
 	printf("sin(987.234234) solution is 0.6991019671507811957162690088283454921684870494514649920197948454594776556950092560712278850735646365\n");
-        printf("sin(%lf) =     %19.25lf\n", x, sin(x));
-	printf("floor(%lf) =     %19.19lf\n", x, floor(x));
-	printf("mysin() =   %19.25lf  \n", mysin(x));
-        printf("cos =     %19.19f\n", cos(x));
-	printf("trigfunc = %19.25f\n", trigfunc(1, x));
+        
+	printf("floor() =        %19.55lf\n", floor(x));
+	printf("sin() =          %19.55lf\n", sin(x));
+	printf("mysin() =        %19.55lf\n", mysin(x));
+        printf("cos =            %19.55f\n", cos(x));
+	//printf("trigfunc =       %19.55f\n", trigfunc(1, x));
 	/*
         printf("sinh =    %19.19f\n", sinh(x));
         printf("cosh =    %19.19f\n", cosh(x));
@@ -31,8 +33,8 @@ int main(int argc, char *argv[])
 	printf("tan =     %19.19f\n", tan(x));
 	printf("atan =    %19.19f\n", atan(x));
 	*/
-	printf("DBL_DIG %d\n", DBL_DIG);
-	printf("DBL_EPSILON %19.25lf\n", DBL_EPSILON);
+	fprintf(stderr, "DBL_DIG %d\n", DBL_DIG);
+	fprintf(stderr, "DBL_EPSILON %19.55lf\n", DBL_EPSILON);
         return 0;
 }
 
