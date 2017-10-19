@@ -6,6 +6,7 @@
 double trigfunc(int p, double x);
 double mysin(double);
 double driver(double);
+double sin20(double);
 int main(int argc, char *argv[])
 {
         double x;
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
 	printf("mysin() =        %19.55lf\n", mysin(x));
         printf("cos =            %19.55f\n", cos(x));
 	printf("driver =         %19.55f\n", driver(x));
+	printf("sin20 =          %19.55f\n", sin20(x));
 	//printf("trigfunc =       %19.55f\n", trigfunc(1, x));
 	/*
         printf("sinh =    %19.19f\n", sinh(x));
