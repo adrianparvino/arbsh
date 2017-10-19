@@ -79,16 +79,16 @@ double series_func_driver(double x, int selector)
 	        ix &= 2147483647;
 	        if (ix <= 1072243195)
 	        {
-			printf("high\n");
+			
 	                if (ix < 1045430272)
 			{
 	                        if ((int)x == 0)
 				{
-					printf("mid\n");
+				
 	                                return x;
 				}
 	                }
-			printf("low\n");
+			
 	                return series_func(x, 1, 1, 0);
 	        }
       	
@@ -138,7 +138,7 @@ double series_func(double x, int one, int toggler, int exp)
 
 
 
-        for (i = 0; i < 6; i++, out++)
+        for (i = 0; i < SIZE_MAX; i++, out++)
         {
                	for (j = (2.0*i) + one, product = 1.0; j > 0 ; j--, in++) 
                 	product *= x / j;
