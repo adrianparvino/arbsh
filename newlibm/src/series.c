@@ -71,11 +71,32 @@ double series_func_driver(double x, int selector)
 	if ( selector == 0 || selector == 2)
 	{
 		/* argument range reduction */
+		int32_t ix;
+	       
+	        GET_HIGH_WORD(ix, x);
+
+	       
+	        ix &= 2147483647;
+	        if (ix <= 1072243195)
+	        {
+			printf("high\n");
+	                if (ix < 1045430272)
+			{
+	                        if ((int)x == 0)
+				{
+					printf("mid\n");
+	                                return x;
+				}
+	                }
+			printf("low\n");
+	                return series_func(x, 1, 1, 0);
+	        }
+      	
 	        y[0] = x;
 	        y[1] = x; 
 	        n = ____rem_pio2(x, y);
-		why = y[1];
-		printf("rem_pio n = %19d, y[0] = %19.19lf, y[1] = %19.19lf\n", n, y[0], y[1]);
+	
+		fprintf(stderr, "rem_pio n = %19d, y[0] = %19.19lf, y[1] = %19.19lf\n", n, y[0], y[1]);
 	}
 
 	if ( selector == 0 ) 
@@ -88,7 +109,7 @@ double series_func_driver(double x, int selector)
                         case 0: return series_func(y[0], 1, 1, 0);  //  sin
                         case 1: return series_func(y[0], 0, 1, 0);  //  cos
                         case 2: return -series_func(y[0], 1, 1, 0); // -sin
-                        default:
+                        default: 
                                 return -series_func(y[0], 0, 1, 0) ;// -cos
                 }
 
@@ -102,20 +123,24 @@ double series_func_driver(double x, int selector)
 
 double series_func(double x, int one, int toggler, int exp)
 {
-        size_t i = 0;
-        size_t j = 0;
+        double i = 0;
+        double j = 0;
         double product = 1.0;
-        double sum = 0;
-        double last = 0;
+        double sum = 0.0;
+        double last = 0.0;
 	int toggle = 1;
 	size_t in = 0;
 	size_t out = 0;
+	if (one)
+		printf("cos mode\n");
+	else
+		printf("sin mode\n");
 
 
 
-        for (i = 0; i < SIZE_MAX; i++, out++)
+        for (i = 0; i < 6; i++, out++)
         {
-               	for (j = (2*i) + one, product = 1.0; j > 0 ; j--, in++) 
+               	for (j = (2.0*i) + one, product = 1.0; j > 0 ; j--, in++) 
                 	product *= x / j;
 	
 		sum += product * toggle;
