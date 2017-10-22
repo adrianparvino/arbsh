@@ -69,15 +69,18 @@ double myjn(int y, double x)
                 for (i = y + 4; i > 0; i--)
                 {
                         j[i] = j[i-1]; 
+			//printf("%lf\n", j[i]);
                 } 
-
+		
                 j[0] = ((2.0 * (n * (j[1] / x))) - j[2]);
+		printf("%lf\n", j[0]);	
                 --n;
                 if ( n == 0 )
                         break;
                 if ( n % 2 )
                         continue;
                 c += 2*j[0];
+		//printf("%lf\n", c);
         }
 
 
