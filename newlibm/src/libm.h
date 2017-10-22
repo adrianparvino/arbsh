@@ -90,7 +90,7 @@ union dshape {
 	____u.bits &= 0xffffffff;				\
 	____u.bits |= (uint64_t)(hi) << 32;			\
 	(d) = ____u.value;					\
-	fprintf(stderr, "SET_HIGH_WORD %d\n", i); \
+	fprintf(stderr, "SET_HIGH_WORD %d\n", d); \
 }
 
 /* Set the less significant 32 bits of a double from an int.*/
@@ -101,7 +101,7 @@ union dshape {
 	____u.bits &= 0xffffffff00000000ull;			\
 	____u.bits |= (uint32_t)(lo);				\
 	(d) = ____u.value;					\
-	fprintf(stderr, "SET_LOW_WORD %d\n", i); \
+	fprintf(stderr, "SET_LOW_WORD %lf\n", d); \
 }
 
 /* Get a 32 bit int from a float. */
