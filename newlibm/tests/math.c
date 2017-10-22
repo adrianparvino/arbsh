@@ -22,9 +22,10 @@ int main(int argc, char *argv[])
 	printf("floor() =        %19.55lf\n", floor(x));
 	printf("sin() =          %19.55lf\n", sin(x));
 	printf("mysin() =        %19.55lf\n", mysin(x));
-        printf("cos =            %19.55f\n", cos(x));
-	printf("driver =         %19.55f\n", driver(x));
-	printf("sin20 =          %19.55f\n", sin20(x));
+        printf("cos =            %19.55lf\n", cos(x));
+	printf("driver =         %19.55lf\n", driver(x));
+	printf("sin20 =          %19.55lf\n", sin20(x));
+	printf("tan() =          %19.19lf\n", tan(x));
 	//printf("trigfunc =       %19.55f\n", trigfunc(1, x));
 	/*
         printf("sinh =    %19.19f\n", sinh(x));
