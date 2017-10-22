@@ -70,6 +70,7 @@ double sin(double x)
 	n = ____rem_pio2(x, y);
 	switch (n&3)
 	{
+		/* 4 cases likely means that these are quadrants -- CM Graff */
 		case 0: return  ____sin(y[0], y[1], 1);
 		case 1: return  ____cos(y[0], y[1]);
 		case 2: return -____sin(y[0], y[1], 1);
