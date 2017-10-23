@@ -5,7 +5,7 @@
 #include <float.h>
 #include "libm.h"
 
-
+/* continued fraction expansions for comparative study. not performant */
 
 double trigfunc(int p, double x)
 {
@@ -50,6 +50,7 @@ double trigfunc(int p, double x)
 	if ( p < 4 || p > 5 )	/* ! log */
 		for (; i > 0; i--)
 			s = 4 * i - 2 + r/s;
+
 
 	for (; (p == 4 || p == 5) && i > 0; i--) /* log */
 		s = (2*i -1) - i*i*(ZZ)/s;
