@@ -8,7 +8,7 @@
 	Series function. 
 	CM Graff, 2017
 
-	Greater N achieves greater precision. This forumla has a range
+	Greater N achieves greater precision. This formula has a range
 	of -inf to inf. The formula calculates its aproximations using
 	a cartesian product nested within a summation:
 
@@ -68,11 +68,10 @@ double series_func_driver(double x, int selector)
         double sum = 0;
 	double y[2];
 	int n = 0;
+	int32_t ix;
 	if ( selector == 0 || selector == 2)
 	{
 		/* argument range reduction */
-		int32_t ix;
-	       
 	        GET_HIGH_WORD(ix, x); 
 	        ix &= 2147483647;
 	        if (ix <= 1072243195)
@@ -81,9 +80,9 @@ double series_func_driver(double x, int selector)
 	                        if ((int)x == 0) 
 	                                return x; 
 	                return series_func(x, 1, 1, 0);
-	        } 
-	        y[0] = x;
-	        y[1] = x; 
+	        }
+
+	        y[1] = y[0] = x;
 	        n = ____rem_pio2(x, y);
 	
 		fprintf(stderr, "rem_pio n = %19d, y[0] = %19.19lf, y[1] = %19.19lf\n", n, y[0], y[1]);
@@ -113,24 +112,16 @@ double series_func_driver(double x, int selector)
 
 double series_func(double x, int one, int toggler, int exp)
 {
-        double i = 0;
-        double j = 0;
+        size_t i = 0;
+        size_t j = 0;
         double product = 1.0;
         double sum = 0.0;
         double last = 0.0;
 	int toggle = 1;
-	size_t in = 0;
-	size_t out = 0;
-	if (one)
-		printf("cos mode\n");
-	else
-		printf("sin mode\n");
 
-
-
-        for (i = 0; i < SIZE_MAX; i++, out++)
+        for (i = 0; i < SIZE_MAX; i++)
         {
-               	for (j = (2.0*i) + one, product = 1.0; j > 0 ; j--, in++) 
+               	for (j = (2.0*i) + one, product = 1.0; j > 0 ; j--) 
                 	product *= x / j;
 	
 		sum += product * toggle;
@@ -138,16 +129,14 @@ double series_func(double x, int one, int toggler, int exp)
 		if ( toggler != 0 )
 			toggle = -toggle;
 
-                if (_check_tolerance(last, sum)) 
-                        break; 
+		if  (last == sum)
+			break;
+
                 last = sum; 
         }
 
 	if ( exp )
 		sum *=2;
-	
-	fprintf(stderr, "outer %zu\n", out);
-	fprintf(stderr, "inner %zu\n", in); 
 	
         return sum;
 }
