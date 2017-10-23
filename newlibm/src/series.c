@@ -5,25 +5,8 @@
 #include <float.h>
 #include "libm.h"
 /*
-	Series function. 
-	CM Graff, 2017
-
-	Greater N achieves greater precision. This formula has a range
-	of -inf to inf. The formula calculates its aproximations using
-	a cartesian product nested within a summation:
-
-	  N       0
-	____    _____
-	\       |   |
-	 >      |   | p(x/j)
-	/___    |   |
-
-        i = 0   j=(2*i)?+1
-
-	The nested cartesian product converges onto zero and then imparts
-	its aproximation to the outer summation which accumulates its
-	results.
-
+	Modified taylor / maclaurin series for comparison and testing
+	Not performant.
 */
 #define PI 3.14159265358979323846
 
