@@ -19,7 +19,7 @@
  *      2. Callers must return tan(-0) = -0 without calling here since our
  *         odd polynomial is not evaluated in a way that preserves -0.
  *         Callers may do the optimization tan(x) ~ x for tiny x.
- *      3. tan(x) is approximated by a odd polynomial of degree 27 on
+ *      3. tan(x) is approximated by an odd polynomial of degree 27 on
  *         [0,0.67434]
  *                               3             27
  *              tan(x) ~ x + T1*x + ... + T13*x
