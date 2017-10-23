@@ -83,7 +83,3 @@ double cos20(double x)
 	
 	return c1 + x2 *(c2 + x2 *(c3 + x2 *(c4 + x2 *(c5 + x2 *(c6 + x2 *(c7 + x2 *(c8 + x2 *(c9 + x2 *c10))))))));
 }
-
-
-
-
