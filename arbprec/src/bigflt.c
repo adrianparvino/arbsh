@@ -28,6 +28,11 @@ bigflt *arbprec_setsign(bigflt *flt)
 
 int arba_idioma(int a)
 {
+	/* This table provides a method for printing larger bases. I don't know
+		of a standard for handling bases this large so it is roughly
+		based on base64 encoding, with any values over 64 simply 
+		allowed to default to their native character encoding 
+	*/
 	static int glyphs[65] = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
 				'9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
 				'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
@@ -238,7 +243,7 @@ void rst(bigflt *flt, size_t radix)
 void arbprec_match_precision(bigflt *a, bigflt *b)
 { 
 	/* Match the precision of a number with that of another by
-		reallocating sufficent memory for it and then appending 0s */
+		reallocating sufficient memory for it and then appending 0s */
 	size_t off = 0;
 	if (rr(b) < rr(a))
 	{
@@ -359,18 +364,13 @@ bigflt *strip_zeros(bigflt *b)
 
 int arbprec_compare(bigflt *a, bigflt *b)
 {
-	size_t len1 = rl(a);
-	size_t len2 = rl(b);
 	size_t i = 0;
-	if (len1 > len2)
+	/* The number to the left of the radix is simply "longer" */
+	if (rl(a) > rl(b))
 		return 1;
-	if (len1 < len2)
+	if (rl(a) < rl(b))
 		return -1;
-	/* `else' they are of equal lengths to the left of the radix, which
-		coincidently makes the comparison rather simple.
-	*/
-
-	
+	/* The numbers are of equal lengths to the left of the radix */
 	for (i=0 ;i < a->len && i < b->len; ++i)
 	{
 		if (a->number[i] != b->number[i]) 
@@ -381,12 +381,11 @@ int arbprec_compare(bigflt *a, bigflt *b)
 				return -1;
 		}
 	}
-	/* there may still be a value trailing to the far right of the radix */
+	/* There may still be a value trailing to the far right of the radix */
 	if (rr(a) > rr(b))
 		return 1;
 	if (rr(a) < rr(b))
 		return -1;
-	/* we hit the regular case of two equal numbers */
+	/* The regular case of two equal numbers */
 	return 0;
-	
 }
