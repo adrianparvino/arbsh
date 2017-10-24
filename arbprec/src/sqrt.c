@@ -29,7 +29,7 @@ bigflt *arbprec_sqrt(bigflt *x, bigflt *c)
 
 	++i;
 
-	if ( i < 15)
+	if ( i < 10)
 		goto start;
 
 	arba_free(sum);
