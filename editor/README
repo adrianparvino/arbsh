@@ -20,9 +20,9 @@ About:
 	designed primarily to test grafland's minimal curses implementation.
 
 	The grafland editor can be easily modified to not depend on the curses
-	library, however this has the tendency to hard code terminal capabali-
-	ties. If you are interested in forking this project and making a version
-	which does not depend on curses, please contact me.
+	library, however this has the tendency to hard code terminal 
+	capabalities. If you are interested in forking this project and making
+	a version which does not depend on curses, please contact me.
 
 
 Contact:
