@@ -357,3 +357,36 @@ bigflt *strip_zeros(bigflt *b)
 	return b;
 }
 
+int arbprec_compare(bigflt *a, bigflt *b)
+{
+	size_t len1 = rl(a);
+	size_t len2 = rl(b);
+	size_t i = 0;
+	if (len1 > len2)
+		return 1;
+	if (len1 < len2)
+		return -1;
+	/* `else' they are of equal lengths to the left of the radix, which
+		coincidently makes the comparison rather simple.
+	*/
+
+	
+	for (i=0 ;i < a->len && i < b->len; ++i)
+	{
+		if (a->number[i] != b->number[i]) 
+		{
+			if (a->number[i] > b->number[i])
+				return 1;
+			if (a->number[i] < b->number[i])
+				return -1;
+		}
+	}
+	/* there may still be a value trailing to the far right of the radix */
+	if (rr(a) > rr(b))
+		return 1;
+	if (rr(a) < rr(b))
+		return -1;
+	/* we hit the regular case of two equal numbers */
+	return 0;
+	
+}
