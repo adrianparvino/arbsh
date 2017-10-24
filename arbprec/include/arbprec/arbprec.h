@@ -15,7 +15,7 @@ typedef struct {		/*     bigflt type		*/
 	int sign;		/* Sign 			*/
 	size_t float_pos;	/* Length left of radix 	*/
 	size_t len;		/* Length of number 		*/
-	size_t allocated;	/* Length of alocated memory 	*/
+	size_t allocated;	/* Length of allocated memory 	*/
 	size_t chunk;		/* Allocation chunk size 	*/
 	int nan;		/* Not a number			*/
 	int inf;		/* Infinity 			*/
@@ -25,10 +25,8 @@ typedef struct {		/*     bigflt type		*/
 bigflt *arbprec_add(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_add_inter(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_copy(bigflt *, bigflt *);
-bigflt *arbprec_copy_sparse(bigflt *, bigflt *);
 bigflt *arbprec_div(bigflt *, bigflt *, bigflt *);
 bigflt *arbprec_dupa(bigflt *);
-bigflt *arbprec_dup_sparse(bigflt *);
 bigflt *arbprec_expand_vector(bigflt *, size_t);
 bigflt *arbprec_init(bigflt *);
 bigflt *arbprec_initsign(bigflt *);
@@ -63,7 +61,6 @@ bigflt *arbprec_short_mul_r(bigflt *, int, bigflt *);
 bigflt *arbprec_short_div_r(bigflt *, int, bigflt *);
 
 int arbprec_isnegati(bigflt *);
-int arbprec_equals(bigflt *, bigflt *, size_t);
 void arbprec_match_precision(bigflt *, bigflt*);
 void arba_free(bigflt *);
 void arbprec_die(char *);
