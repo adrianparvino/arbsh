@@ -155,10 +155,7 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 	{
 		flt = arba_alloc(request);
 	} else if ( request >= flt->allocated )
-	{ 
-		/* align chunk requests */
-		//chunks = (request / flt->chunk) + 2;
-		//flt->allocated += flt->chunk * chunks; 
+	{
 		flt->allocated = (request + flt->chunk);
 		flt->number = flt->nr = arbprec_realloc(flt->nr, flt->allocated * sizeof(int)); 
 		flt->mirror = flt->mr = arbprec_realloc(flt->mr, flt->allocated * sizeof(int));
@@ -177,22 +174,6 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 	return dest;
 }
 
-bigflt *arbprec_dup_sparse_mirror(bigflt *src)
-{
-	/* Sparsely duplicate a bigflt and flip its sign */
-	bigflt *ret = arbprec_dup_sparse(src);
-	arbprec_setsign(ret);
-	return ret;
-}
-
-bigflt *arbprec_copy_sparse(bigflt *dest, bigflt *src)
-{
-	/* Make a sparse copy of a bigflt */
-	dest = arbprec_copy_info(dest, src);
-	dest->number = src->number;
-	dest->mirror = src->mirror;
-	return dest;
-}
 
 bigflt *arbprec_copy_info(bigflt *dest, bigflt *src)
 {
@@ -214,13 +195,6 @@ bigflt *arbprec_dupa(bigflt *flt)
 	return ret;
 }
 
-bigflt *arbprec_dup_sparse(bigflt *flt)
-{
-	/* Sparsely duplicate a bigflt */
-	bigflt *ret = arbprec_malloc(sizeof(bigflt));
-	ret = arbprec_copy_sparse(ret, flt);
-	return ret;
-}
 
 size_t rr(bigflt *flt)
 {
@@ -337,18 +311,6 @@ void setarray(int *answer, int delim, size_t len)
 	size_t i = 0;
 	for( i = 0; i < len; i++)
 		answer[i] = delim;
-}
-
-int arpbrec_equals(bigflt *a, bigflt *b, size_t precision)
-{
-	size_t i = 0;
-
-	for (;i < precision && i < a->len && i < b->len; ++i)
-	{
-		if (!(a->number[i] == b->number[i]))
-			return 0;
-	}
-	return 1;
 }
 
 bigflt *strip_zeros(bigflt *b)
