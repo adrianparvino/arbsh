@@ -70,3 +70,30 @@ CONTACT:
 	cm0graff@gmail.com
 
 
+STYLE:
+------
+
+	This is just a style guide to remind myself to stay consistent.
+
+	conditionals:
+		if (a > b)
+		{
+		}
+
+	loops:
+		while (a > b)
+		{
+		}
+
+		for (i=0;a > b;++i)
+		{
+		}
+
+	functions:
+		type *function(type *a, type b);
+
+		if (function(a))
+		{
+		}
+
+	
