@@ -77,6 +77,7 @@ void setarray(int *, int, size_t);
 size_t rr(bigflt *);
 size_t rl(bigflt *);
 size_t rsh(bigflt *);
+int arbprec_compare(bigflt *, bigflt *);
 
 /* Globals */
 extern int base;
