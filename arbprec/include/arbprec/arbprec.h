@@ -10,8 +10,6 @@
 typedef struct {		/*     bigflt type		*/
 	int *number;		/* Main number			*/
 	int *mirror;		/* Negative subtraction requires a mirror */
-	int *nr;		/* Garbage collection for number */
-	int *mr;		/* Garbage collction for mirror */
 	int sign;		/* Sign 			*/
 	size_t float_pos;	/* Length left of radix 	*/
 	size_t len;		/* Length of number 		*/
