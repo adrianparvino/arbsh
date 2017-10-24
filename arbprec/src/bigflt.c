@@ -347,8 +347,8 @@ int arpbrec_equals(bigflt *a, bigflt *b, size_t precision)
 }
 
 bigflt *strip_zeros(bigflt *b)
-{ 
-	while (b->float_pos > 0&& b->len > 0 && b->number[0] == 0)
+{
+	while (b->float_pos > 0 && b->len > 0 && b->number[0] == 0)
 	{ 
 		copyarray(b->number, b->number + 1, b->len);
        		b->len -= 1; 
