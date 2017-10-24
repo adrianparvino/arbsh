@@ -128,8 +128,6 @@ bigflt *arba_alloc(size_t len)
 	bigflt *ret = arbprec_malloc(sizeof(bigflt));
 	ret->number = arbprec_malloc(sizeof(int) * len);
 	ret->mirror = arbprec_malloc(sizeof(int) * len);
-	ret->nr = ret->number;
-	ret->mr = ret->mirror;
 	ret->sign = '+';
 	ret->float_pos = ret->allocated = len;
 	ret->len = 0;
@@ -141,10 +139,10 @@ bigflt *arba_alloc(size_t len)
 
 void arba_free(bigflt *flt)
 { 
-	if (flt->nr)
-		free(flt->nr);
-	if (flt->mr)
-		free(flt->mr);
+	if (flt->number)
+		free(flt->number);
+	if (flt->mirror)
+		free(flt->mirror);
 	free(flt);
 }
 
@@ -157,12 +155,11 @@ bigflt *arbprec_expand_vector(bigflt *flt, size_t request)
 	} else if ( request >= flt->allocated )
 	{
 		flt->allocated = (request + flt->chunk);
-		flt->number = flt->nr = arbprec_realloc(flt->nr, flt->allocated * sizeof(int)); 
-		flt->mirror = flt->mr = arbprec_realloc(flt->mr, flt->allocated * sizeof(int));
+		flt->number = arbprec_realloc(flt->number, flt->allocated * sizeof(int)); 
+		flt->mirror = arbprec_realloc(flt->mirror, flt->allocated * sizeof(int));
 	} 
 	return flt;
 }
-
 
 bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 {
@@ -173,7 +170,6 @@ bigflt *arbprec_copy(bigflt *dest, bigflt *src)
 	dest = arbprec_copy_info(dest, src);
 	return dest;
 }
-
 
 bigflt *arbprec_copy_info(bigflt *dest, bigflt *src)
 {
@@ -194,7 +190,6 @@ bigflt *arbprec_dupa(bigflt *flt)
 	ret = arbprec_copy(ret, flt);
 	return ret;
 }
-
 
 size_t rr(bigflt *flt)
 {
@@ -316,9 +311,9 @@ void setarray(int *answer, int delim, size_t len)
 bigflt *strip_zeros(bigflt *b)
 {
 	while (b->float_pos > 0 && b->len > 0 && b->number[0] == 0)
-	{ 
-		copyarray(b->number, b->number + 1, b->len);
+	{
        		b->len -= 1; 
+		copyarray(b->number, b->number + 1, b->len);
 		b->float_pos -= 1;
 	} 
 	return b;
