@@ -23,7 +23,8 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
                 arbprec_setsign(c);
 	
 	setarray(mir + a->len, 0, width - a->len);
-	copyarray(mir, a->number, a->len);
+	//copyarray(mir, a->number, a->len);
+	memcpy(mir, a->number, a->len * sizeof(int));
 	c->number[z] = 0;
 
 	/* count the zeros to the right of the radix before a non-zero value */
@@ -68,7 +69,8 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 		}
 		if ( rec == 0 )
 		{
-			copyarray(mir, tmir, j);
+			//copyarray(mir, tmir, j);
+			memcpy(mir, tmir, j * sizeof(int));
 			c->number[z] += 1;
 		}
 	} 
