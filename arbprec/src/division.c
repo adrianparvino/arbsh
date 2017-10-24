@@ -36,7 +36,8 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 		diff = rl(b) - rl(a) - 1;
 		setarray(c->number, 0, diff);
 		c->len = z = diff;
-		c->number[z] = c->float_pos = 0 + off;
+		c->float_pos = 0 + off;
+		c->number[z] = 0;
 	}
 	else if (rl(a) + 1> rl(b))
 		c->float_pos = rl(a) - rl(b) + off + 1;
