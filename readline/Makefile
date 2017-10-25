@@ -1,4 +1,4 @@
-CFLAGS += -Wall -Wextra -I./include/ -I../include 
+CFLAGS += -Wall -Wextra -I./include/ -I../include -I../termcap/include
 
 #LDFLAGS += "-Wl,-rpath=$(PWD)" 
 
