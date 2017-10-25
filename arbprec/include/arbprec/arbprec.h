@@ -64,7 +64,6 @@ void *arbprec_realloc(void *, size_t);
 void arbprec_reverse(int *, size_t);
 void copyarray(int *, int *, size_t);
 int place(bigflt *, size_t);
-int iszero(int *, size_t);
 void setarray(int *, int, size_t);
 size_t rr(bigflt *);
 size_t rl(bigflt *);
