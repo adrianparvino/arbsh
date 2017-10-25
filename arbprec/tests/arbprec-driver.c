@@ -63,11 +63,11 @@ int main(int argc, char **argv)
 	flt3 = arbprec_exp(flt1, flt3);
 	arbprec_print(flt3);
 
-		/*
+
 	
 	arbprec_log(flt1, flt3);
 	arbprec_print(flt3);
-	
+
 	arbprec_sin(flt1, flt3);
 	arbprec_print(flt3);
 
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
 
 	arbprec_tan(flt1, flt3);
 	arbprec_print(flt3);
-	*/
+
 	arba_free(flt1);
 	arba_free(flt2);
 	arba_free(flt3);
