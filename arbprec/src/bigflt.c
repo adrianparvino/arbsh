@@ -65,9 +65,8 @@ bigflt *arbprec_print(bigflt *flt)
 	{
 		puts("inf");
 		goto end;
-	}
+	} 
 	
-	//for (i = 0; i < flt->len && i < scale; ++i)
 	for (i = 0; i < flt->len ; ++i)
 	{
 		if (flt->float_pos == i)
