@@ -290,15 +290,6 @@ int place(bigflt *flt, size_t idx)
 	if (idx < flt->len)
 		return flt->number[flt->len - idx - 1];
 	return 0;
-} 
-
-int iszero(int *answer, size_t lim)
-{
-	size_t i = 0;
-	for ( i = 0; i < lim ; i++)
-		if ( answer[i] )
-			return 1;
-	return 0;
 }
 
 void setarray(int *answer, int delim, size_t len)
