@@ -49,14 +49,11 @@ bigflt *arba_alloc(size_t);
 bigflt *strip_zeros(bigflt *);
 bigflt *arbprec_copy_info(bigflt *, bigflt *);
 
+/* "short hand" arithmetic */
 void arbprec_short_add(bigflt *, int);
 void arbprec_short_sub(bigflt *, int);
 void arbprec_short_mul(bigflt *, int);
 void arbprec_short_div(bigflt *, int);
-bigflt *arbprec_short_add_r(bigflt *, int, bigflt *);
-bigflt *arbprec_short_sub_r(bigflt *, int, bigflt *);
-bigflt *arbprec_short_mul_r(bigflt *, int, bigflt *);
-bigflt *arbprec_short_div_r(bigflt *, int, bigflt *);
 
 int arbprec_isnegati(bigflt *);
 void arbprec_match_precision(bigflt *, bigflt*);
@@ -74,7 +71,7 @@ size_t rl(bigflt *);
 size_t rsh(bigflt *);
 int arbprec_compare(bigflt *, bigflt *);
 
-/* Globals */
+/* globals */
 extern int base;
 extern size_t scale;
 
