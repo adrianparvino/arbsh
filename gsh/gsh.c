@@ -72,8 +72,6 @@ static void initialize(size_t);
 int parse(char *);
 void verbosity(void);
 
-int isadelim(int);
-
 int main(int argc, char **argv)
 { 
 	int o = 0; 
@@ -530,20 +528,6 @@ int parse(char *l)
 		verbosity();
 	
         return 0; 
-}
-
-int isadelim(int c)
-{
-	if ( c == ' ' )
-		return 1;
-	else if ( c == '\n' )
-		return 1;
-	else if ( c == '\t' )
-		return 1;
-	else if ( c == ';' )
-		return 1;
-
-	return 0; 
 }
 
 
