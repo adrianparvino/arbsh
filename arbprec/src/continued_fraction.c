@@ -8,11 +8,11 @@
 bigflt *arbprec_series(bigflt *x, bigflt *c, int type)
 {
 
-	size_t j = 1000;
+	size_t j = 100;
 
 	bigflt *s = str_to_bigflt("1.0");
 	bigflt *four = str_to_bigflt("4.00000");
-	bigflt *i = str_to_bigflt("1000.00000");
+	bigflt *i = str_to_bigflt("100.00000");
 	bigflt *two = str_to_bigflt("2.00000");
 	bigflt *r = arbprec_expand_vector(NULL, x->len + scale);
 	bigflt *prod = arbprec_expand_vector(NULL, x->len + scale);
