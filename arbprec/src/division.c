@@ -8,7 +8,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	size_t width = a->len + b->len;
 	size_t diff = 0;
 	size_t off = 0;
-	int *mir = arbprec_malloc(sizeof(int) * width);
+	int *mir = arbprec_malloc(sizeof(int) * width); /* + scale ? */
 	int *tmir = arbprec_malloc(sizeof(int) * width);
 	int sum = 0;
 	int rec = 0;
@@ -24,8 +24,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 	
 	c = arbprec_expand_vector(c, a->len + b->len);
 	setarray(mir + a->len, 0, width - a->len);
-	//copyarray(mir, a->number, a->len);
-	memcpy(mir, a->number, a->len * sizeof(int));
+	copyarray(mir, a->number, a->len);
 	c->number[z] = 0;
 
 	/* count the zeros to the right of the radix before a non-zero value */
@@ -71,8 +70,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
 		}
 		if ( rec == 0 )
 		{
-			//copyarray(mir, tmir, j);
-			memcpy(mir, tmir, j * sizeof(int));
+			copyarray(mir, tmir, j);
 			c->number[z] += 1;
 		}
 	} 
