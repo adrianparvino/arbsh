@@ -77,6 +77,8 @@ REFERENCES:
 
 	http://www.rfc-editor.org/rfc/rfc4648.txt
 
+	See Knuth Vol 2. p237. for a division routine that may be faster.
+
 
 CONTACT:
 --------
