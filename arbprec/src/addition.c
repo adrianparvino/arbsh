@@ -10,6 +10,7 @@ bigflt *arbprec_add_inter(bigflt *a, bigflt *b, bigflt *c)
 	arbprec_match_precision(a, b);
 	c->float_pos = MAX(rl(a), rl(b));
 	width = MAX(a->len, b->len);
+	c = arbprec_expand_vector(c, width);
 
         for( ; c->len < width ; c->len++, i++)
 	{ 
