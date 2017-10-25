@@ -22,6 +22,7 @@ bigflt *arbprec_div(bigflt *a, bigflt *b, bigflt *c)
         if (arbprec_isnegati(b))
                 arbprec_setsign(c);
 	
+	c = arbprec_expand_vector(c, a->len + b->len);
 	setarray(mir + a->len, 0, width - a->len);
 	//copyarray(mir, a->number, a->len);
 	memcpy(mir, a->number, a->len * sizeof(int));
