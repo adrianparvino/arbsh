@@ -54,6 +54,10 @@ OM_GLIBC = glibc-2.25
 OM_PERL_MRR = http://www.cpan.org/src/5.0/
 OM_PERL_CROSS_MRR = https://github.com/arsv/perl-cross/releases/download/1.0.2/
 
+OM_LLVM = http://releases.llvm.org/5.0.0/llvm-5.0.0.src.tar.xz
+OM_CLANG = http://releases.llvm.org/5.0.0/cfe-5.0.0.src.tar.xz
+OM_OPENMP = http://releases.llvm.org/5.0.0/openmp-5.0.0.src.tar.xz
+
 # Self bootstrapping
 OM_BOOTSRC = $(shell pwd)/bootstrap
 
