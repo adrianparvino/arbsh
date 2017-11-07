@@ -34,6 +34,7 @@ void bst_printpaths(bstnode *);
 void _bst_printpaths(bstnode *, char *, size_t, size_t); 
 void bst_inorder(bstnode *);
 void bst_post(bstnode *);
+void bst_reverse(bstnode *);
 
 
 int main(int argc, char **argv)
@@ -62,6 +63,9 @@ int main(int argc, char **argv)
 	
 	printf("\n\npre\n");
 	bst_preorder(root);
+	
+	printf("\n\nreverse\n");
+	bst_reverse(root);
 	/*
 	root = bst_to_list(root);
 	bstnode *o = root;
@@ -257,10 +261,22 @@ void bst_inorder(bstnode* p)
 	bst_inorder(p->large);
 }
 
+void bst_reverse(bstnode* p)
+{
+        if (p == NULL)
+                return;
+	
+	bst_reverse(p->large);
+	printf("%s ", p->word);
+	bst_reverse(p->small); 
+}
+
 void bst_post(bstnode* p)
 {
 	if (p == NULL)
 		return; 
+	
+
 	bst_post(p->small); 
 	bst_post(p->large);
 	printf("%s ", p->word);
