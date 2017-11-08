@@ -1,5 +1,5 @@
 .SILENT: buildenvvars clearenvvars
-.PHONY: toolchain
+.PHONY: ironwill
 
 RELEASE = arbsh-0.4b.tar.gz
 WEBSITE = http://www.csit.parkland.edu/~cgraff1
@@ -81,24 +81,24 @@ install:
 	-$(MAKE) -C gsh install
 	-$(MAKE) -C readline install 
 	-$(MAKE) -C arbprec install
-	# Install toolchain last if it exists
-	#-$(MAKE) -C toolchain install
+	# Install ironwill last if it exists
+	#-$(MAKE) -C ironwill install
 
-toolchain:
+ironwill:
 
-	$(MAKE) -C toolchain
+	$(MAKE) -C ironwill
 
-toolchainclean:
+ironwillclean:
 
-	$(MAKE) -C toolchain clean 
+	$(MAKE) -C ironwill clean 
 
 buildenvars:
 
-	@$(MAKE) -s -C toolchain buildenvars
+	@$(MAKE) -s -C ironwill buildenvars
 
 clearenvars:
 
-	@$(MAKE) -s -C toolchain clearenvars
+	@$(MAKE) -s -C ironwill clearenvars
 
 release:
 
