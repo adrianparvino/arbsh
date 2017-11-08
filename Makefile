@@ -9,17 +9,13 @@ SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/
 
 all:
 
-	-$(MAKE) -C termcap install
+	
 	-$(MAKE) -C readline
-	-$(MAKE) -C readline install
-	-$(MAKE) -C curses
-	-$(MAKE) -C curses install
+	
 	-$(MAKE) -C arbprec
-	-$(MAKE) -C arbprec install
 	-$(MAKE) -C gsh
-	-$(MAKE) -C editor native
 	-$(MAKE) -C posix
-	-$(MAKE) -C irc
+
 	-$(MAKE) install
 	#install the outside projects last
 
@@ -81,11 +77,10 @@ clean:
 
 install:
 
-	-$(MAKE) -C posix install 
-	-$(MAKE) -C linux install 
-	-$(MAKE) -C irc install
-	-$(MAKE) -C gsh install 
-	-$(MAKE) -C editor install
+	-$(MAKE) -C posix install
+	-$(MAKE) -C gsh install
+	-$(MAKE) -C readline install 
+	-$(MAKE) -C arbprec install
 	# Install toolchain last if it exists
 	#-$(MAKE) -C toolchain install
 
