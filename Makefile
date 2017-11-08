@@ -29,7 +29,7 @@ outside:
 	-$(MAKE) make_graflibc
 	-$(MAKE) make_ash
 	# it's unlikely that the game builds on the user's target
-	-$(MAKE) make_grafcube
+	-$(MAKE) make_cube-zero
 
 renew:
 
@@ -57,7 +57,7 @@ make_ash:
 	-$(MAKE) get_ash
 	-$(MAKE) -C ash install
 
-make_grafcube:
+make_cube-zero:
 
 	-git clone https://www.github.com/cmgraff/cube-zero game
 	$(MAKE) -C game
