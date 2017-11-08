@@ -1,16 +1,16 @@
-grafland system shell
+arbsh system shell
 
 DESCRIPTION:
 ------------
 
-		The Graff shell implements a small subset of POSIX shell options 
+		The arbsh shell implements a small subset of POSIX shell options 
 	with the aspiration to add more specification conforming functionalities 
 	at a later date.
 
 
 	(Copyright) 2014-2017, "shell.c", CM Graff
 
-	Gsh (the Graff shell)
+	Gsh (the arbsh shell)
 
 
 LEXICAL STRUCTURE:
