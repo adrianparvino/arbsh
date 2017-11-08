@@ -37,11 +37,15 @@ OM_GMP = gmp-5.1.3
 OM_MPC = mpc-1.0.2
 OM_MPFR = mpfr-3.1.2
 #OM_MPFR = mpfr-3.1.4
+#OM_LINUX = linux-2.6.39
+#OM_LINUX = linux-3.9
 OM_LINUX = linux-4.1
 #OM_MUSL = musl-1.1.14
 #OM_MUSL = musl-1.1.16
 OM_MUSL = musl-1.1.17
 OM_LANGS = c,c++
+#KERNEL_MRR = https://www.kernel.org/pub/linux/kernel/v2.6/
+#KERNEL_MRR = https://www.kernel.org/pub/linux/kernel/v3.0/
 KERNEL_MRR = https://www.kernel.org/pub/linux/kernel/v4.x/
 MUSL_MRR = http://www.musl-libc.org/releases/
 GNU_MRR = https://ftp.gnu.org/gnu/
@@ -562,8 +566,31 @@ dhcp_target: install_path
 	-$(MAKE) -C $(SPWD)/$(OM_DHCP)
 	-$(MAKE) -C $(SPWD)/$(OM_DHCP) install
 
+
+native_linux_target: install_path 
+
+	-mkdir kernel
+	@test -d $(OM_LINUX) || tar -xf $(OM_SRC)/$(OM_LINUX).$(OM_SFX) -C $(SPWD)
+	-mkdir -p $(OM_LIBROOT)/boot
+	-$(MAKE) -C $(SPWD)/$(OM_LINUX) ARCH=$(OM_BACKWARDCOMPAT) defconfig O=$(KBUILDAREA)
+	#sed -i 's|# CONFIG_8139CP is not set|CONFIG_8139CP=y|g' $(SPWD)/$(OM_LINUX)/.config
+	sed -i 's|# CONFIG_8139CP is not set|CONFIG_8139CP=y|g' $(KBUILDAREA)/.config
+	-$(MAKE) -C $(SPWD)/$(OM_LINUX) \
+	ARCH=$(OM_LINUXARCH) \
+	KCONFIG_CONFIG=$(KBUILDAREA)/.config \
+	O=$(KBUILDAREA)
+
+
+	-$(MAKE) -C $(SPWD)/$(OM_LINUX) \
+	INSTALL_PATH=$(OM_LIBROOT)/boot \
+	install ARCH=$(OM_LINUXARCH) \
+	O=$(KBUILDAREA)
+
+	-cd $(OM_LIBROOT)/boot && ln vmlinu* vmlinuz
+
 linux_target: install_path 
 
+	
 	@test -d $(OM_LINUX) || tar -xf $(OM_SRC)/$(OM_LINUX).$(OM_SFX) -C $(SPWD)
 	-mkdir -p $(OM_LIBROOT)/boot
 	-$(MAKE) -C $(SPWD)/$(OM_LINUX) ARCH=$(OM_BACKWARDCOMPAT) defconfig O=$(KBUILDAREA)
