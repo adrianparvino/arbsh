@@ -1,7 +1,7 @@
 .SILENT: buildenvvars clearenvvars
 .PHONY: toolchain
 
-RELEASE = grafland-0.4b.tar.gz
+RELEASE = arbsh-0.4b.tar.gz
 WEBSITE = http://www.csit.parkland.edu/~cgraff1
 SPWD = $(shell pwd)
 NAME = $(shell basename $(SPWD))
@@ -59,7 +59,7 @@ make_ash:
 
 make_grafcube:
 
-	-git clone https://www.github.com/cmgraff/grafcube game
+	-git clone https://www.github.com/cmgraff/cube-zero game
 	$(MAKE) -C game
 	
 clean:
