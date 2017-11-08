@@ -1,12 +1,12 @@
-Grafland
+arbsh
 
 DESCRIPTION:
 ------------
 
-	Grafland is a collection of original software written by CM Graff et al.
+	arbsh is a collection of original software written by CM Graff et al.
 
 
-	Navigating to a subdirectory of grafland and inspecting the README 
+	Navigating to a subdirectory of arbsh and inspecting the README 
 	will reveal more about what that particular project contains.
 	
 
@@ -49,7 +49,7 @@ HIER:
 		C safety and data structures.
 
 
-	Grafland will also retrieve and build a collection of heavily modified
+	arbsh will also retrieve and build a collection of heavily modified
 	outside software which is also maintained by CM Graff et al.
 	
 	libc
@@ -58,10 +58,10 @@ HIER:
 		https://github.com/cmgraff/graflibc
 
 
-	grafcube
+	cube-zero
 
 		A verion of the cube 1 3D video game which is being slowly
-		rewritten in C. https://github.com/cmgraff/grafcube
+		rewritten in C. https://github.com/cmgraff/cube-zero
 
 
 	ash
@@ -76,9 +76,9 @@ BUILDING:
 	make
 	make install DESTDIR=$(pwd)/myroot
 
-	Install a single component of grafland: 
+	Install a single component of arbsh: 
 	  
-       		cd grafland/posix
+       		cd arbsh/posix
 		make
 		make install DESTDIR=/path/to/target
 
@@ -86,7 +86,7 @@ BUILDING:
 CROSSBUILDING:
 --------------- 
 
-	Use grafland's internal gcc based cross compile system to build itself
+	Use arbsh's internal gcc based cross compile system to build itself
 	or outside software. Links and build specifics are supplied for 50 
 	target packages.  
 
@@ -109,7 +109,7 @@ CROSSBUILDING:
 PORTABILITY:
 ------------
 
-	To some extent all of the components of grafland are standalone. The 
+	To some extent all of the components of arbsh are standalone. The 
 	core functionality (excluding the toolchain) only depends on the 
 	standard C library and a few POSIX extensions to it. This being the 
 	case it should work fine on Linux, mac, NetBSD and FreeBSD.
@@ -121,7 +121,7 @@ CONTACT:
 
 UPSTREAM:
 ---------
-	https://github.com/cmgraff/grafland
+	https://github.com/cmgraff/arbsh
 
 IMAGES:
 -------
@@ -143,7 +143,7 @@ REFERENCES:
 
 RELEASES:
 --------- 
-	http://www.csit.parkland.edu/~cgraff1/grafland-0.4a.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/arbsh-0.4a.tar.gz
 
-	http://www.csit.parkland.edu/~cgraff1/grafland-0.4b.tar.gz
+	http://www.csit.parkland.edu/~cgraff1/arbsh-0.4b.tar.gz
 
