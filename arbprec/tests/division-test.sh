@@ -1,4 +1,4 @@
-prog1="./math"
+prog1="./tests/division-test"
 
 $prog1 $1 $2 $3 $4 
 
