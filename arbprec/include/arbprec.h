@@ -34,7 +34,7 @@ fxdpnt *toym_div(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *toym_mul(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *toym_add_inter(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *toym_sub_inter(fxdpnt *, fxdpnt *, fxdpnt *, int);
-fxdpnt *toym_add(fxdpnt *, fxdpnt *, fxdpnt *, int);
+fxdpnt *toym_sub(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *toym_add(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *toym_expand(fxdpnt *, size_t);
 fxdpnt *toym_str2fxdpnt(const char *);
@@ -59,4 +59,12 @@ int toym_compare(fxdpnt *a, fxdpnt *b, int base);
 fxdpnt *toym_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale);
 fxdpnt *toym_rightshift(fxdpnt *a, size_t n, int faux);
 fxdpnt *toym_leftshift(fxdpnt *a, size_t n);
+
+
+void toym_free(fxdpnt *flt);
+fxdpnt *toym_new_num (int length, int scale);
+void toym_free_num (fxdpnt *num);
+fxdpnt *toym_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale);
+fxdpnt *toym_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale);
+void toym_printold(fxdpnt *flt);
 
