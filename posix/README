@@ -1,28 +1,26 @@
-grafland userland utilities (bin)
+arbsh userland utilities (bin)
 	
 DESCRIPTION:
 ------------
 
-	grafland's bin is a set of userland utilities which strives for POSIX
+	arbsh's bin is a set of userland utilities which strives for POSIX
 	compliance. When a feature is implemented it is to meet POSIX
 	specifications. No additional features are added.
 
 BUILDING:
 ---------
 
-	cd bin
 	make
 
 
 INSTALLATION:
 -------------
 
-	cd bin
 	make install DESTDIR=/path/to/install/
 
 COLOPHON:
 ---------
-	This document belongs to the grafland project's bin
+	This document belongs to the arbsh project's bin
 	set of utilities written by CM Graff.
 
 
