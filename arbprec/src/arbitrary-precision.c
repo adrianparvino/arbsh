@@ -1,22 +1,24 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 
-typedef struct {          // Toym fxdpnt type
-        char *number;     // The actual number
-        int sign;         // Sign
-        size_t lp;        // Length left of radix
-        size_t rp;
-        size_t len;       // Length of number (count of digits / limbs)
-        size_t allocated; // Length of allocated memory
-        size_t chunk;     // Allocation chunk size
-} fxdpnt;
+#include <arbprec.h>
+//#include <stdlib.h>
+//#include <stdio.h>
+//#include <string.h>
 
-#define MAX(a,b)      ((a)>(b)?(a):(b))
-#define MIN(a,b)      ((a)>(b)?(b):(a))
-#define TOYMT char 
+//typedef struct {          // Toym fxdpnt type
+//        char *number;     // The actual number
+//        int sign;         // Sign
+//        size_t lp;        // Length left of radix
+//        size_t rp;
+//        size_t len;       // Length of number (count of digits / limbs)
+//        size_t allocated; // Length of allocated memory
+//        size_t chunk;     // Allocation chunk size
+//} fxdpnt;
 
+//#define MAX(a,b)      ((a)>(b)?(a):(b))
+//#define MIN(a,b)      ((a)>(b)?(b):(a))
+//#define TOYMT char 
 
+/*
 fxdpnt *toym_div(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *toym_mul(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *toym_add_inter(fxdpnt *, fxdpnt *, fxdpnt *, int);
@@ -46,7 +48,7 @@ int toym_compare(fxdpnt *a, fxdpnt *b, int base);
 fxdpnt *toym_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale);
 fxdpnt *toym_rightshift(fxdpnt *a, size_t n, int faux);
 fxdpnt *toym_leftshift(fxdpnt *a, size_t n);
-
+*/
 fxdpnt *toym_rightshift(fxdpnt *a, size_t n, int faux)
 { 
 	/* logical right shift, turns base 10 "990" into "099" 
@@ -500,64 +502,5 @@ fxdpnt *toym_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	free(mir);
 	free(tmir);
 	return c;
-}
-
-
-int main(int argc, char *argv[])
-{
-	if (argc < 5 )
-		toym_error("Needs 4 args, such as:  123 / 123 base scale");
- 
-	size_t scale =  strtol(argv[5], 0, 10);
-	int base = strtol(argv[4], 0, 10);
-	fxdpnt *a, *b, *c;
-
-	a = toym_str2fxdpnt(argv[1]);
-	b = toym_str2fxdpnt(argv[3]);
-	
-	//a = toym_add_precision(a, scale);
-	//b = toym_add_precision(b, scale);
-	c = toym_expand(NULL, 1);
-
-	// multiplication
-	if (strcmp(argv[2], "*") == 0)
-	{
-		c = toym_mul(a, b, c, base);
-		toym_print(c);
-	}
-	// division
-	if (strcmp(argv[2], "/") == 0)
-	{ 
-		c = toym_division(a, b, c, base, scale);
-		toym_print(c); 
-	}
-
-	// addition
-	if (strcmp(argv[2], "+") == 0)
-	{
-		c = toym_add(a, b, c, base);
-		toym_print(c);
-	}
-	// subtraction
-	if (strcmp(argv[2], "-") == 0)
-	{
-		c = toym_sub(a, b, c, base);
-		toym_print(c);
-	}
-	/*
-	toym_print(a);
-	toym_rightshift(a, 1, 0);
-	toym_print(a);
-	toym_rightshift(a, 3, 0);
-	toym_print(a);
-	*/
-	printf("length of a is %zu\n", a->len);
-	toym_rightshift(a, 5, 1);
-	printf("length of a is %zu\n", a->len);
-	toym_free(a);
-	toym_free(b);
-	toym_free(c);
-
-	return 0;
 }
 
