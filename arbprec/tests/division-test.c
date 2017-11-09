@@ -27,9 +27,11 @@ int main(int argc, char *argv[])
         c = toym_divide(a, b, c, base, scale);
         toym_print(c);
 
+	printf("Check the work using multiplication, this will by nature be .00....01 less\n");
         d = toym_mul(b, c, d, base);
         toym_printold(d);
 
+	printf("perform Graff division, this is much slower than Knuth's\n");
         c = NULL;
         c = toym_division(a, b, c, base, scale);
         toym_printold(c);
