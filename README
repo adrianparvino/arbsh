@@ -8,6 +8,8 @@ DESCRIPTION:
 
 	Navigating to a subdirectory of arbsh and inspecting the README 
 	will reveal more about what that particular project contains.
+
+
 	
 
 HIER:
@@ -30,6 +32,10 @@ HIER:
 	ironwill/
 		A cross compiling toolchain and package build system similiar
 		to buildroot or yocto but much simpler.  
+
+	newlibm/
+		A set of mathematics functions to operate on double precision
+		types.
 
 	arbsh will also retrieve and build a collection of heavily modified
 	outside software which is also maintained by CM Graff et al.

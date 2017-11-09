@@ -9,6 +9,8 @@
 
 	Navigating to a subdirectory of arbsh and inspecting the README 
 	will reveal more about what that particular project contains.
+
+
 	
 
 <br clear="left"/></pre><dl><br clear="left"/></pre><dl><strong>HIER:</strong></dl><pre></dl><pre>
@@ -21,52 +23,33 @@
 		Readline line editing library. An editline/readline like 
 		implementation.  
 
-	<a href="curses/">curses/</a>
-		A minimal curses library implementation. 
-
-	<a href="termcap/">termcap/</a>
-		Terminal capability definitions for hexen / curses.
-
-	<a href="editor/">editor/</a>
-		A basic notepad-like editor implementation which runs in a 
-		terminal.
-
 	<a href="gsh/">gsh/</a>
-		Gsh supports a subset of POSIX shell.
+		Gsh supports a subset of POSIX shell.  
 
-	<a href="irc/">irc/</a>
-		An extremely small client with minimal resource usage.
-	
 	<a href="posix/">posix/</a>
 		Userland utilities such as cp, ls, fetch, dd, find etc.
 		implemented to subsets of their POSIX specifications.
 
-	<a href="toolchain/">toolchain/</a>
+	<a href="ironwill/">ironwill/</a>
 		A cross compiling toolchain and package build system similiar
-		to buildroot or yocto but much simpler. 
+		to buildroot or yocto but much simpler.  
 
-	<a href="csafety/">csafety/</a>
-		C-safety is an educational pamphlet on C programming, 
-		C safety and data structures.
-
+	<a href="newlibm/">newlibm/</a>
+		A set of mathematics functions to operate on double precision
+		types.
 
 	arbsh will also retrieve and build a collection of heavily modified
 	outside software which is also maintained by CM Graff et al.
 	
-	libc
-
+	graflibc
 		graflibc is a new libc that draws on parts of musl libc.
-		<a href="https://github.com/cmgraff/graflibc">https://github.com/cmgraff/graflibc</a>
-
+		<a href="https://github.com/cmgraff/graflibc ">https://github.com/cmgraff/graflibc </a>
 
 	cube-zero
-
 		A verion of the cube 1 3D video game which is being slowly
-		rewritten in C. <a href="https://github.com/cmgraff/cube-zero">https://github.com/cmgraff/cube-zero</a>
+		rewritten in C. <a href="https://github.com/cmgraff/cube-zero ">https://github.com/cmgraff/cube-zero </a>
 
-
-	ash
-
+	ash 
 		A new version of the Almquist shell forked from debian dash.
 		<a href="https://github.com/cmgraff/ash">https://github.com/cmgraff/ash</a>
 
@@ -92,7 +75,7 @@
 	target packages.  
 
 
-		make toolchain
+		make ironwill
 
 		export `make buildenvars`
 
