@@ -1,6 +1,7 @@
 #include <arbprec.h>
 
 int verbosity = 0;
+
 void toym_free(fxdpnt *flt)
 {
         if (flt->number)
@@ -8,14 +9,12 @@ void toym_free(fxdpnt *flt)
         free(flt);
 }
 
-
-
 int toym_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
 {
         /* many arbitrary precision implementations go through four steps
            instead of "crossing over the values" like one does on pen and paper.
            In theory this should be slower, however, in my simple test runs
-            is has matched the speed of the "four step" techniques.
+            it has matched the speed of the "four step" techniques.
         */
         int temp = 0;
         // exhaust the difference between the right hand sides of the radi
