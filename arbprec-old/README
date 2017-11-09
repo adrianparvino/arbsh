@@ -1,0 +1,113 @@
+Arbitrary Precision Mathematics Library
+
+
+
+BUILDING:
+---------
+
+	cd arbprec
+	make 
+
+
+TESTING:
+--------
+
+	Run the test binary:
+
+		./tests/arba_arith 988983483.14891487417128 908408.38034834834857345834
+
+
+API:
+----
+
+	Example API usage for dividing two numbers:
+
+	#include <stdio.h>
+	#include <stdlib.h>
+	#include <unistd.h>
+	#include <string.h>
+	#include <arbprec/arbprec.h>
+
+	int main(int argc, char **argv)
+	{
+		scale = 80;
+		if ( argc < 3 )
+			arbprec_die("Needs 2 args\n");
+
+		bigflt *a = str_to_bigflt(argv[1]);
+		bigflt *b = str_to_bigflt(argv[2]);
+
+		a = arbprec_add_precision(a, scale);
+		arbprec_match_precision(a, b);
+		bigflt *c = arbprec_expand_vector(NULL, a->len + b->len);
+		
+		c = arbprec_div(a, b, c);
+		arbprec_print(c);
+
+		arba_free(a);
+		arba_free(b);
+		arba_free(c);
+		return 0;
+	} 
+
+	If the example is named "example.c" and arbprec is not installed on 
+	your machine compile it with:
+
+		gcc -I./include example.c -L. -larbprec
+	
+	See tests/arba_arith.c for another example on how to use the API. 
+
+
+REFERENCES:
+-----------
+
+	https://gmplib.org/manual/Division-Algorithms.html#Division-Algorithms
+
+	http://personal.maths.surrey.ac.uk/st/H.Bruin/MMath/Cardinality.html
+
+	https://gmplib.org/manual/Karatsuba-Multiplication.html#Karatsuba-Multiplication
+
+	https://gmplib.org/manual/Multiplication-Algorithms.html#Multiplication-Algorithms
+
+	http://www.cs.utsa.edu/~wagner/CS3343/newton/division.html
+
+	http://mathworld.wolfram.com/NewtonsIteration.html
+
+	An RFC about base64 encoding:
+
+	http://www.rfc-editor.org/rfc/rfc4648.txt
+
+	See Knuth Vol 2. p237. for a division routine that may be faster.
+
+
+CONTACT:
+--------
+
+	cm0graff@gmail.com
+
+
+STYLE:
+------
+
+	conditionals:
+		if (a > b)
+		{
+		}
+
+	loops:
+		while (a > b)
+		{
+		}
+
+		for (i=0;a > b;++i)
+		{
+		}
+
+	functions:
+		type *function(type *a, type b);
+
+		if (function(a))
+		{
+		}
+
+	
