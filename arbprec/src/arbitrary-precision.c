@@ -2,14 +2,14 @@
 
 int verbosity = 0;
 
-void toym_free(fxdpnt *flt)
+void arb_free(fxdpnt *flt)
 {
         if (flt->number)
                 free(flt->number);
         free(flt);
 }
 
-int toym_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
+int arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
 {
         /* many arbitrary precision implementations go through four steps
            instead of "crossing over the values" like one does on pen and paper.
@@ -32,7 +32,7 @@ int toym_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
         return 0;
 }
 
-void toym_reverse(char *x, size_t lim)
+void arb_reverse(char *x, size_t lim)
 {
         size_t i = 0, half = lim / 2;
         int swap = 0;
@@ -44,7 +44,7 @@ void toym_reverse(char *x, size_t lim)
 }
 
 
-fxdpnt *toym_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
         size_t width = 0, i = 0, j = 0, r = 0;
         int sum = 0, borrow = 0;
@@ -55,13 +55,13 @@ fxdpnt *toym_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 
         c->lp = MAX(a->lp, b->lp);
         width = MAX(a->len, b->len);
-        c = toym_expand(c, width * 2); // fixme: this is way oversized
+        c = arb_expand(c, width * 2); // fixme: this is way oversized
 
-        array = toym_malloc((width * 2) * sizeof(TOYMT)); // fixme: this is way oversized
+        array = arb_malloc((width * 2) * sizeof(TOYMT)); // fixme: this is way oversized
 
         for (; i < a->len || j < b->len;c->len++, ++r){
-                mir = toym_place(a, b, &y, r) - toym_place(b, a, &z, r) + mborrow; // mirror
-                sum = toym_place(a, b, &i, r) - toym_place(b, a, &j, r) + borrow;
+                mir = arb_place(a, b, &y, r) - arb_place(b, a, &z, r) + mborrow; // mirror
+                sum = arb_place(a, b, &i, r) - arb_place(b, a, &j, r) + borrow;
 
                 borrow = 0;
                 if(sum < 0){
@@ -83,50 +83,50 @@ fxdpnt *toym_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
         if (borrow == -1){
                 // swapping pointers would make this faster
                 memcpy(c->number, array, c->len);
-                toym_flipsign(c);
+                arb_flipsign(c);
         }
         free(array);
-        toym_reverse(c->number, c->len);
+        arb_reverse(c->number, c->len);
         return c;
 }
-fxdpnt *toym_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-        toym_init(c);
+        arb_init(c);
         if (a->sign == '-' && b->sign == '-')
-                toym_flipsign(c);
+                arb_flipsign(c);
         else if (a->sign == '-')
-                return c = toym_sub_inter(b, a, c, base);
+                return c = arb_sub_inter(b, a, c, base);
         else if (b->sign == '-')
-                return c = toym_sub_inter(a, b, c, base);
-        return c = toym_add_inter(a, b, c, base);
+                return c = arb_sub_inter(a, b, c, base);
+        return c = arb_add_inter(a, b, c, base);
 }
 
-fxdpnt *toym_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-        toym_init(c);
+        arb_init(c);
         if (a->sign == '-' && b->sign == '-')
-                toym_flipsign(c);
+                arb_flipsign(c);
         else if (a->sign == '-'){
-                toym_flipsign(c);
-                return c = toym_add_inter(a, b, c, base);
+                arb_flipsign(c);
+                return c = arb_add_inter(a, b, c, base);
         }
         else if (b->sign == '-' || a->sign == '-')
-                return c = toym_add_inter(a, b, c, base);
-        return c = toym_sub_inter(a, b, c, base);
+                return c = arb_add_inter(a, b, c, base);
+        return c = arb_sub_inter(a, b, c, base);
 }
 
 
-fxdpnt *toym_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
         size_t width = 0, i = 0, j = 0, r = 0;
         int sum = 0, carry = 0;
 
         c->lp = MAX(a->lp, b->lp);
         width = MAX(a->len, b->len);
-        c = toym_expand(c, width * 2);
+        c = arb_expand(c, width * 2);
 
         for (; i < a->len || j < b->len;c->len++, ++r){
-                sum = toym_place(a, b, &i, r) + toym_place(b, a, &j, r) + carry;
+                sum = arb_place(a, b, &i, r) + arb_place(b, a, &j, r) + carry;
                 carry = 0;
                 if(sum >= base){
                         carry = 1;
@@ -139,11 +139,11 @@ fxdpnt *toym_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
                 c->lp += 1;
         }
 
-        toym_reverse(c->number, c->len);
+        arb_reverse(c->number, c->len);
         return c;
 }
 
-fxdpnt *toym_rightshift(fxdpnt *a, size_t n, int faux)
+fxdpnt *arb_rightshift(fxdpnt *a, size_t n, int faux)
 {
         /* logical right shift, turns base 10 "990" into "099" 
                 else
@@ -169,13 +169,13 @@ fxdpnt *toym_rightshift(fxdpnt *a, size_t n, int faux)
         return a;
 }
 
-fxdpnt *toym_leftshift(fxdpnt *a, size_t n)
+fxdpnt *arb_leftshift(fxdpnt *a, size_t n)
 {
         // not implemented
         return a;
 }
 
-void toym_printold(fxdpnt *flt)
+void arb_printold(fxdpnt *flt)
 {
         size_t i = 0;
 
@@ -184,17 +184,17 @@ void toym_printold(fxdpnt *flt)
         for (i = 0; i < flt->len ; ++i){
                 if (flt->lp == i)
                         putchar('.');
-                putchar(toym_highbase((flt->number[i])));
+                putchar(arb_highbase((flt->number[i])));
         }
         putchar('\n');
         fflush(stdout);
 }
 
 
-fxdpnt *toym_add_precision(fxdpnt *flt, size_t more)
+fxdpnt *arb_add_precision(fxdpnt *flt, size_t more)
 {
-        // Increase the precision of a toym `fxdpnt'
-        flt = toym_expand(flt, flt->len + more);
+        // Increase the precision of a arb `fxdpnt'
+        flt = arb_expand(flt, flt->len + more);
         memset(flt->number + flt->len, 0, more * sizeof(TOYMT));
         flt->len += more;
         return flt;
@@ -212,13 +212,13 @@ size_t rl(fxdpnt *flt)
 }
 
 
-void toym_init(fxdpnt *flt)
+void arb_init(fxdpnt *flt)
 {
         flt->sign = '+';
         flt->len = flt->lp = 0;
 }
 
-void toym_flipsign(fxdpnt *flt)
+void arb_flipsign(fxdpnt *flt)
 {
         if (flt->sign == '+')
                 flt->sign = '-';
@@ -226,13 +226,13 @@ void toym_flipsign(fxdpnt *flt)
                 flt->sign = '+';
 }
 
-void toym_setsign(fxdpnt *a, fxdpnt *b, fxdpnt *c)
+void arb_setsign(fxdpnt *a, fxdpnt *b, fxdpnt *c)
 {
-        toym_init(c);
+        arb_init(c);
         if (a->sign == '-')
-                toym_flipsign(c);
+                arb_flipsign(c);
         if (b->sign == '-')
-                toym_flipsign(c);
+                arb_flipsign(c);
 }
 
 void verbose(char *msg)
@@ -241,7 +241,7 @@ void verbose(char *msg)
 		fprintf(stderr, "%s\n", msg);
 }
 
-int toym_highbase(int a)
+int arb_highbase(int a)
 {
 	// Handle high bases
         static int uglyphs[36] = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
@@ -255,7 +255,7 @@ int toym_highbase(int a)
 }
 
 
-void toym_print(fxdpnt *flt)
+void arb_print(fxdpnt *flt)
 {
         size_t i = 0;
 	size_t len = 0;
@@ -271,30 +271,30 @@ void toym_print(fxdpnt *flt)
         for (i = 0; i < len ; ++i){
                 if (flt->lp == i)
                         putchar('.');
-                putchar(toym_highbase((flt->number[i])));
+                putchar(arb_highbase((flt->number[i])));
         }
         putchar('\n');
         fflush(stdout);
 }
 
-void toym_error(char *message)
+void arb_error(char *message)
 {
         fprintf(stderr, "%s\n", message);
         exit(1);
 }
 
-void *toym_malloc(size_t len)
+void *arb_malloc(size_t len)
 {
         void *ret;
         if(!(ret = malloc(len)))
-                toym_error("malloc failed\n");
+                arb_error("malloc failed\n");
         return ret;
 }
-fxdpnt *toym_alloc(size_t len)
+fxdpnt *arb_alloc(size_t len)
 {
-        // Allocate the basic requirements of a toym `fxdpnt'
-        fxdpnt *ret = toym_malloc(sizeof(fxdpnt));
-        ret->number = toym_malloc(sizeof(int) * len);
+        // Allocate the basic requirements of a arb `fxdpnt'
+        fxdpnt *ret = arb_malloc(sizeof(fxdpnt));
+        ret->number = arb_malloc(sizeof(int) * len);
         ret->sign = '+';
         ret->lp = 0;
         ret->allocated = len;
@@ -303,45 +303,45 @@ fxdpnt *toym_alloc(size_t len)
         return ret;
 }
 
-void *toym_realloc(void *ptr, size_t len)
+void *arb_realloc(void *ptr, size_t len)
 {
         void *ret;
         if(!(ret = realloc(ptr, len)))
-                toym_error("realloc failed\n");
+                arb_error("realloc failed\n");
         return ret;
 }
 
-fxdpnt *toym_expand(fxdpnt *flt, size_t request)
+fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 {
         // Enlarge or create a fxdpnt
         if (flt == NULL){
-                flt = toym_alloc(request);
+                flt = arb_alloc(request);
 		flt->allocated = request;
         } else if (request > flt->allocated){
                 flt->allocated = (request + flt->chunk);
-                flt->number = toym_realloc(flt->number, flt->allocated * sizeof(int));
+                flt->number = arb_realloc(flt->number, flt->allocated * sizeof(int));
         }
         return flt;
 }
 
 /* new_num allocates a number and sets fields to known values. */ 
-fxdpnt *toym_new_num (int length, int scale)
+fxdpnt *arb_new_num (int length, int scale)
 {
 	fxdpnt *ret;
 
-	ret = toym_malloc(sizeof(fxdpnt));
+	ret = arb_malloc(sizeof(fxdpnt));
 	ret->sign = '+';
 	ret->lp = length;
 	ret->rp = scale;
 	ret->allocated = 0;
 	ret->len = ret->lp + ret->rp;
-	ret->number = toym_malloc(length+scale);
+	ret->number = arb_malloc(length+scale);
 	ret->chunk = 4;
 	memset(ret->number, 0, length+scale);
 	return ret;
 }
 
-void toym_free_num (fxdpnt *num)
+void arb_free_num (fxdpnt *num)
 {
 	if (num == NULL)
 		return;
@@ -350,12 +350,12 @@ void toym_free_num (fxdpnt *num)
 	free (num);
 	num = NULL;
 }
-fxdpnt *toym_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
         int i = 0, j = 0, sum = 0, carry = 0;
         size_t k = 0;
-        //toym_setsign(a, b, c);
-        c = toym_expand(c, a->len + b->len);
+        //arb_setsign(a, b, c);
+        c = arb_expand(c, a->len + b->len);
         memset(c->number, 0, a->len + b->len);
 
         for ( i = a->len - 1; i >= 0 ; i--){
@@ -393,7 +393,7 @@ static void short_multiply(unsigned char *num, int size, int digit, unsigned cha
 			result[i-1] = carry;
 	}
 }
-fxdpnt *toym_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
+fxdpnt *arb_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
         size_t i = 0;
         size_t j = 0;
@@ -401,16 +401,16 @@ fxdpnt *toym_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
         size_t width = a->len + b->len;
         size_t diff = 0;
         size_t off = 0;
-        char *mir = toym_malloc(sizeof(TOYMT) *( width + scale));
-        char *tmir = toym_malloc(sizeof(TOYMT) * width);
+        char *mir = arb_malloc(sizeof(TOYMT) *( width + scale));
+        char *tmir = arb_malloc(sizeof(TOYMT) * width);
         int sum = 0;
         int rec = 0;
         size_t iterations = 0;
         size_t adds = 0;
 
-	c = toym_expand(c, a->len + b->len);
-        toym_init(c);
-        toym_setsign(a, b, c);
+	c = arb_expand(c, a->len + b->len);
+        arb_init(c);
+        arb_setsign(a, b, c);
         
         memset(mir + a->len, 0, width - a->len + scale);
         memcpy(mir, a->number, a->len);
@@ -476,7 +476,7 @@ fxdpnt *toym_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
         return c;
 }
 
-fxdpnt *toym_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
+fxdpnt *arb_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 {
         fxdpnt *qval;
         unsigned char *num1, *num2;
@@ -504,12 +504,12 @@ fxdpnt *toym_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
                 extra = scale - scale1;
         else
                 extra = 0;
-        num1 = toym_malloc(n1->lp+n1->rp+extra+2);
+        num1 = arb_malloc(n1->lp+n1->rp+extra+2);
         memset (num1, 0, n1->lp+n1->rp+extra+2);
         memcpy (num1+1, n1->number, n1->lp+n1->rp);
 
         len2 = n2->lp + n2->rp;
-        num2 = toym_malloc (len2+1);
+        num2 = arb_malloc (len2+1);
         memcpy (num2, n2->number, len2);
         *(num2+len2) = 0;
 
@@ -529,9 +529,9 @@ fxdpnt *toym_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
                 else
                         qdigits = len1-len2+scale+1;
         }
-        qval = toym_new_num (qdigits-scale,scale);
+        qval = arb_new_num (qdigits-scale,scale);
         memset (qval->number, 0, qdigits);
-        mval = toym_malloc (len2+1);
+        mval = arb_malloc (len2+1);
 
         if (zero)
                 goto end;
@@ -622,7 +622,7 @@ fxdpnt *toym_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
         end:
         /* Clean up and return the number. */
         qval->sign = ( n1->sign == n2->sign ? '+' : '-' );
-        toym_free_num (quot);
+        arb_free_num (quot);
 
         /* Clean up temporary storage. */
         free (mval);
@@ -633,7 +633,7 @@ fxdpnt *toym_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 }
 
 
-fxdpnt *toym_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
+fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 {
 	fxdpnt *qval;
 	unsigned char *num1, *num2;
@@ -673,14 +673,14 @@ fxdpnt *toym_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 		extra = scale - scale1;
 	else
 		extra = 0;
-	num1 = toym_malloc(n1->lp+n1->rp+extra+2);
+	num1 = arb_malloc(n1->lp+n1->rp+extra+2);
 	memset (num1, 0, n1->lp+n1->rp+extra+2);
 	memcpy (num1+1, n1->number, n1->lp+n1->rp);
 
 	// here the effects of the logical shift must again be reapplied
 	len2 = n2->lp + scale2;
 	// and by now we are done with the logical shifting mechanism
-	num2 = toym_malloc (len2+1);
+	num2 = arb_malloc (len2+1);
 	memcpy (num2, n2->number, len2);
 	*(num2+len2) = 0;
 	n2ptr = num2;
@@ -708,12 +708,12 @@ fxdpnt *toym_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 	}
 
 	/* Allocate and zero the storage for the quotient. */
-	qval = toym_new_num (qdigits-scale,scale);
+	qval = arb_new_num (qdigits-scale,scale);
 	
 	memset (qval->number, 0, qdigits);
 
 	/* Allocate storage for the temporary storage mval. */
-	mval = toym_malloc (len2+1);
+	mval = arb_malloc (len2+1);
 
 	/* Now for the full divide algorithm. */
 	if (zero)
@@ -820,7 +820,7 @@ fxdpnt *toym_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 	/* Clean up and return the number. */
 	qval->sign = ( n1->sign == n2->sign ? '+' : '-' );
 	
-	toym_free_num (quot);
+	arb_free_num (quot);
 
 	/* Clean up temporary storage. */
 	free (mval);
@@ -829,13 +829,13 @@ fxdpnt *toym_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 	return qval;
 }
 
-fxdpnt *toym_str2fxdpnt(const char *str)
+fxdpnt *arb_str2fxdpnt(const char *str)
 {
-        // Convert a string to a toym `fxdpnt'
+        // Convert a string to a arb `fxdpnt'
         size_t i = 0; 
         int flt_set = 0, sign_set = 0;
 
-        fxdpnt *ret = toym_expand(NULL, 1);
+        fxdpnt *ret = arb_expand(NULL, 1);
 	ret->len =0;
 	ret->lp =0;
 	ret->rp =0;
@@ -854,7 +854,7 @@ fxdpnt *toym_str2fxdpnt(const char *str)
                         ret->sign = '-';
                 }
                 else{
-                        ret = toym_expand(ret, ret->len + 1);
+                        ret = arb_expand(ret, ret->len + 1);
                         ret->number[ret->len++] = str[i] - '0';
                 }
         }

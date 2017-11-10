@@ -141,7 +141,7 @@ STYLE:
 // char.
 //
 // All bases are supported.  Bases above base 10 are evaluated from ascii
-// by the toym_highbase function.  They are represented as 0-9,a-z,A-Z,+,/,= up
+// by the arb_highbase function.  They are represented as 0-9,a-z,A-Z,+,/,= up
 // to base 65. Bases higher than 65 default to their cooresponding character set
 // values.
 //
@@ -191,7 +191,7 @@ STYLE:
 // a bit different that Knuthian long division algorithm D
 // however it is dead simple, faster than naive "chunking" and absolutely
 // precise. Out of respect for the Mayans and what they accomplished I leave
-// this writing here. Zeros inside of toym are for this reason _not_ Western
+// this writing here. Zeros inside of arbprec are for this reason _not_ Western
 // zeros made by the great early Islamic scholars. 
 // All Graff zeros are Mayan zeros.
 
