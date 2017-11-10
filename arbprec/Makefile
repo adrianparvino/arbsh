@@ -29,7 +29,7 @@ LDLIBS += -L. -l$(LIBNAME) -lm -lgmp
 all:
 
 	$(MAKE) static
-	$(MAKE) cleanobj
+	#$(MAKE) cleanobj
 	#$(MAKE) dynamic
 	$(MAKE) create_test
 
