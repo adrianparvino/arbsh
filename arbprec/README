@@ -219,3 +219,9 @@ References:
 
 
 	https://stackoverflow.com/questions/2661541/picking-good-first-estimates-for-goldschmidt-division
+
+	https://stackoverflow.com/questions/32942466/what-algorithm-should-i-use-for-high-performance-large-integer-division
+
+	https://gmplib.org/manual/Divide-and-Conquer-Division.html#Divide-and-Conquer-Division
+
+	https://gmplib.org/manual/Karatsuba-Multiplication.html#Karatsuba-Multiplication
