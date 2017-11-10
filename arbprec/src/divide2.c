@@ -9,11 +9,11 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
         unsigned char *qptr;
         int scale1;
         int val;
-        unsigned int lea, leb, qdigits, extra, count;
+        unsigned int lea, leb, qdigits, offset, count;
         unsigned int qdig, qguess, borrow, carry;
         unsigned char *mval;
         int out_of_scale;
-        unsigned int norm;
+        unsigned int normalize;
         size_t i, j;
         /* these variables are simply to help deduce the big O properties of the equation */
         size_t iterations = 0;
@@ -26,11 +26,11 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
         scale1 = a->rp - b->rp;
         
         if (scale1 < scale)
-                extra = scale - scale1;
+                offset = scale - scale1;
         else
-                extra = 0;
-        num1 = arb_malloc(a->lp+a->rp+extra+2);
-        memset (num1, 0, a->lp+a->rp+extra+2);
+                offset = 0;
+        num1 = arb_malloc(a->lp+a->rp+offset+2);
+        memset (num1, 0, a->lp+a->rp+offset+2);
         memcpy (num1+1, a->number, a->lp+a->rp);
 
         leb = b->lp + b->rp;
@@ -61,13 +61,12 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
         if (out_of_scale)
                 goto end;
 
-        norm = base / ((int)*num2 + 1);
-        if (norm != 1){
-                short_multiply(num1, lea+scale1+extra+1, norm, num1, base);
-                short_multiply(num2, leb, norm, num2, base);
+        normalize = base / ((int)*num2 + 1);
+        if (normalize != 1){
+                short_multiply(num1, lea+scale1+offset+1, normalize, num1, base);
+                short_multiply(num2, leb, normalize, num2, base);
         }
 
- 
         qdig = 0;
         if (leb > lea)
                 qptr = (unsigned char *) qval->number+leb-lea;
@@ -99,7 +98,8 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
                                 num1[i] = val;
                                 ++subs;
                         }
-                }
+                
+		// this should be moved inside the upper conditional
                 if (borrow == 1)
                 {
                         qguess--;
@@ -119,6 +119,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
                         if (carry == 1)
                                 num1[i] = (num1[i + 1]) % base;
                 }
+		}
                 ++iterations;
                 *qptr++ = qguess;
                 qdig++;
