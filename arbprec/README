@@ -12,12 +12,9 @@ BUILDING:
 TESTING:
 --------
 
-	This is wrong. Due to being donated to the Rob Landley's toybox project
-	arbprec is undergoing massive changes and improvements.
-
 	Run the test binary:
 
-		./tests/arba_arith 988983483.14891487417128 908408.38034834834857345834
+		./tests/test-arbitrary-precision 988983483.14891487417128 908408.38034834834857345834 10 100
 
 
 API:

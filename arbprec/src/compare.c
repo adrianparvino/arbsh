@@ -1,3 +1,4 @@
+#include <arbprec.h>
 int toym_compare(fxdpnt *a, fxdpnt *b, int base)
 {
         size_t i = 0;
