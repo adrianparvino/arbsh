@@ -28,8 +28,8 @@ int main(int argc, char *argv[])
         arb_print(c);
 
 	printf("Check the work using multiplication, this will by nature be .00....01 less\n");
-        d = arb_mul(b, c, d, base);
-        arb_printold(d);
+        //d = arb_mul(b, c, d, base);
+        //arb_printold(d);
 
 	//printf("perform Graff division, this is much slower than Knuth's\n");
         //c = NULL;
