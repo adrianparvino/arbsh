@@ -24,8 +24,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 
         lea = a->lp + b->rp;
         scale1 = a->rp - b->rp;
-
-        //this may also be the effect of the logical shift
+        
         if (scale1 < scale)
                 extra = scale - scale1;
         else
@@ -82,7 +81,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
                         qguess = base -1;
                 else
                         qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
-
+		/*
                 if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
                 {
                         ++hqguess;
@@ -93,7 +92,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
                                 qguess--;
                         }
                 }
-
+		*/
 
                 borrow = 0;
                 if (qguess != 0){
