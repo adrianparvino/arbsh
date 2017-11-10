@@ -2,17 +2,17 @@
 
 int verbosity = 0;
 
-fxdpnt *arb_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
+fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
         fxdpnt *qval;
         unsigned char *num1, *num2;
         unsigned char *qptr;
         int scale1;
         int val;
-        unsigned int len1, len2, qdigits, extra, count;
+        unsigned int lea, leb, qdigits, extra, count;
         unsigned int qdig, qguess, borrow, carry;
         unsigned char *mval;
-        char zero;
+        int out_of_scale;
         unsigned int norm;
         size_t i, j;
         /* these variables are simply to help deduce the big O properties of the equation */
@@ -22,67 +22,67 @@ fxdpnt *arb_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
         size_t hqguess = 0;
         size_t lqguess = 0;
 
-        len1 = n1->lp + n2->rp;
-        scale1 = n1->rp - n2->rp;
+        lea = a->lp + b->rp;
+        scale1 = a->rp - b->rp;
 
         //this may also be the effect of the logical shift
         if (scale1 < scale)
                 extra = scale - scale1;
         else
                 extra = 0;
-        num1 = arb_malloc(n1->lp+n1->rp+extra+2);
-        memset (num1, 0, n1->lp+n1->rp+extra+2);
-        memcpy (num1+1, n1->number, n1->lp+n1->rp);
+        num1 = arb_malloc(a->lp+a->rp+extra+2);
+        memset (num1, 0, a->lp+a->rp+extra+2);
+        memcpy (num1+1, a->number, a->lp+a->rp);
 
-        len2 = n2->lp + n2->rp;
-        num2 = arb_malloc (len2+1);
-        memcpy (num2, n2->number, len2);
-        *(num2+len2) = 0;
+        leb = b->lp + b->rp;
+        num2 = arb_malloc (leb+1);
+        memcpy (num2, b->number, leb);
+        *(num2+leb) = 0;
 
         unsigned char *freesave = num2;
-        for (;*num2 == 0;num2++,len2--);
+        for (;*num2 == 0;num2++,leb--);
 
-        if (len2 > len1+scale)
+        if (leb > lea+scale)
         {
                 qdigits = scale+1;
-                zero = 1;
+                out_of_scale = 1;
         }
         else
         {
-                zero = 0;
-                if (len2>len1)
-                        qdigits = scale+1;      /* One for the zero integer part.  leading zero ?? */
+                out_of_scale = 0;
+                if (leb>lea)
+                        qdigits = scale+1;
                 else
-                        qdigits = len1-len2+scale+1;
+                        qdigits = lea-leb+scale+1;
         }
         qval = arb_new_num (qdigits-scale,scale);
         memset (qval->number, 0, qdigits);
-        mval = arb_malloc (len2+1);
+        mval = arb_malloc (leb+1);
 
-        if (zero)
+        if (out_of_scale)
                 goto end;
 
         norm = base / ((int)*num2 + 1);
         if (norm != 1){
-                short_multiply(num1, len1+scale1+extra+1, norm, num1, base);
-                short_multiply(num2, len2, norm, num2, base);
+                short_multiply(num1, lea+scale1+extra+1, norm, num1, base);
+                short_multiply(num2, leb, norm, num2, base);
         }
 
-        /* Initialize divide loop. */
+ 
         qdig = 0;
-        if (len2 > len1)
-                qptr = (unsigned char *) qval->number+len2-len1;
+        if (leb > lea)
+                qptr = (unsigned char *) qval->number+leb-lea;
         else
                 qptr = (unsigned char *) qval->number;
 
-        while (qdig <= len1+scale-len2)
+        while (qdig <= lea+scale-leb)
         {
-                /* Calculate the quotient digit guess. */
+
                 if (*num2 == num1[qdig])
                         qguess = base -1;
                 else
                         qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
-                //printf("num2[1] %d\n", num2[1]);
+
                 if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
                 {
                         ++hqguess;
@@ -98,8 +98,8 @@ fxdpnt *arb_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
                 borrow = 0;
                 if (qguess != 0){
                         *mval = 0;
-                        short_multiply(num2, len2, qguess, mval+1, base);
-                        for (i = qdig+len2, j = len2, count = 0; count < len2+1; count++, i--, j--)
+                        short_multiply(num2, leb, qguess, mval+1, base);
+                        for (i = qdig+leb, j = leb, count = 0; count < leb+1; count++, i--, j--)
                         {
                                 val = num1[i] - mval[j] - borrow;
                                 if (val < 0)
@@ -116,7 +116,7 @@ fxdpnt *arb_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
                 if (borrow == 1)
                 {
                         qguess--;
-                        for (carry = 0, i = qdig+len2, j = len2-1, count = 0; count < len2; count++, i--, j--)
+                        for (carry = 0, i = qdig+leb, j = leb-1, count = 0; count < leb; count++, i--, j--)
                         {
                                 val = num1[i] + num2[j] + carry;
                                 if (val > base -1)
@@ -145,15 +145,10 @@ fxdpnt *arb_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
                 fprintf(stderr, "%zu hqguess\n", hqguess);
                 fprintf(stderr, "%zu lqguess\n", lqguess);
         }
-        end:
-        /* Clean up and return the number. */
-        qval->sign = ( n1->sign == n2->sign ? '+' : '-' );
-        arb_free_num (quot);
-
-        /* Clean up temporary storage. */
+        end: 
+        arb_free_num (c); 
         free (mval);
         free (num1);
-        //free (num2);
         free(freesave);
         return qval;
 }
