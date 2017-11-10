@@ -62,9 +62,10 @@ fxdpnt *arb_leftshift(fxdpnt *a, size_t n);
 
 
 void arb_free(fxdpnt *flt);
-fxdpnt *arb_new_num (int length, int scale);
+fxdpnt *arb_new_num (int, int);
 void arb_free_num (fxdpnt *num);
-fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale);
-fxdpnt *arb_divide2(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale);
+fxdpnt *arb_divide(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
+fxdpnt *arb_divide2(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
 void arb_printold(fxdpnt *flt);
+void short_multiply(unsigned char *, int, int, unsigned char *, int);
 
