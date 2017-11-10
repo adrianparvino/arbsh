@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
         b = arb_add_precision(b, scale);
 
 
-        printf("perform knuth division\n");
+        printf("perform the division\n");     
 
         c = arb_divide(a, b, c, base, scale);
         arb_print(c);
@@ -31,10 +31,10 @@ int main(int argc, char *argv[])
         d = arb_mul(b, c, d, base);
         arb_printold(d);
 
-	printf("perform Graff division, this is much slower than Knuth's\n");
-        c = NULL;
-        c = arb_division(a, b, c, base, scale);
-        arb_printold(c);
+	//printf("perform Graff division, this is much slower than Knuth's\n");
+        //c = NULL;
+        //c = arb_division(a, b, c, base, scale);
+        //arb_printold(c);
 
         printf("==============\n");
         return 0;
