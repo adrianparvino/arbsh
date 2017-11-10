@@ -1,4 +1,4 @@
-CFLAGS += -Wall -Wextra -I./include/ -O3
+CFLAGS += -Wall -Wextra -I./include/ 
 
 LDFLAGS += "-Wl,-rpath=$(PWD)" 
 
@@ -64,6 +64,8 @@ clean:
 	$(RM) $(STATLIB) 
 	$(RM) $(TEST_OBJ)
 	$(RM) uninstall
+	$(RM) log log2
+	
 
 install:
 
