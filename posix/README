@@ -16,7 +16,7 @@ BUILDING:
 INSTALLATION:
 -------------
 
-	make install DESTDIR=/path/to/install/
+	make install DESTDIR=/path/to/install
 
 COLOPHON:
 ---------
