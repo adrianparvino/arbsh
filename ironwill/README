@@ -215,7 +215,7 @@ ADDING TARGET PACKAGES:
 	
 			make createtarg pack=mynewpackage
 
-		Then open the Makefile (omnicross has only one) and 
+		Then open the Makefile (ironwill has only one) and 
 		add something like this to the list of definitions at 
 		the top:
 		
