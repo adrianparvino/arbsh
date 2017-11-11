@@ -1,8 +1,8 @@
-
 #include <arbprec.h>
+
 int main(int argc, char *argv[])
 {
-        if (argc < 5 )
+        if (argc < 5)
         {
                 printf("needs 4 args: bignum bignum   base  scale\n");
                 return 0;
@@ -13,20 +13,12 @@ int main(int argc, char *argv[])
         fxdpnt *a = arb_new_num(12, scale);
         fxdpnt *b = arb_new_num(12, scale);
         fxdpnt *c = arb_new_num(12, scale);
-        fxdpnt *d = arb_new_num(12, scale);
-
         a = arb_str2fxdpnt(argv[1]);
         b = arb_str2fxdpnt(argv[2]);
-
         //a = arb_add_precision(a, scale);
         //b = arb_add_precision(b, scale);
-
-
-
-
         c = arb_divide(a, b, c, base, scale);
-        arb_print(c); 
-     
+        arb_print(c);
         return 0;
 }
    
