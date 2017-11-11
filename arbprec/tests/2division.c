@@ -18,18 +18,18 @@ int main(int argc, char *argv[])
         a = arb_str2fxdpnt(argv[1]);
         b = arb_str2fxdpnt(argv[2]);
 
-        a = arb_add_precision(a, scale);
-        b = arb_add_precision(b, scale);
+        //a = arb_add_precision(a, scale);
+        //b = arb_add_precision(b, scale);
 
-        printf("perform the division\n");
+
 
         c = arb_divide2(a, b, c, base, scale);
         arb_print(c);
 
-	printf("Check the work using multiplication, this will by nature be .00....01 less\n");
-        //d = arb_mul(b, c, d, base);
-        //arb_printold(d); 
-        printf("==============\n");
+
+
+
+
         return 0;
 }
 
