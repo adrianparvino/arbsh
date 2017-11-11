@@ -9,12 +9,12 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
         unsigned char *qptr;
         int scale1;
         int val;
-        unsigned int lea, leb, qdigits, offset, count;
+        unsigned int lea, leb, qdigits, offset;
         unsigned int qdig, qguess, borrow, carry;
         unsigned char *mval;
         int out_of_scale;
         unsigned int normalize;
-        size_t i, j;
+        size_t i, j, l;
         /* these variables are simply to help deduce the big O properties of the equation */
         size_t iterations = 0;
         size_t subs = 0;
@@ -85,41 +85,43 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
                 if (qguess != 0){
                         *mval = 0;
                         short_multiply(num2, leb, qguess, mval+1, base);
-                        for (i = qdig+leb, j = leb, count = 0; count < leb+1; count++, i--, j--)
+                        for (i = qdig+leb, j = leb, l = 0; l < leb+1; l++, i--, j--)
                         {
                                 val = num1[i] - mval[j] - borrow;
+				borrow = 0;
                                 if (val < 0)
                                 {
                                         val += base;
                                         borrow = 1;
                                 }
-                                else
-                                        borrow = 0;
+                                        
                                 num1[i] = val;
                                 ++subs;
                         }
                 
 		// this should be moved inside the upper conditional
-                if (borrow == 1)
-                {
+                	if (borrow != 1)
+				goto leave;
+                
                         qguess--;
-                        for (carry = 0, i = qdig+leb, j = leb-1, count = 0; count < leb; count++, i--, j--)
+                        for (carry = 0, i = qdig+leb, j = leb-1, l = 0; l < leb; l++, i--, j--)
                         {
                                 val = num1[i] + num2[j] + carry;
+				carry = 0;
                                 if (val > base -1)
                                 {
                                         val -= base;
                                         carry = 1;
                                 }
-                                else
-                                        carry = 0;
                                 num1[i] = val;
                                 ++adds;
                         }
                         if (carry == 1)
                                 num1[i] = (num1[i + 1]) % base;
-                }
+			
+                
 		}
+		leave:
                 ++iterations;
                 *qptr++ = qguess;
                 qdig++;
