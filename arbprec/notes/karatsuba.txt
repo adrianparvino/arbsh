@@ -15,3 +15,16 @@
 
 14:50 < dipole> graff: you break numbers in half
 14:50 < graff> dipole: alright thank you. let me copy that down and work with it for a while.
+
+
+
+even easier:
+
+
+14:55 < dipole> graff: ok, so you have 12345678 * 55559999 
+
+14:56 < dipole> graff: (1234*10^4 + 5678) * (5555*10^4 + 9999)
+14:56 < dipole> graff: so you expand the braces
+14:57 < dipole> 1234*5555*10^8 + (1234*9999 + 5678*5555)*10^4 + 5678*9999
+14:57 < dipole> graff: good so far?
+
