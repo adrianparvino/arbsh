@@ -1,4 +1,4 @@
-CFLAGS += -Wall -Wextra -I./include/ 
+CFLAGS += -Wall -Wextra -I./include/
 
 LDFLAGS += "-Wl,-rpath=$(PWD)" 
 
@@ -29,8 +29,8 @@ LDLIBS += -L. -l$(LIBNAME) -lm -lgmp
 all:
 
 	$(MAKE) static
-	$(MAKE) cleanobj
-	$(MAKE) dynamic
+	#$(MAKE) cleanobj
+	#$(MAKE) dynamic
 	$(MAKE) create_test
 
 static: $(OBJ)

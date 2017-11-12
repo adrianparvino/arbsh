@@ -1,6 +1,6 @@
 #include <arbprec.h>
 
-int verbosity = 0;
+
 
 void arb_free(fxdpnt *flt)
 {

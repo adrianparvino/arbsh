@@ -1,7 +1,6 @@
 #include <arbprec.h>
 
 
-
 fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
 	fxdpnt *qval;
@@ -21,6 +20,8 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	size_t adds = 0;
 	size_t hqguess = 0;
 	size_t lqguess = 0;
+	size_t baseg = 0;
+	size_t nonbaseg = 0;
 
 	lea = a->lp + b->rp;
 	scale1 = a->rp - b->rp;
@@ -77,14 +78,14 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	{
 
 		if (*num2 == num1[qdig])
-		{
-			//fprintf(stderr, "how often does this happen\n");
+		{ 
 			qguess = base -1;
+			++baseg;
 		}
 		else
-		{
-			//fprintf(stderr, "as opposed to this\n");
+		{ 
 			qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
+			++nonbaseg;
 		}
 
 		borrow = 0;
@@ -141,6 +142,8 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		fprintf(stderr, "%zu subs\n", subs);
 		fprintf(stderr, "%zu hqguess\n", hqguess);
 		fprintf(stderr, "%zu lqguess\n", lqguess);
+		fprintf(stderr, "%zu baseg\n", baseg);
+		fprintf(stderr, "%zu nonbaseg\n", nonbaseg);
 	}
 	end: 
 	arb_free_num (c); 
