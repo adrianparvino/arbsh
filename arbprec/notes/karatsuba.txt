@@ -1,0 +1,17 @@
+14:48 < graff> i see that he is breaking the number apart, multiplying it using a method such as lon-multiplication and then summating 
+               the parts
+14:49 < graff> but I am not quite sure where the number gets broken up
+
+
+
+
+
+
+14:49 < graff> an example with say: 12345 * 678 would be nice. in simple lay person terms.
+
+
+14:50 < dipole> graff: (10*a + b)(10*c + d) = 10^2*(a*c) + 10*(a*d + c*b) + b*d     You find (a+b)(c+d) then find a*c and then b*d, so 
+                you need 3 multiplications instead of 4
+
+14:50 < dipole> graff: you break numbers in half
+14:50 < graff> dipole: alright thank you. let me copy that down and work with it for a while.
