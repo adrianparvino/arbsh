@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
                 printf("needs 4 args: bignum bignum   base  scale\n");
                 return 0;
         }
-
+	verbosity = 1;
         int base = strtol(argv[3],0,  10);
         int scale =  strtol(argv[4],0,  10);
         fxdpnt *a = arb_new_num(12, scale);

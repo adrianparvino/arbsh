@@ -441,6 +441,8 @@ fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 	size_t adds = 0;
 	size_t hqguess = 0;
 	size_t lqguess = 0;
+	size_t baseg = 0;
+        size_t nonbaseg = 0;
 
 	/* Set up the divide.	Move the decimal point on n1 by n2's scale.
 	 Remember, zeros on the end of num2 are wasted effort for dividing. */
@@ -491,9 +493,15 @@ fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 	{
 		zero = 0;
 		if (len2>len1)
+		{
 			qdigits = scale+1;	/* One for the zero integer part. */
+			
+		}
 		else
+		{
 			qdigits = len1-len2+scale+1;
+		
+		}
 	}
 
 	/* Allocate and zero the storage for the quotient. */
@@ -530,9 +538,14 @@ fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 	{
 		/* Calculate the quotient digit guess. */
 		if (*n2ptr == num1[qdig])
+		{
 			qguess = base -1;
-		else
+			++baseg;
+		}
+		else{
 			qguess = (num1[qdig]*base + num1[qdig+1]) / *n2ptr;
+			++nonbaseg;
+		}
 
 		/* Test qguess -- twice */
 	
@@ -604,6 +617,8 @@ fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 		fprintf(stderr, "%zu hqguess\n", hqguess);
 		fprintf(stderr, "%zu lqguess\n", lqguess);
 		fprintf(stderr, "%d scale2\n", scale2);
+		fprintf(stderr, "%zu baseg\n", baseg);
+                fprintf(stderr, "%zu nonbaseg\n", nonbaseg);
 	}
 	end:
 	/* Clean up and return the number. */
