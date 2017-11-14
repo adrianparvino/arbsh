@@ -13,7 +13,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	unsigned char *mval;
 	int out_of_scale;
 	unsigned int normalize;
-	size_t i, j, l;
+	size_t i, j;
 	/* these variables are simply to help deduce the big O properties of the equation */
 	size_t iterations = 0;
 	size_t subs = 0;
@@ -75,25 +75,18 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		qptr = (unsigned char *) qval->number;
 
 	while (qdig <= lea+scale-leb)
-	{
-
-		if (*num2 == num1[qdig])
-		{ 
+	{ 
+		if (*num2 == num1[qdig]) 
 			qguess = base -1;
-			++baseg;
-		}
-		else
-		{ 
+		else 
 			qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
-			++nonbaseg;
-		}
 
 		borrow = 0;
 		if (qguess != 0){
 			*mval = 0;
 			short_mul2(num2, mval+1, leb, qguess, base);
-			
-			for (i = qdig+leb, j = leb, l = 0; l < leb+1; l++, i--, j--)
+
+			for (i = qdig+leb, j = leb; j+1 > 0; i--, j--)
 			{
 				val = num1[i] - mval[j] - borrow; 
 				borrow = 0;
@@ -102,17 +95,15 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 					val += base;
 					borrow = 1;
 				}
-					
 				num1[i] = val;
 				++subs;
 			}
-		
 
 			if (borrow != 1)
 				goto leave;
-		
+
 			qguess--;
-			for (carry = 0, i = qdig+leb, j = leb-1, l = 0; l < leb; l++, i--, j--)
+			for (carry = 0, i = qdig+leb, j = leb-1; i > qdig ;i--, j--)
 			{
 				val = num1[i] + num2[j] + carry;
 				carry = 0;
@@ -126,8 +117,6 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 			}
 			if (carry == 1)
 				num1[i] = (num1[i + 1]) % base;
-			
-		
 		}
 		leave:
 		++iterations;

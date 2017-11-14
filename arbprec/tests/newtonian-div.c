@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
         //a = arb_add_precision(a, scale);
         //b = arb_add_precision(b, scale);
         c = arb_newtonian_div(a, b, c, base, scale);
-        arb_print(c);
+	printf("=======\n");
+        arb_printold(c);
         return 0;
 }
    

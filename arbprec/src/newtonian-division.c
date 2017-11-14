@@ -23,12 +23,12 @@ double newton_iteration(double x, double eps)
 }
 void arb_copy(fxdpnt *dest, fxdpnt *src)
 { 
-	dest = arb_expand(dest, MIN(src->len, dest->len));
+	dest = arb_expand(dest, src->len);
 	memcpy(dest->number, src->number, src->len);
 	dest->sign = src->sign;
 	dest->lp = src->lp;
 	dest->rp = src->rp;
-	dest->len = src->len;
+	//dest->len = src->len;
 }
 
 fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
