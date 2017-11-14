@@ -77,6 +77,17 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		else 
 			qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
 
+		if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
+                {
+
+                        qguess--;
+                        if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
+                        {
+
+                                qguess--;
+                        }
+                }
+
 		borrow = 0;
 		if (qguess != 0){
 			*mval = 0;
