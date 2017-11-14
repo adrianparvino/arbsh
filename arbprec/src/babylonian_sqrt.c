@@ -6,7 +6,7 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
         size_t i = 0;
         arb_init(c);
         c = arb_expand(c, c->len + x->len);
-        memcpy(c->number, x->number, x->len * sizeof(TOYMT));
+        memcpy(c->number, x->number, x->len * sizeof(ARBT));
         c->len = x->len;
         fxdpnt *two = arb_str2fxdpnt("2");
         fxdpnt *sum = arb_expand(NULL, c->len + x->len);

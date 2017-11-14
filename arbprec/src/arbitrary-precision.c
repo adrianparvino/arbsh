@@ -57,7 +57,7 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
         width = MAX(a->len, b->len);
         c = arb_expand(c, width * 2); // fixme: this is way oversized
 
-        array = arb_malloc((width * 2) * sizeof(TOYMT)); // fixme: this is way oversized
+        array = arb_malloc((width * 2) * sizeof(ARBT)); // fixme: this is way oversized
 
         for (; i < a->len || j < b->len;c->len++, ++r){
                 mir = arb_place(a, b, &y, r) - arb_place(b, a, &z, r) + mborrow; // mirror
@@ -163,7 +163,7 @@ fxdpnt *arb_add_precision(fxdpnt *flt, size_t more)
 {
         // Increase the precision of a arb `fxdpnt'
         flt = arb_expand(flt, flt->len + more);
-        memset(flt->number + flt->len, 0, more * sizeof(TOYMT));
+        memset(flt->number + flt->len, 0, more * sizeof(ARBT));
         flt->len += more;
         return flt;
 }
@@ -347,8 +347,8 @@ fxdpnt *arb_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
         size_t width = a->len + b->len;
         size_t diff = 0;
         size_t off = 0;
-        char *mir = arb_malloc(sizeof(TOYMT) *( width + scale));
-        char *tmir = arb_malloc(sizeof(TOYMT) * width);
+        char *mir = arb_malloc(sizeof(ARBT) *( width + scale));
+        char *tmir = arb_malloc(sizeof(ARBT) * width);
         int sum = 0;
         int rec = 0;
         size_t iterations = 0;

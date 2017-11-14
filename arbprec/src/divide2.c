@@ -9,8 +9,6 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	unsigned char *qptr;
 	int scale1;
 	int val;
-	//unsigned int qdigits;
-	//unsigned int offset;
 	size_t qdigits = 0;
 	size_t offset = 0;
 	size_t lea = 0;
@@ -23,8 +21,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	unsigned int normalize;
 	size_t i = 0;
 	size_t j = 0;
-	size_t qdig = 0; 
-
+	size_t qdig = 0;
 
 	lea = a->lp + b->rp;
 	scale1 = a->rp - b->rp;

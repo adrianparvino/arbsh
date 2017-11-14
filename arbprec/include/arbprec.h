@@ -6,11 +6,12 @@
 #include <string.h>
 #include <limits.h>
 
-#define TOYMT char
+#define ARBT char
+#define UARBT unsigned char
 extern int verbosity;
 
 typedef struct {          // Toym fixed point type
-        char *number;     // The actual number
+        ARBT *number;     // The actual number
         int sign;         // Sign
         size_t lp;        // Length left of radix
         size_t rp;
@@ -19,7 +20,7 @@ typedef struct {          // Toym fixed point type
         size_t chunk;     // Allocation chunk size
 } fxdpnt;
 
-typedef struct {          // Toym floating point type
+typedef struct {          // Toym floating point type. -- not yet used
         char *number;
         int sign;
         size_t lp;

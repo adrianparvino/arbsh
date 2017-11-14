@@ -22,7 +22,7 @@ fxdpnt *arb_series(fxdpnt *x, fxdpnt *c, int type, int base, int scale)
 	fxdpnt *sum2 = arb_expand(NULL, x->len + scale);
 	fxdpnt *negx = arb_expand(NULL, x->len + scale);
 	//negx = arb_copy(negx, x);
-	memcpy(negx, x, sizeof (TOYMT) * x->len);
+	memcpy(negx, x, sizeof (ARBT) * x->len);
 	//arb_setsign(negx);
 
 	/* precompute r */
