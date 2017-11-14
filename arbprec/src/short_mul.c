@@ -13,7 +13,6 @@ void arb_short_mul(unsigned char *a, size_t i, int b, int base)
         }
 }
 
-
 void short_mul2(unsigned char *a, unsigned char *c, size_t i, int b, int base)
 {
 	/* c = a * b */
@@ -37,7 +36,6 @@ void short_mul2(unsigned char *a, unsigned char *c, size_t i, int b, int base)
 			c[i-1] = carry;
 	}
 }
-
 
 void short_multiply(unsigned char *num, int size, int digit, unsigned char *result, int base)
 {

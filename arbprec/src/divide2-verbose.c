@@ -1,30 +1,32 @@
 #include <arbprec.h>
 
 
-fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
+fxdpnt *arb_divide2_verbose(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
 	fxdpnt *qval;
-	unsigned char *num1;
-	unsigned char *num2;
+	unsigned char *num1, *num2;
 	unsigned char *qptr;
 	int scale1;
 	int val;
-	//unsigned int qdigits;
-	//unsigned int offset;
-	size_t qdigits = 0;
-	size_t offset = 0;
+	//unsigned int lea, leb, qdigits, offset;
+	unsigned int qdigits, offset;
 	size_t lea = 0;
 	size_t leb = 0;
-	unsigned int qguess;
-	unsigned int borrow;
-	unsigned int carry;
+	//unsigned int qdig, qguess, borrow, carry;
+	unsigned int qguess, borrow, carry;
 	unsigned char *mval;
 	int out_of_scale;
 	unsigned int normalize;
-	size_t i = 0;
-	size_t j = 0;
-	size_t qdig = 0; 
-
+	size_t i, j;
+	size_t qdig = 0;
+	/* these variables are simply to help deduce the big O properties of the equation */
+	size_t iterations = 0;
+	size_t subs = 0;
+	size_t adds = 0;
+	size_t hqguess = 0;
+	size_t lqguess = 0;
+	size_t baseg = 0;
+	size_t nonbaseg = 0;
 
 	lea = a->lp + b->rp;
 	scale1 = a->rp - b->rp;
@@ -95,6 +97,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 					borrow = 1;
 				}
 				num1[i] = val;
+				++subs;
 			}
 
 			if (borrow != 1)
@@ -111,15 +114,27 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 					carry = 1;
 				}
 				num1[i] = val;
+				++adds;
 			}
 			if (carry == 1)
 				num1[i] = (num1[i + 1]) % base;
 		}
 		leave:
+		++iterations;
 		*qptr++ = qguess;
 		qdig++;
 	}
 
+	if (verbosity)
+	{
+		fprintf(stderr, "%zu iterations\n", iterations);
+		fprintf(stderr, "%zu adds\n", adds);
+		fprintf(stderr, "%zu subs\n", subs);
+		fprintf(stderr, "%zu hqguess\n", hqguess);
+		fprintf(stderr, "%zu lqguess\n", lqguess);
+		fprintf(stderr, "%zu baseg\n", baseg);
+		fprintf(stderr, "%zu nonbaseg\n", nonbaseg);
+	}
 	end: 
 	arb_free_num (c); 
 	free (mval);
