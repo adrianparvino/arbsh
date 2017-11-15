@@ -1,6 +1,6 @@
 #include <arbprec.h>
 
-fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
+fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 {
 	
 	/*
@@ -8,10 +8,10 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 			U   numerator
 			V   denominator
 			D   normalization multiplicand
-			B/b base
+			B/b b
 			J/j loop counter
 			Qj  quotient or answer
-			q'  quotient guess
+			qg  quotient guess
 			^() superscript (possibly raised to power of)
 			""  "Knuth's descriptions"
 			``  `my own descriptions`
@@ -22,152 +22,144 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 			
 	*/
 	
-	fxdpnt *qval;
-	ARBT *num1;
-	ARBT *num2;
+	fxdpnt *q;
+	ARBT *u;
+	ARBT *v;
 	ARBT *mval;
 	int scale1;
 	int val;
-	size_t qdigits = 0;
+	size_t quodig = 0;
 	size_t offset = 0;
 	size_t lea = 0;
 	size_t leb = 0;
-	unsigned int qguess; 
+	unsigned int qg; 
 	unsigned int borrow;
 	unsigned int carry;
 	int out_of_scale;
-	unsigned int normalize;
+	unsigned int d;
 	size_t i = 0;
-	//size_t j = 0; // j is reserved for knuthian terms
+	size_t j = 0;
 	size_t k = 0;
 
-	size_t qdig = 0;
-
-	lea = a->lp + b->rp;
-	scale1 = a->rp - b->rp;
+	lea = num->lp + den->rp;
+	scale1 = num->rp - den->rp;
 
 	if (scale1 < scale)
 		offset = scale - scale1;
 	else
 		offset = 0;
 
-	num1 = arb_malloc((a->lp + a->rp + offset + 2) * sizeof(ARBT));
-	memset(num1, 0, (a->lp + a->rp + offset + 2) * sizeof(ARBT)); // ref 1
-	memcpy(num1 + 1, a->number, (a->lp + a->rp) * sizeof(ARBT));
+	u = arb_malloc((num->lp + num->rp + offset + 2) * sizeof(ARBT));
+	memset(u, 0, (num->lp + num->rp + offset + 2) * sizeof(ARBT)); // ref 1
+	memcpy(u + 1, num->number, (num->lp + num->rp) * sizeof(ARBT));
 
-	leb = b->lp + b->rp;
-	num2 = arb_malloc((leb+1) * sizeof(ARBT));
-	memcpy(num2, b->number, leb * sizeof(ARBT));
-	num2[leb] = 0;
+	leb = den->lp + den->rp;
+	v = arb_malloc((leb+1) * sizeof(ARBT));
+	memcpy(v, den->number, leb * sizeof(ARBT));
+	v[leb] = 0;
 
-	ARBT *freesave = num2;
-	for (;*num2 == 0;num2++,leb--);
+	ARBT *freesave = v;
+	for (;*v == 0;v++,leb--);
 
-	qdigits = scale+1;
+	quodig = scale+1;
 	out_of_scale = 0;
 	if (leb > lea+scale) 
 		out_of_scale = 1; 
 	else
 		if (!(leb>lea))
-			qdigits = lea-leb+scale+1;
+			quodig = lea-leb+scale+1;
 
-	qval = arb_new_num (qdigits-scale,scale);
-	memset (qval->number, 0, qdigits * sizeof(ARBT));
-	mval = arb_malloc ((leb+1) * sizeof(ARBT));
+	q = arb_new_num(quodig-scale,scale);
+	memset(q->number, 0, quodig * sizeof(ARBT));
+	mval = arb_malloc((leb+1) * sizeof(ARBT));
 
 	if (out_of_scale)
 		goto end;
 
 	// D1. [Normalize]
 	// Set D <-- [B/(V1 + 1)]
-	normalize = base / (num2[0] + 1);
-	// if D == 1 set U0 <-- 0 (this was set to zero at "ref 1" above)
-	if (normalize != 1){
+	d = b / (v[0] + 1);
+	// if D == 1 set U0 <-- 0 `this was set to zero at "ref 1" above`
+	if (d != 1){
 		// Set (U1U2...Um+n)B * D 
-		arb_short_mul(num1, lea+scale1+offset+1, normalize, base);
+		arb_short_mul(u, lea+scale1+offset+1, d, b);
 		// Set (V1V2...Vm+n)B * D
-		arb_short_mul(num2, leb, normalize, base);
+		arb_short_mul(v, leb, d, b);
 		// Note the introduction of a new digit U0 at the left of U1
 	}
 	// D2. [Initialize J]
 	// Set J <-- 0
-	qdig = 0;
+	j = 0;
 	// The loop on J. (UjUj+1...Uj+n)B / (VjVj+1...Vj+n)B to get a single digit of Qj
-	while (qdig <= lea+scale-leb)
+	while (j <= lea+scale-leb)
 	{
-		// D3. [Calculate q']
-		// if Uj == Vj, set q' <-- B-1
-		if (*num2 == num1[qdig]) 
-			qguess = base - 1;
-		// otherwise set q' <-- [(UjB+U(j+1))/V1]
-		else	qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
-		// Now test if V2q' > (UjB + U(j+1) - q'V1)B + U(j+2)
-		if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
-		{
-			// "if so decrease q' by 1"
-			qguess--;
-			// "and repeat the test"
-			if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
-				qguess--;
+		// D3. [Calculate qg]
+		// if Uj == Vj, set qg <-- B-1
+		if (*v == u[j]) 
+			qg = b - 1;
+		// otherwise set qg <-- [(UjB+U(j+1))/V1]
+		else	qg = (u[j]*b + u[j+1]) / *v;
+		// Now test if V2qg > (UjB + U(j+1) - qgV1)B + U(j+2) if so decrease qg by 1
+		if (v[1]*qg > (u[j]*b + u[j+1] - *v*qg)*b + u[j+2])
+		{ 
+			qg--;// "and repeat the test"
+			if (v[1]*qg > (u[j]*b + u[j+1] - *v*qg)*b + u[j+2])
+				qg--;
 		}
 		
 		// D4. [Multiply and Subtract]
 		borrow = 0;
-		if (qguess != 0){
-			// "Replace (UjU(j+1)...U(j+n))B by (UjUj+1...Uj+n)B - q'times (V1V2...Vn)"
+		if (qg != 0){
+			// "Replace (UjU(j+1)...U(j+n))B by (UjUj+1...Uj+n)B - qgtimes (V1V2...Vn)"
 			*mval = 0;
-			// `obtain` q'times (V1V2...Vn) `and put into mval`
-			short_mul2(num2, mval+1, leb, qguess, base);
-			//  (UjUj+1...Uj+n)B - q'times (V1V2...Vn)
-			for (i = qdig+leb, k = leb; k+1 > 0; i--, k--)
+			// `obtain` qgtimes (V1V2...Vn) `and put into mval`
+			short_mul2(v, mval+1, leb, qg, b);
+			//  (UjUj+1...Uj+n)B - qgtimes (V1V2...Vn)
+			for (i = j+leb, k = leb; k+1 > 0; i--, k--)
 			{
-				val = num1[i] - mval[k] - borrow; 
+				val = u[i] - mval[k] - borrow; 
 				borrow = 0;
 				if (val < 0)
 				{
-					val += base;
+					val += b;
 					borrow = 1;
 				}
-				num1[i] = val;
+				u[i] = val;
 			} 
-			// D5. [Test Remainder] Set Qj <-- q'.
+			// D5. [Test Remainder] Set Qj <-- qg.
 			// if D4 was negative go to D6, otherwise go on to D7
 			if (borrow != 1)
 				goto D7;
 			// D6. [Add back.]
 			// Decrease Qj by 1
-			qguess--;
+			qg--;
 			// Add (0V1V2...Vn) to (UjU(j+1)U(j+2)...U(j+n))b
-			for (carry = 0, i = qdig+leb, k = leb-1; i > qdig ;i--, k--)
+			for (carry = 0, i = j+leb, k = leb-1; i > j ;i--, k--)
 			{
-				val = num1[i] + num2[k] + carry;
+				val = u[i] + v[k] + carry;
 				carry = 0;
-				if (val > base -1)
+				if (val > b -1)
 				{
-					val -= base;
+					val -= b;
 					carry = 1;
 				}
-				num1[i] = val;
+				u[i] = val;
 			}
-			// A carry will occur to the left of Uj and it should be ignored since it
-			// cancels wth the borrow that occured in D4
-			if (carry == 1)
-				// `i is 0 here so it should be "canceled', possible bug -- 
-				// zeroing appears to do the same thing
-				num1[i] = (num1[i + 1]) % base; 
+			// "A carry will occur to the left of Uj and it should be ignored since it
+			// cancels wth the borrow that occured in D4" `zero it out`
+			if (carry == 1) 
+				u[i] = (u[i + 1]) % b; 
 		}
-		D7:
-		// `this appears to be a remnant of step D5`
-		qval->number[qdig] = qguess;
-		// D7. [Loop on j]
+		D7: // D7. [Loop on j] `and handle remnants of step D5`
 		// Increase J by one. now if j >= m go back to D3
-		qdig++;
+		q->number[j] = qg;
+		j++;
 	}
 
 	end: 
 	arb_free_num(c); 
 	free(mval);
-	free(num1);
+	free(u);
 	free(freesave);
-	return qval;
+	return q;
 }
