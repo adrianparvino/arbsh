@@ -35,7 +35,7 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	int out_of_scale;
 	unsigned int normalize;
 	size_t i = 0;
-	size_t j = 0; // j is reserved for knuthian terms
+	//size_t j = 0; // j is reserved for knuthian terms
 	size_t k = 0;
 
 	size_t qdig = 0;
@@ -115,9 +115,9 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 			// `obtain` q'times (V1V2...Vn) `and put into mval`
 			short_mul2(num2, mval+1, leb, qguess, base);
 			//  (UjUj+1...Uj+n)B - q'times (V1V2...Vn)
-			for (i = qdig+leb, j = leb; j+1 > 0; i--, j--)
+			for (i = qdig+leb, k = leb; k+1 > 0; i--, k--)
 			{
-				val = num1[i] - mval[j] - borrow; 
+				val = num1[i] - mval[k] - borrow; 
 				borrow = 0;
 				if (val < 0)
 				{
@@ -134,9 +134,9 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 			// Decrease Qj by 1
 			qguess--;
 			// Add (0V1V2...Vn) to (UjU(j+1)U(j+2)...U(j+n))b
-			for (carry = 0, i = qdig+leb, j = leb-1; i > qdig ;i--, j--)
+			for (carry = 0, i = qdig+leb, k = leb-1; i > qdig ;i--, k--)
 			{
-				val = num1[i] + num2[j] + carry;
+				val = num1[i] + num2[k] + carry;
 				carry = 0;
 				if (val > base -1)
 				{
