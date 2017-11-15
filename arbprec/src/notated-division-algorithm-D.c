@@ -64,6 +64,9 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 			J/j loop counter
 			Qj  quotient or answer
 			Q'  quotient guess
+			^() superscript (possibly raised to power of)
+			""  "Knuth's descriptions"
+			``  `my own descriptions`
 	*/
 
 	// D1. [Normalize]
@@ -94,12 +97,18 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 		// if so decrease q' by 1 and repeat the test -- NOTE: THIS NEEDS TO BE ADDED BACK
 			qguess--;
 		
-
+		// D4. [Multiply and Subtract]
 		borrow = 0;
 		if (qguess != 0){
+			// "Replace (UjUj+1...Uj+n)B by (UjUj+1...Uj+n)B - q'times (V1V2...Vn)"
+			// "The digits (UjUj+1...Uj+n) should be kept positive" `so use a temp val`
+			// "if the result of this step was negative (UjUj+1...Uj+n)B is actually negative"
+			//  "(UjUj+1...Uj+n)B should be left as the true value plus B^(n+1) as the B's "
+			// "complement of the true value, and a "borrow" to the left should be remembered"
 			*mval = 0;
-			short_mul2(num2, mval+1, leb, qguess, base); // +qdig is a new optimization -cmg
-
+			// `obtain` q'times (V1V2...Vn) `and put into mval`
+			short_mul2(num2, mval+1, leb, qguess, base);
+			//  (UjUj+1...Uj+n)B - q'times (V1V2...Vn)
 			for (i = qdig+leb, j = leb; j+1 > 0; i--, j--)
 			{
 				val = num1[i] - mval[j] - borrow; 
