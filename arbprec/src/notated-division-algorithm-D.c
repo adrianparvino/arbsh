@@ -62,7 +62,8 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 			D   normalization multiplicand
 			B/b base
 			J/j loop counter
-			Q   quotient or answer
+			Qj  quotient or answer
+			Q'  quotient guess
 	*/
 
 	// D1. [Normalize]
@@ -74,20 +75,25 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 		arb_short_mul(num1, lea+scale1+offset+1, normalize, base);
 		// Set (V1V2...Vm+n)B * D
 		arb_short_mul(num2, leb, normalize, base);
+		// Note the introduction of a new digit U0 at the left of U1
 	}
 	// D2. [Initialize J]
 	// Set J <-- 0
 	qdig = 0;
 	// The loop on J. (UjUj+1...Uj+n)B / (VjVj+1...Vj+n)B to get a single digit of Qj
 	while (qdig <= lea+scale-leb)
-	{ 
+	{
+		// D3. [Calculate q']
+		// if Uj == Vj, set q' <-- B-1
 		if (*num2 == num1[qdig]) 
 			qguess = base - 1;
-		else 
-			qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
-
-		if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2]) 
+		// otherwise set q' <-- [(UjB+U(j+1))/V1]
+		else	qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
+		// Now test if V2q' > (UjB + U(j+1) - q'V1)B + U(j+2)
+		if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
+		// if so decrease q' by 1 and repeat the test -- NOTE: THIS NEEDS TO BE ADDED BACK
 			qguess--;
+		
 
 		borrow = 0;
 		if (qguess != 0){
