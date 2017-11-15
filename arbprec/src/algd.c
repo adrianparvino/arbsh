@@ -4,7 +4,7 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
 	
 	/*
-		terms:
+		Explanation of terms in comments:
 			U   numerator
 			V   denominator
 			D   normalization multiplicand
@@ -15,7 +15,10 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 			^() superscript (possibly raised to power of)
 			""  "Knuth's descriptions"
 			``  `my own descriptions`
-
+		The actual code reflects these variables names to some extent.
+		However, because array subscripting did not have to be implied
+		in the code I was able to more closely mirror the actual 
+		variable names that Knuth used in the informative text.
 			
 	*/
 	
@@ -100,17 +103,18 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		else	qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
 		// Now test if V2q' > (UjB + U(j+1) - q'V1)B + U(j+2)
 		if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
-		// if so decrease q' by 1 and repeat the test -- NOTE: THIS NEEDS TO BE ADDED BACK
+		{
+			// "if so decrease q' by 1"
 			qguess--;
+			// "and repeat the test"
+			if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
+				qguess--;
+		}
 		
 		// D4. [Multiply and Subtract]
 		borrow = 0;
 		if (qguess != 0){
-			// "Replace (UjUj+1...Uj+n)B by (UjUj+1...Uj+n)B - q'times (V1V2...Vn)"
-			// "The digits (UjUj+1...Uj+n) should be kept positive" `so use a temp val`
-			// "if the result of this step was negative (UjUj+1...Uj+n)B is actually negative"
-			//  "(UjUj+1...Uj+n)B should be left as the true value plus B^(n+1) as the B's "
-			// "complement of the true value, and a "borrow" to the left should be remembered"
+			// "Replace (UjU(j+1)...U(j+n))B by (UjUj+1...Uj+n)B - q'times (V1V2...Vn)"
 			*mval = 0;
 			// `obtain` q'times (V1V2...Vn) `and put into mval`
 			short_mul2(num2, mval+1, leb, qguess, base);
@@ -125,11 +129,11 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 					borrow = 1;
 				}
 				num1[i] = val;
-			}
-			// D5. [Test Remainder] Set Qj <-- q'. `this step appears to be misordered`
-			// If the result of of D4 was negative go to D6, otherwise go on to D7
+			} 
+			// D5. [Test Remainder] Set Qj <-- q'.
+			// if D4 was negative go to D6, otherwise go on to D7
 			if (borrow != 1)
-				goto leave;
+				goto D7;
 			// D6. [Add back.]
 			// Decrease Qj by 1
 			qguess--;
@@ -152,7 +156,7 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 				// zeroing appears to do the same thing
 				num1[i] = (num1[i + 1]) % base; 
 		}
-		leave:
+		D7:
 		// `this appears to be a remnant of step D5`
 		qval->number[qdig] = qguess;
 		// D7. [Loop on j]
