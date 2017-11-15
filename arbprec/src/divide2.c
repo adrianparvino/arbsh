@@ -5,7 +5,6 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	fxdpnt *qval;
 	unsigned char *num1;
 	unsigned char *num2;
-	unsigned char *qptr;
 	int scale1;
 	int val;
 	size_t qdigits = 0;
@@ -57,7 +56,6 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	if (out_of_scale)
 		goto end;
 
-
 	normalize = base / ((int)num2[0] + 1);
 	if (normalize != 1){
 		arb_short_mul(num1, lea+scale1+offset+1, normalize, base);
@@ -65,10 +63,6 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	}
 
 	qdig = 0;
-	if (leb > lea)
-		qptr = (unsigned char *) qval->number+leb-lea;
-	else
-		qptr = (unsigned char *) qval->number;
 
 	while (qdig <= lea+scale-leb)
 	{ 
@@ -116,8 +110,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 				num1[i] = (num1[i + 1]) % base;
 		}
 		leave:
-		//*qptr++ = qguess;
-		qptr[qdig] = qguess;
+		qval->number[qdig] = qguess;
 		qdig++;
 	}
 
