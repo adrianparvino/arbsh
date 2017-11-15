@@ -53,6 +53,9 @@ void arb_print(fxdpnt *);
 void arb_free(fxdpnt *);
 void arb_error(char *);
 
+size_t rl(fxdpnt *);
+
+
 
 int arb_highbase(int);
 int arb_place(fxdpnt *, fxdpnt *, size_t *, size_t);
