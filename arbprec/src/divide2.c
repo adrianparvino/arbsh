@@ -30,13 +30,13 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	else
 		offset = 0;
 
-	num1 = arb_malloc(a->lp+a->rp+offset+2); // fix this +2
-	memset (num1, 0, a->lp+a->rp+offset+2);
-	memcpy (num1+1, a->number, a->lp+a->rp);
+	num1 = arb_malloc(a->lp + a->rp + offset + 2); // fix this +2
+	memset(num1, 0, a->lp + a->rp + offset + 2);
+	memcpy(num1 + 1, a->number, a->lp + a->rp);
 
 	leb = b->lp + b->rp;
-	num2 = arb_malloc (leb+1);
-	memcpy (num2, b->number, leb);
+	num2 = arb_malloc(leb+1);
+	memcpy(num2, b->number, leb);
 	num2[leb] = 0;
 
 	unsigned char *freesave = num2;
@@ -83,7 +83,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		borrow = 0;
 		if (qguess != 0){
 			*mval = 0;
-			short_mul2(num2 + qdig, mval+1, leb, qguess, base); // +qdig is a new optimization -cmg
+			short_mul2(num2, mval+1, leb, qguess, base); // +qdig is a new optimization -cmg
 
 			for (i = qdig+leb, j = leb; j+1 > 0; i--, j--)
 			{
