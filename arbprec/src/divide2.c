@@ -29,13 +29,13 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	else
 		offset = 0;
 
-	num1 = arb_malloc(a->lp + a->rp + offset + 2); // fix this +2
-	memset(num1, 0, a->lp + a->rp + offset + 2);
-	memcpy(num1 + 1, a->number, a->lp + a->rp);
+	num1 = arb_malloc((a->lp + a->rp + offset + 2) * sizeof(ARBT)); // fix this +2
+	memset(num1, 0, (a->lp + a->rp + offset + 2) * sizeof(ARBT));
+	memcpy(num1 + 1, a->number, (a->lp + a->rp) * sizeof(ARBT));
 
 	leb = b->lp + b->rp;
-	num2 = arb_malloc(leb+1);
-	memcpy(num2, b->number, leb);
+	num2 = arb_malloc((leb+1) * sizeof(ARBT));
+	memcpy(num2, b->number, leb * sizeof(ARBT));
 	num2[leb] = 0;
 
 	ARBT *freesave = num2;
@@ -49,9 +49,9 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		if (!(leb>lea))
 			qdigits = lea-leb+scale+1;
 
-	qval = arb_new_num (qdigits-scale,scale);
-	memset (qval->number, 0, qdigits);
-	mval = arb_malloc (leb+1);
+	qval = arb_new_num (qdigits-scale,scale); // needs sizeof?
+	memset (qval->number, 0, qdigits * sizeof(ARBT));
+	mval = arb_malloc ((leb+1) * sizeof(ARBT));
 
 	if (out_of_scale)
 		goto end;
@@ -115,9 +115,9 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	}
 
 	end: 
-	arb_free_num (c); 
-	free (mval);
-	free (num1);
+	arb_free_num(c); 
+	free(mval);
+	free(num1);
 	free(freesave);
 	return qval;
 }
