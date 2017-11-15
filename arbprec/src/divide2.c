@@ -1,6 +1,5 @@
 #include <arbprec.h>
 
-
 fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
 	fxdpnt *qval;
@@ -58,7 +57,8 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	if (out_of_scale)
 		goto end;
 
-	normalize = base / ((int)*num2 + 1);
+
+	normalize = base / ((int)num2[0] + 1);
 	if (normalize != 1){
 		arb_short_mul(num1, lea+scale1+offset+1, normalize, base);
 		arb_short_mul(num2, leb, normalize, base);
@@ -73,25 +73,17 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	while (qdig <= lea+scale-leb)
 	{ 
 		if (*num2 == num1[qdig]) 
-			qguess = base -1;
+			qguess = base - 1;
 		else 
 			qguess = (num1[qdig]*base + num1[qdig+1]) / *num2;
 
-		if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
-                {
-
-                        qguess--;
-                        if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2])
-                        {
-
-                                qguess--;
-                        }
-                }
+		if (num2[1]*qguess > (num1[qdig]*base + num1[qdig+1] - *num2*qguess)*base + num1[qdig+2]) 
+			qguess--;
 
 		borrow = 0;
 		if (qguess != 0){
 			*mval = 0;
-			short_mul2(num2, mval+1, leb, qguess, base);
+			short_mul2(num2 + qdig, mval+1, leb, qguess, base); // +qdig is a new optimization -cmg
 
 			for (i = qdig+leb, j = leb; j+1 > 0; i--, j--)
 			{
