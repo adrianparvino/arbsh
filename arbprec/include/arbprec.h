@@ -73,6 +73,6 @@ fxdpnt *arb_divide2(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
 fxdpnt *arb_newtonian_div(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
 void arb_printold(fxdpnt *flt);
 void short_multiply(unsigned char *, int, int, unsigned char *, int);
-void short_mul2(char *, char *, size_t, int, int);
-void arb_short_mul(char *, size_t, int, int);
+void short_mul2(ARBT *, ARBT *, size_t, int, int);
+void arb_short_mul(ARBT *, size_t, int, int);
 
