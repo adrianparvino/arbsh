@@ -116,7 +116,8 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 				num1[i] = (num1[i + 1]) % base;
 		}
 		leave:
-		*qptr++ = qguess;
+		//*qptr++ = qguess;
+		qptr[qdig] = qguess;
 		qdig++;
 	}
 
