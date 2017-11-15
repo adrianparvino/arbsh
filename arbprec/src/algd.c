@@ -35,7 +35,9 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	int out_of_scale;
 	unsigned int normalize;
 	size_t i = 0;
-	size_t j = 0;
+	size_t j = 0; // j is reserved for knuthian terms
+	size_t k = 0;
+
 	size_t qdig = 0;
 
 	lea = a->lp + b->rp;
