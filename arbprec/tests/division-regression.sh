@@ -1,10 +1,20 @@
-./tests/division-test $1 $2 $3 $4 >log
+#!/bin/sh
 
-./tests/2division $1 $2 $3 $4> log2
+#extra="valgrind"
+#extra="time"
+extra=""
 
-diff log log2
+rm log log2
 
-if [ -s log -a -s log2 ]
-then	echo "control files are equal and non empty"
-else	echo "control files ere empty, something went wrong"
+$extra ./tests/division-test $1 $2 $3 $4 >log
+
+$extra ./tests/2division $1 $2 $3 $4> log2
+
+if diff log log2 
+then 	if [ -s log -a -s log2 ]
+	then	printf "%s\n" "control files are equal and non empty."
+	else	printf "%s\n" "control files ere equal, but empty. something went wrong!"
+	fi
+else	printf "%s\n" "The diff failed!"
 fi
+

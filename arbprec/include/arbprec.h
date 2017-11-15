@@ -6,31 +6,27 @@
 #include <string.h>
 #include <limits.h>
 
+/* defines */
 #define ARBT char
 #define UARBT unsigned char
+#define MAX(a,b)      ((a)>(b)?(a):(b))
+#define MIN(a,b)      ((a)>(b)?(b):(a))
+
+/* globals */
 extern int verbosity;
 
+/* structures */
 typedef struct {          // Toym fixed point type
         ARBT *number;     // The actual number
         int sign;         // Sign
         size_t lp;        // Length left of radix
-        size_t rp;
+        size_t rp;        // Length right of radix
         size_t len;       // Length of number (count of digits / limbs)
         size_t allocated; // Length of allocated memory
-        size_t chunk;     // Allocation chunk size
+        size_t chunk;     // Allocation chunk size (just avoids globals(
 } fxdpnt;
 
-typedef struct {          // Toym floating point type. -- not yet used
-        char *number;
-        int sign;
-        size_t lp;
-        size_t exp;       // Exponent
-        size_t allocated;
-} fltpnt;
-
-#define MAX(a,b)      ((a)>(b)?(a):(b))
-#define MIN(a,b)      ((a)>(b)?(b):(a))
-
+/* function prototypes */
 fxdpnt *arb_div(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_mul(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_add_inter(fxdpnt *, fxdpnt *, fxdpnt *, int);
@@ -44,7 +40,6 @@ fxdpnt *arb_alloc(size_t);
 fxdpnt *arb_div3(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base);
 void *arb_malloc(size_t);
 void *arb_realloc(void *, size_t);
-
 void arb_reverse(ARBT *, size_t);
 void arb_flipsign(fxdpnt *);
 void arb_setsign(fxdpnt *, fxdpnt *, fxdpnt *);
@@ -52,19 +47,13 @@ void arb_init(fxdpnt *);
 void arb_print(fxdpnt *);
 void arb_free(fxdpnt *);
 void arb_error(char *);
-
 size_t rl(fxdpnt *);
-
-
-
 int arb_highbase(int);
 int arb_place(fxdpnt *, fxdpnt *, size_t *, size_t);
 int arb_compare(fxdpnt *a, fxdpnt *b, int base);
 fxdpnt *arb_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale);
 fxdpnt *arb_rightshift(fxdpnt *a, size_t n, int faux);
 fxdpnt *arb_leftshift(fxdpnt *a, size_t n);
-
-
 void arb_free(fxdpnt *flt);
 fxdpnt *arb_new_num (int, int);
 void arb_free_num (fxdpnt *num);

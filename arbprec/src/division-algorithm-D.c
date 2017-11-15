@@ -29,7 +29,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	else
 		offset = 0;
 
-	num1 = arb_malloc((a->lp + a->rp + offset + 2) * sizeof(ARBT)); // fix this +2
+	num1 = arb_malloc((a->lp + a->rp + offset + 2) * sizeof(ARBT));
 	memset(num1, 0, (a->lp + a->rp + offset + 2) * sizeof(ARBT));
 	memcpy(num1 + 1, a->number, (a->lp + a->rp) * sizeof(ARBT));
 
