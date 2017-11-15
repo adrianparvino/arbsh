@@ -3,18 +3,21 @@
 fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
 	fxdpnt *qval;
-	unsigned char *num1;
-	unsigned char *num2;
+	//unsigned char *num1;
+	//unsigned char *num2;
+	char *num1;
+	char *num2;
 	int scale1;
 	int val;
 	size_t qdigits = 0;
 	size_t offset = 0;
 	size_t lea = 0;
 	size_t leb = 0;
-	unsigned int qguess;
+	unsigned int qguess; // the idea that int is good val for holding carried chars is ??
 	unsigned int borrow;
 	unsigned int carry;
-	unsigned char *mval;
+	//unsigned char *mval;
+	char *mval;
 	int out_of_scale;
 	unsigned int normalize;
 	size_t i = 0;
@@ -38,7 +41,8 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	memcpy(num2, b->number, leb);
 	num2[leb] = 0;
 
-	unsigned char *freesave = num2;
+	//unsigned char *freesave = num2;
+	char *freesave = num2;
 	for (;*num2 == 0;num2++,leb--);
 
 	qdigits = scale+1;
@@ -56,7 +60,8 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	if (out_of_scale)
 		goto end;
 
-	normalize = base / ((int)num2[0] + 1);
+	//normalize = base / ((int)num2[0] + 1);
+	normalize = base / (num2[0] + 1);
 	if (normalize != 1){
 		arb_short_mul(num1, lea+scale1+offset+1, normalize, base);
 		arb_short_mul(num2, leb, normalize, base);
