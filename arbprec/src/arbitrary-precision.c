@@ -125,7 +125,7 @@ fxdpnt *arb_alloc(size_t len)
 {
         // Allocate the basic requirements of a arb `fxdpnt'
         fxdpnt *ret = arb_malloc(sizeof(fxdpnt));
-        ret->number = arb_malloc(sizeof(int) * len);
+        ret->number = arb_malloc(sizeof(ARBT) * len);
         ret->sign = '+';
         ret->lp = 0;
         ret->allocated = len;
@@ -146,7 +146,7 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 {
         // Enlarge or create a fxdpnt
         if (flt == NULL){
-                flt = arb_alloc(request);
+                flt = arb_alloc(request); // do not use sizeof here, it's in arb_alloc
 		flt->allocated = request;
         } else if (request > flt->allocated){
                 flt->allocated = (request + flt->chunk);
@@ -164,9 +164,9 @@ fxdpnt *arb_new_num (int length, int scale)
 	ret->rp = scale;
 	ret->allocated = 0;
 	ret->len = ret->lp + ret->rp;
-	ret->number = arb_malloc(length+scale);
+	ret->number = arb_malloc((length+scale) * sizeof(ARBT));
 	ret->chunk = 4;
-	memset(ret->number, 0, length+scale);
+	memset(ret->number, 0, (length+scale) * sizeof(ARBT));
 	return ret;
 }
 

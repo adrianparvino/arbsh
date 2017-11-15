@@ -45,7 +45,7 @@ fxdpnt *arb_div3(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base);
 void *arb_malloc(size_t);
 void *arb_realloc(void *, size_t);
 
-void arb_reverse(char *, size_t);
+void arb_reverse(ARBT *, size_t);
 void arb_flipsign(fxdpnt *);
 void arb_setsign(fxdpnt *, fxdpnt *, fxdpnt *);
 void arb_init(fxdpnt *);

@@ -23,7 +23,7 @@ int arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
         return 0;
 }
 
-void arb_reverse(char *x, size_t lim)
+void arb_reverse(ARBT *x, size_t lim)
 {
         size_t i = 0, half = lim / 2;
         int swap = 0;
