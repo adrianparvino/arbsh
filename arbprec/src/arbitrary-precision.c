@@ -1,7 +1,5 @@
 #include <arbprec.h>
 
-
-
 void arb_free(fxdpnt *flt)
 {
         if (flt->number)
@@ -24,10 +22,9 @@ void arb_printold(fxdpnt *flt)
         fflush(stdout);
 }
 
-
 fxdpnt *arb_add_precision(fxdpnt *flt, size_t more)
 {
-        // Increase the precision of a arb `fxdpnt'
+        // Increase the precision of an arb `fxdpnt'
         flt = arb_expand(flt, flt->len + more);
         memset(flt->number + flt->len, 0, more * sizeof(ARBT));
         flt->len += more;
@@ -153,7 +150,7 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 		flt->allocated = request;
         } else if (request > flt->allocated){
                 flt->allocated = (request + flt->chunk);
-                flt->number = arb_realloc(flt->number, flt->allocated * sizeof(int));
+                flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
         }
         return flt;
 }
@@ -161,7 +158,6 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 fxdpnt *arb_new_num (int length, int scale)
 {
 	fxdpnt *ret;
-
 	ret = arb_malloc(sizeof(fxdpnt));
 	ret->sign = '+';
 	ret->lp = length;
