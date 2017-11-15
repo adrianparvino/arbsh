@@ -142,11 +142,15 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 			// A carry will occur to the left of Uj and it should be ignored since it
 			// cancels wth the borrow that occured in D4
 			if (carry == 1)
-				// `i is 0 here so it should be "canceled', possible bug -- try zeroing
+				// `i is 0 here so it should be "canceled', possible bug -- 
+				// zeroing appears to do the same thing
 				num1[i] = (num1[i + 1]) % base; 
 		}
 		leave:
+		// `this appears to be a remnant of step D5`
 		qval->number[qdig] = qguess;
+		// D7. [Loop on j]
+		// Increase J by one. now if j >= m go back to D3
 		qdig++;
 	}
 
