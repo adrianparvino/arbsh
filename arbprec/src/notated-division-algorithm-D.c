@@ -124,8 +124,10 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 			// If the result of of D4 was negative go to D6, otherwise go on to D7
 			if (borrow != 1)
 				goto leave;
-
+			// D6. [Add back.]
+			// Decrease Qj by 1
 			qguess--;
+			// Add (0V1V2...Vn) to (UjU(j+1)U(j+2)...U(j+n))b
 			for (carry = 0, i = qdig+leb, j = leb-1; i > qdig ;i--, j--)
 			{
 				val = num1[i] + num2[j] + carry;
@@ -137,8 +139,11 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 				}
 				num1[i] = val;
 			}
+			// A carry will occur to the left of Uj and it should be ignored since it
+			// cancels wth the borrow that occured in D4
 			if (carry == 1)
-				num1[i] = (num1[i + 1]) % base;
+				// `i is 0 here so it should be "canceled', possible bug -- try zeroing
+				num1[i] = (num1[i + 1]) % base; 
 		}
 		leave:
 		qval->number[qdig] = qguess;

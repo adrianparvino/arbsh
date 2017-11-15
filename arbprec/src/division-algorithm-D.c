@@ -12,7 +12,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	size_t offset = 0;
 	size_t lea = 0;
 	size_t leb = 0;
-	unsigned int qguess; // the idea that int is good val for holding carried ARBTs is ??
+	unsigned int qguess; 
 	unsigned int borrow;
 	unsigned int carry;
 	int out_of_scale;
@@ -77,7 +77,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		borrow = 0;
 		if (qguess != 0){
 			*mval = 0;
-			short_mul2(num2, mval+1, leb, qguess, base); // +qdig is a new optimization -cmg
+			short_mul2(num2, mval+1, leb, qguess, base);
 
 			for (i = qdig+leb, j = leb; j+1 > 0; i--, j--)
 			{
@@ -90,7 +90,7 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 				}
 				num1[i] = val;
 			}
-
+			
 			if (borrow != 1)
 				goto leave;
 
@@ -107,7 +107,8 @@ fxdpnt *arb_divide2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 				num1[i] = val;
 			}
 			if (carry == 1)
-				num1[i] = (num1[i + 1]) % base;
+				num1[i] = 0; // this appeared to be a flaw
+				//num1[i] = (num1[i + 1]) % base;
 		}
 		leave:
 		qval->number[qdig] = qguess;
