@@ -83,6 +83,12 @@ create_uninstall:
 	echo "rm $(INCLUDES_TARG)" >> uninstall
 	echo "rm $(DESTDIR)/lib/$(STATLIB)" >> uninstall
 	echo "rm $(DESTDIR)/lib/$(DYNLIB)" >> uninstall
+
+test:
+
+	-$(MAKE) clean
+	-$(MAKE) 
+	-./tests/regressions.sh
 	
 uninstall:
 
