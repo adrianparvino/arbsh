@@ -1,14 +1,15 @@
-#!/bin/sh
+
 
 #extra="valgrind"
-#extra="time"
-extra=""
+extra="time"
+#extra=""
 
 rm log log2
 
-$extra ./tests/division-test $1 $2 $3 $4 >log
+./control/tests/division-test $1 $2 $3 $4 >log
 
-$extra ./tests/2division $1 $2 $3 $4> log2
+#$extra ./tests/2division $1 $2 $3 $4> log2
+./tests/algd $1 $2 $3 $4> log2
 
 if diff log log2 
 then 	if [ -s log -a -s log2 ]

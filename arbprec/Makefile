@@ -24,7 +24,7 @@ INCLUDES_TARG = $(shell for i in include/$(PREFIX)/*.h ; do echo $(DESTDIR)/$$i 
 
 TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
 
-LDLIBS += -L. -l$(LIBNAME) -lm -lgmp
+LDLIBS += -L. -l$(LIBNAME)
 
 all:
 
@@ -60,6 +60,7 @@ cleanobj:
 
 clean:
 	$(MAKE) cleanobj
+	$(MAKE) -C control clean
 	$(RM) $(DYNLIB) 
 	$(RM) $(STATLIB) 
 	$(RM) $(TEST_OBJ)
@@ -88,6 +89,8 @@ test:
 
 	-$(MAKE) clean
 	-$(MAKE) 
+	-CFLAGS="" $(MAKE) -C control clean
+	-CFLAGS="" $(MAKE) -C control
 	-./tests/regressions.sh
 	
 uninstall:

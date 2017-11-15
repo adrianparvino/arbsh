@@ -7,21 +7,6 @@ void arb_free(fxdpnt *flt)
         free(flt);
 }
 
-void arb_printold(fxdpnt *flt)
-{
-        size_t i = 0;
-
-        if (flt->sign == '-')
-                putchar(flt->sign);
-        for (i = 0; i < flt->len ; ++i){
-                if (flt->lp == i)
-                        putchar('.');
-                putchar(arb_highbase((flt->number[i])));
-        }
-        putchar('\n');
-        fflush(stdout);
-}
-
 fxdpnt *arb_add_precision(fxdpnt *flt, size_t more)
 {
         // Increase the precision of an arb `fxdpnt'
@@ -30,46 +15,11 @@ fxdpnt *arb_add_precision(fxdpnt *flt, size_t more)
         flt->len += more;
         return flt;
 }
-size_t rr(fxdpnt *flt)
-{
-        /* Right hand radix position */
-        return flt->len - flt->lp;
-}
-
-size_t rl(fxdpnt *flt)
-{
-        /* Left hand radix position */
-        return flt->lp;
-}
-
 
 void arb_init(fxdpnt *flt)
 {
         flt->sign = '+';
         flt->len = flt->lp = 0;
-}
-
-void arb_flipsign(fxdpnt *flt)
-{
-        if (flt->sign == '+')
-                flt->sign = '-';
-        else if (flt->sign == '-')
-                flt->sign = '+';
-}
-
-void arb_setsign(fxdpnt *a, fxdpnt *b, fxdpnt *c)
-{
-        arb_init(c);
-        if (a->sign == '-')
-                arb_flipsign(c);
-        if (b->sign == '-')
-                arb_flipsign(c);
-}
-
-void verbose(char *msg)
-{
-	if (verbosity)
-		fprintf(stderr, "%s\n", msg);
 }
 
 int arb_highbase(int a)
@@ -218,4 +168,3 @@ fxdpnt *arb_str2fxdpnt(const char *str)
 
         return ret;
 }
-

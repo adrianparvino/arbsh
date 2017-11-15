@@ -4,7 +4,7 @@ LDFLAGS += "-Wl,-rpath=$(PWD)"
 
 OBJ = $(shell for i in src/*.c ; do echo $${i%.c}.o ; done )
 
-LIBNAME = arbprec
+LIBNAME = control
 
 STATLIB = lib$(LIBNAME).a
 

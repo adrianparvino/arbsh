@@ -151,7 +151,7 @@ fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 	return qval;
 }
 
-#include <arbprec.h>
+
 
 void short_multiply(unsigned char *num, int size, int digit, unsigned char *result, int base)
 {

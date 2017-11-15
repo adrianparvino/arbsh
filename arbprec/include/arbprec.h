@@ -64,4 +64,4 @@ void arb_printold(fxdpnt *flt);
 void short_multiply(unsigned char *, int, int, unsigned char *, int);
 void short_mul2(ARBT *, ARBT *, size_t, int, int);
 void arb_short_mul(ARBT *, size_t, int, int);
-
+fxdpnt *arb_alg_d(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
