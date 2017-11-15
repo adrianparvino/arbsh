@@ -15,8 +15,10 @@ int main(int argc, char *argv[])
         fxdpnt *c = arb_new_num(12, scale);
         a = arb_str2fxdpnt(argv[1]);
         b = arb_str2fxdpnt(argv[2]);
-        c = arb_divide2(a, b, c, base, scale);
+        //a = arb_add_precision(a, scale);
+        //b = arb_add_precision(b, scale);
+        c = arb_divide(a, b, c, base, scale);
         arb_print(c);
         return 0;
 }
-
+   
