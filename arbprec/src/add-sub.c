@@ -1,0 +1,135 @@
+#include <arbprec.h>
+
+int arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
+{
+        /* many arbitrary precision implementations go through four steps
+           instead of "crossing over the values" like one does on pen and paper.
+           In theory this should be slower, however, in my simple test runs
+            it has matched the speed of the "four step" techniques.
+        */
+        int temp = 0;
+        // exhaust the difference between the right hand sides of the radi
+        if ((a->len - a->lp) < (b->len - b->lp))
+                if( (b->len - b->lp) - (a->len - a->lp) > r)
+                        return 0;
+        // offset mechanism for varying number lengths
+        if (*cnt < a->len){
+                temp = a->number[a->len - *cnt - 1];
+                (*cnt)++; // not ideal but better than a seperate ret struct
+                return temp;
+        }
+        (*cnt)++;
+        // exhaust the difference between the left hand sides of the radi
+        return 0;
+}
+
+void arb_reverse(char *x, size_t lim)
+{
+        size_t i = 0, half = lim / 2;
+        int swap = 0;
+        for (;i < half; i++){
+                swap = x[i];
+                x[i] = x[lim - i - 1];
+                x[lim - i - 1] = swap;
+        }
+}
+
+fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+        size_t width = 0, i = 0, j = 0, r = 0;
+        int sum = 0, borrow = 0;
+        int mborrow = -1; // mirror borrow must be -1
+        int mir = 0;
+        size_t z = 0, y = 0; // dummy variables for the mirror
+        char *array;
+
+        c->lp = MAX(a->lp, b->lp);
+        width = MAX(a->len, b->len);
+        c = arb_expand(c, width * 2); // fixme: this is way oversized
+
+        array = arb_malloc((width * 2) * sizeof(ARBT)); // fixme: this is way oversized
+
+        for (; i < a->len || j < b->len;c->len++, ++r){
+                mir = arb_place(a, b, &y, r) - arb_place(b, a, &z, r) + mborrow; // mirror
+                sum = arb_place(a, b, &i, r) - arb_place(b, a, &j, r) + borrow;
+
+                borrow = 0;
+                if(sum < 0){
+                        borrow = -1;
+                        sum += base;
+                }
+                c->number[c->len] = sum;
+                // maintain a mirror for subtractions that cross the zero threshold
+                y = i;
+                z = j;
+                mborrow = 0;
+                if(mir < 0){
+                        mborrow = -1;
+                        mir += base;
+                }
+                array[c->len] = (base-1) - mir;
+        }
+        // a left over borrow indicates that the zero threshold was crossed
+        if (borrow == -1){
+                // swapping pointers would make this faster
+                memcpy(c->number, array, c->len);
+                arb_flipsign(c);
+        }
+        free(array);
+        arb_reverse(c->number, c->len);
+        return c;
+}
+
+fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+        arb_init(c);
+        if (a->sign == '-' && b->sign == '-')
+                arb_flipsign(c);
+        else if (a->sign == '-')
+                return c = arb_sub_inter(b, a, c, base);
+        else if (b->sign == '-')
+                return c = arb_sub_inter(a, b, c, base);
+        return c = arb_add_inter(a, b, c, base);
+}
+
+fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+        arb_init(c);
+        if (a->sign == '-' && b->sign == '-')
+                arb_flipsign(c);
+        else if (a->sign == '-'){
+                arb_flipsign(c);
+                return c = arb_add_inter(a, b, c, base);
+        }
+        else if (b->sign == '-' || a->sign == '-')
+                return c = arb_add_inter(a, b, c, base);
+        return c = arb_sub_inter(a, b, c, base);
+}
+
+fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+        size_t width = 0, i = 0, j = 0, r = 0;
+        int sum = 0, carry = 0;
+
+        c->lp = MAX(a->lp, b->lp);
+        width = MAX(a->len, b->len);
+        c = arb_expand(c, width * 2);
+
+        for (; i < a->len || j < b->len;c->len++, ++r){
+                sum = arb_place(a, b, &i, r) + arb_place(b, a, &j, r) + carry;
+                carry = 0;
+                if(sum >= base){
+                        carry = 1;
+                        sum -= base;
+                }
+                c->number[c->len] = sum;
+        }
+        if (carry){
+                c->number[c->len++] = 1;
+                c->lp += 1;
+        }
+
+        arb_reverse(c->number, c->len);
+        return c;
+}
+
