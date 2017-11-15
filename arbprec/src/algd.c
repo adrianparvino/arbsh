@@ -98,13 +98,13 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		if (*v == u[j]) 
 			qg = b - 1;
 		// otherwise set qg <-- [(UjB+U(j+1))/V1]
-		else	qg = (u[j]*b + u[j+1]) / *v;
+		else	qg = (u[j]*b + u[j+1]) / *v; // FIXME: use v[0]
 		// Now test if V2qg > (UjB + U(j+1) - qgV1)B + U(j+2) if so decrease qg by 1
-		if (v[1]*qg > (u[j]*b + u[j+1] - *v*qg)*b + u[j+2])
+		if (v[1]*qg > (u[j]*b + u[j+1] - *v*qg)*b + u[j+2]) // FIXME: use v[0]
 		{ 
-			qg--;// "and repeat the test"
-			if (v[1]*qg > (u[j]*b + u[j+1] - *v*qg)*b + u[j+2])
-				qg--;
+			qg = qg - 1;;// "and repeat the test"
+			if (v[1]*qg > (u[j]*b + u[j+1] - *v*qg)*b + u[j+2]) // FIXME: use v[0]
+				qg = qg - 1;
 		}
 		
 		// D4. [Multiply and Subtract]
@@ -132,7 +132,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 				goto D7;
 			// D6. [Add back.]
 			// Decrease Qj by 1
-			qg--;
+			qg = qg - 1;
 			// Add (0V1V2...Vn) to (UjU(j+1)U(j+2)...U(j+n))b
 			for (carry = 0, i = j+leb, k = leb-1; i > j ;i--, k--)
 			{
