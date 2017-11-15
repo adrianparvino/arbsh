@@ -15,7 +15,10 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 			^() superscript (possibly raised to power of)
 			""  "Knuth's descriptions"
 			``  `my own descriptions`
+
+			
 	*/
+	
 	fxdpnt *qval;
 	ARBT *num1;
 	ARBT *num2;
