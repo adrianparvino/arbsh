@@ -1,6 +1,6 @@
 #include <arbprec.h>
 
-void arb_short_mul(char *a, size_t i, int b, int base)
+void arb_short_mul(ARBT *a, size_t i, int b, int base)
 {
 	/* a *= b */
         int carry = 0;
@@ -13,7 +13,7 @@ void arb_short_mul(char *a, size_t i, int b, int base)
         }
 }
 
-void short_mul2(char *a, char *c, size_t i, int b, int base)
+void short_mul2(ARBT *a, char *c, size_t i, int b, int base)
 {
 	/* c = a * b */
 	int carry;
