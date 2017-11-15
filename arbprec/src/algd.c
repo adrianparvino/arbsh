@@ -11,7 +11,7 @@ fxdpnt *arb_alg_d(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 			B/b base
 			J/j loop counter
 			Qj  quotient or answer
-			Q'  quotient guess
+			q'  quotient guess
 			^() superscript (possibly raised to power of)
 			""  "Knuth's descriptions"
 			``  `my own descriptions`
