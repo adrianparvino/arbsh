@@ -120,7 +120,8 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 				}
 				num1[i] = val;
 			}
-
+			// D5. [Test Remainder] Set Qj <-- q'. `this step appears to be misordered`
+			// If the result of of D4 was negative go to D6, otherwise go on to D7
 			if (borrow != 1)
 				goto leave;
 
