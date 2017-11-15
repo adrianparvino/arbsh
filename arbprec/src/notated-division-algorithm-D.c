@@ -55,20 +55,30 @@ fxdpnt *arb_divide2_notated(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale
 
 	if (out_of_scale)
 		goto end;
+	/*
+		terms:
+			U   numerator
+			V   denominator
+			D   normalization multiplicand
+			B/b base
+			J/j loop counter
+			Q   quotient or answer
+	*/
 
 	// D1. [Normalize]
-	// Set d <-- [b/(V1 + 1)]
+	// Set D <-- [B/(V1 + 1)]
 	normalize = base / (num2[0] + 1);
-	// if d == 1 set U0 <-- 0 (this was set to zero at "ref 1" above)
+	// if D == 1 set U0 <-- 0 (this was set to zero at "ref 1" above)
 	if (normalize != 1){
-		// Set (U1U2...Um+n)b * d     -- "b" must be base
+		// Set (U1U2...Um+n)B * D 
 		arb_short_mul(num1, lea+scale1+offset+1, normalize, base);
-		// Set (V1V2...Vm+n)b * d
+		// Set (V1V2...Vm+n)B * D
 		arb_short_mul(num2, leb, normalize, base);
 	}
-
+	// D2. [Initialize J]
+	// Set J <-- 0
 	qdig = 0;
-
+	// The loop on J. (UjUj+1...Uj+n)B / (VjVj+1...Vj+n)B to get a single digit of Qj
 	while (qdig <= lea+scale-leb)
 	{ 
 		if (*num2 == num1[qdig]) 
