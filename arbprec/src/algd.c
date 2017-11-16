@@ -147,7 +147,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 				u[i] = val;
 			}
 			// "A carry will occur to the left of Uj and it should be ignored since it
-			// cancels wth the borrow that occured in D4" `zero it out`
+			// cancels with the borrow that occured in D4" `zero it out`
 			if (carry == 1) 
 				u[i] = (u[i + 1]) % b; 
 		}
