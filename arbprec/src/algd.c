@@ -96,27 +96,27 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	{
 		// D3. [Calculate qg]
 		// if Uj == Vj, set qg <-- B-1
-		if (v[0] == u[j]) // FIXME: use v[0]
+		if (v[0] == u[j])
 			qg = b - 1;
 		// otherwise set qg <-- [(UjB+U(j+1))/V1]
-		else	qg = (u[j]*b + u[j+1]) / v[0]; // FIXME: use v[0]
+		else	qg = (u[j]*b + u[j+1]) / v[0];
 		// Now test if V2qg > (UjB + U(j+1) - qgV1)B + U(j+2) if so decrease qg by 1
-		if (v[1]*qg > (u[j]*b + u[j+1] - v[0]*qg)*b + u[j+2]) // FIXME: use v[0]
+		if (v[1]*qg > (u[j]*b + u[j+1] - v[0]*qg)*b + u[j+2])
 		{ 
-			qg = qg - 1;;// "and repeat the test"
-			if (v[1]*qg > (u[j]*b + u[j+1] - v[0]*qg)*b + u[j+2]) // FIXME: use v[0]
+			qg = qg - 1;// "and repeat the test"
+			if (v[1]*qg > (u[j]*b + u[j+1] - v[0]*qg)*b + u[j+2])
 				qg = qg - 1;
 		}
 		
 		// D4. [Multiply and Subtract]
-		borrow = 0;
+		
 		if (qg != 0){
 			// "Replace (UjU(j+1)...U(j+n))B by (UjUj+1...Uj+n)B - qg times (V1V2...Vn)"
-			mval[0] = 0; // FIXME: use arrays only
+			mval[0] = 0;
 			// `obtain` qg times (V1V2...Vn) `and put into mval`
 			short_mul2(v, mval+1, leb, qg, b);
 			//  (UjUj+1...Uj+n)B - qgtimes (V1V2...Vn)
-			for (i = j+leb, k = leb; k+1 > 0; i--, k--)
+			for (borrow = 0, i = j+leb, k = leb; k+1 > 0; i--, k--)
 			{
 				val = u[i] - mval[k] - borrow; 
 				borrow = 0;
@@ -164,3 +164,4 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	free(freesave);
 	return q;
 }
+
