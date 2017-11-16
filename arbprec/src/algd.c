@@ -25,33 +25,32 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	fxdpnt *q;
 	ARBT *u;
 	ARBT *v;
-	ARBT *mval;
-	int scale1;
+	ARBT *temp;
+	int uscal;
 	int val;
 	size_t quodig = 0;
 	size_t offset = 0;
 	size_t lea = 0;
 	size_t leb = 0;
-	unsigned int qg; 
-	unsigned int borrow;
-	unsigned int carry;
+	int qg; 
+	int borrow;
+	int carry;
 	int out_of_scale;
-	unsigned int d;
+	int d;
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
 
 	lea = num->lp + den->rp;
-	scale1 = num->rp - den->rp;
+	uscal = num->rp - den->rp;
 
-	if (scale1 < scale)
-		offset = scale - scale1;
+	if (uscal < scale)
+		offset = scale - uscal;
 	else
 		offset = 0;
 
 	u = arb_malloc((num->lp + num->rp + offset + 2) * sizeof(ARBT));
 	memset(u, 0, (num->lp + num->rp + offset + 2) * sizeof(ARBT)); // ref 1
-//	u[0] = 0;
 	memcpy(u + 1, num->number, (num->lp + num->rp) * sizeof(ARBT));
 
 	leb = den->lp + den->rp;
@@ -72,7 +71,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 
 	q = arb_new_num(quodig-scale,scale);
 	memset(q->number, 0, quodig * sizeof(ARBT));
-	mval = arb_malloc((leb+1) * sizeof(ARBT));
+	temp = arb_malloc((leb+1) * sizeof(ARBT));
 
 	if (out_of_scale)
 		goto end;
@@ -83,7 +82,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	// if D == 1 set U0 <-- 0 `this was set to zero at "ref 1" above`
 	if (d != 1){
 		// Set (U1U2...Um+n)B * D 
-		arb_short_mul(u, lea+scale1+offset+1, d, b);
+		arb_short_mul(u, lea+uscal+offset+1, d, b);
 		// Set (V1V2...Vm+n)B * D
 		arb_short_mul(v, leb, d, b);
 		// "Note the introduction of a new digit U0 at the left of U1"
@@ -112,13 +111,13 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		
 		if (qg != 0){
 			// "Replace (UjU(j+1)...U(j+n))B by (UjUj+1...Uj+n)B - qg times (V1V2...Vn)"
-			mval[0] = 0;
-			// `obtain` qg times (V1V2...Vn) `and put into mval`
-			short_mul2(v, mval+1, leb, qg, b);
+			temp[0] = 0;
+			// `obtain` qg times (V1V2...Vn) `and put into temp`
+			short_mul2(v, temp+1, leb, qg, b);
 			//  (UjUj+1...Uj+n)B - qgtimes (V1V2...Vn)
 			for (borrow = 0, i = j+leb, k = leb; k+1 > 0; i--, k--)
 			{
-				val = u[i] - mval[k] - borrow; 
+				val = u[i] - temp[k] - borrow; 
 				borrow = 0;
 				if (val < 0)
 				{
@@ -159,7 +158,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 
 	end: 
 	arb_free_num(c); 
-	free(mval);
+	free(temp);
 	free(u);
 	free(freesave);
 	return q;
