@@ -8,13 +8,13 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	ARBT *temp;
 
 	//int uscal = 0;
-	ssize_t uscal = 0;
-	int val = 0;
-	int qg = 0;
-	int borrow = 0;
-	int carry = 0;
-	int out_of_scale = 0;
-	int d = 0;
+	ssize_t uscal = 0;//FIXME: figure out how to use a size_t for this
+	int val = 0;//TODO: research what this maximum value could be and devise a safety mech
+	int qg = 0;// never more than base 
+	int borrow = 0; // never more than 1
+	int carry = 0; // never more than 1
+	int out_of_scale = 0; // a bool
+	int d = 0; // TODO: research the maximum value of the normalization relative to the base "b"
 	size_t quodig = 0;
 	size_t offset = 0;
 	size_t lea = 0;
@@ -121,7 +121,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 			{
 				val = u[i] + v[k] + carry;
 				carry = 0;
-				if (val > b -1)
+				if (val > b-1)
 				{
 					val -= b;
 					carry = 1;
@@ -131,7 +131,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 			// "A carry will occur to the left of Uj and it should be ignored since it
 			// cancels with the borrow that occured in D4" `zero it out`
 			if (carry == 1) 
-				u[i] = 0;
+				u[i] = 0;//TODO: research this more carefully
 				//u[i] = (u[i + 1]) % b; 
 		}
 		D7: // D7. [Loop on j] `and handle remnants of step D5`
@@ -141,7 +141,9 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	}
 	// D8. [Unnormalize]
 	// (Q0Q1...Qm)b is the desired quotient, `but` the remainder is ((U(m+1)...U(m+n))b / d)
-
+	// TODO: write a "short division" function to accomplish this and figure and devise a
+	// method to make this function do either job. this will probably require another function
+	// argument
 	end: 
 	arb_free_num(c); 
 	free(temp);
