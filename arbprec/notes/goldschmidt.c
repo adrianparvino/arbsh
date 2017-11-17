@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
 	{
 		N *= F;
 		D *= F;
-		F-= .00001;
 		printf("N == %lf\n", N);
 		printf("D == %lf\n", D);
 		++i;
