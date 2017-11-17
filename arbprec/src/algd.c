@@ -2,32 +2,13 @@
 
 fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 {
-	
-	/*
-		Explanation of terms in comments:
-			U   numerator
-			V   denominator
-			D   normalization multiplicand
-			B/b b
-			J/j loop counter
-			Qj  quotient or answer
-			qg  quotient guess
-			^() superscript (possibly raised to power of)
-			""  "Knuth's descriptions"
-			``  `my own descriptions`
-		The actual code reflects these variables names to some extent.
-		However, because array subscripting did not have to be implied
-		in the code I was able to more closely mirror the actual 
-		variable names that Knuth used in the informative text.
-			
-	*/
-	
 	fxdpnt *q;
 	ARBT *u;
 	ARBT *v;
 	ARBT *temp;
 
-	int uscal = 0;
+	//int uscal = 0;
+	ssize_t uscal = 0;
 	int val = 0;
 	int qg = 0;
 	int borrow = 0;
@@ -43,6 +24,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	size_t k = 0;
 
 	lea = num->lp + den->rp;
+
 	uscal = num->rp - den->rp;
 
 	if (uscal < scale)
@@ -149,13 +131,16 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 			// "A carry will occur to the left of Uj and it should be ignored since it
 			// cancels with the borrow that occured in D4" `zero it out`
 			if (carry == 1) 
-				u[i] = (u[i + 1]) % b; 
+				u[i] = 0;
+				//u[i] = (u[i + 1]) % b; 
 		}
 		D7: // D7. [Loop on j] `and handle remnants of step D5`
 		// Increase J by one. now if j >= m go back to D3
 		q->number[j] = qg;
 		j++;
 	}
+	// D8. [Unnormalize]
+	// (Q0Q1...Qm)b is the desired quotient, `but` the remainder is ((U(m+1)...U(m+n))b / d)
 
 	end: 
 	arb_free_num(c); 

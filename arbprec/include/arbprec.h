@@ -7,7 +7,7 @@
 #include <limits.h>
 
 /* defines */
-#define ARBT char
+#define ARBT char // designed to be any type
 #define LARBT int
 #define UARBT unsigned char
 #define MAX(a,b)      ((a)>(b)?(a):(b))
