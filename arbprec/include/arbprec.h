@@ -8,6 +8,7 @@
 
 /* defines */
 #define ARBT char
+#define LARBT int
 #define UARBT unsigned char
 #define MAX(a,b)      ((a)>(b)?(a):(b))
 #define MIN(a,b)      ((a)>(b)?(b):(a))
@@ -18,12 +19,12 @@ extern int verbosity;
 /* structures */
 typedef struct {          // Toym fixed point type
         ARBT *number;     // The actual number
-        int sign;         // Sign
+        char sign;        // Sign
         size_t lp;        // Length left of radix
         size_t rp;        // Length right of radix
         size_t len;       // Length of number (count of digits / limbs)
         size_t allocated; // Length of allocated memory
-        size_t chunk;     // Allocation chunk size (just avoids globals(
+        size_t chunk;     // Allocation chunk size (just avoids globals)
 } fxdpnt;
 
 /* function prototypes */
@@ -37,7 +38,13 @@ fxdpnt *arb_expand(fxdpnt *, size_t);
 fxdpnt *arb_str2fxdpnt(const char *);
 fxdpnt *arb_add_precision(fxdpnt *, size_t);
 fxdpnt *arb_alloc(size_t);
-fxdpnt *arb_div3(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base);
+fxdpnt *arb_division(fxdpnt *, fxdpnt *, fxdpnt *c, int, int);
+fxdpnt *arb_rightshift(fxdpnt *, size_t, int);
+fxdpnt *arb_new_num (int, int);
+fxdpnt *arb_divide(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
+fxdpnt *arb_divide2(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
+fxdpnt *arb_newtonian_div(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
+fxdpnt *arb_alg_d(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
 void *arb_malloc(size_t);
 void *arb_realloc(void *, size_t);
 void arb_reverse(ARBT *, size_t);
@@ -50,18 +57,13 @@ void arb_error(char *);
 size_t rl(fxdpnt *);
 int arb_highbase(int);
 int arb_place(fxdpnt *, fxdpnt *, size_t *, size_t);
-int arb_compare(fxdpnt *a, fxdpnt *b, int base);
-fxdpnt *arb_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale);
-fxdpnt *arb_rightshift(fxdpnt *a, size_t n, int faux);
-fxdpnt *arb_leftshift(fxdpnt *a, size_t n);
-void arb_free(fxdpnt *flt);
-fxdpnt *arb_new_num (int, int);
+int arb_compare(fxdpnt *, fxdpnt *, int);
+void arb_free(fxdpnt *);
 void arb_free_num (fxdpnt *num);
-fxdpnt *arb_divide(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
-fxdpnt *arb_divide2(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
-fxdpnt *arb_newtonian_div(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
-void arb_printold(fxdpnt *flt);
+void arb_printold(fxdpnt *);
 void short_multiply(unsigned char *, int, int, unsigned char *, int);
 void short_mul2(ARBT *, ARBT *, size_t, int, int);
 void arb_short_mul(ARBT *, size_t, int, int);
-fxdpnt *arb_alg_d(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
+
+
+
