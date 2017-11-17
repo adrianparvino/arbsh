@@ -72,20 +72,6 @@ void verbose(char *msg)
 		fprintf(stderr, "%s\n", msg);
 }
 
-int arb_highbase(int a)
-{
-	// Handle high bases
-        static int uglyphs[36] = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
-                                '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
-                                'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
-                                'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'}; 
-        if (a < 36) 
-              	return uglyphs[a]; 
-        else // just use the ascii values for bases that are very high
-                return a;
-}
-
-
 void arb_print(fxdpnt *flt)
 {
         size_t i = 0;
@@ -138,7 +124,8 @@ void *arb_realloc(void *ptr, size_t len)
 {
         void *ret;
         if(!(ret = realloc(ptr, len)))
-                arb_error("realloc failed\n");
+                arb_error("realloc failed\n"); // FIXME: return an error, and inform the user
+					       // of exhausted memory. exit() is not a solution
         return ret;
 }
 
@@ -178,44 +165,5 @@ void arb_free_num (fxdpnt *num)
 		free ((num)->number);
 	free (num);
 	num = NULL;
-}
-
-fxdpnt *arb_str2fxdpnt(const char *str)
-{
-        // Convert a string to a arb `fxdpnt'
-        size_t i = 0; 
-        int flt_set = 0, sign_set = 0;
-
-        fxdpnt *ret = arb_expand(NULL, 1);
-	ret->len =0;
-	ret->lp =0;
-	ret->rp =0;
-
-        for (i = 0; str[i] != '\0'; ++i){
-                if (str[i] == '.'){
-                        flt_set = 1;
-                        ret->lp = i - sign_set;
-                }
-                else if (str[i] == '+'){
-                        sign_set = 1;
-                        ret->sign = '+';
-                }
-                else if (str[i] == '-'){
-                        sign_set = 1;
-                        ret->sign = '-';
-                }
-                else{
-                        ret = arb_expand(ret, ret->len + 1);
-                        ret->number[ret->len++] = str[i] - '0';
-                }
-        }
-
-        if (flt_set == 0) 
-                ret->lp = ret->len;
-
-        ret->rp = ret->len - ret->lp;
-
-
-        return ret;
 }
 
