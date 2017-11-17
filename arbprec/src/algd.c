@@ -26,17 +26,18 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	ARBT *u;
 	ARBT *v;
 	ARBT *temp;
-	int uscal;
-	int val;
+
+	int uscal = 0;
+	int val = 0;
+	int qg = 0;
+	int borrow = 0;
+	int carry = 0;
+	int out_of_scale = 0;
+	int d = 0;
 	size_t quodig = 0;
 	size_t offset = 0;
 	size_t lea = 0;
 	size_t leb = 0;
-	int qg; 
-	int borrow;
-	int carry;
-	int out_of_scale;
-	int d;
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
@@ -69,7 +70,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		if (!(leb>lea))
 			quodig = lea-leb+scale+1;
 
-	q = arb_new_num(quodig-scale,scale);
+	q = arb_new_num(quodig-scale,scale);// FIXME replace this with an expansion of "c"
 	memset(q->number, 0, quodig * sizeof(ARBT));
 	temp = arb_malloc((leb+1) * sizeof(ARBT));
 
