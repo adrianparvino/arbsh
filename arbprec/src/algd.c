@@ -1,4 +1,8 @@
 #include <arbprec.h>
+/*
+	future direction: rewrite all operations to use existing bignum add,
+	sub, mul and then recall this function to obtain the remainder
+*/
 
 fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 {
@@ -61,6 +65,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 
 	// D1. [Normalize]
 	// Set D <-- [B/(V1 + 1)]
+	// TODO: make these bignum operations
 	d = b / (v[0] + 1);
 	// if D == 1 set U0 <-- 0 `this was set to zero at "ref 1" above`
 	if (d != 1){
