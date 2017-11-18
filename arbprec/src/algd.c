@@ -1,8 +1,5 @@
 #include <arbprec.h>
-/*
-	future direction: rewrite all operations to use existing bignum add,
-	sub, mul and then recall this function to obtain the remainder
-*/
+
 
 fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 {
