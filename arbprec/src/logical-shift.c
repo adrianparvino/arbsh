@@ -1,4 +1,24 @@
 #include <arbprec.h>
+
+
+fxdpnt *arb_leftshift(fxdpnt *a, size_t n, int faux)
+{
+        size_t i = 0;
+        size_t j = n;
+        size_t k = 0;
+        size_t l = a->len -1;
+
+        for (i = 0;i < a->len-1; ++i, ++j, ++k)
+                a->number[k] = a->number[j];
+
+
+	a->number[l] = 0;
+        //while (n-- > 0)
+        //        a->number[l++] = 0;
+
+        return a;
+}
+
 fxdpnt *arb_rightshift(fxdpnt *a, size_t n, int faux)
 {
         /* logical right shift, turns base 10 "990" into "099" 

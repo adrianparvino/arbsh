@@ -40,6 +40,7 @@ fxdpnt *arb_add_precision(fxdpnt *, size_t);
 fxdpnt *arb_alloc(size_t);
 fxdpnt *arb_division(fxdpnt *, fxdpnt *, fxdpnt *c, int, int);
 fxdpnt *arb_rightshift(fxdpnt *, size_t, int);
+fxdpnt *arb_leftshift(fxdpnt *, size_t, int);
 fxdpnt *arb_new_num (int, int);
 fxdpnt *arb_divide(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
 fxdpnt *arb_divide2(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
