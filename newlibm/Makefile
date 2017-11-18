@@ -2,7 +2,7 @@ CFLAGS += -Wall -Wextra -I./include/
 
 LDFLAGS += "-Wl,-rpath=$(PWD)"
 
-OBJ = $(shell for i in src/*.c ; do echo $${i%.c}.o ; done )
+OBJ = $(shell for i in src/*.c ; do printf "%s\n" $${i%.c}.o ; done )
 
 LIBNAME = m
 
@@ -18,11 +18,11 @@ DESTDIR ?= ../
 
 PREFIX ?= /src/
 
-INCLUDES = $(shell for i in include/$(PREFIX)/*.h ; do echo $$i ; done )
+INCLUDES = $(shell for i in include/$(PREFIX)/*.h ; do printf "%s\n" $$i ; done )
 
-INCLUDES_TARG = $(shell for i in include/$(PREFIX)/*.h ; do echo $(DESTDIR)/$$i ; done )
+INCLUDES_TARG = $(shell for i in include/$(PREFIX)/*.h ; do printf "%s\n" $(DESTDIR)/$$i ; done )
 
-TEST_OBJ = $(shell for i in tests/*.c ; do echo $${i%.c} ; done )
+TEST_OBJ = $(shell for i in tests/*.c ; do printf "%s\n" $${i%.c} ; done )
 
 LDLIBS += -L. -l$(LIBNAME)
 
@@ -76,11 +76,11 @@ install:
 
 create_uninstall:
 
-	echo "#!/bin/sh" > uninstall
-	echo "set -x" >> uninstall
-	echo "rm $(INCLUDES_TARG)" >> uninstall
-	echo "rm $(DESTDIR)/lib/$(STATLIB)" >> uninstall
-	echo "rm $(DESTDIR)/lib/$(DYNLIB)" >> uninstall
+	printf "%s\n" "#!/bin/sh" > uninstall
+	printf "%s\n" "set -x" >> uninstall
+	printf "%s\n" "rm $(INCLUDES_TARG)" >> uninstall
+	printf "%s\n" "rm $(DESTDIR)/lib/$(STATLIB)" >> uninstall
+	printf "%s\n" "rm $(DESTDIR)/lib/$(DYNLIB)" >> uninstall
 	
 uninstall:
 
