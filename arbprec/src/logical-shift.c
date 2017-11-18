@@ -8,13 +8,11 @@ fxdpnt *arb_leftshift(fxdpnt *a, size_t n, int faux)
         size_t k = 0;
         size_t l = a->len -1;
 
-        for (i = 0;i < a->len-1; ++i, ++j, ++k)
+        for (i = n-1;i < a->len-1; ++i, ++j, ++k)
                 a->number[k] = a->number[j];
 
-
-	a->number[l] = 0;
-        //while (n-- > 0)
-        //        a->number[l++] = 0;
+        while (l > a->len -1 - n)
+	        a->number[l--] = 0;
 
         return a;
 }
