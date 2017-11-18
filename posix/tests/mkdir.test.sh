@@ -5,7 +5,7 @@ TESTDIR="a/b/c/123/d/f/123/f/4/s/4/gdfg/sd/sdfsdf/fvbbnnndfgbdgfg/asd"
 
 ./mkdir -p  "$TESTDIR"
 
-[ -d "$TESTDIR" ] && echo "$0 test one successful"
+[ -d "$TESTDIR" ] && printf "%s\n" "$0 test one successful"
 
 rm -rf a
 
@@ -15,7 +15,7 @@ TESTDIR="a/b/c/123/d/f/123/f/4/s/4/gdfg/sd/sdfsdf/fvbbnnndfgbdgfg/asd/asdasd/asd
 
 ./mkdir -p  "$TESTDIR"
 
-[ -d "$TESTDIR" ] && echo "$0 test two successful"
+[ -d "$TESTDIR" ] && printf "%s\n" "$0 test two successful"
 
 rm -rf a
 

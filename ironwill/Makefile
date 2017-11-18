@@ -1030,8 +1030,8 @@ distribute:
 	$(MAKE) -i grub_target
 
 	-@cp -r $(OM_PREF)/$(OM_TARG)/* $(OM_LIBROOT)
-	$(MAKE) -C ../shbin
-	sudo ../shbin/remaster --test --backup --remaster --root=$(OM_LIBROOT)
+	# this needs a bootloader and filesystem creation mechanism
+	# one used to be supplied but it was not of sufficient stability
 
 clean:
 

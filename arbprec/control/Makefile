@@ -1,6 +1,6 @@
 CFLAGS += -Wall -Wextra -I./include/
 
-OBJ = $(shell for i in src/*.c ; do echo $${i%.c}.o ; done )
+OBJ = $(shell for i in src/*.c ; do printf "%s\n" $${i%.c}.o ; done )
 
 LIBNAME = control
 

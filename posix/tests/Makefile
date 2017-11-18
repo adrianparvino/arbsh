@@ -1,5 +1,5 @@
 
-EXES = $(shell for i in *.sh ; do echo $${i%%.sh} ; done)
+EXES = $(shell for i in *.sh ; do printf "%s\n" $${i%%.sh} ; done)
 
 all:	$(EXES)
 
