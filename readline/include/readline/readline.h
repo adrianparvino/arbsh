@@ -5,7 +5,7 @@
 #include <unistd.h> 
 #include <sys/types.h>
 #include <dirent.h>
-#include <terminal/vt100.h>
+#include <terminal/ansi.h>
 #include <libgen.h>
 
 /*
