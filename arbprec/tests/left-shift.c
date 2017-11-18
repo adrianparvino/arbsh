@@ -3,7 +3,8 @@
 int main(int argc, char *argv[])
 { 
 	fxdpnt *a;
-
+	if (argc != 1)
+		return 1;
 	a = arb_str2fxdpnt(argv[1]);
 	
 	arb_leftshift(a, 3, 0);

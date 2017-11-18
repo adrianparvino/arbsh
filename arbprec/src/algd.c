@@ -25,7 +25,6 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	size_t k = 0;
 
 	lea = num->lp + den->rp;
-
 	uscal = num->rp - den->rp;
 
 	if (uscal < scale)
@@ -62,7 +61,6 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 
 	// D1. [Normalize]
 	// Set D <-- [B/(V1 + 1)]
-	// TODO: make these bignum operations
 	d = b / (v[0] + 1);
 	// if D == 1 set U0 <-- 0 `this was set to zero at "ref 1" above`
 	if (d != 1){
@@ -93,7 +91,6 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		}
 		
 		// D4. [Multiply and Subtract]
-		
 		if (qg != 0){
 			// "Replace (UjU(j+1)...U(j+n))B by (UjUj+1...Uj+n)B - qg times (V1V2...Vn)"
 			temp[0] = 0;
@@ -133,8 +130,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 			// "A carry will occur to the left of Uj and it should be ignored since it
 			// cancels with the borrow that occured in D4" `zero it out`
 			if (carry == 1) 
-				//u[i] = 0;//TODO: research this more carefully
-				u[i] = (u[i + 1]) % b; 
+				u[i] = 0;//TODO: research this more carefully
+				//u[i] = (u[i + 1]) % b; 
 		}
 		D7: // D7. [Loop on j] `and handle remnants of step D5`
 		// Increase J by one. now if j >= m go back to D3
