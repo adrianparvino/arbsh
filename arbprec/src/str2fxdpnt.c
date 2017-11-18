@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 fxdpnt *arb_str2fxdpnt(const char *str)
 {

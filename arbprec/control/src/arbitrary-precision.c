@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 void arb_free(fxdpnt *flt)
 {

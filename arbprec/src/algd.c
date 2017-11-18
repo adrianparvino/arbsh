@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 
 fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
@@ -133,8 +133,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 			// "A carry will occur to the left of Uj and it should be ignored since it
 			// cancels with the borrow that occured in D4" `zero it out`
 			if (carry == 1) 
-				u[i] = 0;//TODO: research this more carefully
-				//u[i] = (u[i + 1]) % b; 
+				//u[i] = 0;//TODO: research this more carefully
+				u[i] = (u[i + 1]) % b; 
 		}
 		D7: // D7. [Loop on j] `and handle remnants of step D5`
 		// Increase J by one. now if j >= m go back to D3

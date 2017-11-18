@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 {

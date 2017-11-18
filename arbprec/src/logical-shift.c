@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 
 fxdpnt *arb_leftshift(fxdpnt *a, size_t n, int faux)
@@ -9,7 +9,13 @@ fxdpnt *arb_leftshift(fxdpnt *a, size_t n, int faux)
         size_t l = a->len -1;
 
         for (i = n-1;i < a->len-1; ++i, ++j, ++k)
+	{
                 a->number[k] = a->number[j];
+		if ( a->lp > 0)
+			a->lp--;
+		if ( a->rp < a->len)
+			a->rp++;
+	}
 
         while (l > a->len -1 - n)
 	        a->number[l--] = 0;

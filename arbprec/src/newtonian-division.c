@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 double newton_iteration(double x, double eps)
 {
@@ -24,24 +24,21 @@ double newton_iteration(double x, double eps)
 void arb_copy(fxdpnt *dest, fxdpnt *src)
 { 
 	dest = arb_expand(dest, src->len);
-	memcpy(dest->number, src->number, src->len);
+	memcpy(dest->number, src->number, src->len * sizeof(ARBT));
 	dest->sign = src->sign;
 	dest->lp = src->lp;
 	dest->rp = src->rp;
-	//dest->len = src->len;
+	dest->len = src->len;
 }
 
 fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
-	(void)scale; // scale will never be needed
+	(void)scale;
 	fxdpnt *guess = arb_expand(NULL, a->len);
-	//fxdpnt *newguess = arb_expand(NULL, a->len + b->len);
-	fxdpnt *newguess = arb_expand(NULL, 1);
-	//fxdpnt *hold = arb_expand(NULL, a->len + b->len);
+	fxdpnt *newguess = arb_expand(NULL, 1); 
 	fxdpnt *hold = arb_expand(NULL, 1);
-	//fxdpnt *hold2 = arb_expand(NULL, a->len + b->len);
 	fxdpnt *hold2 = arb_expand(NULL, 1);
-	fxdpnt *two = arb_str2fxdpnt("2");;
+	fxdpnt *two = arb_str2fxdpnt("2.00000");
 	fxdpnt *reciprocal;
 
 	guess->lp = 0;
@@ -54,17 +51,12 @@ fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	arb_printold(two);
 	size_t i = 0;
 	while (i < 10)
-	{
-		//  new_guess = guess * (2 - x * guess);
+	{ 
 		hold = arb_mul(b, guess, hold, base); // x * guess
-		//arb_printold(a);
-		//arb_printold(hold);
 		hold2 = arb_sub(two, hold, hold2, base); // 2 - x * guess
-		//arb_printold(hold2);
 		newguess = arb_mul(guess, hold2, newguess, base); // guess * (2-x*guess)
 		arb_copy(guess, newguess);
 		arb_printold(newguess);
-		//guess = newguess;
 		++i;
 	}
 	reciprocal = guess;

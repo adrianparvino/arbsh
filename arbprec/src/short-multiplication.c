@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 void arb_short_mul(ARBT *a, size_t i, int b, int base)
 {

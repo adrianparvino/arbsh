@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 /*
 	uniq-division is a simple, but slow algorithm which I devised myself in
 	the winter of 2016. It's here mostly for reference. Please instead use

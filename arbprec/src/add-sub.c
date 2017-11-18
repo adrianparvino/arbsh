@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 int arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
 {

@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 
 fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
@@ -18,6 +18,15 @@ fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	}
 	c->len = a->len + b->len;
 	c->lp = a->lp + b->lp;
+	// perform logical left shift while condition??
+	size_t z = 0;
+	
+	while (c->number[z] == 0 && z < c->lp )
+	{
+		++z;
+	}
+	arb_leftshift(c, z -1, 0);
+	
 	return c;
 }
 

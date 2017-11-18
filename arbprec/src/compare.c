@@ -1,4 +1,4 @@
-#include <arbprec.h>
+#include <arbprec/arbprec.h>
 int arb_compare(fxdpnt *a, fxdpnt *b, int base)
 {
         size_t i = 0;
