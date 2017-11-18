@@ -6,9 +6,9 @@ DESTDIR ?= ../
 
 CFLAGS += -Wall -Wextra
 
-OBJ = $(shell for i in *.c; do echo $${i%%.c} ; done)
+OBJ = $(shell for i in *.c; do printf "%s\n" $${i%%.c} ; done)
 
-OBJ_TARG =  $(shell for i in *.c; do echo $(DESTDIR)/$(PREFIX)/$${i%%.c} ; done)
+OBJ_TARG =  $(shell for i in *.c; do printf "%s\n" $(DESTDIR)/$(PREFIX)/$${i%%.c} ; done)
 
 all: $(OBJ)
 
@@ -16,7 +16,7 @@ install:
 
 	-@mkdir -p $(DESTDIR)/$(PREFIX)/
 	-@cp -a $(OBJ) $(DESTDIR)/$(PREFIX)/
-	-echo "rm $(OBJ_TARG)" > uninstall
+	-printf "%s\n" "rm $(OBJ_TARG)" > uninstall
 
 uninstall:
 
