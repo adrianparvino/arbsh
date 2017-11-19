@@ -9,7 +9,7 @@ SHELL = /bin/sh
 STAGE0OPT = CFLAGS="-O0 -g0" CXXFLAGS="-O0 -g0"
 MAKEINFO = false
 TEXINFO = false
-OM_PACK = $(shell echo $(pack) | dd conv=ucase)
+OM_PACK = $(shell printf "%s\n" $(pack) | dd conv=ucase)
 OM_ARCH = i686
 OM_SUBTARG = $(OM_ARCH)
 KBUILDAREA = $(shell pwd)/kernel
@@ -335,7 +335,7 @@ musl_stage: install_path
 	@cd src && test -e $(OM_MUSL).$(OM_SFX) || wget $(MUSL_MRR)/$(OM_MUSL).$(OM_SFX)
 	-@rm -rf $(SPWD)/$(OM_MUSL)
 	@tar -xf $(OM_SRC)/$(OM_MUSL).$(OM_SFX) -C $(SPWD)
-	@echo $(PATH)
+	@printf "%s\n" $(PATH)
 	@cd $(SPWD)/$(OM_MUSL) && $(SPWD)/$(OM_MUSL)/configure \
 	--prefix=/ \
 	--enable-debug \
@@ -370,22 +370,22 @@ uclibc_stage_one: install_path
 	@tar -xf $(OM_SRC)/$(OM_UCLIBC).$(OM_SFX) -C $(SPWD)
 	-@cd $(SPWD)/$(OM_UCLIBC) 
 	@cd $(SPWD)/$(OM_UCLIBC) && mkdir -p $(OM_PREF)/$(OM_TARG)/usr/src/linux
-	@cd $(SPWD)/$(OM_UCLIBC) && echo "KERNEL_HEADERS=\"$(OM_PREF)/$(OM_TARG)/include\"" >> .config 
-	@cd $(SPWD)/$(OM_UCLIBC) && echo "TARGET_$(OM_BACKWARDCOMPAT)=y" >> .config 
-	@cd $(SPWD)/$(OM_UCLIBC) && echo "RUNTIME_PREFIX=\"$(OM_PREF)/$(OM_TARG)/\"" >> .config 
-	@cd $(SPWD)/$(OM_UCLIBC) && echo "DEVEL_PREFIX=\"$(OM_PREF)/$(OM_TARG)/\"" >> .config 
-	@cd $(SPWD)/$(OM_UCLIBC) && echo "HAVE_SHARED=y" >> .config 
-	@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_THREADS_NATIVE=y" >> .config 
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_LINUXTHREADS=y" >> .config
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_UTMPX=y" >> .config 
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_UTMP=y" >> .config 
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_SUSV3_LEGACY=y" >> .config 
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_WCHAR=y" >> .config 
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_NETWORK_SUPPORT=y" >> .config 
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_FULL_RPC=y" >> .config 
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_REENTRANT_RPC=y" >> .config 
-	#@cd $(SPWD)/$(OM_UCLIBC) && echo "UCLIBC_HAS_RPC=y" >> .config
-	-@cd $(SPWD)/$(OM_UCLIBC) && echo y | make CROSS="$(OM_TARG)-"  oldconfig
+	@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "KERNEL_HEADERS=\"$(OM_PREF)/$(OM_TARG)/include\"" >> .config 
+	@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "TARGET_$(OM_BACKWARDCOMPAT)=y" >> .config 
+	@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "RUNTIME_PREFIX=\"$(OM_PREF)/$(OM_TARG)/\"" >> .config 
+	@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "DEVEL_PREFIX=\"$(OM_PREF)/$(OM_TARG)/\"" >> .config 
+	@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "HAVE_SHARED=y" >> .config 
+	@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_THREADS_NATIVE=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_LINUXTHREADS=y" >> .config
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_UTMPX=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_UTMP=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_SUSV3_LEGACY=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_WCHAR=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_NETWORK_SUPPORT=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_FULL_RPC=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_REENTRANT_RPC=y" >> .config 
+	#@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" "UCLIBC_HAS_RPC=y" >> .config
+	-@cd $(SPWD)/$(OM_UCLIBC) && printf "%s\n" y | make CROSS="$(OM_TARG)-"  oldconfig
 	$(MAKE) -C $(SPWD)/$(OM_UCLIBC) CROSS="$(OM_TARG)-" PREFIX="" install
 
 uclibc_stage_two: install_path 
@@ -1090,30 +1090,30 @@ clean:
 
 buildenvars:
 
-	@echo CC="${OM_TARG}-gcc "
-	@echo LD="${OM_TARG}-ld "
-	@echo RANLIB="${OM_TARG}-ranlib "
-	@echo AS="${OM_TARG}-as "
-	@echo CPP="${OM_TARG}-cpp "
-	@echo CXX="${OM_TARG}-g++ "
-	@echo NM="${OM_TARG}-nm "
-	@echo STRIP="${OM_TARG}-strip "
-	@echo PATH="${PATH}:${OM_PREF}/bin/ "
-	@echo HOST_CC="gcc "
-	@echo CROSS_COMPILE="${OM_TARG}- "
-	@echo CC_FOR_BUILD="gcc "
+	@printf "%s\n" CC="${OM_TARG}-gcc "
+	@printf "%s\n" LD="${OM_TARG}-ld "
+	@printf "%s\n" RANLIB="${OM_TARG}-ranlib "
+	@printf "%s\n" AS="${OM_TARG}-as "
+	@printf "%s\n" CPP="${OM_TARG}-cpp "
+	@printf "%s\n" CXX="${OM_TARG}-g++ "
+	@printf "%s\n" NM="${OM_TARG}-nm "
+	@printf "%s\n" STRIP="${OM_TARG}-strip "
+	@printf "%s\n" PATH="${PATH}:${OM_PREF}/bin/ "
+	@printf "%s\n" HOST_CC="gcc "
+	@printf "%s\n" CROSS_COMPILE="${OM_TARG}- "
+	@printf "%s\n" CC_FOR_BUILD="gcc "
 
 clearenvars:
 
-	@echo CC="gcc"
-	@echo LD="ld"
-	@echo RANLIB="ranlib"
-	@echo AS="as"
-	@echo CPP="cpp"
-	@echo CXX="g++"
-	@echo NM="nm"
-	@echo STRIP="strip"
-	@echo PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games" 
+	@printf "%s\n" CC="gcc"
+	@printf "%s\n" LD="ld"
+	@printf "%s\n" RANLIB="ranlib"
+	@printf "%s\n" AS="as"
+	@printf "%s\n" CPP="cpp"
+	@printf "%s\n" CXX="g++"
+	@printf "%s\n" NM="nm"
+	@printf "%s\n" STRIP="strip"
+	@printf "%s\n" PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games" 
 
 
 links_target: install_path
@@ -1649,21 +1649,21 @@ glib_host: install_path
 	rm -rf $(OM_GLIB)
 	@tar -xf $(OM_SRC)/$(OM_GLIB).$(OM_SFX) -C $(SPWD)
 	-@cd $(SPWD)/$(OM_GLIB) && rm $(OM_SUBTARG).cache
-	#-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_long_long_format=I64" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_stack_grows=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_working_bcopy=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_sane_realloc=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_have_strlcpy=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_have_qsort_r=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_va_val_copy=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_rtldglobal_broken=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_uscore=yes" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "ac_cv_func_posix_getpwuid_r=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "ac_cv_func_nonposix_getpwuid_r=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "ac_cv_func_posix_getgrgid_r=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "glib_cv_use_pid_surrogate=no" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "ac_cv_func_printf_unix98=yes" >> $(OM_SUBTARG).cache
-	-@cd $(SPWD)/$(OM_GLIB) && echo "ac_cv_func_vsnprintf_c99=yes" >> $(OM_SUBTARG).cache
+	#-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_long_long_format=I64" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_stack_grows=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_working_bcopy=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_sane_realloc=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_have_strlcpy=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_have_qsort_r=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_va_val_copy=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_rtldglobal_broken=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_uscore=yes" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "ac_cv_func_posix_getpwuid_r=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "ac_cv_func_nonposix_getpwuid_r=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "ac_cv_func_posix_getgrgid_r=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "glib_cv_use_pid_surrogate=no" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "ac_cv_func_printf_unix98=yes" >> $(OM_SUBTARG).cache
+	-@cd $(SPWD)/$(OM_GLIB) && printf "%s\n" "ac_cv_func_vsnprintf_c99=yes" >> $(OM_SUBTARG).cache
 	-@cd $(SPWD)/$(OM_GLIB) && $(INACROSS) $(SPWD)/$(OM_GLIB)/configure \
 	--prefix=$(OM_PREF)/$(OM_TARG) \
 	--target=$(OM_SUBTARG) \
@@ -1834,36 +1834,36 @@ inetutils_target: install_path
 
 createtarg:
 
-	echo '$(pack)_target: install_path' >> Makefile
-	echo '' >> Makefile
-	echo '\t-rm -rf $$(OM_$(OM_PACK))' >> Makefile
-	echo '\tcd $$(OM_SRC) && test -e $$(OM_$(OM_PACK)).$$(OM_SFX) || wget $$(OM_$(OM_PACK)_MRR)/$$(OM_$(OM_PACK)).$$(OM_SFX)' >> Makefile
-	echo '\t@tar -xf $$(OM_SRC)/$$(OM_$(OM_PACK)).$$(OM_SFX) -C $$(SPWD)' >> Makefile 
-	echo '\t-cd $$(SPWD)/$$(OM_$(OM_PACK)) && $$(INACROSS) $$(SPWD)/$$(OM_$(OM_PACK))/configure \\' >> Makefile
-	echo '\t--host=$$(OM_SUBTARG) \\' >> Makefile
-	echo '\t--target=$$(OM_SUBTARG)' >> Makefile
-	echo '' >> Makefile
-	echo '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK))' >> Makefile
-	echo '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK)) install DESTDIR=$$(OM_LIBROOT)' >> Makefile
-	echo '' >> Makefile
+	printf "%s\n" '$(pack)_target: install_path' >> Makefile
+	printf "%s\n" '' >> Makefile
+	printf "%s\n" '\t-rm -rf $$(OM_$(OM_PACK))' >> Makefile
+	printf "%s\n" '\tcd $$(OM_SRC) && test -e $$(OM_$(OM_PACK)).$$(OM_SFX) || wget $$(OM_$(OM_PACK)_MRR)/$$(OM_$(OM_PACK)).$$(OM_SFX)' >> Makefile
+	printf "%s\n" '\t@tar -xf $$(OM_SRC)/$$(OM_$(OM_PACK)).$$(OM_SFX) -C $$(SPWD)' >> Makefile 
+	printf "%s\n" '\t-cd $$(SPWD)/$$(OM_$(OM_PACK)) && $$(INACROSS) $$(SPWD)/$$(OM_$(OM_PACK))/configure \\' >> Makefile
+	printf "%s\n" '\t--host=$$(OM_SUBTARG) \\' >> Makefile
+	printf "%s\n" '\t--target=$$(OM_SUBTARG)' >> Makefile
+	printf "%s\n" '' >> Makefile
+	printf "%s\n" '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK))' >> Makefile
+	printf "%s\n" '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK)) install DESTDIR=$$(OM_LIBROOT)' >> Makefile
+	printf "%s\n" '' >> Makefile
 
 
 createhost:
 
-	echo '$(pack)_host: install_path' >> Makefile
-	echo '' >> Makefile
-	echo '\t-rm -rf $$(OM_$(OM_PACK))' >> Makefile
-	echo '\tcd $$(OM_SRC) && test -e $$(OM_$(OM_PACK)).$$(OM_SFX) || wget $$(OM_$(OM_PACK)_MRR)/$$(OM_$(OM_PACK)).$$(OM_SFX)' >> Makefile
-	echo '\t@tar -xf $$(OM_SRC)/$$(OM_$(OM_PACK)).$$(OM_SFX) -C $$(SPWD)' >> Makefile
+	printf "%s\n" '$(pack)_host: install_path' >> Makefile
+	printf "%s\n" '' >> Makefile
+	printf "%s\n" '\t-rm -rf $$(OM_$(OM_PACK))' >> Makefile
+	printf "%s\n" '\tcd $$(OM_SRC) && test -e $$(OM_$(OM_PACK)).$$(OM_SFX) || wget $$(OM_$(OM_PACK)_MRR)/$$(OM_$(OM_PACK)).$$(OM_SFX)' >> Makefile
+	printf "%s\n" '\t@tar -xf $$(OM_SRC)/$$(OM_$(OM_PACK)).$$(OM_SFX) -C $$(SPWD)' >> Makefile
 	
-	echo '\t-cd $$(SPWD)/$$(OM_$(OM_PACK)) && $$(INACROSS) $$(SPWD)/$$(OM_$(OM_PACK))/configure \\' >> Makefile
-	echo '\t--prefix=$$(OM_PREF)/$$(OM_TARG) \\' >> Makefile
-	echo '\t--host=$$(OM_HOST) \\' >> Makefile
-	echo '\t$$(INACROSS)' >> Makefile
-	echo '' >> Makefile
-	echo '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK))' >> Makefile
-	echo '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK)) install' >> Makefile
-	echo '' >> Makefile
+	printf "%s\n" '\t-cd $$(SPWD)/$$(OM_$(OM_PACK)) && $$(INACROSS) $$(SPWD)/$$(OM_$(OM_PACK))/configure \\' >> Makefile
+	printf "%s\n" '\t--prefix=$$(OM_PREF)/$$(OM_TARG) \\' >> Makefile
+	printf "%s\n" '\t--host=$$(OM_HOST) \\' >> Makefile
+	printf "%s\n" '\t$$(INACROSS)' >> Makefile
+	printf "%s\n" '' >> Makefile
+	printf "%s\n" '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK))' >> Makefile
+	printf "%s\n" '\t-$$(INACROSS) $$(MAKE) -C $$(SPWD)/$$(OM_$(OM_PACK)) install' >> Makefile
+	printf "%s\n" '' >> Makefile
 
 
 zsh_target: install_path
@@ -2166,8 +2166,8 @@ ifeq ($(OM_LIBC),gnu)
 endif
 	
 	
-	-echo >> $(LOGDIR)/$(LOGHOST)-report
-	-echo >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "%s\n" >> $(LOGDIR)/$(LOGHOST)-report
+	-printf "%s\n" >> $(LOGDIR)/$(LOGHOST)-report
 
 
 logreport:
