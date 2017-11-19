@@ -110,7 +110,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 			if (!(long_sub(u, j+leb, temp, leb, b)))
 				goto D7;
 			qg = qg - 1; 
-			if (long_add(u, leb+j, v, leb-1, b))
+			if (long_add(u, j+leb, v, leb-1, b))
 				u[0] = 0; 
 		}
 		D7: // D7.
