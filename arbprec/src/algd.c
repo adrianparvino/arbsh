@@ -1,5 +1,29 @@
 #include <arbprec/arbprec.h>
 
+int long_sub(ARBT *u, size_t i, ARBT *temp, size_t k, int b)
+{ 
+	int borrow = 0;
+	int val = 0;
+	
+	for (borrow = 0; k+1 > 0; i--, k--)
+	{
+		val = u[i] - temp[k] - borrow; 
+		borrow = 0;
+		if (val < 0)
+		{
+			val += b;
+			borrow = 1;
+		}
+		u[i] = val;
+	} 
+	return borrow;
+}
+
+int long_add(ARBT *a, size_t i, ARBT *b, size_t j, int b)
+{
+	int carry = 0;
+	return carry;
+}
 
 fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 {
@@ -97,17 +121,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 			// `obtain` qg times (V1V2...Vn) `and put into temp`
 			short_mul2(v, temp+1, leb, qg, b);
 			//  (UjUj+1...Uj+n)B - qgtimes (V1V2...Vn)
-			for (borrow = 0, i = j+leb, k = leb; k+1 > 0; i--, k--)
-			{
-				val = u[i] - temp[k] - borrow; 
-				borrow = 0;
-				if (val < 0)
-				{
-					val += b;
-					borrow = 1;
-				}
-				u[i] = val;
-			} 
+			borrow = long_sub(u, j+leb, temp, leb, b);
 			// D5. [Test Remainder] Set Qj <-- qg.
 			// if D4 was negative go to D6, otherwise go on to D7
 			if (borrow != 1)
