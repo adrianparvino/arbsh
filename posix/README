@@ -7,6 +7,10 @@ DESCRIPTION:
 	compliance. When a feature is implemented it is to meet POSIX
 	specifications. No additional features are added.
 
+	basename cat cp cutils.h date dd du echo fetch find fold grep head 
+	ls rm sleep strings tail tests wc which
+	
+
 BUILDING:
 ---------
 
