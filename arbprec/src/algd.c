@@ -4,8 +4,7 @@ int long_sub(ARBT *u, size_t i, ARBT *temp, size_t k, int b)
 { 
 	int borrow = 0;
 	int val = 0;
-	
-	for (borrow = 0; k+1 > 0; i--, k--)
+	for (; k+1 > 0; i--, k--)
 	{
 		val = u[i] - temp[k] - borrow; 
 		borrow = 0;
@@ -19,9 +18,21 @@ int long_sub(ARBT *u, size_t i, ARBT *temp, size_t k, int b)
 	return borrow;
 }
 
-int long_add(ARBT *a, size_t i, ARBT *b, size_t j, int b)
+int long_add(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 {
 	int carry = 0;
+	int val = 0;
+	for (carry = 0 ; k+1 > 0 ;i--, k--)
+	{
+		val = u[i] + v[k] + carry;
+		carry = 0;
+		if (val > b-1)
+		{
+			val -= b;
+			carry = 1;
+		}
+		u[i] = val;
+	}
 	return carry;
 }
 
@@ -130,17 +141,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 			// Decrease Qj by 1
 			qg = qg - 1;
 			// Add (0V1V2...Vn) to (UjU(j+1)U(j+2)...U(j+n))b
-			for (carry = 0, i = j+leb, k = leb-1; i > j ;i--, k--)
-			{
-				val = u[i] + v[k] + carry;
-				carry = 0;
-				if (val > b-1)
-				{
-					val -= b;
-					carry = 1;
-				}
-				u[i] = val;
-			}
+			carry = long_add(u, leb+j, v, leb-1, b);
 			// "A carry will occur to the left of Uj and it should be ignored since it
 			// cancels with the borrow that occured in D4" `zero it out`
 			if (carry == 1) 
