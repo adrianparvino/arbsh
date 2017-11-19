@@ -97,7 +97,7 @@ release:
 	-git add * .htaccess  .tx2html
 	-git commit -m $(RELEASE)
 	-git push origin master
-	cd $(SPWD)/.. && tar -c $(NAME) -f $(RELEASE)
+	cd $(SPWD)/.. && tar -cz $(NAME) -f $(RELEASE)
 	cd $(SPWD)/.. && scp $(RELEASE) $(SSHSERVER)
 	@printf "\n\n%s\n" "Make sure to bump the build number to avoid future overlap"
 
