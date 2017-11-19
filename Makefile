@@ -1,21 +1,18 @@
 .SILENT: buildenvvars clearenvvars
 .PHONY: ironwill
 
-RELEASE = arbsh-0.4b.tar.gz
+RELEASE = arbsh-0.1a.tar.gz
 WEBSITE = http://www.csit.parkland.edu/~cgraff1
 SPWD = $(shell pwd)
 NAME = $(shell basename $(SPWD))
 SSHSERVER = cgraff1@shaula.csit.parkland.edu:public_html/ 
 
-all:
+all: 
 
-	
 	-$(MAKE) -C readline
-	
 	-$(MAKE) -C arbprec
 	-$(MAKE) -C gsh
 	-$(MAKE) -C posix
-
 	-$(MAKE) install
 	#install the outside projects last
 
@@ -24,7 +21,7 @@ outside:
 	-$(MAKE) get_graflibc
 	-$(MAKE) make_graflibc
 	-$(MAKE) make_ash
-	# it's unlikely that the game builds on the user's target
+	# Try building the game last. It has a lot of dependencies.
 	-$(MAKE) make_cube-zero
 
 renew:
@@ -60,20 +57,12 @@ make_cube-zero:
 	
 clean:
 
-	-$(MAKE) -C readline clean
-	-$(MAKE) -C termcap clean
-	-$(MAKE) -C curses clean
-	-$(MAKE) -C posix clean 
-	-$(MAKE) -C lsb clean 
-	-$(MAKE) -C irc clean
-	-$(MAKE) -C gsh clean
-	-$(MAKE) -C editor clean
-	-$(MAKE) -C arbprec clean
-	-$(MAKE) -C libc clean
-	-$(MAKE) -C ash clean
-	-$(MAKE) -C game clean
-	-$(RM) -r include lib bin
-
+	$(MAKE) -C readline clean
+	$(MAKE) -C posix clean
+	$(MAKE) -C gsh clean
+	$(MAKE) -C arbprec clean
+	$(RM) -r include lib bin
+	@printf "\n\n%s\n" "If cube-zero, hlibc or ash were downloaded they must be cleaned seperately"
 
 install:
 
@@ -110,5 +99,6 @@ release:
 	-git push origin master
 	cd $(SPWD)/.. && tar -c $(NAME) -f $(RELEASE)
 	cd $(SPWD)/.. && scp $(RELEASE) $(SSHSERVER)
+	@printf "\n\n%s\n" "Make sure to bump the build number to avoid future overlap"
 
 

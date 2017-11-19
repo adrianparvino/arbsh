@@ -111,18 +111,10 @@ UPSTREAM:
 REFERENCES:
 -----------
 
-	http://pubs.opengroup.org/onlinepubs/9699919799
-
-	http://www.iso-9899.info/wiki/The_Standard
-
-	http://www.csie.ntu.edu.tw/~r92094/c++/VT100.html
-
-	https://www.gnu.org/software/grub/manual/multiboot/multiboot.html
+	POSIX:
+		http://pubs.opengroup.org/onlinepubs
 
 
 RELEASES:
---------- 
-	http://www.csit.parkland.edu/~cgraff1/arbsh-0.4a.tar.gz
-
-	http://www.csit.parkland.edu/~cgraff1/arbsh-0.4b.tar.gz
+---------
 

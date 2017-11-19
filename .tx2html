@@ -60,7 +60,7 @@ text2htmlsh()
 }
 
 
-text2htmlsh $1
-#text2html3 $1
+#text2htmlsh $1
+text2html3 $1
 
 
