@@ -19,12 +19,14 @@ int main(int argc, char *argv[])
 	c = arb_mul(a, b, c, base);
 	arb_printold(c);
 	printf("div\n");
-	c = arb_division(a, b, c, base, scale);
-	arb_printold(c);
+	//c = arb_division(a, b, c, base, scale);
+	//arb_printold(c);
 	printf("add\n");
 	c = arb_add(a, b, c, base);
 	arb_printold(c);
 	printf("sub\n");
+	printf("len of a = %zu\n", a->len);
+	printf("len of b = %zu\n", b->len);
 	c = arb_sub(a, b, c, base);
 	arb_printold(c);
 	arb_print(a);
