@@ -141,6 +141,7 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
         } else if (request > flt->allocated){
                 flt->allocated = (request + flt->chunk);
                 flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
+		//memset(flt->number + flt->rp + flt->lp, 0, (flt->allocated - flt->rp + flt->lp) * sizeof(ARB));
         }
         return flt;
 }

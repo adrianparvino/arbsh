@@ -81,12 +81,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	memcpy(u + 1, num->number, (num->lp + num->rp) * sizeof(ARBT));
 
 	leb = den->lp + den->rp;
-	v = arb_malloc((leb+1) * sizeof(ARBT)); //replace this with an expansion of den
-	memcpy(v, den->number, leb * sizeof(ARBT));
-	//den = arb_expand(den
-	v[leb] = 0;
-
-	ARBT *freesave = v;
+	v = den->number;
 	for (;*v == 0;v++,leb--);
 
 	quodig = scale+1;
@@ -138,10 +133,10 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	}
 	// D8. would be the step for remainders
 	end: 
-	arb_free_num(c); 
-	free(temp);
-	free(u);
-	free(freesave);
+	//arb_free_num(c); 
+	//free(temp);
+	//free(u);
+	//free(freesave);
 	return q;
 }
 
