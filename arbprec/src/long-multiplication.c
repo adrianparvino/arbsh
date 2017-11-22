@@ -12,7 +12,7 @@ void arb_mul_core(ARBT *a, size_t alen, ARBT *b, size_t blen, ARBT *c, int base)
 			c[k] = (sum % base);
 		}
 		c[k] += carry;
-	} 
+	}
 }
 
 fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)

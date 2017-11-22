@@ -62,9 +62,6 @@ int arb_compare(fxdpnt *, fxdpnt *, int);
 void arb_free(fxdpnt *);
 void arb_free_num (fxdpnt *num);
 void arb_printold(fxdpnt *);
-void short_multiply(unsigned char *, int, int, unsigned char *, int);
-void short_mul2(ARBT *, ARBT *, size_t, int, int);
-void arb_short_mul(ARBT *, size_t, int, int);
 void arb_mul_core(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
 void print_arbt(FILE *, char *, ARBT *, size_t);
 

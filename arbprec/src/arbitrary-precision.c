@@ -12,7 +12,7 @@ void print_arbt(FILE *fp, char *msg, ARBT *number, size_t len)
 	fprintf(fp, "%s ", msg);
 	for (i=0; i < len ; ++i)
 	{
-		fprintf(fp, "%d", arb_highbase((number[i])));
+		fprintf(fp, "%c", arb_highbase((number[i])));
 	}
 	fprintf(fp, "\n");
 }
