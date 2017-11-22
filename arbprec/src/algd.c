@@ -109,11 +109,10 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	//	arb_short_mul(v, leb, d, b); 
 	//} 
 	
-	for (j=0;j <= lea+scale-leb;++j)
-	{ 
-		if (v[0] == u[j])
-			qg = b - 1; 
-		else	qg = (u[j]*b + u[j+1]) / v[0];
+	for (j=0, qg = b - 1;j <= lea+scale-leb;++j, qg = b - 1)
+	{
+		if (v[0] != u[j])
+			qg = (u[j]*b + u[j+1]) / v[0];
 		
 		if (v[1]*qg > (u[j]*b + u[j+1] - v[0]*qg)*b + u[j+2])
 		{
