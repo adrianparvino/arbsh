@@ -8,6 +8,7 @@ void arb_free(fxdpnt *flt)
 }
 void print_arbt(FILE *fp, char *msg, ARBT *number, size_t len)
 {
+	// NOTE: try to reuse the function as the core of the bignum printing function
 	size_t i = 0;
 	fprintf(fp, "%s ", msg);
 	for (i=0; i < len ; ++i)

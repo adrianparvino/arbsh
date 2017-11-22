@@ -3,6 +3,9 @@
 fxdpnt *arb_str2fxdpnt(const char *str)
 {
 	// Convert a string to an arb `fxdpnt'
+	// This only works with base 10 because of the ascii "-'0'"
+	// To make it work with any base then a function that is the opposite of
+	// src/arb_highbase must be contrived
 	size_t i = 0;
 	int flt_set = 0, sign_set = 0;
 
@@ -34,7 +37,6 @@ fxdpnt *arb_str2fxdpnt(const char *str)
 		ret->lp = ret->len;
 
 	ret->rp = ret->len - ret->lp;
-
 
 	return ret;
 }

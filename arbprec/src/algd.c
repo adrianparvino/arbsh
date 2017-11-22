@@ -55,10 +55,9 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	ARBT *u;
 	ARBT *v;
 	ARBT *temp;
-
+	ARBT qg = 0;
 	//int uscal = 0;
-	ssize_t uscal = 0;//FIXME: figure out how to use a size_t for this 
-	int qg = 0;// never more than base 
+	ssize_t uscal = 0;//FIXME: figure out how to use a size_t for this
 	int out_of_scale = 0; // a bool
 	int d = 0; // TODO: research the maximum value of the normalization relative to the base "b"
 	size_t quodig = 0;
@@ -66,7 +65,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	size_t lea = 0;
 	size_t leb = 0;
 	size_t j = 0;
-	ARBT ar[1] = { 0 };
+	
 
 	lea = num->lp + den->rp;
 	uscal = num->rp - den->rp;
@@ -124,9 +123,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		} 
 		// D4. [Multiply and Subtract]
 		if (qg != 0){
-			temp[0] = 0; temp[leb-1] = 0; temp[leb] = 0;
-			ar[0] = qg;
-			arb_mul_core(v, leb, ar, 1, temp  ,b);
+			arb_mul_core(v, leb, &qg, 1, temp, b);
 			if (!(long_sub(u, j+leb, temp, leb, b)))
 				goto D7;
 			qg = qg - 1;
