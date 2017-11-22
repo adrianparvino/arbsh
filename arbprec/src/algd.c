@@ -65,6 +65,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	size_t lea = 0;
 	size_t leb = 0;
 	size_t j = 0;
+	int b1 = b-1;
 	
 
 	lea = num->lp + den->rp;
@@ -109,7 +110,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	//	arb_short_mul(v, leb, d, b); 
 	//} 
 	
-	for (j=0, qg = b - 1;j <= lea+scale-leb;++j, qg = b - 1)
+	for (j=0, qg = b1;j <= lea+scale-leb;++j, qg = b1)
 	{
 		if (v[0] != u[j])
 			qg = (u[j]*b + u[j+1]) / v[0];
