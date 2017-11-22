@@ -107,7 +107,13 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		} 
 		// D4. [Multiply and Subtract]
 		if (qg != 0){ 
-			memset(temp, 0, leb + 1);
+			
+			temp[0] = 0;
+			temp[leb -1] = 0;
+			temp[leb] = 0;
+			temp[leb + 1] = 0;
+			
+			
 			memset(ar, 0, 3);
 			ar[0] = qg;
 			arb_mul_core(v, leb, ar, 1, temp  ,b);
