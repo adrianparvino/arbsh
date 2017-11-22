@@ -32,6 +32,11 @@ int long_add(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 	return carry;
 }
 
+fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+	// take extra width to the right of the radix off of the longer number and put it into "c"
+}
+
 fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 {
 	fxdpnt *q;
