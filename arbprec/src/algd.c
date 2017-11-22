@@ -2,11 +2,18 @@
 
 fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
+	// NOTE: reverse add and sub only have a speed benefit when the length of the number is unknown
+	//       in real life arbitrary precision we always know their length
 	// We are NOT computing in reverse so:
 
 	// bring down the extra width of the longest number to the left of the radix into the answer
 	// start the computation applying the place function to compensate for exhausted zeros
+	//       OR
 	// this may be simpler to have a second function. it's going to be hard to reuse long_add_core
+	// ideally long_add could simply be called twice, perhaps by overflowing the first digit and allowing it to resolve
+
+	// NOTE: long_add will not be interfered with during the initial computation because there is no way to 
+	//       overflow during a carry down of radix left mixmatch
 }
 
 int long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
@@ -59,7 +66,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	size_t lea = 0;
 	size_t leb = 0;
 	size_t j = 0;
-	ARBT ar[10] = { 0 };
+	ARBT ar[1] = { 0 };
 
 	lea = num->lp + den->rp;
 	uscal = num->rp - den->rp;
@@ -118,13 +125,12 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		// D4. [Multiply and Subtract]
 		if (qg != 0){
 			temp[0] = 0; temp[leb-1] = 0; temp[leb] = 0;
-			memset(ar, 0, 3);
 			ar[0] = qg;
 			arb_mul_core(v, leb, ar, 1, temp  ,b);
 			if (!(long_sub(u, j+leb, temp, leb, b)))
 				goto D7;
 			qg = qg - 1;
-			if (long_add(u, j+leb, v, leb-1, b))
+			if (long_add(u, j+leb, v, leb-1, b)) // NOTE: use an offset to u so that long add-sub is not dependent
 				u[0] = 0; 
 		}
 		D7: // D7.
