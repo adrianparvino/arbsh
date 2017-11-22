@@ -52,9 +52,8 @@ int long_add(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 }
 
 
-fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
-{
-	fxdpnt *q;
+fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
+{ 
 	ARBT *u;
 	ARBT *v;
 	ARBT *temp;
@@ -66,13 +65,11 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	size_t lea = 0;
 	size_t leb = 0;
 	size_t j = 0;
-	int b1 = b-1;
 
 	lea = num->lp + den->rp;
 	uscal = num->rp - den->rp;
-
 	if (uscal < scale)
-		offset = scale - uscal;
+		offset = scale - uscal; 
 	else
 		offset = 0;
 
@@ -91,23 +88,15 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		if (!(leb>lea))
 			quodig = lea-leb+scale+1;
 
-	q = arb_new_num(quodig-scale,scale);// FIXME replace this with an expansion of "c"
-	memset(q->number, 0, quodig * sizeof(ARBT));
+	q = arb_expand(q, quodig+scale);
+	q->lp = quodig-scale; q->rp = scale; q->len = q->lp + q->rp;
+	
 	temp = arb_malloc((leb+1) * sizeof(ARBT));
 
 	if (out_of_scale)
-		goto end; 
-	// replace this with long-multiplication
-	//d = b / (v[0] + 1);
-
-	//if (d != 1){ 
-		// 
-		//arb_mul_core(u, , &qg, 1, temp, b);
-		//arb_short_mul(u, lea+uscal+offset+1, d, b); 
-		//arb_short_mul(v, leb, d, b); 
-	//} 
+		goto end;
 	
-	for (j=0, qg = b1;j <= lea+scale-leb;++j, qg = b1)
+	or (j=0, qg = b-1;j <= lea+scale-leb;++j, qg = b-1)
 	{
 		if (v[0] != u[j])
 			qg = (u[j]*b + u[j+1]) / v[0];
@@ -130,12 +119,9 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		D7: // D7.
 		q->number[j] = qg;
 	}
-	// D8. would be the step for remainders
-	end: 
-	//arb_free_num(c); 
-	//free(temp);
-	//free(u);
-	//free(freesave);
+	end:
+	free(temp);
+	free(u);
 	return q;
 }
 
