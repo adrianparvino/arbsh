@@ -124,20 +124,16 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		// D4. [Multiply and Subtract]
 		if (qg != 0){
 			arb_mul_core(v, leb, &qg, 1, temp, b);
-			if (!(long_sub(u, j+leb, temp, leb, b)))
+			if (!(long_sub(u+leb, j, temp, leb, b)))
 				goto D7;
 			qg = qg - 1;
-			if (long_add(u, j+leb, v, leb-1, b)) // NOTE: use an offset to u so that long add-sub is not dependent
+			if (long_add(u+leb, j, v, leb-1, b))
 				u[0] = 0; 
 		}
 		D7: // D7.
 		q->number[j] = qg;
 	}
-	// D8. [Unnormalize]
-	// (Q0Q1...Qm)b is the desired quotient, `but` the remainder is ((U(m+1)...U(m+n))b / d)
-	// TODO: write a "short division" function to accomplish this and figure and devise a
-	// method to make this function do either job. this will probably require another function
-	// argument
+	// D8. would be the step for remainders
 	end: 
 	arb_free_num(c); 
 	free(temp);
