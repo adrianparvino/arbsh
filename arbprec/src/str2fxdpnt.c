@@ -2,7 +2,7 @@
 
 fxdpnt *arb_str2fxdpnt(const char *str)
 {
-	// Convert a string to a arb `fxdpnt'
+	// Convert a string to an arb `fxdpnt'
 	size_t i = 0;
 	int flt_set = 0, sign_set = 0;
 
