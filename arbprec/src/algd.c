@@ -96,7 +96,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 	if (out_of_scale)
 		goto end;
 	
-	or (j=0, qg = b-1;j <= lea+scale-leb;++j, qg = b-1)
+	for (j=0, qg = b-1;j <= lea+scale-leb;++j, qg = b-1)
 	{
 		if (v[0] != u[j])
 			qg = (u[j]*b + u[j+1]) / v[0];
