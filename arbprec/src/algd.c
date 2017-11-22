@@ -2,26 +2,11 @@
 
 fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	// NOTE: this is all needs to be redesigned because we are computing backwards
-	// find which number is longest to the right of the radi
-	size_t diff = 0;
-	size_t i = 0;
-	if (a->rp > b->rp)
-	{
-		diff = a->rp - b->rp;
-		memcpy(c->number, diff, a->number);
-	}
-	else if (b->rp > a->rp)
-	{
-		diff = b->rp - a->rp;
-	}
-	else;// they are the same 
+	// We are NOT computing in reverse so:
 
-	
-	// take extra width to the right of the radix off of the longer number and put it into "c"
-	// perform long_add
-	// check for carry and increment "c" and it it if present
-	
+	// bring down the extra width of the longest number to the left of the radix into the answer
+	// start the computation applying the place function to compensate for exhausted zeros
+	// this may be simpler to have a second function. it's going to be hard to reuse long_add_core
 }
 
 int long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
