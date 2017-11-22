@@ -51,7 +51,6 @@ int long_add(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 	return carry;
 }
 
-
 fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 { 
 	ARBT *u;
