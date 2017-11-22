@@ -23,7 +23,8 @@ fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
 	arb_setsign(a, b, c);
 	c = arb_expand(c, a->len + b->len);
-	memset(c->number, 0, (a->len + b->len) * sizeof(ARBT));
+	// arb_mul_core is self zeroing
+	//memset(c->number, 0, (a->len + b->len) * sizeof(ARBT));
 	arb_mul_core(a->number, a->len, b->number, b->len, c->number, base);
 	c->len = a->len + b->len;
 	c->lp = a->lp + b->lp;
