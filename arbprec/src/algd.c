@@ -108,8 +108,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	//	arb_short_mul(u, lea+uscal+offset+1, d, b); 
 	//	arb_short_mul(v, leb, d, b); 
 	//} 
-	j = 0;
-	while (j <= lea+scale-leb)
+	
+	for (j=0;j <= lea+scale-leb;++j)
 	{ 
 		if (v[0] == u[j])
 			qg = b - 1; 
@@ -132,7 +132,6 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		}
 		D7: // D7.
 		q->number[j] = qg;
-		j++;
 	}
 	// D8. [Unnormalize]
 	// (Q0Q1...Qm)b is the desired quotient, `but` the remainder is ((U(m+1)...U(m+n))b / d)
