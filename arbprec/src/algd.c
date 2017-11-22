@@ -2,13 +2,22 @@
 
 fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-
-	if (a->rp > b->rp)
-		;
-	else if (b->rp > a->rp)
-		;
-	else;// they are the same
+	// NOTE: this is all needs to be redesigned because we are computing backwards
 	// find which number is longest to the right of the radi
+	size_t diff = 0;
+	size_t i = 0;
+	if (a->rp > b->rp)
+	{
+		diff = a->rp - b->rp;
+		memcpy(c->number, diff, a->number);
+	}
+	else if (b->rp > a->rp)
+	{
+		diff = b->rp - a->rp;
+	}
+	else;// they are the same 
+
+	
 	// take extra width to the right of the radix off of the longer number and put it into "c"
 	// perform long_add
 	// check for carry and increment "c" and it it if present
