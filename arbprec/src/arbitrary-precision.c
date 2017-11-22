@@ -6,6 +6,16 @@ void arb_free(fxdpnt *flt)
                 free(flt->number);
         free(flt);
 }
+void print_arbt(FILE *fp, char *msg, ARBT *number, size_t len)
+{
+	size_t i = 0;
+	fprintf(fp, "%s ", msg);
+	for (i=0; i < len ; ++i)
+	{
+		fprintf(fp, "%d", arb_highbase((number[i])));
+	}
+	fprintf(fp, "\n");
+}
 
 void arb_printold(fxdpnt *flt)
 {

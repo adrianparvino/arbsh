@@ -66,5 +66,5 @@ void short_multiply(unsigned char *, int, int, unsigned char *, int);
 void short_mul2(ARBT *, ARBT *, size_t, int, int);
 void arb_short_mul(ARBT *, size_t, int, int);
 void arb_mul_core(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
-
+void print_arbt(FILE *, char *, ARBT *, size_t);
 
