@@ -6,31 +6,25 @@ void arb_free(fxdpnt *flt)
                 free(flt->number);
         free(flt);
 }
-void print_arbt(FILE *fp, char *msg, ARBT *number, size_t len, size_t radix)
+void print_arbt(FILE *fp, ARBT *number, size_t len, size_t radix)
 {
-	// NOTE: try to reuse the function as the core of the bignum printing function
 	size_t i = 0;
-	fprintf(fp, "%s ", msg);
 	for (i=0; i < len ; ++i)
 	{
+		if (radix == i)
+			fprintf(fp, ".");
 		fprintf(fp, "%c", arb_highbase((number[i])));
 	}
 	fprintf(fp, "\n");
+	fflush(fp);
 }
 
 void arb_printold(fxdpnt *flt)
 {
         size_t i = 0;
-
         if (flt->sign == '-')
                 putchar(flt->sign);
-        for (i = 0; i < flt->len ; ++i){
-                if (flt->lp == i)
-                        putchar('.');
-                putchar(arb_highbase((flt->number[i])));
-        }
-        putchar('\n');
-        fflush(stdout);
+	print_arbt(stdout, flt->number, flt->len, flt->lp);
 }
 
 size_t rr(fxdpnt *flt)
@@ -44,7 +38,6 @@ size_t rl(fxdpnt *flt)
         /* Left hand radix position */
         return flt->lp;
 }
-
 
 void arb_init(fxdpnt *flt)
 {
@@ -88,12 +81,7 @@ void arb_print(fxdpnt *flt)
 
         if (flt->sign == '-')
                 putchar(flt->sign);
-        for (i = 0; i < len ; ++i){
-                if (flt->lp == i)
-                        putchar('.');
-                putchar(arb_highbase((flt->number[i])));
-        }
-        putchar('\n');
+	print_arbt(stdout, flt->number, flt->len, flt->lp);
         fflush(stdout);
 }
 
@@ -141,7 +129,6 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
         } else if (request > flt->allocated){
                 flt->allocated = (request + flt->chunk);
                 flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
-		//memset(flt->number + flt->rp + flt->lp, 0, (flt->allocated - flt->rp + flt->lp) * sizeof(ARB));
         }
         return flt;
 }
