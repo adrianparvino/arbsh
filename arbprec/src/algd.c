@@ -106,18 +106,19 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 		} 
 		// D4. [Multiply and Subtract]
 		if (qg != 0){ 
-			temp[0] = 0; 
-			short_mul2(v, temp+1, leb, qg, b); 
+			//temp[0] = 0; 
+			memset(temp, 0, leb + 1);
+			//print_arbt(stderr, "v", v, leb);
+                        //print_arbt(stderr, "temp", temp, leb);
+			//printf("qg = %d\n", qg);
+			//short_mul2(v, temp+1, leb, qg, b); 
 			//short_mul2(v, temp, leb, qg, b); 
-			
+			memset(ar, 0, 3);
 			ar[0] = qg;
+			//printf("qg = %d\n", ar[0]);
 			
-			//arb_mul_core(v, leb, ar, 1, temp  ,b);
-			print_arbt(stderr, "smul", temp, leb);
-
-
-
-	
+			arb_mul_core(v, leb, ar, 1, temp  ,b);
+			//print_arbt(stderr, "smul", temp, leb);
 		
 			
 			if (!(long_sub(u, j+leb, temp, leb, b)))
