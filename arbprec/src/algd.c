@@ -76,8 +76,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	else
 		offset = 0;
 
-	u = arb_malloc((num->lp + num->rp + offset + 2) * sizeof(ARBT));
-	memset(u, 0, (num->lp + num->rp + offset + 2) * sizeof(ARBT)); // ref 1
+	u = calloc(1, (num->lp + num->rp + offset + 2) * sizeof(ARBT));
 	memcpy(u + 1, num->number, (num->lp + num->rp) * sizeof(ARBT));
 
 	leb = den->lp + den->rp;
