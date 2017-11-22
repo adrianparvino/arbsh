@@ -29,7 +29,6 @@ typedef struct {
 /* function prototypes */ 
 fxdpnt *arb_expand(fxdpnt *, size_t);
 fxdpnt *arb_str2fxdpnt(const char *);
-fxdpnt *arb_add_precision(fxdpnt *, size_t);
 fxdpnt *arb_alloc(size_t); 
 void *arb_malloc(size_t);
 void *arb_realloc(void *, size_t); 

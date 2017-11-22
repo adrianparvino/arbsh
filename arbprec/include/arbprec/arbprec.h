@@ -36,7 +36,6 @@ fxdpnt *arb_sub(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_add(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_expand(fxdpnt *, size_t);
 fxdpnt *arb_str2fxdpnt(const char *);
-fxdpnt *arb_add_precision(fxdpnt *, size_t);
 fxdpnt *arb_alloc(size_t);
 fxdpnt *arb_division(fxdpnt *, fxdpnt *, fxdpnt *c, int, int);
 fxdpnt *arb_rightshift(fxdpnt *, size_t, int);

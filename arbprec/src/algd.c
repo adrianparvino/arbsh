@@ -14,6 +14,9 @@ fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 
 	// NOTE: long_add will not be interfered with during the initial computation because there is no way to 
 	//       overflow during a carry down of radix left mixmatch
+
+	// NOTE: long_sub and add need to be redesigned to have a third "answer" value
+	//       they should be formulated to not interfere with alg D
 }
 
 int long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
@@ -56,17 +59,14 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	ARBT *v;
 	ARBT *temp;
 	ARBT qg = 0;
-	//int uscal = 0;
-	ssize_t uscal = 0;//FIXME: figure out how to use a size_t for this
-	int out_of_scale = 0; // a bool
-	int d = 0; // TODO: research the maximum value of the normalization relative to the base "b"
+	ssize_t uscal = 0;
+	int out_of_scale = 0;
 	size_t quodig = 0;
 	size_t offset = 0;
 	size_t lea = 0;
 	size_t leb = 0;
 	size_t j = 0;
 	int b1 = b-1;
-	
 
 	lea = num->lp + den->rp;
 	uscal = num->rp - den->rp;
@@ -81,8 +81,9 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	memcpy(u + 1, num->number, (num->lp + num->rp) * sizeof(ARBT));
 
 	leb = den->lp + den->rp;
-	v = arb_malloc((leb+1) * sizeof(ARBT));
+	v = arb_malloc((leb+1) * sizeof(ARBT)); //replace this with an expansion of den
 	memcpy(v, den->number, leb * sizeof(ARBT));
+	//den = arb_expand(den
 	v[leb] = 0;
 
 	ARBT *freesave = v;
@@ -106,8 +107,10 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *c, int b, int scale)
 	//d = b / (v[0] + 1);
 
 	//if (d != 1){ 
-	//	arb_short_mul(u, lea+uscal+offset+1, d, b); 
-	//	arb_short_mul(v, leb, d, b); 
+		// 
+		//arb_mul_core(u, , &qg, 1, temp, b);
+		//arb_short_mul(u, lea+uscal+offset+1, d, b); 
+		//arb_short_mul(v, leb, d, b); 
 	//} 
 	
 	for (j=0, qg = b1;j <= lea+scale-leb;++j, qg = b1)

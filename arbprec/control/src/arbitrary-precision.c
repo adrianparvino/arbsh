@@ -7,15 +7,6 @@ void arb_free(fxdpnt *flt)
         free(flt);
 }
 
-fxdpnt *arb_add_precision(fxdpnt *flt, size_t more)
-{
-        // Increase the precision of an arb `fxdpnt'
-        flt = arb_expand(flt, flt->len + more);
-        memset(flt->number + flt->len, 0, more * sizeof(ARBT));
-        flt->len += more;
-        return flt;
-}
-
 void arb_init(fxdpnt *flt)
 {
         flt->sign = '+';

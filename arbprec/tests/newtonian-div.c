@@ -15,8 +15,6 @@ int main(int argc, char *argv[])
         fxdpnt *c = arb_new_num(12, scale);
         a = arb_str2fxdpnt(argv[1]);
         b = arb_str2fxdpnt(argv[2]);
-        //a = arb_add_precision(a, scale);
-        //b = arb_add_precision(b, scale);
         c = arb_newtonian_div(a, b, c, base, scale);
 	printf("=======\n");
         arb_printold(c);
