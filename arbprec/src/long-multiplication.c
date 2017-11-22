@@ -7,7 +7,7 @@ void arb_mul_core(ARBT *a, size_t alen, ARBT *b, size_t blen, ARBT *c, int base)
 	size_t last = 0;
 
 	for ( i = alen - 1; i >= 0 ; i--){
-		k = last;
+		last = k;
 		for ( j = blen - 1, k = i + j + 1, carry = 0; j >= 0 ; j--, k--){
 			sum = (a[i]) * (b[j]) + (c[k]) + carry;
 			carry = sum / base; 
