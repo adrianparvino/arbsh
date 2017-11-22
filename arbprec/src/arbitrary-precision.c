@@ -6,7 +6,7 @@ void arb_free(fxdpnt *flt)
                 free(flt->number);
         free(flt);
 }
-void print_arbt(FILE *fp, char *msg, ARBT *number, size_t len)
+void print_arbt(FILE *fp, char *msg, ARBT *number, size_t len, size_t radix)
 {
 	// NOTE: try to reuse the function as the core of the bignum printing function
 	size_t i = 0;
@@ -146,7 +146,7 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
         return flt;
 }
 
-fxdpnt *arb_new_num (int length, int scale)
+fxdpnt *arb_create (int length, int scale)
 {
 	fxdpnt *ret;
 	ret = arb_malloc(sizeof(fxdpnt));
