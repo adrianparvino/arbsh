@@ -28,6 +28,5 @@ void short_mul2(ARBT *a, ARBT *c, size_t i, int b, int base)
 	}
 	if (carry)
 		c[i-1] = carry;
-
 }
 
