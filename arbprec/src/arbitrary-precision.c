@@ -6,26 +6,6 @@ void arb_free(fxdpnt *flt)
                 free(flt->number);
         free(flt);
 }
-void print_arbt(FILE *fp, ARBT *number, size_t len, size_t radix)
-{
-	size_t i = 0;
-	for (i=0; i < len ; ++i)
-	{
-		if (radix == i)
-			fprintf(fp, ".");
-		fprintf(fp, "%c", arb_highbase((number[i])));
-	}
-	fprintf(fp, "\n");
-	fflush(fp);
-}
-
-void arb_printold(fxdpnt *flt)
-{
-        size_t i = 0;
-        if (flt->sign == '-')
-                putchar(flt->sign);
-	print_arbt(stdout, flt->number, flt->len, flt->lp);
-}
 
 size_t rr(fxdpnt *flt)
 {
@@ -66,23 +46,6 @@ void verbose(char *msg)
 {
 	if (verbosity)
 		fprintf(stderr, "%s\n", msg);
-}
-
-void arb_print(fxdpnt *flt)
-{
-        size_t i = 0;
-	size_t len = 0;
-	flt->len = flt->lp + flt->rp;
-
-	if (flt->len == 0)
-		len = flt->lp + flt->rp;
-	else
-		len = flt->len;
-
-        if (flt->sign == '-')
-                putchar(flt->sign);
-	print_arbt(stdout, flt->number, flt->len, flt->lp);
-        fflush(stdout);
 }
 
 void arb_error(char *message)
@@ -133,14 +96,14 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
         return flt;
 }
 
-fxdpnt *arb_create (int length, int scale)
+fxdpnt *arb_create(int length, int scale)
 {
 	fxdpnt *ret;
 	ret = arb_malloc(sizeof(fxdpnt));
 	ret->sign = '+';
 	ret->lp = length;
 	ret->rp = scale;
-	ret->allocated = 0;
+	ret->allocated = length+scale;
 	ret->len = ret->lp + ret->rp;
 	ret->number = arb_malloc((length+scale) * sizeof(ARBT));
 	ret->chunk = 4;

@@ -62,5 +62,5 @@ void arb_free(fxdpnt *);
 void arb_free_num (fxdpnt *num);
 void arb_printold(fxdpnt *);
 void arb_mul_core(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
-void print_arbt(FILE *, char *, ARBT *, size_t, size_t);
+void print_arbt(FILE *, ARBT *, size_t, size_t);
 
