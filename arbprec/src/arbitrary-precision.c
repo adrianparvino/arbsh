@@ -91,21 +91,6 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
         return flt;
 }
 
-fxdpnt *arb_create(int length, int scale)
-{
-	fxdpnt *ret;
-	ret = arb_malloc(sizeof(fxdpnt));
-	ret->sign = '+';
-	ret->lp = length;
-	ret->rp = scale;
-	ret->allocated = length+scale;
-	ret->len = ret->lp + ret->rp;
-	ret->number = arb_malloc((length+scale) * sizeof(ARBT));
-	ret->chunk = 4;
-	memset(ret->number, 0, (length+scale) * sizeof(ARBT));
-	return ret;
-}
-
 void arb_free_num (fxdpnt *num)
 {
 	if (num == NULL)
