@@ -7,12 +7,6 @@ void arb_free(fxdpnt *flt)
         free(flt);
 }
 
-size_t rr(fxdpnt *flt)
-{
-        /* Right hand radix position */
-        return flt->len - flt->lp;
-}
-
 size_t rl(fxdpnt *flt)
 {
         /* Left hand radix position */
