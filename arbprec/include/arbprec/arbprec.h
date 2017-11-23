@@ -62,4 +62,5 @@ void arb_free_num (fxdpnt *num);
 void arb_printold(fxdpnt *);
 void arb_mul_core(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
 void _print_core(FILE *, ARBT *, size_t, size_t);
-
+fxdpnt *ccarb_divide(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
+fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale);

@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
         int scale =  strtol(argv[4],0,  10);
 	fxdpnt *a = NULL;
 	fxdpnt *c = NULL;
-	a = arb_expand(a, 1);
+	a = arb_expand(a, 1000);
 	c = arb_expand(c, 100);
         a = arb_str2fxdpnt(argv[1]);
         arb_babylonian_sqrt(a, c, 10, 100);

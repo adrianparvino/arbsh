@@ -18,7 +18,7 @@ INCLUDES_TARG = $(shell for i in include/$(PREFIX)/*.h ; do printf "%s\n" $(DEST
 
 TEST_OBJ = $(shell for i in tests/*.c ; do printf "%s\n" $${i%.c} ; done )
 
-LDLIBS += -L. -l$(LIBNAME)
+LDLIBS += -L. -l$(LIBNAME) 
 
 all:
 
