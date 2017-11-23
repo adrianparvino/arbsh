@@ -35,5 +35,4 @@ void arb_print(fxdpnt *flt)
         if (flt->sign == '-')
                 putchar(flt->sign);
 	print_arbt(stdout, flt->number, flt->len, flt->lp);
-        fflush(stdout);
 }
