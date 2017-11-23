@@ -62,6 +62,7 @@ fxdpnt *arb_alloc(size_t len)
         ret->number = arb_malloc(sizeof(ARBT) * len);
         ret->sign = '+';
         ret->lp = 0;
+	ret->rp = 0;
         ret->allocated = len;
         ret->len = 0;
         ret->chunk = 4; // set to 4 to force worst case tests, change to >255
