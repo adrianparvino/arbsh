@@ -87,6 +87,7 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 {
         // Enlarge or create a fxdpnt
         if (flt == NULL){
+	//	arb_init(flt);
                 flt = arb_alloc(request); // do not use sizeof here, it's in arb_alloc
 		flt->allocated = request;
         } else if (request > flt->allocated){

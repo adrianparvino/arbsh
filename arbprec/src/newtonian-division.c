@@ -47,8 +47,8 @@ fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	guess->number[a->len -1] = 5;
 	guess->len = a->len;
 
-	arb_printold(guess);
-	arb_printold(two);
+	arb_print(guess);
+	arb_print(two);
 	size_t i = 0;
 	while (i < 10)
 	{ 
@@ -56,7 +56,7 @@ fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		hold2 = arb_sub(two, hold, hold2, base); // 2 - x * guess
 		newguess = arb_mul(guess, hold2, newguess, base); // guess * (2-x*guess)
 		arb_copy(guess, newguess);
-		arb_printold(newguess);
+		arb_print(newguess);
 		++i;
 	}
 	reciprocal = guess;

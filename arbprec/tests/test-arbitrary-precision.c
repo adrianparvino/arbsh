@@ -2,10 +2,10 @@
 
 int main(int argc, char *argv[])
 {
-	if (argc < 5 )
-		arb_error("Needs 4 args, such as:  123 / 123 base scale");
+	if (argc < 4 )
+		arb_error("Needs 3 args, such as:  123 / 123 base");
  
-	size_t scale =  strtol(argv[4], 0, 10);
+	
 	int base = strtol(argv[3], 0, 10);
 	fxdpnt *a, *b, *c;
 
@@ -14,18 +14,13 @@ int main(int argc, char *argv[])
 	c = arb_expand(NULL, 1);
 	printf("mul\n");
 	c = arb_mul(a, b, c, base);
-	arb_printold(c);
-	printf("div\n");
-	//c = arb_division(a, b, c, base, scale);
-	//arb_printold(c);
+	arb_print(c);
 	printf("add\n");
 	c = arb_add(a, b, c, base);
-	arb_printold(c);
+	arb_print(c);
 	printf("sub\n");
-	printf("len of a = %zu\n", a->len);
-	printf("len of b = %zu\n", b->len);
 	c = arb_sub(a, b, c, base);
-	arb_printold(c);
+	arb_print(c);
 	arb_print(a);
 	arb_rightshift(a, 1, 0);
 	arb_print(a);

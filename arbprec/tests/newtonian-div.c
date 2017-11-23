@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
         b = arb_str2fxdpnt(argv[2]);
         c = arb_newtonian_div(a, b, c, base, scale);
 	printf("=======\n");
-        arb_printold(c);
+        arb_print(c);
         return 0;
 }
    

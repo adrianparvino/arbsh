@@ -76,6 +76,7 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
                 arb_flipsign(c);
         }
         free(array);
+	c->rp = c->len - c->lp;
         arb_reverse(c->number, c->len);
         return c;
 }
@@ -128,7 +129,7 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
                 c->number[c->len++] = 1;
                 c->lp += 1;
         }
-
+	c->rp = c->len - c->lp;
         arb_reverse(c->number, c->len);
         return c;
 }

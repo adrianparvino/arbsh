@@ -1,7 +1,7 @@
 #include <arbprec/arbprec.h>
 
-fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
-{
+//fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+//{
 	// NOTE: reverse add and sub only have a speed benefit when the length of the number is unknown
 	//       in real life arbitrary precision we always know their length
 	// We are NOT computing in reverse so:
@@ -17,7 +17,7 @@ fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 
 	// NOTE: long_sub and add need to be redesigned to have a third "answer" value
 	//       they should be formulated to not interfere with alg D
-}
+//}
 
 int long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 { 
