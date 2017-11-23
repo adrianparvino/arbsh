@@ -9,13 +9,13 @@ int main(int argc, char *argv[])
         }
         int base = strtol(argv[3],0,  10);
         int scale =  strtol(argv[4],0,  10);
-        fxdpnt *a = arb_new_num(12, scale);
-        fxdpnt *b = arb_new_num(12, scale);
-        fxdpnt *c = arb_new_num(12, scale);
-        a = arb_str2fxdpnt(argv[1]);
-        b = arb_str2fxdpnt(argv[2]);
-        c = arb_divide(a, b, c, base, scale);
-        arb_print(c);
+        fxdpnt *a = ccarb_new_num(12, scale);
+        fxdpnt *b = ccarb_new_num(12, scale);
+        fxdpnt *c = ccarb_new_num(12, scale);
+        a = ccarb_str2fxdpnt(argv[1]);
+        b = ccarb_str2fxdpnt(argv[2]);
+        c = ccarb_divide(a, b, c, base, scale);
+        ccarb_print(c);
         return 0;
 }
    

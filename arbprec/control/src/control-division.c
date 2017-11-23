@@ -1,6 +1,6 @@
 #include <arbprec/arbprec.h>
 
-fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
+fxdpnt *ccarb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 {
 	fxdpnt *qval;
 	unsigned char *num1, *num2;
@@ -26,12 +26,12 @@ fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 		extra = scale - scale1;
 	else
 		extra = 0;
-	num1 = arb_malloc(n1->lp+n1->rp+extra+2);
+	num1 = ccarb_malloc(n1->lp+n1->rp+extra+2);
 	memset (num1, 0, n1->lp+n1->rp+extra+2);
 	memcpy (num1+1, n1->number, n1->lp+n1->rp); 
 
 	len2 = n2->lp + scale2; 
-	num2 = arb_malloc (len2+1);
+	num2 = ccarb_malloc (len2+1);
 	memcpy (num2, n2->number, len2);
 	*(num2+len2) = 0;
 	n2ptr = num2;
@@ -61,9 +61,9 @@ fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 		
 		}
 	} 
-	qval = arb_new_num (qdigits-scale,scale); 
+	qval = ccarb_new_num (qdigits-scale,scale); 
 	memset (qval->number, 0, qdigits); 
-	mval = arb_malloc (len2+1); 
+	mval = ccarb_malloc (len2+1); 
 	if (zero)
 		goto end; 
 
@@ -144,7 +144,7 @@ fxdpnt *arb_divide(fxdpnt *n1, fxdpnt *n2, fxdpnt *quot, int base, int scale)
 
 	end: 
 	qval->sign = ( n1->sign == n2->sign ? '+' : '-' ); 
-	arb_free_num (quot); 
+	ccarb_free_num (quot); 
 	free (mval);
 	free (num1);
 	free (num2);

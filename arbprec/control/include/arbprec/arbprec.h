@@ -27,22 +27,22 @@ typedef struct {
 } fxdpnt;
 
 /* function prototypes */ 
-fxdpnt *arb_expand(fxdpnt *, size_t);
-fxdpnt *arb_str2fxdpnt(const char *);
-fxdpnt *arb_alloc(size_t); 
-void *arb_malloc(size_t);
-void *arb_realloc(void *, size_t); 
-void arb_init(fxdpnt *);
-void arb_print(fxdpnt *);
-void arb_free(fxdpnt *);
-void arb_error(char *); 
-int arb_highbase(int); 
-fxdpnt *arb_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale); 
-void arb_free(fxdpnt *flt);
-fxdpnt *arb_new_num (int, int); 
-fxdpnt *arb_divide(fxdpnt *, fxdpnt *, fxdpnt *, int, int); 
+fxdpnt *ccarb_expand(fxdpnt *, size_t);
+fxdpnt *ccarb_str2fxdpnt(const char *);
+fxdpnt *ccarb_alloc(size_t); 
+void *ccarb_malloc(size_t);
+void *ccarb_realloc(void *, size_t); 
+void ccarb_init(fxdpnt *);
+void ccarb_print(fxdpnt *);
+void ccarb_free(fxdpnt *);
+void ccarb_error(char *); 
+int ccarb_highbase(int); 
+fxdpnt *ccarb_division(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale); 
+void ccarb_free(fxdpnt *flt);
+fxdpnt *ccarb_new_num (int, int); 
+fxdpnt *ccarb_divide(fxdpnt *, fxdpnt *, fxdpnt *, int, int); 
 void short_multiply(unsigned char *, int, int, unsigned char *, int); 
-void arb_free_num (fxdpnt *);
+void ccarb_free_num (fxdpnt *);
 
 
 
