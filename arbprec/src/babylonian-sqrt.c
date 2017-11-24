@@ -5,7 +5,7 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
 	size_t i = 0;
 	arb_init(c);
 	arb_copy(c, x); 
-	fxdpnt *two = arb_str2fxdpnt("2.00000000000000000000000000000000000000000000000000000000000000000000");
+	fxdpnt *two = arb_str2fxdpnt("2.0");
 	fxdpnt *sum = arb_expand(NULL, c->len + x->len);
 	fxdpnt *quo = arb_expand(NULL, c->len + x->len);
 	memset(sum->number, 0 , (c->len + x->len) * sizeof(ARBT));
@@ -25,9 +25,10 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
 	}
 	if ( i > 9998 )
 		fprintf(stderr, "sqrt had a problem\n");
+	//fprintf(stderr, "%zu iterations\n", i);
 	arb_free(sum);
 	arb_free(quo);
 	arb_free(two);
-
+	arb_free(last);
 	return c;
 }
