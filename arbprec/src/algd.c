@@ -22,7 +22,7 @@ fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	size_t diff = 0;
 	int carry = 0;
 
-	c = arb_expand(c, a->len + b->len);
+	c = arb_expand(c, a->len + b->len + 100000);
 
 	/* switch, so "a"  is always the longer */
 	if (a->lp <  b->lp)
@@ -32,17 +32,21 @@ fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	} // else they are equal or fine
 
 	/* copy down the difference to the left of the radix */
+	
+	c->len = a_t->len;
+	c->rp = a_t->rp;
+	c->lp = a_t->lp;
+	size_t over = 0;
 	for (diff = 0;diff < a_t->lp - b_t->lp; diff++)
 	{
-		c->number[c->len++] = a_t->number[diff];
+		c->number[over] = a_t->number[diff];
+		//c->len++;
+		over++;
 	}
 
 	size_t len = MIN(a_t->len - diff, b_t->len);
 
-	c->len = a->len;
-	c->rp = a->rp;
-	c->lp = a->lp;
-	carry = long_add(a_t->number + diff, len, b_t->number, len, c->number, base);
+	carry = long_add(a_t->number + diff, len, b_t->number, len, c->number + diff, base);
 	// more work needs to go here
 	return c;
 }
