@@ -77,7 +77,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 
 	leb = den->lp + den->rp;
 	v = den->number;
-	for (;*v == 0;v++,leb--);
+	for (;*v == 0;v++,leb--); // this can run leb into the ground, be careful!!
 
 	quodig = scale+1;
 	out_of_scale = 0;
