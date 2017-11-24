@@ -26,3 +26,11 @@
 12:48 < graff> alright, let me record this whole conversaion. thank you for the input
 12:49 -!- xliiv_ [~xliiv@d218-180.icpnet.pl] has joined ##math
 12:49 < qwerty1793> In this case our update rule produces a new guess 1/2 (x + 123/x) = 11.090695067264573, an even better estimate for sqrt(123
+
+12:49 < qwerty1793> In this case our update rule produces a new guess 1/2 (x + 123/x) = 11.090695067264573, an even better estimate for sqrt(123)
+12:50 -!- Arcaelyx [~Arcaelyx@209.58.138.227.adsl.inet-telecom.org] has joined ##math
+12:50 < qwerty1793> The newton method should have extremely good convergence
+12:51 < qwerty1793> If our guess x was correct to d decimal places then 1/2(x + 123/x) will be correct to 2d decimal places
+12:51 -!- Xionaba [~fartofago@h83-209-204-174.cust.se.alltele.net] has joined ##math
+12:52 < qwerty1793> For example, x = 11.090695067264573 is actually correct to 3 decimal places
+
