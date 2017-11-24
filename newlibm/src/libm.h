@@ -24,6 +24,13 @@ union dshape {
 	double value;
 	uint64_t bits;
 };
+/*
+	The following code is called type-punning. It would be nice to have 
+	a series of notes here describing how it works.
+	If the values are printed, they are in octets which makes reading
+	them fairly difficult. A conversion to human readable format should
+	be devised.
+*/
 
 /* Get two 32 bit ints from a double.*/
 #define EXTRACT_WORDS(hi,lo,d)					\
