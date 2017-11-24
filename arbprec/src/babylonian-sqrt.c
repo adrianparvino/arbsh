@@ -6,12 +6,8 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
         size_t i = 0;
         arb_init(c);
 	printf("x->len  %d\n", x->len);
-        c = arb_expand(c, c->len + x->len);
-	memset(c->number, 0, x->len * sizeof(ARBT));
-        memcpy(c->number, x->number, x->len * sizeof(ARBT));
-	
-
-        c->len = x->len;
+        
+	arb_copy(c, x); 
         fxdpnt *two = arb_str2fxdpnt("2.00000000000000000000000000000000000000000000000000000000000000000000");
         fxdpnt *sum = arb_expand(NULL, c->len + x->len);
         fxdpnt *quo = arb_expand(NULL, c->len + x->len);
@@ -21,10 +17,8 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
         for(;i < 100;++i)
         {
                 quo = arb_alg_d(x, c, quo, base, scale);
-		//quo = ccarb_divide(x, c, quo, base, scale);
                 sum = arb_add(quo, c, sum, base);
                 c = arb_alg_d(sum, two, c, base, scale);
-		//c = ccarb_divide(sum, two, c, base, scale);
                 arb_print(c);
         }
 
