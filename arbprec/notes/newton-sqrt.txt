@@ -33,4 +33,22 @@
 12:51 < qwerty1793> If our guess x was correct to d decimal places then 1/2(x + 123/x) will be correct to 2d decimal places
 12:51 -!- Xionaba [~fartofago@h83-209-204-174.cust.se.alltele.net] has joined ##math
 12:52 < qwerty1793> For example, x = 11.090695067264573 is actually correct to 3 decimal places
+nitial guess using "123"
+12:56 < graff> as I am rather lay, it will save me a lot of time
+12:57 -!- acetoline [~alireza@219-89-74-6.ipnets.xtra.co.nz] has quit [Ping timeout: 268 seconds]
+12:57 < qwerty1793> My initial guess is that sqrt(123) is about 123 (this is a really bad guess)
+12:57 -!- Nahiyan [~me@unaffiliated/nahiyan] has joined ##math
+12:57 < qwerty1793> A better guess is 1/2( 123 + 123 / 123) = 62.0
+12:58 < graff> so "x" in these cases is 123? bear in mind that even if the formula is expressed incorrectly when changing out x, that i'll still be able to get it
+12:58 < graff> right. that is what I thought. ok, thank you
+12:58 < qwerty1793> An even better guess is 1/2( 62 + 123 / 62) = 31.99
+12:58 -!- Kalov [~IceChat9@179.56.107.208] has joined ##math
+12:58 < graff> so i can reapply the guessing mechanism, interesting
+12:58 < qwerty1793> An even better guess is 1/2(31.99 + 123 / 31.99) = 17.91
+12:59 < qwerty1793> An even better guess is 1/2(17.91 + 123 / 17.91) = 12.39
+12:59 < graff> just to clarify though, that might be independent of the actual formula. a seond iterative step that would happen first?
+12:59 < graff> or is this the iteration itself
+12:59 < qwerty1793> An even better guess is 1/2(12.39 + 123 / 12.39) = 11.15
+12:59 < graff> ah yes. hmm
+13:00 < qwerty1793> An even better guess is 1/2(11.15 + 123 / 11.15) = 11.09
 
