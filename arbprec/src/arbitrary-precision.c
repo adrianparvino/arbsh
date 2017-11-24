@@ -52,14 +52,23 @@ void *arb_malloc(size_t len)
 {
         void *ret;
         if(!(ret = malloc(len)))
-                arb_error("malloc failed\n");
+                arb_error("arb_malloc (malloc) failed\n");
         return ret;
 }
+
+void *arb_calloc(size_t nmemb, size_t len)
+{
+        void *ret; 
+        if(!(ret = calloc(nmemb, len)))
+                arb_error("arb_calloc (calloc) failed\n");
+        return ret;
+}
+
 fxdpnt *arb_alloc(size_t len)
 {
         // Allocate the basic requirements of a arb `fxdpnt'
         fxdpnt *ret = arb_malloc(sizeof(fxdpnt));
-        ret->number = arb_malloc(sizeof(ARBT) * len);
+        ret->number = arb_calloc(1, sizeof(ARBT) * len);
         ret->sign = '+';
         ret->lp = 0;
 	ret->rp = 0;

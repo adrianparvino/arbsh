@@ -63,7 +63,7 @@ void arb_printold(fxdpnt *);
 void arb_mul_core(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
 void _print_core(FILE *, ARBT *, size_t, size_t);
 fxdpnt *ccarb_divide(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
-fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale);
-void _arb_copy_core(ARBT *b, ARBT *a, size_t len);
-void arb_copy(fxdpnt *b, fxdpnt *a);
-
+fxdpnt *arb_babylonian_sqrt(fxdpnt *, fxdpnt *, int, int);
+void _arb_copy_core(ARBT *, ARBT *, size_t);
+void arb_copy(fxdpnt *, fxdpnt *);
+void *arb_calloc(size_t, size_t);

@@ -8,8 +8,8 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
 	fxdpnt *two = arb_str2fxdpnt("2.0");
 	fxdpnt *sum = arb_expand(NULL, c->len + x->len);
 	fxdpnt *quo = arb_expand(NULL, c->len + x->len);
-	memset(sum->number, 0 , (c->len + x->len) * sizeof(ARBT));
-	memset(quo->number, 0 , (c->len + x->len) * sizeof(ARBT));
+	//memset(sum->number, 0 , (c->len + x->len) * sizeof(ARBT));
+	//ZZmemset(quo->number, 0 , (c->len + x->len) * sizeof(ARBT));
 	fxdpnt *last = NULL;
 	last = arb_expand(last, c->len);
 	arb_copy(last, c);
@@ -19,6 +19,7 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
 		quo = arb_alg_d(x, c, quo, base, scale);
 		sum = arb_add(quo, c, sum, base);
 		c = arb_alg_d(sum, two, c, base, scale);
+		//arb_print(c); // this shows a very strange bug
 		if (arb_compare(c, last, base) == 0)
 			break;
 		arb_copy(last, c);
