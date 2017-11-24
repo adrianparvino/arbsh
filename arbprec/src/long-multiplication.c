@@ -30,7 +30,7 @@ fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	arb_mul_core(a->number, a->len, b->number, b->len, c->number, base);
 	c->len = a->len + b->len;
 	c->lp = a->lp + b->lp;
-	c->rp = c->len - c->rp; // untested, however every function needs to set rp as well as lp
+	c->rp = c->rp + c->rp; // untested. however, every function needs to set rp as well as lp
 	return c;
 }
 

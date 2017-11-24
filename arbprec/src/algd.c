@@ -1,23 +1,46 @@
 #include <arbprec/arbprec.h>
 
-//fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
-//{
-	// NOTE: reverse add and sub only have a speed benefit when the length of the number is unknown
-	//       in real life arbitrary precision we always know their length
-	// We are NOT computing in reverse so:
+// NOTE: reverse add and sub only have a speed benefit when the length of the number is unknown
+//       in real life arbitrary precision we always know their length
+// We are NOT computing in reverse so:
 
-	// bring down the extra width of the longest number to the left of the radix into the answer
-	// start the computation applying the place function to compensate for exhausted zeros
-	//       OR
-	// this may be simpler to have a second function. it's going to be hard to reuse long_add_core
-	// ideally long_add could simply be called twice, perhaps by overflowing the first digit and allowing it to resolve
+// bring down the extra width of the longest number to the left of the radix into the answer
+// start the computation applying the place function to compensate for exhausted zeros
+//       OR
+// this may be simpler to have a second function. it's going to be hard to reuse long_add_core
+// ideally long_add could simply be called twice, perhaps by overflowing the first digit and allowing it to resolve
 
-	// NOTE: long_add will not be interfered with during the initial computation because there is no way to 
-	//       overflow during a carry down of radix left mixmatch
+// NOTE: long_add will not be interfered with during the initial computation because there is no way to 
+//       overflow during a carry down of radix left mixmatch
 
-	// NOTE: long_sub and add need to be redesigned to have a third "answer" value
-	//       they should be formulated to not interfere with alg D
-//}
+// NOTE: long_sub and add need to be redesigned to have a third "answer" value
+//       they should be formulated to not interfere with alg D
+fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+	fxdpnt *a_t = a;
+	fxdpnt *b_t = b;
+	size_t diff = 0;
+	int carry = 0;
+
+	/* switch, so "a"  is always the longer */
+	if (a->lp <  b->lp)
+	{
+		a_t = b;
+		b_t = a;
+	} // else they are equal or fine
+
+	/* copy down the difference to the left of the radix */
+	for (diff = 0;diff < a_t->lp - b_t->lp; diff++)
+	{
+		c->number[c->len++] = a_t->number[diff];
+	}
+
+	size_t len = MIN(a_t->len - diff, b_t->len);
+
+	carry = long_add(a_t->number + diff, len - diff, b_t->number, len, base);
+	// more work needs to go here
+	return c;
+}
 
 int long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 { 
