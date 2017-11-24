@@ -9,7 +9,8 @@ int arb_compare(fxdpnt *a, fxdpnt *b, int base)
         if (a->sign == '+' && b->sign == '-')
                 return 1;  // larger
         // else signs are the same, so move to subtraction steps
-        fxdpnt *c = arb_expand(NULL, a->len + b->len); //FIXME initialize at runtime
+        fxdpnt *c = NULL;
+	c = arb_expand(NULL, a->len + b->len); //FIXME initialize at runtime
         c = arb_sub(a, b, c, base);
         if (c->sign != sign){
                 arb_free(c);
