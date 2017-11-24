@@ -14,11 +14,19 @@ TESTING:
 
 	Run the test binary:
 
-		./tests/test-arbitrary-precision 988983483.14891487417128 908408.38034834834857345834 10 100
+		./tests/test-arbitrary-precision number number base scale
+
+	Run the algorithm D division test suite:
+
+		make test
 
 
-API:
-----
+USING THE API:
+--------------
+
+	Look inside of the various tests inside of tests/ for examples on how
+	to use the API.
+
 
 REFERENCES:
 -----------
