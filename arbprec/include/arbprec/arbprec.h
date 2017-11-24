@@ -69,5 +69,6 @@ void arb_copy(fxdpnt *, fxdpnt *);
 void *arb_calloc(size_t, size_t);
 fxdpnt *arb_newton_sqrt(fxdpnt *, fxdpnt *, int, int);
 int long_sub(ARBT *, size_t, ARBT *, size_t, int);
-int long_add(ARBT *, size_t, ARBT *, size_t, int);
+int long_add(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
+fxdpnt *new_addition(fxdpnt *, fxdpnt *, fxdpnt *, int);
 

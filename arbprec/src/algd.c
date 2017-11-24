@@ -22,6 +22,8 @@ fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	size_t diff = 0;
 	int carry = 0;
 
+	c = arb_expand(c, a->len + b->len);
+
 	/* switch, so "a"  is always the longer */
 	if (a->lp <  b->lp)
 	{
@@ -37,7 +39,10 @@ fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 
 	size_t len = MIN(a_t->len - diff, b_t->len);
 
-	carry = long_add(a_t->number + diff, len - diff, b_t->number, len, base);
+	c->len = a->len;
+	c->rp = a->rp;
+	c->lp = a->lp;
+	carry = long_add(a_t->number + diff, len, b_t->number, len, c->number, base);
 	// more work needs to go here
 	return c;
 }
@@ -58,10 +63,11 @@ int long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 	return borrow;
 }
 
-int long_add(ARBT *u, size_t i, ARBT *v, size_t k, int b)
+int long_add(ARBT *u, size_t i, ARBT *v, size_t k, ARBT *c, int b)
 {
 	int carry = 0;
 	int val = 0;
+	size_t j = i;
 	for (; k+1 > 0 ;i--, k--) {
 		val = u[i] + v[k] + carry;
 		carry = 0;
@@ -69,7 +75,8 @@ int long_add(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 			val -= b;
 			carry = 1;
 		}
-		u[i] = val;
+		//u[i] = val;
+		c[i] = val;
 	}
 	return carry;
 }
@@ -135,7 +142,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 			if (!(long_sub(u+leb, j, temp, leb, b)))
 				goto D7;
 			qg = qg - 1;
-			if (long_add(u+leb, j, v, leb-1, b))
+			//if (long_add(u+leb, j, v, leb-1, b))
+			if (long_add(u+leb, j, v, leb-1, u+leb, b))
 				u[0] = 0; 
 		}
 		D7: // D7.

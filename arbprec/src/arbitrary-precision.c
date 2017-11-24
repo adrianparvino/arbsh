@@ -95,8 +95,10 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
                 flt = arb_alloc(request); // do not use sizeof here, it's in arb_alloc
 		flt->allocated = request;
         } else if (request > flt->allocated){
+		size_t hold = flt->len;
                 flt->allocated = (request + flt->chunk);
                 flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
+		memset(flt->number + hold, 0, (flt->allocated - hold) * sizeof(ARBT));
         }
         return flt;
 }
