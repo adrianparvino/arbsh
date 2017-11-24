@@ -52,3 +52,45 @@ nitial guess using "123"
 12:59 < graff> ah yes. hmm
 13:00 < qwerty1793> An even better guess is 1/2(11.15 + 123 / 11.15) = 11.09
 
+13:03 < graff> what do they mean by that
+13:03 < graff> exp() what?
+13:03 < graff> exp(123)?
+13:03 -!- damke [~damke@unaffiliated/damke] has quit [Ping timeout: 240 seconds]
+13:04 -!- alevelstudent [5ac87546@gateway/web/freenode/ip.90.200.117.70] has quit [Ping timeout: 260 seconds]
+13:04 < qwerty1793> graff: The exponent of 123. You should think of 123.0 as a floating point number, in which case it is really 1.23 * 10^2 the 1.23 is called the 
+                    mantissa and the 2 is called the exponent
+13:05 < qwerty1793> Now 123 = 1.23 * 10^2 ~ 10^2
+13:05 < qwerty1793> So a better starting guess for sqrt(123) is sqrt(10^2) = 10^(2 / 2) = 10^1
+13:06 < graff> this is a very larg number
+13:06 < qwerty1793> graff, what is? 123?
+13:06 < graff> exp(123)
+13:06 < qwerty1793> no
+13:06 < qwerty1793> Don't use that
+13:06 < graff> so you are saying that the method you describe is possibly better?
+13:06 -!- darth_nmmnzo [~hal@68-187-71-117.dhcp.ftwo.tx.charter.com] has quit [Ping timeout: 240 seconds]
+13:07 < graff> i believe you. it seems better.
+13:07 < qwerty1793> These methods are all exactly equivalent
+13:07 -!- jjido [~jjido@2.123.49.37] has joined ##math
+13:08 < graff> here si the software that I need to match the performance of. it's in very ugly bignum speak so brace your eyes  http://sprunge.us/BjAY
+13:08 < qwerty1793> This method, newtons method and the Babylonian method all do exactly the same thing
+13:08 -!- quant4242 [~Thunderbi@p5B2ACEA3.dip0.t-ipconnect.de] has joined ##math
+13:08 < graff> qwerty1793: ok. thank you
+13:08 < graff> i have the knuth's algorithm D done, so i can get fairly good performace for divisions.
+13:09 -!- redhands [~syed@cpe-172-250-29-107.socal.res.rr.com] has joined ##math
+13:09 -!- codesoup [~codesoup@2607:fea8:e2df:fbf0:5df0:2f95:5e96:59a4] has joined ##math
+13:09 -!- static [~quassel@p54926D75.dip0.t-ipconnect.de] has quit [Ping timeout: 240 seconds]
+13:09 < graff> qwerty1793: alright. I don't want to use up any more of your time. thank you for the help. I think I know how to get started now
+13:10 -!- neiluj [~neiluj@unaffiliated/neiluj] has quit [Ping timeout: 240 seconds]
+13:11 < graff> they are using .5 as a fast divison mechanism obviously. I won't be doing that until i improve my mul algorithm. because my mul is blowing values up 
+               too large
+13:11 < qwerty1793> graff, one last thing to point out is that, as this code uses, the exponent of a number is almost exactly the number of digits in it. Hence the 
+                    "int2num (&guess1,(*num)->n_len);"
+13:11 < graff> right! that is what I thought
+13:11 < qwerty1793> That is, the exponent of 123 is "almost" 3
+13:11 < graff> thank you
+13:11 < qwerty1793> And that is good enough to get a first guess
+13:12 < graff> or 10^3?
+13:12 -!- Cppg [~Cppg@host86-187-162-174.range86-187.btcentralplus.com] has quit [Ping timeout: 258 seconds]
+13:12 -!- lukaramu [~lukaramu@port-51462.pppoe.wtnet.de] has joined ##math
+13:12 < qwerty1793> graff, The exponent of 123 is 2 since 123 = 1.23 * 10^2 but 3 is "almost" 2
+
