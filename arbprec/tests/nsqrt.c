@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	fxdpnt *c = NULL;
 	c = arb_expand(c, 1);
         a = arb_str2fxdpnt(argv[1]);
-	arb_newton_sqrt(a, c, base, scale);
+	c = arb_newton_sqrt(a, c, base, scale);
         arb_print(c);
 	arb_free(a);
 	arb_free(c);
