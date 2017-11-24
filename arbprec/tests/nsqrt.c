@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
         int scale =  strtol(argv[3],0,  10);
 	fxdpnt *a = NULL;
 	fxdpnt *c = NULL;
-	c = arb_expand(c, 1);
+	c = arb_expand(c, 10000);
         a = arb_str2fxdpnt(argv[1]);
 	c = arb_newton_sqrt(a, c, base, scale);
         arb_print(c);
