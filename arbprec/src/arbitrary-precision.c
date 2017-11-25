@@ -90,11 +90,11 @@ void *arb_realloc(void *ptr, size_t len)
 fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 {
         // Enlarge or create a fxdpnt
+	// Warning! This function has proven to be very sensitive!
         if (flt == NULL){
-	//	arb_init(flt);
-                flt = arb_alloc(request); // do not use sizeof here, it's in arb_alloc
+                flt = arb_alloc(request); // Do not use sizeof here, it's in arb_alloc
 		flt->allocated = request;
-        } else if (request > flt->allocated){
+        } else if (request >= flt->allocated){ // Watch this very carefully! It should likely be a >= not an >
 		size_t hold = flt->len;
                 flt->allocated = (request + flt->chunk);
                 flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
