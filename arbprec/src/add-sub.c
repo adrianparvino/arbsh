@@ -2,24 +2,16 @@
 
 int arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
 {
-        /* many arbitrary precision implementations go through four steps
-           instead of "crossing over the values" like one does on pen and paper.
-           In theory this should be slower, however, in my simple test runs
-            it has matched the speed of the "four step" techniques.
-        */
         int temp = 0;
-        // exhaust the difference between the right hand sides of the radi
         if ((a->len - a->lp) < (b->len - b->lp))
                 if( (b->len - b->lp) - (a->len - a->lp) > r)
                         return 0;
-        // offset mechanism for varying number lengths
         if (*cnt < a->len){
                 temp = a->number[a->len - *cnt - 1];
-                (*cnt)++; // not ideal but better than a seperate ret struct
+                (*cnt)++;
                 return temp;
         }
         (*cnt)++;
-        // exhaust the difference between the left hand sides of the radi
         return 0;
 }
 
@@ -33,6 +25,35 @@ void arb_reverse(ARBT *x, size_t lim)
                 x[lim - i - 1] = swap;
         }
 }
+
+fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+        size_t width = 0, i = 0, j = 0, r = 0;
+        int sum = 0, carry = 0;
+
+        c->lp = MAX(a->lp, b->lp);
+        width = MAX(a->len, b->len);
+        c = arb_expand(c, width * 2);
+	//memset(c->number, 0, (width * 2) * sizeof(ARBT)); // no longer needed
+        for (; i < a->len || j < b->len;c->len++, ++r){
+                sum = arb_place(a, b, &i, r) + arb_place(b, a, &j, r) + carry;
+                carry = 0;
+                if(sum >= base){
+                        carry = 1;
+                        sum -= base;
+                }
+                c->number[c->len] = sum;
+        }
+        if (carry){
+                c->number[c->len++] = 1;
+                c->lp += 1;
+        }
+	c->rp = c->len - c->lp;
+        arb_reverse(c->number, c->len);
+	arb_print(c);
+        return c;
+}
+
 
 fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
@@ -106,31 +127,3 @@ fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
                 return c = arb_add_inter(a, b, c, base);
         return c = arb_sub_inter(a, b, c, base);
 }
-
-fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
-{
-        size_t width = 0, i = 0, j = 0, r = 0;
-        int sum = 0, carry = 0;
-
-        c->lp = MAX(a->lp, b->lp);
-        width = MAX(a->len, b->len);
-        c = arb_expand(c, width * 2);
-	//memset(c->number, 0, (width * 2) * sizeof(ARBT)); // no longer needed
-        for (; i < a->len || j < b->len;c->len++, ++r){
-                sum = arb_place(a, b, &i, r) + arb_place(b, a, &j, r) + carry;
-                carry = 0;
-                if(sum >= base){
-                        carry = 1;
-                        sum -= base;
-                }
-                c->number[c->len] = sum;
-        }
-        if (carry){
-                c->number[c->len++] = 1;
-                c->lp += 1;
-        }
-	c->rp = c->len - c->lp;
-        arb_reverse(c->number, c->len);
-        return c;
-}
-

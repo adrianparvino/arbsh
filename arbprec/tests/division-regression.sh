@@ -1,8 +1,8 @@
 
 
-#extra="valgrind"
+extra="valgrind"
 #extra="time"
-extra=""
+#extra=""
 
 rm log log2
 

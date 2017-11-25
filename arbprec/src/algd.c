@@ -1,38 +1,67 @@
 #include <arbprec/arbprec.h>
 
 
-
+//carry = long_add(a->number, a->len - adiff, b->number, b->len - bdiff, c->number, base);
 fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
 	int carry = 0;
 	c = arb_expand(c, a->len + b->len);
-	c->len = a->len + b->len;
-	c->rp = MAX(a->rp, b->rp);
-	c->lp = MAX(a->lp, b->lp);
+	//c->len = a->len + b->len;
 	
 	size_t adiff = 0;
 	size_t bdiff = 0;
 	size_t len = 0;
+	size_t a_extra = 0;
+	size_t b_extra = 0;
+	size_t extra = 0;
+	size_t rclen = 0;
+
+	c->len = MAX(a->len, b->len);
+	c->rp = MAX(a->rp, b->rp);
+	c->lp = MAX(a->lp, b->lp);
+	rclen = c->len - 1;
 	
 	if (a->rp > b->rp)
 	{ 
 		len = a->len -1;
-		for (adiff = 0;adiff< a->rp - b->rp;++adiff, --len) 
-			c->number[len] = a->number[len];
-		//	c->number += adiff;
+		for (adiff = 0;adiff< a->rp - b->rp;++adiff, --len, --rclen) 
+			c->number[rclen] = a->number[len];
 		
 	}else if (a->rp < b->rp)
 	{
 		len = b->len -1;
 		for (bdiff = 0;bdiff< b->rp - a->rp;++bdiff, --len) 
-			c->number[len] = b->number[len]; 
-		//c->number += bdiff;
-	
+			c->number[len] = b->number[len];
 	}
-	carry = long_add(a->number, a->len - adiff, b->number, b->len - bdiff, c->number, base);
+	size_t min = MIN(b->len, a->len); // good !! 
+	//carry = long_add(a->number, min, b->number, min, c->number, base); 
+	size_t differ = MAX(adiff, bdiff);
+
+	size_t minlp = MIN(a->lp, b->lp);
+	size_t minrp = MIN(a->rp, b->rp);
+	size_t real = minlp + minrp;
+
+	printf("%zu real\n", real);
+
+	if (a->lp > b->lp)
+	{
+		extra = a->lp - b->lp;
+		carry = long_add(a->number + extra, real + extra, b->number, real, c->number, real, base);
+		
+	}else if (b->lp > a->lp)
+	{
+		extra = b->lp - b->rp;
+		carry = long_add(a->number, real , b->number + extra, real +extra, c->number, real,  base);
+	}else{
+		carry = long_add(a->number, min, b->number, min , c->number, min, base);
+	}
+
 	if (carry)
 	{
 		fprintf(stderr, "A carry is still present\n");
+		arb_print(c);
+		printf("====\n");
+		//c->number[0] = 1;
 	}
 	return c;
 }
@@ -53,11 +82,11 @@ int long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 	return borrow;
 }
 
-int long_add(ARBT *u, size_t i, ARBT *v, size_t k, ARBT *c, int b)
+int long_add(ARBT *u, size_t i, ARBT *v, size_t k, ARBT *c, size_t real, int b)
 {
 	int carry = 0;
 	int val = 0;
-	for (; k+1 > 0 ;i--, k--) {
+	for (; k + 1 > 0 ;i--, k--, real--) {
 		val = u[i] + v[k] + carry;
 		carry = 0;
 		//if (val > b-1) {
@@ -134,7 +163,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 				goto D7;
 			qg = qg - 1;
 			//if (long_add(u+leb, j, v, leb-1, b))
-			if (long_add(u+leb, j, v, leb-1, u+leb, b))
+			if (long_add(u+leb, j, v, leb-1, u+leb, leb -1, b))
 				u[0] = 0; 
 		}
 		D7: // D7.
@@ -143,6 +172,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 	end:
 	free(temp);
 	free(u);
+	//printf("div:\n");
+	//arb_print(q);
 	return q;
 }
 

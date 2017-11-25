@@ -7,11 +7,9 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
 	arb_copy(c, x); 
 	fxdpnt *two = arb_str2fxdpnt("2.0");
 	fxdpnt *sum = arb_expand(NULL, c->len + x->len);
-	fxdpnt *quo = arb_expand(NULL, c->len + x->len);
-	//memset(sum->number, 0 , (c->len + x->len) * sizeof(ARBT));
-	//ZZmemset(quo->number, 0 , (c->len + x->len) * sizeof(ARBT));
+	fxdpnt *quo = arb_expand(NULL, c->len + x->len); 
 	fxdpnt *last = NULL;
-	last = arb_expand(last, c->len);
+	last = arb_expand(last, c->len); 
 	arb_copy(last, c);
 
 	for(;i < 10000;++i)
@@ -19,14 +17,15 @@ fxdpnt *arb_babylonian_sqrt(fxdpnt *x, fxdpnt *c, int base, int scale)
 		quo = arb_alg_d(x, c, quo, base, scale);
 		sum = arb_add(quo, c, sum, base);
 		c = arb_alg_d(sum, two, c, base, scale);
-		//arb_print(c); // this shows a very strange bug
 		if (arb_compare(c, last, base) == 0)
 			break;
 		arb_copy(last, c);
+		arb_print(c);
 	}
-	if ( i > 9998 )
+	if (i > 9998)
 		fprintf(stderr, "sqrt had a problem\n");
 	fprintf(stderr, "%zu iterations\n", i);
+	
 	arb_free(sum);
 	arb_free(quo);
 	arb_free(two);

@@ -7,7 +7,7 @@ void arb_mul_core(ARBT *a, size_t alen, ARBT *b, size_t blen, ARBT *c, int base)
 	size_t last = 0;
 	c[k] = 0;
 	c[alen + blen -1] = 0;
-	memset(c, 0, (alen + blen) * sizeof(ARBT));
+	//memset(c, 0, (alen + blen) * sizeof(ARBT));
 	for ( i = alen - 1; i >= 0 ; i--){
 		last = k;
 		for ( j = blen - 1, k = i + j + 1, carry = 0; j >= 0 ; j--, k--){
