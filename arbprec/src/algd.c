@@ -1,45 +1,15 @@
 #include <arbprec/arbprec.h>
 
-// NOTE: reverse add and sub only have a speed benefit when the length of the number is unknown
-//       in real life arbitrary precision we always know their length
-// We are NOT computing in reverse so:
 
-// bring down the extra width of the longest number to the left of the radix into the answer
-// start the computation applying the place function to compensate for exhausted zeros
-//       OR
-// this may be simpler to have a second function. it's going to be hard to reuse long_add_core
-// ideally long_add could simply be called twice, perhaps by overflowing the first digit and allowing it to resolve
 
-// NOTE: long_add will not be interfered with during the initial computation because there is no way to 
-//       overflow during a carry down of radix left mixmatch
-
-// NOTE: long_sub and add need to be redesigned to have a third "answer" value
-//       they should be formulated to not interfere with alg D
 fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	fxdpnt *a_t = a;
-	fxdpnt *b_t = b;
-	size_t diff = 0;
-	int carry = 0;
-	c = arb_expand(c, a->len + b->len);
-	if (a->lp < b->lp)
-	{
-		a_t = b;
-		b_t = a;
-	}
-	c->len = a_t->len;
-	c->rp = a_t->rp;
-	c->lp = a_t->lp;
-	for (diff = 0;diff < a_t->lp - b_t->lp; diff++)
-	{
-		c->number[diff] = a_t->number[diff];
-	}
+	// copy down the difference to the right of the radix into C
 
-	size_t len = MIN(a_t->len - diff, b_t->len);
+	// adjust radix offsets and pass the arguments as such to long_add
 
-	carry = long_add(a_t->number + diff, len, b_t->number, len, c->number + diff, base);
-	// more work needs to go here
-	//  a second long_add, properly offset and with the carry added to it may suffice
+	// if a carry is left over, increment "c" and slam a "1" onto the end of it
+	
 	return c;
 }
 
@@ -67,12 +37,14 @@ int long_add(ARBT *u, size_t i, ARBT *v, size_t k, ARBT *c, int b)
 	for (; k+1 > 0 ;i--, k--) {
 		val = u[i] + v[k] + carry;
 		carry = 0;
-		if (val > b-1) {
+		//if (val > b-1) {
+		if (val >= b) {
 			val -= b;
 			carry = 1;
 		}
 		//u[i] = val;
 		c[i] = val;
+		//c[i] = u[i];
 	}
 	return carry;
 }
