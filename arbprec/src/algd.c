@@ -4,51 +4,36 @@
 
 fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	fxdpnt *a_t = a;
-	fxdpnt *b_t = b;
 	int carry = 0;
 	c = arb_expand(c, a->len + b->len);
+	c->len = a->len + b->len;
+	c->rp = MAX(a->rp, b->rp);
+	c->lp = MAX(a->lp, b->lp);
 	
-	if (a->rp < b->rp)
+	size_t adiff = 0;
+	size_t bdiff = 0;
+	size_t len = 0;
+	
+	if (a->rp > b->rp)
+	{ 
+		len = a->len -1;
+		for (adiff = 0;adiff< a->rp - b->rp;++adiff, --len) 
+			c->number[len] = a->number[len];
+		//	c->number += adiff;
+		
+	}else if (a->rp < b->rp)
 	{
-		a_t = b;
-		b_t = a;
+		len = b->len -1;
+		for (bdiff = 0;bdiff< b->rp - a->rp;++bdiff, --len) 
+			c->number[len] = b->number[len]; 
+		//c->number += bdiff;
+	
 	}
-
-	size_t diff = 0;
-	size_t len = a_t->len;
-
-	for (diff = 0;diff<= a_t->rp - b_t->rp;++diff, --len) 
-		c->number[len] = a_t->number[len];
-	
-	if (a->lp < b->lp)
-        {
-                a_t = b;
-                b_t = a;
-        }
-	c->len = a_t->len;
-        c->rp = a_t->rp;
-        c->lp = a_t->lp;
-	
-	// if diff changed then offset a_t
-	//a_t += diff;
-	// a_t should now be ready to go
-	// long_add will need to be modified with the place() function and have both incrementors activated in order to do this in one operation
-	// otherwise we may be able to reduce this to a long_add a short_add against the value of carry, if carry is present
-	// so take the min length - the diff and pass everything to long_add. we'll end up with a partial answer
-	//len = MIN(a_t->len , b_t->len);
-	//carry = long_add(a_t->number , len, b_t->number, len, c->number  +diff, base);
+	carry = long_add(a->number, a->len - adiff, b->number, b->len - bdiff, c->number, base);
 	if (carry)
 	{
 		fprintf(stderr, "A carry is still present\n");
-	}// else if a carry is not present, just perform a copy down int "c"
-	
-	// copy down the difference to the right of the radix into C
-
-	// adjust radix offsets and pass the arguments as such to long_add
-
-	// if a carry is left over, increment "c" and slam a "1" onto the end of it
-	
+	}
 	return c;
 }
 

@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
                 printf("needs 3 args: bignum bignum base\n");
                 return 0;
         }
-	
+	// force a carry with  9899999.99999999 9999.99 10
         int base = strtol(argv[3],0,  10);
 	fxdpnt *a = NULL;
 	fxdpnt *b = NULL;
