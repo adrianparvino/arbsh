@@ -56,8 +56,8 @@ fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 		hold = arb_mul(b, guess, hold, base); // x * guess
 		hold2 = arb_sub(two, hold, hold2, base); // 2 - x * guess
 		newguess = arb_mul(guess, hold2, newguess, base); // guess * (2-x*guess)
-		//arb_copy(guess, newguess);
-		arb_print(newguess);
+		arb_copy(guess, newguess);
+		arb_print(guess);
 		++i;
 	}
 	reciprocal = guess;
