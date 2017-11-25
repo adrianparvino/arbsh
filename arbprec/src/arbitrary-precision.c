@@ -36,12 +36,6 @@ void arb_setsign(fxdpnt *a, fxdpnt *b, fxdpnt *c)
                 arb_flipsign(c);
 }
 
-void verbose(char *msg)
-{
-	if (verbosity)
-		fprintf(stderr, "%s\n", msg);
-}
-
 void arb_error(char *message)
 {
         fprintf(stderr, "%s\n", message);
@@ -101,15 +95,5 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 		memset(flt->number + hold, 0, (flt->allocated - hold) * sizeof(ARBT));
         }
         return flt;
-}
-
-void arb_free_num (fxdpnt *num)
-{
-	if (num == NULL)
-		return;
-	if ((num)->number)
-		free ((num)->number);
-	free (num);
-	num = NULL;
 }
 

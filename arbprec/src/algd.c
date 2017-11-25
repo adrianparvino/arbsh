@@ -39,6 +39,7 @@ fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 
 	size_t minlp = MIN(a->lp, b->lp);
 	size_t minrp = MIN(a->rp, b->rp);
+	size_t maxlp = MAX(a->lp, b->lp);
 	size_t real = minlp + minrp;
 
 	printf("%zu real\n", real);
@@ -46,14 +47,14 @@ fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	if (a->lp > b->lp)
 	{
 		extra = a->lp - b->lp;
-		carry = long_add(a->number + extra, real + extra, b->number, real, c->number, real, base);
-		
+		carry = long_add(a->number + extra, real + extra, b->number, real, c->number, rclen, real, base);
+
 	}else if (b->lp > a->lp)
 	{
 		extra = b->lp - b->rp;
-		carry = long_add(a->number, real , b->number + extra, real +extra, c->number, real,  base);
+		//carry = long_add(a->number, real , b->number + extra, real +extra, c->number, real,  base);
 	}else{
-		carry = long_add(a->number, min, b->number, min , c->number, min, base);
+		//carry = long_add(a->number, min, b->number, min , c->number, min, base);
 	}
 
 	if (carry)
@@ -82,21 +83,18 @@ int long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 	return borrow;
 }
 
-int long_add(ARBT *u, size_t i, ARBT *v, size_t k, ARBT *c, size_t real, int b)
+int long_add(ARBT *u, size_t i, ARBT *v, size_t k, ARBT *c, size_t ci, size_t real, int b)
 {
 	int carry = 0;
 	int val = 0;
-	for (; k + 1 > 0 ;i--, k--, real--) {
+	for (; k + 1 > 0 ;i--, k--, real--, ci--) {
 		val = u[i] + v[k] + carry;
 		carry = 0;
-		//if (val > b-1) {
 		if (val >= b) {
 			val -= b;
 			carry = 1;
 		}
-		//u[i] = val;
-		c[i] = val;
-		//c[i] = u[i];
+		c[ci] = val;
 	}
 	return carry;
 }
@@ -163,7 +161,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 				goto D7;
 			qg = qg - 1;
 			//if (long_add(u+leb, j, v, leb-1, b))
-			if (long_add(u+leb, j, v, leb-1, u+leb, leb -1, b))
+			if (long_add(u+leb, j, v, leb-1, u+leb, j, leb-1, b))
 				u[0] = 0; 
 		}
 		D7: // D7.
@@ -172,8 +170,6 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 	end:
 	free(temp);
 	free(u);
-	//printf("div:\n");
-	//arb_print(q);
 	return q;
 }
 
