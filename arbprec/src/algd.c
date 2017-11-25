@@ -4,6 +4,45 @@
 
 fxdpnt *new_addition(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
+	fxdpnt *a_t = a;
+	fxdpnt *b_t = b;
+	int carry = 0;
+	c = arb_expand(c, a->len + b->len);
+	
+	if (a->rp < b->rp)
+	{
+		a_t = b;
+		b_t = a;
+	}
+
+	size_t diff = 0;
+	size_t len = a_t->len;
+
+	for (diff = 0;diff<= a_t->rp - b_t->rp;++diff, --len) 
+		c->number[len] = a_t->number[len];
+	
+	if (a->lp < b->lp)
+        {
+                a_t = b;
+                b_t = a;
+        }
+	c->len = a_t->len;
+        c->rp = a_t->rp;
+        c->lp = a_t->lp;
+	
+	// if diff changed then offset a_t
+	//a_t += diff;
+	// a_t should now be ready to go
+	// long_add will need to be modified with the place() function and have both incrementors activated in order to do this in one operation
+	// otherwise we may be able to reduce this to a long_add a short_add against the value of carry, if carry is present
+	// so take the min length - the diff and pass everything to long_add. we'll end up with a partial answer
+	//len = MIN(a_t->len , b_t->len);
+	//carry = long_add(a_t->number , len, b_t->number, len, c->number  +diff, base);
+	if (carry)
+	{
+		fprintf(stderr, "A carry is still present\n");
+	}// else if a carry is not present, just perform a copy down int "c"
+	
 	// copy down the difference to the right of the radix into C
 
 	// adjust radix offsets and pass the arguments as such to long_add
@@ -33,7 +72,6 @@ int long_add(ARBT *u, size_t i, ARBT *v, size_t k, ARBT *c, int b)
 {
 	int carry = 0;
 	int val = 0;
-	size_t j = i;
 	for (; k+1 > 0 ;i--, k--) {
 		val = u[i] + v[k] + carry;
 		carry = 0;
