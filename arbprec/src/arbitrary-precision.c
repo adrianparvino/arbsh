@@ -97,3 +97,28 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
         return flt;
 }
 
+fxdpnt *arb_new_num (int length, int scale)
+{
+        fxdpnt *ret;
+
+        ret = arb_malloc(sizeof(fxdpnt));
+        ret->sign = '+';
+        ret->lp = length;
+        ret->rp = scale;
+        ret->allocated = 0;
+        ret->len = ret->lp + ret->rp;
+        ret->number = arb_malloc(length+scale);
+        ret->chunk = 4;
+        memset(ret->number, 0, length+scale);
+        return ret;
+}
+void arb_free_num (fxdpnt *num)
+{
+        if (num == NULL)
+                return;
+        if ((num)->number)
+                free ((num)->number);
+        free (num);
+        num = NULL;
+}
+

@@ -65,3 +65,10 @@ int long_sub(ARBT *, size_t, ARBT *, size_t, int);
 int long_add(ARBT *, size_t, ARBT *, size_t, ARBT *, size_t, size_t, int);
 fxdpnt *new_addition(fxdpnt *, fxdpnt *, fxdpnt *, int);
 void arb_init(fxdpnt *);
+void short_multiply(unsigned char *, int, int, unsigned char *, int);
+void short_mul2(unsigned char *, unsigned char *, size_t, int, int);
+void arb_short_mul(unsigned char *, size_t, int, int);
+
+fxdpnt *arb_new_num (int, int);
+void arb_free_num (fxdpnt *num);
+fxdpnt *arb_divide2(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
