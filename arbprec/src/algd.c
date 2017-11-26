@@ -143,10 +143,10 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 	if (out_of_scale)
 		goto end;
 
-	j = 0;
+	
+	ARBT *qp = q->number;
 	if (leb >lea)
-		j = leb -lea;
-		////q->number+=leb-lea;
+		qp +=(leb-lea);
 	
 	for ( qg = b-1;j <= lea+scale-leb;++j, qg = b-1)
 	{
@@ -170,7 +170,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 				u[0] = 0; 
 		}
 		D7: // D7.
-		q->number[j] = qg;
+		qp[j] = qg;
+		
 	}
 	end:
 	free(temp);
