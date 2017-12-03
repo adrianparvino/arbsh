@@ -244,6 +244,9 @@ primary:
 ifeq ($(OM_LIBC),musl)
 	$(MAKE) musl_stage
 endif
+ifeq ($(OM_LIBC),musleabi)
+	$(MAKE) musl_stage
+endif
 ifeq ($(OM_LIBC),uclibc)
 	-$(MAKE) uclibc_stage_one
 	-$(MAKE) uclibc_stage_two
