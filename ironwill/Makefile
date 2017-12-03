@@ -15,9 +15,9 @@ OM_SUBTARG = $(OM_ARCH)
 KBUILDAREA = $(shell pwd)/kernel
 OM_MIDDLE = -pc-linux-
 OM_LIBC = musl
-OM_TARG = $(OM_ARCH)$(OM_MIDDLE)$(OM_LIBC)
+
 OM_CONF = --disable-libmpx --disable-multilib
-OM_LINUXARCH = x86
+OM_LINUXARCH = i386
 OM_BACKWARDCOMPAT = i386
 OM_HOST = $(shell uname -m)
 SPWD = $(shell pwd)
@@ -25,14 +25,14 @@ OM_PREF = $(SPWD)/$(OM_TARG)-toolchain
 OM_SRC = $(SPWD)/src
 OM_PATCH = $(SPWD)/patches
 OM_SFX = tar.gz
-#OM_BINUTILS = binutils-2.25
+OM_BINUTILS = binutils-2.25
 #OM_BINUTILS = binutils-2.26
-OM_BINUTILS = binutils-2.28
+#OM_BINUTILS = binutils-2.28
 #OM_GCC = gcc-4.9.2
-#OM_GCC = gcc-5.3.0
+OM_GCC = gcc-5.3.0
 #OM_GCC = gcc-6.1.0
 #OM_GCC = gcc-6.3.0
-OM_GCC = gcc-7.1.0
+#OM_GCC = gcc-7.1.0
 OM_GMP = gmp-5.1.3
 OM_MPC = mpc-1.0.2
 OM_MPFR = mpfr-3.1.2
@@ -59,6 +59,10 @@ OM_PERL_CROSS_MRR = https://github.com/arsv/perl-cross/releases/download/1.0.2/
 OM_LLVM = http://releases.llvm.org/5.0.0/llvm-5.0.0.src.tar.xz
 OM_CLANG = http://releases.llvm.org/5.0.0/cfe-5.0.0.src.tar.xz
 OM_OPENMP = http://releases.llvm.org/5.0.0/openmp-5.0.0.src.tar.xz
+
+
+-include config.mak
+OM_TARG = $(OM_ARCH)$(OM_MIDDLE)$(OM_LIBC)
 
 # Self bootstrapping
 OM_BOOTSRC = $(shell pwd)/bootstrap
@@ -593,7 +597,8 @@ linux_target: install_path
 	
 	@test -d $(OM_LINUX) || tar -xf $(OM_SRC)/$(OM_LINUX).$(OM_SFX) -C $(SPWD)
 	-mkdir -p $(OM_LIBROOT)/boot
-	-$(MAKE) -C $(SPWD)/$(OM_LINUX) ARCH=$(OM_BACKWARDCOMPAT) defconfig O=$(KBUILDAREA)
+	-mkdir -p $(KBUILDAREA)
+	-$(MAKE) -C $(SPWD)/$(OM_LINUX) ARCH=$(OM_LINUXARCH) defconfig O=$(KBUILDAREA)
 	#sed -i 's|# CONFIG_8139CP is not set|CONFIG_8139CP=y|g' $(SPWD)/$(OM_LINUX)/.config
 	sed -i 's|# CONFIG_8139CP is not set|CONFIG_8139CP=y|g' $(KBUILDAREA)/.config
 	-$(MAKE) -C $(SPWD)/$(OM_LINUX) \
