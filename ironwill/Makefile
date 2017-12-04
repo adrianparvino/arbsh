@@ -876,6 +876,11 @@ install: install_path
 ifeq ($(OM_LIBC),musl)
 	$(MAKE) -C $(SPWD)/$(OM_MUSL) install
 endif
+
+ifeq ($(OM_LIBC),musleabi)
+	$(MAKE) -C $(SPWD)/$(OM_MUSL) install
+endif
+
 ifeq ($(OM_LIBC),uclibc)
 	$(MAKE) -C "$(SPWD)/$(OM_UCLIBC)" \
 	CROSS="$(OM_TARG)-" \
@@ -1010,6 +1015,25 @@ test_aarch64:
 	-initrd backup.cpio.gz \
 	-append "root=/dev/ram rdinit=/bin/sh console=ttyAMA0"
 
+test_aarch64_2:
+
+	-mkdir $(PWD)/libroot
+	-$(MAKE) install DESTDIR=$(PWD)/libroot
+	#-@cp -r $(OM_PREF)/$(OM_TARG)/* $(OM_LIBROOT)
+	-$(MAKE) linux_target > logfile
+	-$(MAKE) busybox_target >> logfile
+
+	-cd libroot && find . | cpio -H newc -o > ../backup.cpio
+	-cat backup.cpio | gzip > backup.cpio.gz
+	-qemu-system-aarch64 \
+	-machine virt \
+	-cpu cortex-a57 \
+	-machine type=virt \
+	-nographic -smp 1 \
+	-m 2048 \
+	-kernel libroot/boot/vmlinuz \
+	-initrd backup.cpio.gz \
+	-append "root=/dev/ram rdinit=/bin/sh console=ttyAMA0"
 
 gnu_compiler:
 
