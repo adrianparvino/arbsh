@@ -1036,7 +1036,7 @@ test_aarch64_2:
 	-m 2048 \
 	-kernel libroot/boot/vmlinuz \
 	-initrd backup.cpio.gz \
-	-append "root=/dev/ram rdinit=/bin/sh console=ttyAMA0"
+	-append "init=/bin/sh root=/dev/ram rdinit=/bin/sh console=ttyAMA0"
 
 gnu_compiler:
 

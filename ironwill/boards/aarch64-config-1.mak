@@ -1,6 +1,6 @@
 OM_ARCH = aarch64
 OM_MIDDLE = -pc-linux-
-OM_LIBC = musleabi
+OM_LIBC = musl
 OM_CONF = --disable-libmpx --disable-multilib
 OM_LINUXARCH = arm64
 OM_BACKWARDCOMPAT = arm64
