@@ -600,22 +600,22 @@ linux_target: install_path
 	
 	@test -d $(OM_LINUX) || tar -xf $(OM_SRC)/$(OM_LINUX).$(OM_SFX) -C $(SPWD)
 	-mkdir -p $(OM_LIBROOT)/boot
-	-mkdir -p $(KBUILDAREA)
-	-$(MAKE) -C $(SPWD)/$(OM_LINUX) ARCH=$(OM_LINUXARCH) defconfig O=$(KBUILDAREA)
+	-mkdir -p $(KBUILDAREA)-target
+	-$(MAKE) -C $(SPWD)/$(OM_LINUX) ARCH=$(OM_LINUXARCH) defconfig O=$(KBUILDAREA)-target
 	#sed -i 's|# CONFIG_8139CP is not set|CONFIG_8139CP=y|g' $(SPWD)/$(OM_LINUX)/.config
-	sed -i 's|# CONFIG_8139CP is not set|CONFIG_8139CP=y|g' $(KBUILDAREA)/.config
+	sed -i 's|# CONFIG_8139CP is not set|CONFIG_8139CP=y|g' $(KBUILDAREA)-target/.config
 	-$(MAKE) -C $(SPWD)/$(OM_LINUX) \
 	ARCH=$(OM_LINUXARCH) \
 	CROSS_COMPILE=$(OM_TARG)- \
-	KCONFIG_CONFIG=$(KBUILDAREA)/.config \
-	O=$(KBUILDAREA)
+	KCONFIG_CONFIG=$(KBUILDAREA)-target/.config \
+	O=$(KBUILDAREA)-target
 
 
 	-$(MAKE) -C $(SPWD)/$(OM_LINUX) \
 	INSTALL_PATH=$(OM_LIBROOT)/boot \
 	install ARCH=$(OM_LINUXARCH) \
 	CROSS_COMPILE=$(OM_TARG)- \
-	O=$(KBUILDAREA)
+	O=$(KBUILDAREA)-target
 
 	-cd $(OM_LIBROOT)/boot && ln vmlinu* vmlinuz
 
@@ -649,6 +649,7 @@ busybox_target: install_path
 	-rm -rf $(OM_BUSYBOX)
 	-@tar -xf $(OM_SRC)/$(OM_BUSYBOX).$(OM_SFX) -C $(SPWD) 
 	cp $(OM_SRC)/omnicross-busybox-minimal.1 $(OM_BUSYBOX)/.config
+	sed -i 's|CONFIG_SPLIT=y|CONFIG_SPLIT=n|g' $(SPWD)/$(OM_BUSYBOX)/.config
 	-$(MAKE) -C $(SPWD)/$(OM_BUSYBOX) CONFIG_PREFIX=$(OM_LIBROOT) $(INACROSS)
 	-$(MAKE) -C $(SPWD)/$(OM_BUSYBOX) CONFIG_PREFIX=$(OM_LIBROOT) $(INACROSS) install
 
@@ -1017,7 +1018,9 @@ test_aarch64:
 
 test_aarch64_2:
 
+	
 	-mkdir $(PWD)/libroot
+	-$(MAKE)
 	-$(MAKE) install DESTDIR=$(PWD)/libroot
 	#-@cp -r $(OM_PREF)/$(OM_TARG)/* $(OM_LIBROOT)
 	-$(MAKE) linux_target > logfile
