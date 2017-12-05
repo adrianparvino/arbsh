@@ -15,7 +15,6 @@ OM_SUBTARG = $(OM_ARCH)
 KBUILDAREA = $(shell pwd)/kernel
 OM_MIDDLE = -pc-linux-
 OM_LIBC = musl
-
 OM_CONF = --disable-libmpx --disable-multilib
 OM_LINUXARCH = i386
 OM_BACKWARDCOMPAT = i386
@@ -55,7 +54,6 @@ UCLIBC_MRR = http://downloads.uclibc-ng.org/releases/$(OM_UCLIBC_VER)/
 OM_GLIBC = glibc-2.25
 OM_PERL_MRR = http://www.cpan.org/src/5.0/
 OM_PERL_CROSS_MRR = https://github.com/arsv/perl-cross/releases/download/1.0.2/
-
 OM_LLVM = http://releases.llvm.org/5.0.0/llvm-5.0.0.src.tar.xz
 OM_CLANG = http://releases.llvm.org/5.0.0/cfe-5.0.0.src.tar.xz
 OM_OPENMP = http://releases.llvm.org/5.0.0/openmp-5.0.0.src.tar.xz
@@ -241,18 +239,15 @@ primary:
 	$(MAKE) linux_stage
 	$(MAKE) gcc_stage_make
 	$(MAKE) gcc_stage_install
-ifeq ($(OM_LIBC),musl)
+ifeq ($(filter musl%,$(OM_LIBC)),)
 	$(MAKE) musl_stage
 endif
-ifeq ($(OM_LIBC),musleabi)
-	$(MAKE) musl_stage
-endif
-ifeq ($(OM_LIBC),uclibc)
+ifeq ($(filter uclibc%,$(OM_LIBC)),)
 	-$(MAKE) uclibc_stage_one
 	-$(MAKE) uclibc_stage_two
 	-$(MAKE) uclibc_stage_three
 endif
-ifeq ($(OM_LIBC),gnu)
+ifeq ($(filter gnu%,$(OM_LIBC)),)
 	-$(MAKE) -i gnu_stage_one
 	-$(MAKE) -i gnu_stage_two
 	-$(MAKE) -i gnu_stage_three
@@ -306,7 +301,7 @@ gcc_stage_make: host_path
 	@tar -xf $(OM_SRC)/$(OM_MPFR).$(OM_SFX) -C $(SPWD) 
 	@tar -xf $(OM_SRC)/$(OM_MPC).$(OM_SFX) -C $(SPWD) 
 
-ifeq ($(OM_LIBC),musl)
+ifeq ($(filter musl%,$(OM_LIBC)),)
 	-@cd $(SPWD)/$(OM_GCC) && patch -p1 -N < $(SPWD)/patches/$(OM_GCC)-musl.diff
 endif
 	
@@ -730,7 +725,7 @@ gnu_gcc_target: install_path
 	mkdir -p $(OM_GCC)-build-target
 	@tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
 
-ifeq ($(OM_LIBC),musl)
+ifeq ($(filter musl%,$(OM_LIBC)),)
 	-@cd $(SPWD)/$(OM_GCC) && patch -p1 < $(SPWD)/patches/$(OM_GCC)-musl.diff
 endif
 
@@ -772,7 +767,7 @@ gcc_target: install_path
 	mkdir -p $(OM_GCC)-build-target
 	@tar -xf $(OM_SRC)/$(OM_GCC).$(OM_SFX) -C $(SPWD)
 
-ifeq ($(OM_LIBC),musl)
+ifeq ($(filter musl%,$(OM_LIBC)),)
 	-@cd $(SPWD)/$(OM_GCC) && patch -p1 < $(SPWD)/patches/$(OM_GCC)-musl.diff
 endif
 	# in-tree binutils
@@ -850,7 +845,7 @@ grub_target: install_path
 	rm -rf $(OM_GRUB)
 	mkdir -p $(OM_GRUB) 
 	-@tar -xf $(OM_SRC)/$(OM_GRUB).$(OM_SFX) -C $(SPWD) 
-ifeq ($(OM_LIBC),musl)
+ifeq ($(filter musl%,$(OM_LIBC)),)
 	-cd $(SPWD)/$(OM_GRUB) &&  patch -p1 < $(SPWD)/patches/grub-2.00-musl.patch
 endif
 	-cd $(SPWD)/$(OM_GRUB) && $(INACROSS) $(SPWD)/$(OM_GRUB)/configure \
@@ -874,15 +869,10 @@ populate:
 install: install_path 
 
 	-@mkdir -p $(DESTDIR)/
-ifeq ($(OM_LIBC),musl)
+ifeq ($(filter musl%,$(OM_LIBC)),)
 	$(MAKE) -C $(SPWD)/$(OM_MUSL) install
 endif
-
-ifeq ($(OM_LIBC),musleabi)
-	$(MAKE) -C $(SPWD)/$(OM_MUSL) install
-endif
-
-ifeq ($(OM_LIBC),uclibc)
+ifeq ($(filter uclibc%,$(OM_LIBC)),)
 	$(MAKE) -C "$(SPWD)/$(OM_UCLIBC)" \
 	CROSS="$(OM_TARG)-" \
 	RUNTIME_PREFIX="/" \
@@ -890,7 +880,7 @@ ifeq ($(OM_LIBC),uclibc)
 	install
 endif
 
-ifeq ($(OM_LIBC),gnu)
+ifeq ($(filter gnu%,$(OM_LIBC)),)
 	
 	mkdir -p $(OM_GLIBC)-build-final
 	 @cd $(SPWD)/$(OM_GLIBC)-build-final && $(SPWD)/$(OM_GLIBC)/configure \
@@ -1016,6 +1006,44 @@ test_aarch64:
 	-initrd backup.cpio.gz \
 	-append "root=/dev/ram rdinit=/bin/sh console=ttyAMA0"
 
+
+
+test_arm:
+
+	-mkdir $(PWD)/libroot
+	-$(MAKE)
+	-$(MAKE) install DESTDIR=$(PWD)/libroot
+	#-@cp -r $(OM_PREF)/$(OM_TARG)/* $(OM_LIBROOT)
+	-$(MAKE) linux_target > logfile
+	-$(MAKE) busybox_target >> logfile
+
+	-cd libroot && find . | cpio -H newc -o > ../backup.cpio
+	-cat backup.cpio | gzip > backup.cpio.gz
+	make test_arm_boot
+
+test_arm_boot:
+
+	qemu-system-arm -m 1024 \
+		-cpu cortex-a9 -M versatilepb \
+		-nographic \
+		-kernel libroot/boot/vmlinuz  -initrd backup.cpio.gz \
+		-append "init=/bin/sh root=/dev/ram rdinit=/bin/sh console=ttySn"
+	#		-append "init=/bin/sh root=/dev/ram rdinit=/bin/sh console=ttyAMA0"
+	# -machine vexpress-a9  \
+	# -machine vexpress-a9 -cpu cortex-a9 \
+
+	#-qemu-system-arm \
+	-machine virt \
+	-cpu cortex-a15 \
+	-machine type=virt \
+	-nographic -smp 1 \
+	-m 2048 \
+	-kernel libroot/boot/vmlinuz \
+	-initrd backup.cpio.gz \
+	-append "init=/bin/sh root=/dev/ram rdinit=/bin/sh"
+	#-append "init=/bin/sh root=/dev/ram rdinit=/bin/sh console=ttyAMA0,38400n8"
+
+
 test_aarch64_2:
 
 	
@@ -1037,7 +1065,6 @@ test_aarch64_2:
 	-kernel libroot/boot/vmlinuz \
 	-initrd backup.cpio.gz \
 	-append "init=/bin/sh root=/dev/ram rdinit=/bin/sh console=ttyAMA0"
-
 gnu_compiler:
 
 	-$(MAKE) -i gnu_gcc_target
@@ -2190,13 +2217,13 @@ startreport:
 	-printf "\t$(OM_MPFR)\n" >> $(LOGDIR)/$(LOGHOST)-report
 	-printf "\t$(OM_GMP)\n" >> $(LOGDIR)/$(LOGHOST)-report
 
-ifeq ($(OM_LIBC),musl)
+ifeq ($(filter musl%,$(OM_LIBC)),)
 	-printf "\t$(OM_MUSL)\n"  >> $(LOGDIR)/$(LOGHOST)-report
 endif
-ifeq ($(OM_LIBC),uclibc)
+ifeq ($(filter uclibc%,$(OM_LIBC)),)
 	-printf "\t$(OM_UCLIBC)\n"  >> $(LOGDIR)/$(LOGHOST)-report
 endif
-ifeq ($(OM_LIBC),gnu)
+ifeq ($(filter gnu%,$(OM_LIBC)),)
 	-printf "\t$(OM_GLIBC)\n"  >> $(LOGDIR)/$(LOGHOST)-report
 endif
 	
