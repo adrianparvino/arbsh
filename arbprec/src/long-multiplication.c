@@ -25,9 +25,14 @@ fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	arb_setsign(a, b, c);
 	c = arb_expand(c, a->len + b->len);
 	arb_mul_core(a->number, a->len, b->number, b->len, c->number, base);
-	c->len = a->len + b->len;
+	//c->len = a->len + b->len;
 	c->lp = a->lp + b->lp;
-	c->rp = c->rp + c->rp; // untested. however, every function needs to set rp as well as lp
+
+	c->rp = MAX(a->rp, b->rp);
+	//c->rp = b->rp;
+	c->len = c->lp + c->rp;
+	//c->rp = c->rp + c->rp; // untested. however, every function needs to set rp as well as lp
+	//c->rp = MIN(a->rp, b->rp);
 	return c;
 }
 
