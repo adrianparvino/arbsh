@@ -34,7 +34,6 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
         c->lp = MAX(a->lp, b->lp);
         width = MAX(a->len, b->len);
         c = arb_expand(c, width * 2);
-	//memset(c->number, 0, (width * 2) * sizeof(ARBT)); // no longer needed
         for (; i < a->len || j < b->len;c->len++, ++r){
                 sum = arb_place(a, b, &i, r) + arb_place(b, a, &j, r) + carry;
                 carry = 0;
@@ -67,7 +66,6 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
         c->lp = MAX(a->lp, b->lp);
         width = MAX(a->len, b->len);
         c = arb_expand(c, width * 2); // fixme: this is way oversized
-	//memset(c->number, 0, (width * 2) * sizeof(ARBT));
         array = arb_malloc((width * 2) * sizeof(ARBT)); // fixme: this is way oversized
 
         for (; i < a->len || j < b->len;c->len++, ++r){
