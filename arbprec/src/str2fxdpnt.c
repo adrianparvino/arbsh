@@ -10,9 +10,7 @@ fxdpnt *arb_str2fxdpnt(const char *str)
 	int flt_set = 0, sign_set = 0;
 
 	fxdpnt *ret = arb_expand(NULL, 1);
-	ret->len =0;
-	ret->lp =0;
-	ret->rp =0;
+	ret->len = ret->lp = ret->rp = 0;
 
 	for (i = 0; str[i] != '\0'; ++i){
 		if (str[i] == '.'){
