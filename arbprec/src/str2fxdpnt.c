@@ -1,11 +1,32 @@
 #include <arbprec/arbprec.h>
 
+int arb_base(int a)
+{ 
+        static int glyphs[100] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 10, 11, 12, 13,
+				14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+				26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37,
+				38, 39, 40, 41, 42, 43, 44, 45, 46, 47,
+				// end of place holders
+				0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+				// end of 0 - 9
+				58, 59, 60, 61, 62, 63, 64,
+				// end of place holders
+				10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+				22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+				34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45 };
+				// and so on, finish it later
+                                
+                                
+                                
+        if (a < 99)
+                return glyphs[a];
+
+        return a;
+        
+}
+
 fxdpnt *arb_str2fxdpnt(const char *str)
 {
-	// Convert a string to an arb `fxdpnt'
-	// This only works with base 10 because of the ascii "-'0'"
-	// To make it work with any base then a function that is the opposite of
-	// src/arb_highbase must be contrived
 	size_t i = 0;
 	int flt_set = 0, sign_set = 0;
 
@@ -27,7 +48,7 @@ fxdpnt *arb_str2fxdpnt(const char *str)
 		}
 		else{
 			ret = arb_expand(ret, ret->len + 1);
-			ret->number[ret->len++] = str[i] - '0';
+			ret->number[ret->len++] = arb_base(str[i]);//str[i] - '0';
 		}
 	}
 
