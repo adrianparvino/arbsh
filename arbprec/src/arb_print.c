@@ -17,7 +17,7 @@ void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix)
 {
 	size_t i = 0;
 	int state = 0;
-	size_t k = 1;
+	size_t k = 0;
 	for (i=0; i < len ; ++i){
 		if (number[i] == 0 && state == 0 && i < radix)
 		{
@@ -25,12 +25,19 @@ void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix)
 		}
 		state = 1;
 		
-		if (radix == i)
-			fprintf(fp, ".");
-		if (k % 68 == 0)
+		
+		if (k % 68 == 0 && k != 0)
 			fprintf(fp, "\\\n");
-
+		
+		if (radix == i)
+		{ 
+			fprintf(fp, ".");
+			//if ( k!=68)
+			++k;
+		}
 		fprintf(fp, "%c", arb_highbase((number[i])));
+		
+		
 		++k;
 	}
 	fprintf(fp, "\n");
