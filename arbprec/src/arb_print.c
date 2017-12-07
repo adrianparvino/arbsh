@@ -13,11 +13,11 @@ int arb_highbase(int a)
 		return a;
 }
 
-void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix)
+void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix, size_t sign)
 {
 	size_t i = 0;
 	int state = 0;
-	size_t k = 0;
+	size_t k = sign;
 	size_t l = 0;
 
 	for (i=0; i < len ; ++i){
@@ -44,7 +44,11 @@ void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix)
 
 void arb_print(fxdpnt *flt)
 {
+	size_t sign = 0;
 	if (flt->sign == '-')
+	{
 		putchar(flt->sign);
-	_print_core(stdout, flt->number, flt->len, flt->lp);
+		sign = 1;
+	}
+	_print_core(stdout, flt->number, flt->len, flt->lp, sign);
 }

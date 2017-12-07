@@ -43,7 +43,7 @@ void arb_flipsign(fxdpnt *);
 void arb_setsign(fxdpnt *, fxdpnt *, fxdpnt *);
 /* io */
 void arb_print(fxdpnt *);
-void _print_core(FILE *, ARBT *, size_t, size_t);
+//void _print_core(FILE *, ARBT *, size_t, size_t);
 fxdpnt *arb_str2fxdpnt(const char *);
 int arb_highbase(int);
 /* comparison */
