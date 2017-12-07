@@ -42,11 +42,10 @@ cleanobj:
 
 clean:
 	$(MAKE) cleanobj
-	$(MAKE) -C control clean
 	$(RM) $(STATLIB) 
 	$(RM) $(TEST_OBJ)
 	$(RM) uninstall
-	$(RM) log log2
+	$(RM) log log2 log1
 	
 
 install:
@@ -65,14 +64,6 @@ create_uninstall:
 	printf "%s\n" "rm $(DESTDIR)/lib/$(STATLIB)" >> uninstall
 	chmod +x uninstall
 
-test:
-
-	-$(MAKE) clean
-	-$(MAKE) 
-	-CFLAGS="" $(MAKE) -C control clean
-	-CFLAGS="" $(MAKE) -C control
-	-./tests/regressions.sh
-	
 uninstall:
 
 	chmod +x uninstall
