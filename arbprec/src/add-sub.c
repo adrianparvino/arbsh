@@ -49,7 +49,6 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
         }
 	c->rp = c->len - c->lp;
         arb_reverse(c->number, c->len);
-	arb_print(c);
         return c;
 }
 
