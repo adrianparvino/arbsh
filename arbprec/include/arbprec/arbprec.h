@@ -25,7 +25,7 @@ typedef struct {	// Toym fixed point type
 /* function prototypes */
 /* arithmetic */
 fxdpnt *arb_mul(fxdpnt *, fxdpnt *, fxdpnt *, int);
-void arb_mul_core(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
+size_t arb_mul_core(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
 fxdpnt *arb_add_inter(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_sub_inter(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_sub(fxdpnt *, fxdpnt *, fxdpnt *, int);
@@ -43,7 +43,7 @@ void arb_flipsign(fxdpnt *);
 void arb_setsign(fxdpnt *, fxdpnt *, fxdpnt *);
 /* io */
 void arb_print(fxdpnt *);
-//void _print_core(FILE *, ARBT *, size_t, size_t);
+void _print_core(FILE *, ARBT *, size_t, size_t, size_t);
 fxdpnt *arb_str2fxdpnt(const char *);
 int arb_highbase(int);
 /* comparison */
@@ -65,3 +65,5 @@ void *arb_realloc(void *, size_t);
 void *arb_calloc(size_t, size_t);
 void arb_free(fxdpnt *);
 
+
+size_t maxi(size_t, size_t, size_t);
