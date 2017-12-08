@@ -57,7 +57,7 @@ fxdpnt *arb_alloc(size_t len)
 	fxdpnt *ret = arb_malloc(sizeof(fxdpnt));
 	ret->number = arb_calloc(1, sizeof(ARBT) * len);
 	ret->sign = '+';
-	ret->lp = 0;
+	ret->lp = 0; //FIXME: this should likely be "len"
 	ret->rp = 0;
 	ret->allocated = len;
 	ret->len = len;
@@ -75,25 +75,16 @@ void *arb_realloc(void *ptr, size_t len)
 
 fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 {
+	size_t hold = 0;
 	if (flt == NULL){
 		flt = arb_alloc(request);
 		flt->allocated = request;
 	} else if (request >= flt->allocated){ 
-		size_t hold = flt->len;
+		hold = flt->len;
 		flt->allocated = (request + flt->chunk);
 		flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
 		memset(flt->number + hold, 0, (flt->allocated - hold) * sizeof(ARBT));
 	}
 	return flt;
-}
-
-void arb_free_num (fxdpnt *num)
-{
-	if (num == NULL)
-		return;
-	if ((num)->number)
-		free ((num)->number);
-	free (num);
-	num = NULL;
 }
 
