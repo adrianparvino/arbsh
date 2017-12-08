@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
-void adddecvalue(int *array, size_t len, int value, int ibase, int obase)
+void convert_radix(int *array, size_t len, int value, int ibase, int obase)
 {
 	int carry = value;
 	int tmp = 0;
@@ -16,26 +16,26 @@ void adddecvalue(int *array, size_t len, int value, int ibase, int obase)
 	}
 }
 
-int *inithexarray(char *pDecStr, size_t *pnElements, int ibase, int obase)
+int *inithexarray(char *str, size_t *len, int ibase, int obase)
 {
-	int *pArray = NULL;
-	size_t lenDecStr = strlen(pDecStr);
+	int *p;
+	size_t k = strlen(str);
 	size_t i = 0;
-	pArray = calloc(lenDecStr, sizeof (int));
-	for (; i < lenDecStr; i++)
-		adddecvalue(pArray, lenDecStr, pDecStr[i] - '0', ibase, obase);
-	*pnElements = lenDecStr;
-	return pArray;
+	p = calloc(k, sizeof (int));
+	for (; i < k; i++)
+		convert_radix(p, k, str[i] - '0', ibase, obase);
+	*len = k;
+	return p;
 }
 
-void printarray(int *pHexArray, size_t nElements)
+void printarray(int *a, size_t len)
 {
-	char HexChar [16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', 
+	char glyph [16] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', 
 			'9', 'A', 'B', 'C', 'D', 'E', 'F' };
 	size_t i = 0;
-	for (; i < nElements; i++)
-		printf ("%c", HexChar[pHexArray[i]]);
-	printf ("\n");
+	for (; i < len; i++)
+		printf("%c", glyph[a[i]]);
+	printf("\n");
 }
 
 int main(int argc, char * argv[])
