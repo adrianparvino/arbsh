@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
 	int len;
 	int ibase = 0;
 	int obase = 0;
-	if (argc < f)
+	if (argc < 4)
 	{
 		printf ("Usage: %s string ibase obase\n", argv[0]);
 		return 1;
