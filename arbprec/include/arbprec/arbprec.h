@@ -7,7 +7,7 @@
 #include <limits.h>
 
 /* defines */
-#define ARBT char // designed to be any type
+#define ARBT char	// designed to be any type
 #define MAX(a,b)      ((a)>(b)?(a):(b))
 #define MIN(a,b)      ((a)>(b)?(b):(a))
 
@@ -64,6 +64,7 @@ void *arb_malloc(size_t);
 void *arb_realloc(void *, size_t);
 void *arb_calloc(size_t, size_t);
 void arb_free(fxdpnt *);
-
-
+/* min / max */
 size_t maxi(size_t, size_t, size_t);
+/* base conversion */
+fxdpnt *convert(fxdpnt *, fxdpnt *, int, int);
