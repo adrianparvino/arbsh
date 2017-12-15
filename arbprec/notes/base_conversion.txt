@@ -155,3 +155,36 @@ futher the conversation with Plankwalk
 20:24 < graff> hmm. ok let me add this conversation to my notes. this is getting complicated
 20:25 < PlanckWalk> Usually when converting fractional parts, you would want the number of digits to be the minimum needed to reconstruct all the digits in the original base
 
+
+
+00:22 < graff> alphamule: hey. so i was going over the notes from you talking to me about bsae conversion
+00:22 -!- pedh [~pedh@106.39.67.33] has quit [Ping timeout: 248 seconds]
+00:23 < graff> when it says logN where N is base, how do I get that value? math,h does not have log for any base. only base10 and base2
+00:23 < graff> can i compute that logically somehow?
+00:23 -!- Big_G [~Big_G@174-24-254-29.tukw.qwest.net] has quit [Read error: Connection reset by peer]
+00:23 < alphamule> You can use this definition:
+00:23 < graff> like log10(1000) rounded up is basically 4 or some such
+00:24 < alphamule> log_n(x) = log(x)/log(n)
+00:24 -!- ferdna [~ferdna@cpe-69-23-129-162.elp.res.rr.com] has quit [Quit: Leaving]
+00:24 < alphamule> log(n) is a constant
+00:24 < graff> alright, let me try that. hmm
+00:24 < alphamule> Works for n>0, obviously
+00:24 < graff> what constant?
+00:24 -!- unixpickle [~alex@2601:645:8103:60b6:994d:5c22:698e:301c] has quit [Quit: My MacBook has gone to sleep. ZZZzzz...]
+00:24 < alphamule> Also, log(n) not = 0
+00:24 -!- Vornicus [~Vorn@cpe-104-32-37-233.socal.res.rr.com] has quit [Ping timeout: 264 seconds]
+00:24 < alphamule> But that shouldn't ever happen XD
+00:25 < alphamule> 1/log(n)
+00:25 < LuMint> hello
+00:25 < graff> oh so, N is the base?
+00:25 < alphamule> 1/log10(n) also works, but you must be using log10(x)
+00:25 < alphamule> (Has to be same base)
+00:26 < alphamule> log10(5)/log10(7) = log(5)/log(7)
+00:26 < alphamule> They have the same ratio
+00:26 -!- Maxdaman1us is now known as Maxdamantus
+00:26 -!- oleo [~oleo@unaffiliated/oleo] has quit [Quit: Leaving]
+00:26 < alphamule> Try it with different values :)
+00:26 < graff> damn, this is complex. i was thinking of devising a way to compute if there are left over carries from the base 
+               conversion, and just extend te cacluation if there are
+00:26 -!- ferdna [~ferdna@cpe-69-23-129-162.elp.res.rr.com] has joined ##math
+00:26 < alphamule> Yes, log_base
