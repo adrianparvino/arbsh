@@ -4,7 +4,7 @@ int arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
 {
 	int temp = 0;
 	if ((a->len - a->lp) < (b->len - b->lp))
-		if( (b->len - b->lp) - (a->len - a->lp) > r)
+		if((b->len - b->lp) - (a->len - a->lp) > r)
 			return 0;
 	if (*cnt < a->len){
 		temp = a->number[a->len - *cnt - 1];
@@ -28,12 +28,11 @@ void arb_reverse(ARBT *x, size_t lim)
 
 fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	size_t width = 0, i = 0, j = 0, r = 0;
+	size_t i = 0, j = 0, r = 0;
 	int sum = 0, carry = 0;
 
 	c->lp = MAX(a->lp, b->lp);
-	width = MAX(a->len, b->len);
-	c = arb_expand(c, width * 2);
+	c = arb_expand(c, MAX(a->len, b->len) * 2);
 	for (; i < a->len || j < b->len;c->len++, ++r){
 		sum = arb_place(a, b, &i, r) + arb_place(b, a, &j, r) + carry;
 		carry = 0;
