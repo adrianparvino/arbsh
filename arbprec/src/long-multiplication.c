@@ -2,25 +2,27 @@
 
 size_t arb_mul_core(ARBT *a, size_t alen, ARBT *b, size_t blen, ARBT *c, int base)
 {
-	int i = 0, j = 0, sum = 0, carry = 0;
+	int sum = 0, carry = 0;
+	size_t i = 0;
+	size_t j = 0;
         size_t k = 0;
 	size_t last = 0;
 	size_t ret = blen;
 	c[k] = 0;
 	c[alen + blen -1] = 0;
-	for (i = alen - 1; i >= 0 ; i--){
+	for (i = alen; i > 0 ; i--){
 		last = k;
-		for (j = blen - 1, k = i + j + 1, carry = 0; j >= 0 ; j--, k--){
-			sum = (a[i]) * (b[j]) + (c[k]) + carry;
-			carry = sum / base; 
-			c[k] = (sum % base);
+		for (j = blen, k = i + j, carry = 0; j > 0 ; j--, k--){
+			sum = (a[i-1]) * (b[j-1]) + (c[k-1]) + carry;
+			carry = sum / base;
+			c[k-1] = (sum % base);
 		}
 		if (k != last)
 		{
 			++ret;	
-			c[k] = 0;
+			c[k-1] = 0;
 		}
-		c[k] += carry;
+		c[k-1] += carry;
 	}
 	return ret;
 }
