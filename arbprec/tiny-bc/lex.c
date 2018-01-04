@@ -24,21 +24,7 @@ static const char* const keywords[] = {
 };
 
 static const uint32_t keyword_lens[] = {
-
-    4,
-    5,
-    6,
-    3,
-    5,
-    2,
-    6,
-    5,
-    4,
-    6,
-    5,
-    4,
-    5,
-
+    4, 5, 6, 3, 5, 2, 6, 5, 4, 6, 5, 4, 5,
 };
 
 static BcLexStatus bc_lex_whitespace(BcLex* lex, BcLexToken* token);
