@@ -27,7 +27,7 @@ fxdpnt *arb_newton_sqrt(fxdpnt *a, fxdpnt *c, int base, int scale)
 		if (arb_compare(guess, new_guess, base) == 0)
 			break; 
 	}
-	fprintf(stderr, "%zu iterations\n", i);
+	//fprintf(stderr, "%zu iterations\n", i);
 	c = guess;
 	return c;
 }
