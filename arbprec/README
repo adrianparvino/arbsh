@@ -12,13 +12,12 @@ BUILDING:
 TESTING:
 --------
 
-	Run the test binary:
+	Run the test wrappers and binaries:
 
-		./tests/test-arbitrary-precision number number base scale
-
-	Run the algorithm D division test suite:
-
-		make test
+		./tests/divregression.sh
+		./tests/mulregression.sh
+		./tests/subregression.sh
+		./tests/addregressions.sh
 
 
 USING THE API:
