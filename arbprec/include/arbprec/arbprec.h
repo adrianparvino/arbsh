@@ -68,3 +68,8 @@ void arb_free(fxdpnt *);
 size_t maxi(size_t, size_t, size_t);
 /* base conversion */
 fxdpnt *convert(fxdpnt *, fxdpnt *, int, int);
+
+//void convert_radix(ARBT *array, size_t len, int value, int ibase, int obase);
+//void arb_short_mul(ARBT *a, size_t i, int b, int base);
+
+void rightshift_core(ARBT *, size_t, size_t);
