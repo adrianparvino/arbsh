@@ -39,7 +39,7 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 
 	for (; i < newlen; ++i)
 	{ 
-		carry = array[i]; 
+		carry = array[i];
 		prod = 0;
 		for (j = newlen; j > 0; j--) {
 			prod = (p[j-1] * ibase) + carry;
