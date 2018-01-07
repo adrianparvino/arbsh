@@ -38,6 +38,8 @@ int _long_add(ARBT *, size_t, ARBT *, size_t, int);
 /* logical shift */
 fxdpnt *arb_rightshift(fxdpnt *, size_t, int);
 fxdpnt *arb_leftshift(fxdpnt *, size_t, int);
+void rightshift_core(ARBT *, size_t, size_t);
+/* general */
 void arb_reverse(ARBT *, size_t);
 void arb_flipsign(fxdpnt *);
 void arb_setsign(fxdpnt *, fxdpnt *, fxdpnt *);
@@ -68,8 +70,5 @@ void arb_free(fxdpnt *);
 size_t maxi(size_t, size_t, size_t);
 /* base conversion */
 fxdpnt *convert(fxdpnt *, fxdpnt *, int, int);
+fxdpnt *conv_frac(fxdpnt *, fxdpnt *, int, int);
 
-//void convert_radix(ARBT *array, size_t len, int value, int ibase, int obase);
-//void arb_short_mul(ARBT *a, size_t i, int b, int base);
-
-void rightshift_core(ARBT *, size_t, size_t);
