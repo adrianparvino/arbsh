@@ -24,11 +24,11 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
 	arb_copy(b, a);
 	ARBT *p;
+	ARBT carry = 0;
+	ARBT prod = 0;
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
-	ARBT carry = 0;
-	ARBT prod = 0;
 	if (ibase > obase)
 		k = (size_t) (a->len / logtable[obase]);
 	else 
