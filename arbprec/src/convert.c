@@ -27,9 +27,12 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
-	int carry = 0;
-	int prod = 0;
-	k = (size_t) (a->len / logtable[obase]);
+	ARBT carry = 0;
+	ARBT prod = 0;
+	if (ibase > obase)
+		k = (size_t) (a->len / logtable[obase]);
+	else 
+		k = a->len;
 	p = arb_calloc(k, sizeof(ARBT));
 	ARBT *array = arb_calloc(k, sizeof(ARBT));
 	memcpy(array + (k - a->len), a->number, a->len * sizeof(ARBT));
@@ -54,6 +57,14 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
 	arb_copy(b, a);
+	size_t i = 0;
+	size_t newlen = a->len;
+	
+	ARBT *converted = arb_calloc(newlen, sizeof(ARBT));
+	while (1)
+	{
+		
+	}
 	return b;
 }
 
