@@ -56,3 +56,4 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	arb_copy(b, a);
 	return b;
 }
+
