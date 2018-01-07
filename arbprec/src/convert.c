@@ -61,6 +61,11 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
+	char obasehold[1000];
+	
+	sprintf(obasehold, "%d", obase);
+	fxdpnt *obh = arb_str2fxdpnt(obasehold);
+
 	if (ibase > obase)
 		k = (size_t) (a->len / logtable[obase]);
 	else 
@@ -70,7 +75,7 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	memcpy(array + (k - a->len), a->number, a->len * sizeof(ARBT));
 	memset(array, 0, (k - a->len) * sizeof(ARBT));
 	
-
+	
 	for (; i < k; ++i) { 
 		//arb_mul_core(array, k, ARBT *b, size_t blen, ARBT *c, ibase)
 		
