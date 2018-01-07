@@ -53,9 +53,22 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	return b;
 }
 
+ARBT arb_short_mul(ARBT *a, size_t i, int b, int base)
+{
+        /* a *= b */
+        ARBT carry = 0;
+        for (; i > 0 ; i--) {
+                a[i-1] *= b;
+                a[i-1] += carry;
+                carry = a[i-1] / base;
+                a[i-1] %= base;
+        }
+	return carry;
+}
 
 fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
+	//arb_mul_core(array, k, obh, obh->len, p, ibase)
 	arb_copy(b, a);
 	ARBT *p;
 	size_t i = 0;
@@ -66,18 +79,17 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	sprintf(obasehold, "%d", obase);
 	fxdpnt *obh = arb_str2fxdpnt(obasehold);
 
-	if (ibase > obase)
-		k = (size_t) (a->len / logtable[obase]);
-	else 
-		k = a->len;
+	//if (ibase > obase)
+		k = (size_t) (a->len / logtable[obase]) + 3;
+	//else 
+	//	k = a->len;
 	p = arb_calloc(k, sizeof(ARBT));
+	//act = arb_calloc(k, sizeof(ARBT));
 	ARBT *array = arb_calloc(k, sizeof(ARBT));
-	memcpy(array + (k - a->len), a->number, a->len * sizeof(ARBT));
-	memset(array, 0, (k - a->len) * sizeof(ARBT));
-	
+	memcpy(array, a->number, a->len * sizeof(ARBT)); 
 	
 	for (; i < k; ++i) { 
-		//arb_mul_core(array, k, ARBT *b, size_t blen, ARBT *c, ibase)
+		p[i] = arb_short_mul(array, a->len, obase, ibase);
 		
 	
 	}
