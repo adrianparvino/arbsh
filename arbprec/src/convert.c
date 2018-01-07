@@ -30,38 +30,26 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	int lever = 1;
 	int carry = 0;
 	int prod = 0;
-	p = arb_calloc(a->len, sizeof(ARBT));
-	ARBT *array = arb_calloc(a->len, sizeof(ARBT));
-	memcpy(array, a->number, a->len * sizeof(ARBT));
-	for (; i < a->len + k || lever; i++)
+	size_t newlen = 0;
+	newlen = (size_t) (a->len / logtable[obase]);
+	p = arb_calloc(newlen, sizeof(ARBT));
+	ARBT *array = arb_calloc(newlen, sizeof(ARBT));
+	memcpy(array + (newlen - a->len), a->number, a->len * sizeof(ARBT));
+	memset(array, 0, (newlen - a->len) * sizeof(ARBT));
+
+	for (; i < newlen; ++i)
 	{ 
-		lever = 1;
-		if (i < k)
-			carry = 0;
-			
-		else
-			carry = array[i-k];
-	
+		carry = array[i]; 
 		prod = 0;
-		for (j = a->len + k; j > 0; j--) {
+		for (j = newlen; j > 0; j--) {
 			prod = (p[j-1] * ibase) + carry;
 			p[j-1] = prod % obase;
 			carry = prod / obase;
 		}
-		if (carry)
-		{
-			++k;
-			p = realloc(p, (a->len + k) * sizeof(ARBT));
-			memset(p, 0, (a->len + k) * sizeof(ARBT));
-			b->len++;
-			b->lp++;
-			i = 0;
-		}else {
-			lever = 0;
-		}
 	}
 	b->number = p;
-
+	b->len = newlen;
+	b->lp = newlen;
 	return b;
 }
 

@@ -10,7 +10,7 @@ double logbase(double x, double base)
 int main(int argc, char *argv[])
 {
 	// 2 args, number and base
-	printf("answer = %f\b", ceil(logbase(strtod(argv[1], 0), strtod(argv[2], 0))));
+	printf("answer = %f\b", logbase(strtod(argv[1], 0), strtod(argv[2], 0)));
 	
 	return 0;
 }
