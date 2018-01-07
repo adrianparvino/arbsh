@@ -2,6 +2,7 @@
 
 fxdpnt *arb_newton_sqrt(fxdpnt *a, fxdpnt *c, int base, int scale)
 {
+	// FIXME: calculate initial guess for newton's sqrt
 	fxdpnt *new_guess = NULL;
 	new_guess = arb_expand(new_guess, a->len); 
 	fxdpnt *guess = NULL; 
@@ -14,8 +15,8 @@ fxdpnt *arb_newton_sqrt(fxdpnt *a, fxdpnt *c, int base, int scale)
 	hold = arb_expand(hold, a->len); 
 	fxdpnt *two = NULL;
 	two = arb_str2fxdpnt("2.0");
-	//fxdpnt *p5 = NULL;
-	//p5 = arb_str2fxdpnt("0.5");
+	fxdpnt *p5 = NULL;
+	p5 = arb_str2fxdpnt("0.5");
 	size_t i = 0;
 	while (i++ < 10000)
 	{
