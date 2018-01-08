@@ -56,18 +56,6 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	return b;
 }
 
-ARBT arb_short_mul(ARBT *a, size_t i, int b, int base)
-{ 
-        ARBT carry = 0;
-        for (; i > 0 ; i--) {
-                a[i-1] *= b;
-                a[i-1] += carry;
-                carry = a[i-1] / base;
-                a[i-1] %= base;
-        }
-	return carry;
-}
-
 ARBT arb2hrdware(ARBT *a, size_t len, int base)
 {
 	ARBT ret = 0;
