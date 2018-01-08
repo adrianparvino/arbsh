@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+#include <stdint.h>
 /* log of base table 0 - 50 to simplify access */
 double logtable[] = {       0.0000000000000,
  0.0000000000000, 0.3010299956640, 0.4771212547197,
@@ -29,7 +30,9 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
-	if (ibase > obase)
+	// FIXME: handle bases greater than 50, perhaps by linking in libm and
+	// calculating ln() on the fly
+	if (ibase > obase && obase < 50)
 		k = (size_t) (a->len / logtable[obase]);
 	else 
 		k = a->len;
@@ -54,8 +57,7 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 }
 
 ARBT arb_short_mul(ARBT *a, size_t i, int b, int base)
-{
-        /* a *= b */
+{ 
         ARBT carry = 0;
         for (; i > 0 ; i--) {
                 a[i-1] *= b;
@@ -66,36 +68,67 @@ ARBT arb_short_mul(ARBT *a, size_t i, int b, int base)
 	return carry;
 }
 
+ARBT arb2hrdware(ARBT *a, size_t len, int base)
+{
+	ARBT ret = 0;
+	size_t i = 0;
+        for (; i < len; ++i) {
+                ret = (base * ret) + (a[i]);
+        }
+	return ret;
+}
+
 fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
 	//arb_mul_core(array, k, obh, obh->len, p, ibase)
 	arb_copy(b, a);
 	ARBT *p;
+	ARBT *o;
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
 	char obasehold[1000];
-	
+	size_t len = 0;
+	size_t z = a->len;
+	size_t size = 0;
+	size_t off = 0;
+
 	sprintf(obasehold, "%d", obase);
+	printf("%s\n", obasehold);
 	fxdpnt *obh = arb_str2fxdpnt(obasehold);
 
 	//if (ibase > obase)
-		k = (size_t) (a->len / logtable[obase]) + 3;
+	//	k = (size_t) (a->len / logtable[obase]);
 	//else 
-	//	k = a->len;
+		k = a->len;
 	p = arb_calloc(k, sizeof(ARBT));
-	//act = arb_calloc(k, sizeof(ARBT));
+	o = arb_calloc(k, sizeof(ARBT));
+	
 	ARBT *array = arb_calloc(k, sizeof(ARBT));
 	memcpy(array, a->number, a->len * sizeof(ARBT)); 
-	
-	for (; i < k; ++i) { 
-		p[i] = arb_short_mul(array, a->len, obase, ibase);
-		
-	
+
+	if (ibase>=obase)
+	{
+		for (; i < k; ++i) {
+			p[i] = arb_short_mul(array, a->len, obase, ibase);
+			printf("p[i] == %d\n", p[i]);
+		}
+	}
+	else {
+		for (; i < k; ++i) {
+			memset(o, 0, z * sizeof(ARBT)); 
+			len = arb_mul_core(array, z, obh->number, obh->len, o, ibase);
+			_print_core(stdout, array, z, a->len, 0); 
+			_print_core(stdout, o, len, a->len, 0);
+			size = len - z;
+			p[i] = arb2hrdware(o, size , 10);
+			printf("p[i] = %d\n", p[i]);
+			_arb_copy_core(array, o + size , z);
+                }
 	}
 	b->number = p;
-	b->len = k;
-	//b->lp = k; 
+	b->len = z;
+	b->lp = 0; 
 	
 	return b;
 }
