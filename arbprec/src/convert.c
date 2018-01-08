@@ -80,52 +80,33 @@ ARBT arb2hrdware(ARBT *a, size_t len, int base)
 
 fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
-	//arb_mul_core(array, k, obh, obh->len, p, ibase)
 	arb_copy(b, a);
 	ARBT *p;
 	ARBT *o;
 	size_t i = 0;
-	size_t j = 0;
 	size_t k = 0;
 	char obasehold[1000];
 	size_t len = 0;
 	size_t z = a->len;
 	size_t size = 0;
-	size_t off = 0;
 
 	sprintf(obasehold, "%d", obase);
-	printf("%s\n", obasehold);
 	fxdpnt *obh = arb_str2fxdpnt(obasehold);
-
-	//if (ibase > obase)
-	//	k = (size_t) (a->len / logtable[obase]);
-	//else 
-		k = a->len;
-	p = arb_calloc(k, sizeof(ARBT));
-	o = arb_calloc(k, sizeof(ARBT));
 	
-	ARBT *array = arb_calloc(k, sizeof(ARBT));
-	memcpy(array, a->number, a->len * sizeof(ARBT)); 
+	k = a->len;
+	p = arb_calloc(k * 2, sizeof(ARBT));
+	o = arb_calloc(k * 2, sizeof(ARBT));
+	
+	ARBT *array = arb_calloc(z * 2, sizeof(ARBT));
+	memcpy(array, a->number, a->len * sizeof(ARBT));
+	for (; i < k; ++i) {
+		memset(o, 0, z * sizeof(ARBT)); 
+		len = arb_mul_core(array, z, obh->number, obh->len, o, ibase);
+		size = len - z;
+		p[i] = arb2hrdware(o, size , 10);
+		_arb_copy_core(array, o + size , z);
+        }
 
-	if (ibase>=obase)
-	{
-		for (; i < k; ++i) {
-			p[i] = arb_short_mul(array, a->len, obase, ibase);
-			printf("p[i] == %d\n", p[i]);
-		}
-	}
-	else {
-		for (; i < k; ++i) {
-			memset(o, 0, z * sizeof(ARBT)); 
-			len = arb_mul_core(array, z, obh->number, obh->len, o, ibase);
-			_print_core(stdout, array, z, a->len, 0); 
-			_print_core(stdout, o, len, a->len, 0);
-			size = len - z;
-			p[i] = arb2hrdware(o, size , 10);
-			printf("p[i] = %d\n", p[i]);
-			_arb_copy_core(array, o + size , z);
-                }
-	}
 	b->number = p;
 	b->len = z;
 	b->lp = 0; 
