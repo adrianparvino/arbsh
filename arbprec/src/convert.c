@@ -71,3 +71,39 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	return b;
 }
 
+
+fxdpnt *allconv(fxdpnt *a, fxdpnt *b, int ibase, int obase)
+{
+	arb_copy(b, a);
+	ARBT *p;
+	int carry = 0;
+	int prod = 0;
+	size_t i = 0;
+	size_t j = 0;
+	size_t k = 0;
+	/* TODO: use an algorithm that doesn't require log() for # digits */
+	if (ibase > obase)
+		/* ln(x) / ln(base) == ln_base(x) */
+		k = (size_t) (a->len / log10(obase));
+	else 
+		k = a->len;
+	p = arb_calloc(k, sizeof(ARBT));
+	ARBT *array = arb_calloc(k, sizeof(ARBT));
+	memcpy(array + (k - a->len), a->number, a->len * sizeof(ARBT));
+	memset(array, 0, (k - a->len) * sizeof(ARBT));
+
+	for (; i < k; ++i) { 
+		carry = array[i];
+		prod = 0;
+		for (j = k; j > 0; j--) {
+			prod = (p[j-1] * ibase) + carry;
+			p[j-1] = prod % obase;
+			carry = prod / obase;
+		}
+	}
+	b->number = p;
+	b->len = k;
+	b->lp = k;
+	return b;
+}
+
