@@ -92,13 +92,13 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 
 	/* real */
 	if (ibase > obase)
-		k = (size_t) ((2*a->len) / log10(obase)) ;
+		k = (size_t) ((2*a->lp) / log10(obase)) ;
 	else 
-		k = a->len;
+		k = a->lp;
 	sv = arb_calloc(k, sizeof(ARBT));
 	ARBT *real = arb_calloc(k, sizeof(ARBT));
-	memcpy(real + (k - a->len), a->number, a->len * sizeof(ARBT));
-	memset(real, 0, (k - a->len) * sizeof(ARBT));
+	memcpy(real + (k - a->lp), a->number, a->lp * sizeof(ARBT));
+	memset(real, 0, (k - a->lp) * sizeof(ARBT));
 
 	for (i = 0; i < k; ++i) { 
 		carry = real[i];
@@ -116,9 +116,8 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	
 	/* fractional */
 	k = a->rp;
+	z = a->rp;
 	fxdpnt *obh = hrdware2arb(obase);
-	
-	k = a->len;
 	p = arb_calloc(k * 2, sizeof(ARBT));
 	o = arb_calloc(k * 2, sizeof(ARBT));
 	
@@ -133,7 +132,7 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
         }
 	b = arb_expand(b, b->lp + k);
 	_arb_copy_core(b->number + b->lp, p, k);
-	b->rp = z;
+	b->rp = k;
 	//b->number = p;
 	
 	/* finish off */
