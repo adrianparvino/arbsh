@@ -1,20 +1,9 @@
+#ifndef BC_LEX_H
+#define BC_LEX_H
+
 #include <stdlib.h>
 
-typedef enum BcLexStatus {
-
-	BC_LEX_STATUS_SUCCESS,
-
-	BC_LEX_STATUS_INVALID_PARAM,
-
-	BC_LEX_STATUS_MALLOC_FAIL,
-
-	BC_LEX_STATUS_INVALID_TOKEN,
-
-	BC_LEX_STATUS_NO_STRING_END,
-
-	BC_LEX_STATUS_NO_COMMENT_END,
-
-} BcLexStatus;
+#include "bc.h"
 
 #define BC_LEX_GEN_ENUM(ENUM) ENUM,
 #define BC_LEX_GEN_STR(STRING) #STRING,
@@ -81,6 +70,7 @@ typedef enum BcLexStatus {
 	TOKEN(BC_LEX_KEY_HALT)      \
 	TOKEN(BC_LEX_KEY_IBASE)     \
 	TOKEN(BC_LEX_KEY_IF)        \
+	TOKEN(BC_LEX_KEY_LAST)      \
 	TOKEN(BC_LEX_KEY_LENGTH)    \
 	TOKEN(BC_LEX_KEY_LIMITS)    \
 	TOKEN(BC_LEX_KEY_OBASE)     \
@@ -120,10 +110,10 @@ typedef struct BcLex {
 
 } BcLex;
 
-BcLexStatus bc_lex_init(BcLex* lex, const char* text);
+BcStatus bc_lex_init(BcLex* lex, const char* text);
 
-BcLexStatus bc_lex_next(BcLex* lex, BcLexToken* token);
+BcStatus bc_lex_next(BcLex* lex, BcLexToken* token);
 
-#ifndef NDEBUG
-BcLexStatus bc_lex_printToken(BcLexToken* token);
-#endif
+BcStatus bc_lex_printToken(BcLexToken* token);
+
+#endif // BC_LEX_H
