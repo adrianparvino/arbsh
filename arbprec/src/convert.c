@@ -6,8 +6,8 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
 	arb_copy(b, a);
 	ARBT *p;
-	ARBT carry = 0;
-	ARBT prod = 0;
+	int carry = 0;
+	int prod = 0;
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
