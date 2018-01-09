@@ -17,6 +17,8 @@ int main(int argc, char *argv[])
         a = arb_str2fxdpnt(argv[1]);
 	b = conv_frac(a, b, ibase, obase);
         arb_print(b);
+	arb_free(a);
+	arb_free(b);
         return 0;
 }
 
