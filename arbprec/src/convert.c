@@ -6,15 +6,15 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
 	arb_copy(b, a);
 	ARBT *p;
-	int carry = 0;
-	int prod = 0;
+	long long carry = 0;
+	long long prod = 0;
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
 	/* TODO: use an algorithm that doesn't require log() for # digits */
 	if (ibase > obase)
 		/* ln(x) / ln(base) == ln_base(x) */
-		k = (size_t) (a->len / log10(obase));
+		k = (size_t) ((2*a->len) / log10(obase)) ;
 	else 
 		k = a->len;
 	p = arb_calloc(k, sizeof(ARBT));
@@ -31,6 +31,8 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 			carry = prod / obase;
 		}
 	}
+	if (carry)
+		printf("we have a left over carry\n");
 	b->number = p;
 	b->len = k;
 	b->lp = k;
@@ -84,7 +86,7 @@ fxdpnt *allconv(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	/* TODO: use an algorithm that doesn't require log() for # digits */
 	if (ibase > obase)
 		/* ln(x) / ln(base) == ln_base(x) */
-		k = (size_t) (a->len / log10(obase));
+		k = (size_t) ((a->len* ibase) / log10(obase));
 	else 
 		k = a->len;
 	p = arb_calloc(k, sizeof(ARBT));
