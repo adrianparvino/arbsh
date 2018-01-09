@@ -72,3 +72,5 @@ size_t maxi(size_t, size_t, size_t);
 fxdpnt *convert(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *conv_frac(fxdpnt *, fxdpnt *, int, int);
 
+
+ARBT arb2hrdware(ARBT *, size_t, int);
