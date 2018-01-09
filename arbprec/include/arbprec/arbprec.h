@@ -76,3 +76,4 @@ fxdpnt *conv_frac(fxdpnt *, fxdpnt *, int, int);
 ARBT arb2hrdware(ARBT *, size_t, int);
 
 fxdpnt *hrdware2arb(size_t);
+fxdpnt *convall(fxdpnt *, fxdpnt *, int, int);
