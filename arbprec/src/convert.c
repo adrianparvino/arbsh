@@ -11,7 +11,7 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	size_t i = 0;
 	size_t j = 0;
 	size_t k = 0;
-	/* TODO: use an algorithm that doesn't require log() for # digits */
+	
 	if (ibase > obase)
 		/* ln(x) / ln(base) == ln_base(x) */
 		k = (size_t) ((2*a->len) / log10(obase)) ;
@@ -22,7 +22,7 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	memcpy(array + (k - a->len), a->number, a->len * sizeof(ARBT));
 	memset(array, 0, (k - a->len) * sizeof(ARBT));
 
-	for (; i < k; ++i) { 
+	for (i = 0; i < k; ++i) { 
 		carry = array[i];
 		prod = 0;
 		for (j = k; j > 0; j--) {
@@ -58,7 +58,7 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	
 	ARBT *array = arb_calloc(z * 2, sizeof(ARBT));
 	memcpy(array, a->number, a->len * sizeof(ARBT));
-	for (; i < k; ++i) {
+	for (i = 0; i < k; ++i) {
 		memset(o, 0, z * sizeof(ARBT)); 
 		len = arb_mul_core(array, z, obh->number, obh->len, o, ibase);
 		size = len - z;
