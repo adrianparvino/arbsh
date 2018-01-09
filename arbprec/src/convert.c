@@ -89,8 +89,9 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	
 	ARBT *p;
 	ARBT *o;
+
+	/* real */
 	if (ibase > obase)
-		/* ln(x) / ln(base) == ln_base(x) */
 		k = (size_t) ((2*a->len) / log10(obase)) ;
 	else 
 		k = a->len;
@@ -108,13 +109,11 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 			carry = prod / obase;
 		}
 	}
-	if (carry)
-		printf("we have a left over carry\n");
-	b->number = sv;
-	b->len = k;
+
 	b->lp = k;
+	//b->number = sv;
 	
-	
+	/* fractional */
 	fxdpnt *obh = hrdware2arb(obase);
 	
 	k = a->len;
@@ -131,10 +130,10 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 		_arb_copy_core(frac, o + size , z);
         }
 
-	b->number = p;
-	b->len = z;
-	b->lp = 0; 
-
+	b->rp = z;
+	//b->number = p;
 	
+	/* finish off */
+	b->len = b->lp + b->rp;
 	return b;
 }
