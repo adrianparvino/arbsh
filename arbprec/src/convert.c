@@ -37,16 +37,6 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	return b;
 }
 
-ARBT arb2hrdware(ARBT *a, size_t len, int base)
-{
-	ARBT ret = 0;
-	size_t i = 0;
-        for (; i < len; ++i) {
-                ret = (base * ret) + (a[i]);
-        }
-	return ret;
-}
-
 fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
 	arb_copy(b, a);
@@ -72,7 +62,7 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 		memset(o, 0, z * sizeof(ARBT)); 
 		len = arb_mul_core(array, z, obh->number, obh->len, o, ibase);
 		size = len - z;
-		p[i] = arb2hrdware(o, size , 10);
+		p[i] = arb2hrdware(o, size , 10); /* note: absorbs leading zeros */
 		_arb_copy_core(array, o + size , z);
         }
 
