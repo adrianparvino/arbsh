@@ -109,7 +109,8 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 			carry = prod / obase;
 		}
 	}
-
+	b = arb_expand(b, k);
+	_arb_copy_core(b->number, sv, k);
 	b->lp = k;
 	//b->number = sv;
 	
