@@ -20,7 +20,7 @@ TEST_OBJ = $(shell for i in tests/*.c ; do printf "%s\n" $${i%.c} ; done )
 
 BC_OBJ = $(shell for i in tiny-bc/*.c ; do printf "%s\n" $${i%.c}.o ; done )
 
-LDLIBS += -L. -l$(LIBNAME)
+LDLIBS += -L. -l$(LIBNAME) -lm
 
 all:
 
