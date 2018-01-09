@@ -123,7 +123,7 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	o = arb_calloc(k * 2, sizeof(ARBT));
 	
 	ARBT *frac = arb_calloc(z * 2, sizeof(ARBT));
-	memcpy(frac, a->number, a->len * sizeof(ARBT));
+	memcpy(frac, a->number + a->lp, a->rp * sizeof(ARBT));
 	for (i = 0; i < k; ++i) {
 		memset(o, 0, z * sizeof(ARBT)); 
 		len = arb_mul_core(frac, z, obh->number, obh->len, o, ibase);
@@ -131,8 +131,8 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 		p[i] = arb2hrdware(o, size , 10); /* note: absorbs leading zeros */
 		_arb_copy_core(frac, o + size , z);
         }
-	b = arb_expand(b, z + k);
-	_arb_copy_core(b->number + z, p, k);
+	b = arb_expand(b, b->lp + k);
+	_arb_copy_core(b->number + b->lp, p, k);
 	b->rp = z;
 	//b->number = p;
 	
