@@ -12,7 +12,7 @@ fxdpnt *convert(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	size_t j = 0;
 	size_t k = 0;
 	/* TODO: use an algorithm that doesn't require log() for # digits */
-	if (ibase > obase && obase < 50)
+	if (ibase > obase)
 		/* ln(x) / ln(base) == ln_base(x) */
 		k = (size_t) (a->len / log10(obase));
 	else 
@@ -44,13 +44,11 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	ARBT *o;
 	size_t i = 0;
 	size_t k = 0;
-	char obasehold[1000];
 	size_t len = 0;
 	size_t z = a->len;
 	size_t size = 0;
-
-	sprintf(obasehold, "%d", obase);
-	fxdpnt *obh = arb_str2fxdpnt(obasehold);
+	
+	fxdpnt *obh = hrdware2arb(obase);
 	
 	k = a->len;
 	p = arb_calloc(k * 2, sizeof(ARBT));
@@ -69,7 +67,7 @@ fxdpnt *conv_frac(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	b->number = p;
 	b->len = z;
 	b->lp = 0; 
-	
+	arb_free(obh);
 	return b;
 }
 
