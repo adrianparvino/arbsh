@@ -21,8 +21,9 @@ fxdpnt *hrdware2arb(size_t a)
 { 
 	// TODO: get rid fo str2fxdpnt!!
 	char str[50];
-	size_t len  = __uint2str(str, a, 10);
-	str[len + 1] = '\0';
+	//size_t len  = __uint2str(str, a, 10);
+	//str[len + 1] = '\0';
+	sprintf(str, "%zu", a);
 	fxdpnt *ret = arb_str2fxdpnt(str);
 	return ret;
 }
