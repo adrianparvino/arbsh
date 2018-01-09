@@ -18,10 +18,11 @@ static size_t __uint2str(char *s, size_t n, int base)
 }
 
 fxdpnt *hrdware2arb(size_t a)
-{
-
+{ 
+	// TODO: get rid fo str2fxdpnt!!
 	char str[50];
-	sprintf(str, "%zu", a);
+	size_t len  = __uint2str(str, a, 10);
+	str[len + 1] = '\0';
 	fxdpnt *ret = arb_str2fxdpnt(str);
 	return ret;
 }

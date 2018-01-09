@@ -115,6 +115,7 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	//b->number = sv;
 	
 	/* fractional */
+	k = a->rp;
 	fxdpnt *obh = hrdware2arb(obase);
 	
 	k = a->len;
@@ -130,7 +131,8 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 		p[i] = arb2hrdware(o, size , 10); /* note: absorbs leading zeros */
 		_arb_copy_core(frac, o + size , z);
         }
-
+	b = arb_expand(b, z + k);
+	_arb_copy_core(b->number + z, p, k);
 	b->rp = z;
 	//b->number = p;
 	
