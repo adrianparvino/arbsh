@@ -26,6 +26,7 @@ typedef struct {	// Toym fixed point type
 /* arithmetic */
 fxdpnt *arb_mul(fxdpnt *, fxdpnt *, fxdpnt *, int);
 size_t arb_mul_core(ARBT *, size_t, ARBT *, size_t, ARBT *, int);
+fxdpnt *arb_karatsuba_mul(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_add_inter(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_sub_inter(fxdpnt *, fxdpnt *, fxdpnt *, int);
 fxdpnt *arb_sub(fxdpnt *, fxdpnt *, fxdpnt *, int);
