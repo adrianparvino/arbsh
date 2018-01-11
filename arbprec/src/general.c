@@ -75,15 +75,13 @@ void *arb_realloc(void *ptr, size_t len)
 
 fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 {
-	size_t hold = 0;
 	if (flt == NULL){
 		flt = arb_alloc(request);
 		flt->allocated = request;
-	} else if (request >= flt->allocated){ 
-		hold = flt->len;
+	} else if (request >= flt->allocated){
 		flt->allocated = (request + flt->chunk);
 		flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
-		memset(flt->number + hold, 0, (flt->allocated - hold) * sizeof(ARBT));
+		memset(flt->number + flt->len, 0, (flt->allocated - flt->len) * sizeof(ARBT));
 	}
 	return flt;
 }
