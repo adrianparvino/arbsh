@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
+
 fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
 	arb_copy(b, a);
