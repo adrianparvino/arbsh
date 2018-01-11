@@ -60,7 +60,8 @@ fxdpnt *arb_alloc(size_t len)
 	ret->lp = 0; //FIXME: this should likely be "len"
 	ret->rp = 0;
 	ret->allocated = len;
-	ret->len = len;
+	//ret->len = len;
+	ret->len = 0;
 	ret->chunk = 4;
 	return ret;
 }
