@@ -21,3 +21,25 @@
 20:48 < somiaj> no, just normal products of numbers
 20:48 < somiaj> similar to a finite sigma sum, Sigma_{n=a}^b a_n is just a sum.
 
+
+If the base $b$ equals
+$$
+\prod_{i=1}^n p_i^{r_i}
+$$
+where $\{p_i\}$ are distinct prime numbers and each $r_i > 0$, and the denominator $d$ equals
+$$
+\prod_{i=1}^n p_i^{s_i}
+$$
+then the fractional part in base $b$ has
+$$
+k = \mathrm{max}_{i=1}^n \mathrm{ceil}(s_i/r_i)
+$$
+digits (after the radix point).
+
+This is the smallest $k$ such that $d$ divides
+$$
+b^k = \prod_{i=1}^n p_i^{k r_i}
+$$
+i.e. for all $i$, $k r_i - s_i \ge 0$
+
+i.e. for all $i$, $k \ge s_i/r_i$.
