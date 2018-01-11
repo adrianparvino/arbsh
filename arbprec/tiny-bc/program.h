@@ -3,24 +3,74 @@
 
 #include <stdint.h>
 
+#include <arbprec/arbprec.h>
+
+#include "segarray.h"
 #include "bc.h"
 
-/**
- * @def BC_PROGRAM_MAX_STMTS
- * The max number of statements in one statement list.
- */
 #define BC_PROGRAM_MAX_STMTS (128)
 
-/**
- * @def BC_PROGRAM_MAX_NAMES
- * The max number of names that the program can have.
- */
-#define BC_PROGRAM_MAX_NAMES (32767)
+typedef enum BcExprType {
 
-/**
- * The types that any statement can be.
- */
+	BC_EXPR_INC_PRE,
+	BC_EXPR_DEC_PRE,
+
+	BC_EXPR_INC_POST,
+	BC_EXPR_DEC_POST,
+
+	BC_EXPR_NEGATE,
+
+	BC_EXPR_POWER,
+
+	BC_EXPR_MULTIPLY,
+	BC_EXPR_DIVIDE,
+	BC_EXPR_MODULUS,
+
+	BC_EXPR_PLUS,
+	BC_EXPR_MINUS,
+
+	BC_EXPR_ASSIGN,
+	BC_EXPR_ASSIGN_PLUS,
+	BC_EXPR_ASSIGN_MINUS,
+	BC_EXPR_ASSIGN_MULTIPLY,
+	BC_EXPR_ASSIGN_DIVIDE,
+	BC_EXPR_ASSIGN_MODULUS,
+	BC_EXPR_ASSIGN_POWER,
+
+	BC_EXPR_REL_EQUAL,
+	BC_EXPR_REL_LESS_EQ,
+	BC_EXPR_REL_GREATER_EQ,
+	BC_EXPR_REL_NOT_EQ,
+	BC_EXPR_REL_LESS,
+	BC_EXPR_REL_GREATER,
+
+	BC_EXPR_BOOL_NOT,
+
+	BC_EXPR_BOOL_OR,
+	BC_EXPR_BOOL_AND,
+
+	BC_EXPR_NUMBER,
+	BC_EXPR_VAR,
+	BC_EXPR_ARRAY_ELEM,
+
+	BC_EXPR_FUNC_CALL,
+
+	BC_EXPR_SCALE,
+	BC_EXPR_SCALE_FUNC,
+	BC_EXPR_IBASE,
+	BC_EXPR_OBASE,
+	BC_EXPR_LAST,
+	BC_EXPR_LENGTH,
+	BC_EXPR_READ,
+	BC_EXPR_SQRT,
+
+	BC_EXPR_PRINT,
+
+} BcExprType;
+
 typedef enum BcStmtType {
+
+	BC_STMT_EXPR,
 
 	BC_STMT_STRING,
 
@@ -35,48 +85,36 @@ typedef enum BcStmtType {
 	BC_STMT_WHILE,
 	BC_STMT_FOR,
 
-	BC_STMT_EXPR_NAME,
-	BC_STMT_EXPR_ARRAY,
-	BC_STMT_EXPR_NUMBER,
-
-	BC_STMT_EXPR_PARENS,
-
-	BC_STMT_EXPR_BIN_OP,
-
-	BC_STMT_EXPR_PRE_INC,
-	BC_STMT_EXPR_PRE_DEC,
-
-	BC_STMT_EXPR_POST_INC,
-	BC_STMT_EXPR_POST_DEC,
-
-	BC_STMT_EXPR_ASSIGN,
-
-	BC_STMT_EXPR_FUNC_CALL,
-
-	BC_STMT_EXPR_REL_OP,
-	BC_STMT_EXPR_BOOL_OP,
-
-	BC_STMT_EXPR_SCALE,
-	BC_STMT_EXPR_SCALE_FUNC,
-	BC_STMT_EXPR_IBASE,
-	BC_STMT_EXPR_OBASE,
-	BC_STMT_EXPR_LAST,
-	BC_STMT_EXPR_HALT,
-
 } BcStmtType;
 
-/**
- * A union of data that statement types need.
- */
+typedef struct BcCall {
+
+	char* name;
+	BcSegArray params;
+
+} BcCall;
+
+typedef struct BcExpr {
+
+	BcExprType type;
+	union {
+		char* string;
+		BcStack expr_stack;
+		BcCall call;
+	};
+
+} BcExpr;
+
+typedef struct BcStmtList BcStmtList;
+
 typedef union BcStmtData {
 
 	char* string;
+	BcStmtList* list;
+	BcStack expr_stack;
 
 } BcStmtData;
 
-/**
- * One statement in a program.
- */
 typedef struct BcStmt {
 
 	BcStmtType type;
@@ -84,18 +122,12 @@ typedef struct BcStmt {
 
 } BcStmt;
 
-/**
- * A list of statements. Lists can be chained together.
- */
 typedef struct BcStmtList {
 
-	/// The next list. NULL if none.
 	struct BcStmtList* next;
 
-	/// The number of statements that this list has.
 	uint32_t num_stmts;
 
-	/// The list of statements.
 	BcStmt stmts[BC_PROGRAM_MAX_STMTS];
 
 } BcStmtList;
@@ -105,32 +137,21 @@ typedef struct BcStmtList {
  */
 typedef struct BcFunc {
 
-	/// The name of the function.
 	char* name;
 
-	/// The first of the statement lists.
 	BcStmtList* first;
 
-	/// The current statement list.
 	BcStmtList* cur;
 
-	/// The number of auto variables the function
-	/// has. This number includes parameters.
 	uint32_t num_autos;
 
 } BcFunc;
 
-/**
- * A variable.
- */
 typedef struct BcVar {
 
-	/// The name of the variable.
 	char* name;
 
-	/// The data. This will a pointer to the value
-	/// struct that will actually hold a value.
-	void* data;
+	fxdpnt* data;
 
 } BcVar;
 
@@ -139,12 +160,9 @@ typedef struct BcVar {
  */
 typedef struct BcArray {
 
-	/// The name of the array.
 	char* name;
 
-	/// An array of data. This will be an array of
-	/// pointers to the structs that hold values.
-	void** array;
+	BcSegArray array;
 
 } BcArray;
 
@@ -155,59 +173,35 @@ typedef struct BcContext {
 
 } BcContext;
 
-/**
- * A program. This holds all of the data
- * that allows the program to be executed.
- */
 typedef struct BcProgram {
 
-	/// The first of the statement lists.
 	BcStmtList* first;
 
-	/// The pointer to the current statement list.
 	BcStmtList* cur;
 
-	/// The number of functions in the program.
-	uint32_t num_funcs;
+	BcSegArray funcs;
 
-	/// The list of functions.
-	BcFunc funcs[BC_PROGRAM_MAX_NAMES];
+	BcSegArray vars;
 
-	/// The number of variables in the program.
-	uint32_t num_vars;
-
-	/// The list of variables.
-	BcVar vars[BC_PROGRAM_MAX_NAMES];
-
-	/// The number of arrays in the program.
-	uint32_t num_arrays;
-
-	/// The list of arrays.
-	BcArray arrays[BC_PROGRAM_MAX_NAMES];
+	BcSegArray arrays;
 
 } BcProgram;
 
-/**
- * Initializes @a program.
- * @param program	The program to initialize.
- * @return			BC_STATUS_SUCCESS on success,
- *					an error code otherwise.
- */
-BcStatus bc_program_init(BcProgram* program);
-
-/**
- * Inserts @a stmt into @a program.
- * @param program	The program to insert into.
- * @param stmt		The statement to insert.
- * @return			BC_STATUS_SUCCESS on success,
- *					an error code otherwise.
- */
-BcStatus bc_program_insert(BcProgram* program, BcStmt* stmt);
-
-/**
- * Frees @a program and all associated data.
- * @param program	The program to free.
- */
+BcStatus bc_program_init(BcProgram* p);
+BcStatus bc_program_list_insert(BcStmtList* list, BcStmt* stmt);
+BcStatus bc_program_func_add(BcProgram* p, BcFunc* func);
+BcStatus bc_program_var_add(BcProgram* p, BcVar* var);
+BcStatus bc_program_array_add(BcProgram* p, BcArray* array);
+BcStatus bc_program_exec(BcProgram* p);
 void bc_program_free(BcProgram* program);
+
+BcStmtList* bc_program_list_create();
+void bc_program_list_free(BcStmtList* list);
+
+BcStatus bc_program_func_init(BcFunc* func, char* name);
+BcStatus bc_program_var_init(BcVar* var, char* name);
+BcStatus bc_program_array_init(BcArray* array, char* name);
+
+BcStatus bc_program_stmt_init(BcStmt* stmt);
 
 #endif // BC_PROGRAM_H
