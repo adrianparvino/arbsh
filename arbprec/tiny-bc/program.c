@@ -1,190 +1,351 @@
+#include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <arbprec/arbprec.h>
+
 #include "program.h"
 
-static BcStatus bc_program_expand(BcProgram* program);
-static void bc_program_list_init(BcStmtList* list);
-static void bc_program_list_free(BcStmtList* list);
-static void bc_program_func_free(BcFunc* func);
-static void bc_program_var_free(BcVar* var);
-static void bc_program_array_free(BcArray* array);
+static BcStatus bc_program_list_expand(BcStmtList* list);
 
-BcStatus bc_program_init(BcProgram* program) {
+static int bc_program_func_cmp(void* func1, void* func2);
+static void bc_program_func_free(void* func);
+static int bc_program_var_cmp(void* var1, void* var2);
+static void bc_program_var_free(void* var);
+static int bc_program_array_cmp(void* array1, void* array2);
+static void bc_program_array_free(void* array);
+static void bc_program_stmt_free(BcStmt* stmt);
 
-	// Check for invalid params.
-	if (program == NULL) {
+BcStatus bc_program_init(BcProgram* p) {
+
+	BcStatus st;
+
+	if (p == NULL) {
 		return BC_STATUS_INVALID_PARAM;
 	}
 
-	// Malloc a new statement list.
-	program->first = malloc(sizeof(BcStmtList));
+	p->first = bc_program_list_create();
 
-	// Check for error.
-	if (program->first == NULL) {
+	if (!p->first) {
 		return BC_STATUS_MALLOC_FAIL;
 	}
 
-	// Initialize the list.
-	bc_program_list_init(program->first);
+	p->cur = p->first;
 
-	// Set the current list.
-	program->cur = program->first;
+	st = bc_segarray_init(&p->funcs, sizeof(BcFunc), bc_program_func_free,
+	                      bc_program_func_cmp);
 
-	// Init symbol table.
-	program->num_funcs = 0;
-	program->num_vars = 0;
-	program->num_arrays = 0;
-
-	return BC_STATUS_SUCCESS;
-}
-
-BcStatus bc_program_insert(BcProgram* program, BcStmt* stmt) {
-
-	// Check for invalid parameters.
-	if (program == NULL || stmt == NULL) {
-		return BC_STATUS_INVALID_PARAM;
+	if (st) {
+		goto func_err;
 	}
 
-	// If the list is full...
-	if (program->cur->num_stmts == BC_PROGRAM_MAX_STMTS) {
+	st = bc_segarray_init(&p->vars, sizeof(BcVar), bc_program_var_free,
+	                      bc_program_var_cmp);
 
-		// Expand the list.
-		BcStatus status = bc_program_expand(program);
-
-		// Check for error.
-		if (status != BC_STATUS_SUCCESS) {
-			return status;
-		}
+	if (st) {
+		goto var_err;
 	}
 
-	// Copy the data.
-	BcStmtList* cur = program->cur;
-	memcpy(cur->stmts + cur->num_stmts, stmt, sizeof(BcStmt));
+	st = bc_segarray_init(&p->arrays, sizeof(BcArray), bc_program_array_free,
+	                      bc_program_array_cmp);
 
-	return BC_STATUS_SUCCESS;
+	if (st) {
+		goto array_err;
+	}
+
+	return st;
+
+array_err:
+
+	bc_segarray_free(&p->vars);
+
+var_err:
+
+	bc_segarray_free(&p->funcs);
+
+func_err:
+
+	bc_program_list_free(p->first);
+	p->first = NULL;
+	p->cur = NULL;
+
+	return st;
 }
 
-void bc_program_free(BcProgram* program) {
+BcStatus bc_program_func_add(BcProgram* p, BcFunc* func) {
+	assert(p && func);
+	return bc_segarray_add(&p->funcs, func);
+}
 
-	// Check for NULL.
-	if (program == NULL) {
+BcStatus bc_program_var_add(BcProgram* p, BcVar* var) {
+	assert(p && var);
+	return bc_segarray_add(&p->vars, var);
+}
+
+BcStatus bc_program_array_add(BcProgram* p, BcArray* array) {
+	assert(p && array);
+	return bc_segarray_add(&p->arrays, array);
+}
+
+BcStatus bc_program_exec(BcProgram* p) {
+	// TODO: Write this function.
+}
+
+void bc_program_free(BcProgram* p) {
+
+	if (p == NULL) {
 		return;
 	}
 
-	// These are used during the loop.
 	BcStmtList* temp;
-	BcStmtList* cur = program->first;
+	BcStmtList* cur = p->first;
 
-	// Loop through the lists and free them all.
 	while (cur != NULL) {
 		temp = cur->next;
 		bc_program_list_free(cur);
 		cur = temp;
 	}
 
-	// Set these values to NULL.
-	program->cur = NULL;
-	program->first = NULL;
+	p->cur = NULL;
+	p->first = NULL;
 
-	// Free funcs.
-	uint32_t num = program->num_funcs;
+	uint32_t num = p->funcs.num;
 	for (uint32_t i = 0; i < num; ++i) {
-		bc_program_func_free(program->funcs + i);
+		bc_program_func_free(bc_segarray_item(&p->funcs, i));
 	}
 
-	// Free vars.
-	num = program->num_vars;
+	num = p->vars.num;
 	for (uint32_t i = 0; i < num; ++i) {
-		bc_program_var_free(program->vars + i);
+		bc_program_var_free(bc_segarray_item(&p->vars, i));
 	}
 
-	// Free arrays.
-	num = program->num_arrays;
+	num = p->arrays.num;
 	for (uint32_t i = 0; i < num; ++i) {
-		bc_program_array_free(program->arrays + i);
+		bc_program_array_free(bc_segarray_item(&p->arrays, i));
 	}
-
-	// Zero these.
-	program->num_funcs = 0;
-	program->num_vars = 0;
-	program->num_arrays = 0;
 }
 
-static BcStatus bc_program_expand(BcProgram* program) {
+BcStmtList* bc_program_list_create() {
 
-	// Check for NULL.
-	if (program == NULL) {
+	BcStmtList* list;
+
+	list = malloc(sizeof(BcStmtList));
+
+	if (list == NULL) {
+		return NULL;
+	}
+
+	list->next = NULL;
+	list->num_stmts = 0;
+
+	return list;
+}
+
+BcStatus bc_program_list_insert(BcStmtList* list, BcStmt* stmt) {
+
+	if (list == NULL || stmt == NULL) {
 		return BC_STATUS_INVALID_PARAM;
 	}
 
-	// Malloc a new one.
-	BcStmtList* next = malloc(sizeof(BcStmtList));
-
-	// Check for error.
-	if (next == NULL) {
-		return BC_STATUS_MALLOC_FAIL;
+	// Find the end list.
+	while (list->num_stmts == BC_PROGRAM_MAX_STMTS && list->next) {
+		list = list->next;
 	}
 
-	// Initialize the list.
-	bc_program_list_init(next);
+	if (list->num_stmts == BC_PROGRAM_MAX_STMTS) {
 
-	// Set the pointers.
-	program->cur->next = next;
-	program->cur = next;
+		BcStatus status = bc_program_list_expand(list);
+
+		if (status != BC_STATUS_SUCCESS) {
+			return status;
+		}
+
+		list = list->next;
+	}
+
+	memcpy(list->stmts + list->num_stmts, stmt, sizeof(BcStmt));
+	++list->num_stmts;
 
 	return BC_STATUS_SUCCESS;
 }
 
-static void bc_program_list_init(BcStmtList* list) {
+void bc_program_list_free(BcStmtList* list) {
 
-	// Check for NULL.
+	BcStmtList* temp;
+	uint32_t num;
+	BcStmt* stmts;
+
 	if (list == NULL) {
 		return;
 	}
 
-	// Zero these.
-	list->next = NULL;
-	list->num_stmts = 0;
+	do {
+
+		temp = list->next;
+
+		num = list->num_stmts;
+		stmts = list->stmts;
+
+		for (uint32_t i = 0; i < num; ++i) {
+			bc_program_stmt_free(stmts + i);
+		}
+
+		free(list);
+
+		list = temp;
+
+	} while (list);
 }
 
-static void bc_program_list_free(BcStmtList* list) {
+static BcStatus bc_program_list_expand(BcStmtList* list) {
 
-	// Check for NULL.
 	if (list == NULL) {
+		return BC_STATUS_INVALID_PARAM;
+	}
+
+	BcStmtList* next = bc_program_list_create();
+
+	if (next == NULL) {
+		return BC_STATUS_MALLOC_FAIL;
+	}
+
+	list->next = next;
+
+	return BC_STATUS_SUCCESS;
+}
+
+BcStatus bc_program_func_init(BcFunc* func, char* name) {
+
+	if (!func || !name) {
+		return BC_STATUS_INVALID_PARAM;
+	}
+
+	func->first = bc_program_list_create();
+
+	if (!func->first) {
+		return BC_STATUS_MALLOC_FAIL;
+	}
+
+	func->name = name;
+	func->cur = func->first;
+	func->num_autos = 0;
+
+	return BC_STATUS_SUCCESS;
+}
+
+static int bc_program_func_cmp(void* func1, void* func2) {
+
+	assert(func1 && func2);
+
+	BcFunc* f1 = (BcFunc*) func1;
+	char* f2name = (char*) func2;
+
+	return strcmp(f1->name, f2name);
+}
+
+static void bc_program_func_free(void* func) {
+
+	BcFunc* f;
+
+	f = (BcFunc*) func;
+
+	if (f == NULL) {
 		return;
 	}
 
+	free(f->name);
+
+	bc_program_list_free(f->first);
+
+	f->name = NULL;
+	f->first = NULL;
+	f->cur = NULL;
+	f->num_autos = 0;
+}
+
+BcStatus bc_program_var_init(BcVar* var, char* name) {
+
+	if (!var || !name) {
+		return BC_STATUS_INVALID_PARAM;
+	}
+
+	var->name = name;
+
+	var->data = arb_alloc(16);
+
+	return BC_STATUS_SUCCESS;
+}
+
+static int bc_program_var_cmp(void* var1, void* var2) {
+
+	assert(var1 && var2);
+
+	BcFunc* v1 = (BcFunc*) var1;
+	char* v2name = (char*) var2;
+
+	return strcmp(v1->name, v2name);
+}
+
+static void bc_program_var_free(void* var) {
+
+	BcVar* v;
+
+	v = (BcVar*) var;
+
+	if (v == NULL) {
+		return;
+	}
+
+	free(v->name);
+	arb_free(v->data);
+
+	v->name = NULL;
+	v->data = NULL;
+}
+
+BcStatus bc_program_array_init(BcArray* array, char* name) {
+
+	if (!array || !name) {
+		return BC_STATUS_INVALID_PARAM;
+	}
+
+	array->name = name;
+
+	return bc_segarray_init(&array->array, sizeof(fxdpnt),
+	                        (BcSegArrayFreeFunc) arb_free, NULL);
+}
+
+static int bc_program_array_cmp(void* array1, void* array2) {
+
+	assert(array1 && array2);
+
+	BcFunc* a1 = (BcFunc*) array1;
+	char* a2name = (char*) array2;
+
+	return strcmp(a1->name, a2name);
+}
+
+static void bc_program_array_free(void* array) {
+
+	BcArray* a;
+
+	a = (BcArray*) array;
+
+	if (a == NULL) {
+		return;
+	}
+
+	free(a->name);
+	a->name = NULL;
+
+	bc_segarray_free(&a->array);
+}
+
+BcStatus bc_program_stmt_init(BcStmt* stmt) {
 	// TODO: Write this function.
 }
 
-static void bc_program_func_free(BcFunc* func) {
-
-	// Check for NULL.
-	if (func == NULL) {
-		return;
-	}
-
-	// TODO: Write this function.
-}
-
-static void bc_program_var_free(BcVar* var) {
-
-	// Check for NULL.
-	if (var == NULL) {
-		return;
-	}
-
-	// TODO: Write this function.
-}
-
-static void bc_program_array_free(BcArray* array) {
-
-	// Check for NULL.
-	if (array == NULL) {
-		return;
-	}
-
+static void bc_program_stmt_free(BcStmt* stmt) {
 	// TODO: Write this function.
 }

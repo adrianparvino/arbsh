@@ -1,13 +1,15 @@
 #ifndef BC_PARSE_H
 #define BC_PARSE_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #include "stack.h"
 #include "program.h"
 #include "lex.h"
 
-#define BC_PARSE_TOP_FLAG(parse) (*((uint8_t*) bc_stack_top(&(parse)->flag_stack)))
+#define BC_PARSE_TOP_FLAG(parse)  \
+	(*((uint8_t*) bc_stack_top(&(parse)->flag_stack)))
 
 #define BC_PARSE_FLAG_FUNC_INNER (0x01)
 
@@ -40,6 +42,15 @@
 	                               BC_PARSE_FLAG_HEADER |      \
 	                               BC_PARSE_FLAG_LOOP_INNER)))
 
+#define BC_PARSE_OP_NEGATE_IDX (BC_LEX_OP_BOOL_AND + 1)
+
+typedef struct BcOp {
+
+	uint8_t prec;
+	bool left;
+
+} BcOp;
+
 typedef struct BcParse {
 
 	BcProgram* program;
@@ -55,7 +66,7 @@ typedef struct BcParse {
 BcStatus bc_parse_init(BcParse* parse, BcProgram* program);
 BcStatus bc_parse_text(BcParse* parse, const char* text);
 
-BcStatus bc_parse_parse(BcParse* parse);
+BcStatus bc_parse_parse(BcParse* parse, BcProgram* program);
 
 void bc_parse_free(BcParse* parse);
 
