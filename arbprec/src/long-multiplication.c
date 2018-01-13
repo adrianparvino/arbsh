@@ -26,7 +26,7 @@ size_t arb_mul_core(ARBT *a, size_t alen, ARBT *b, size_t blen, ARBT *c, int bas
 	return ret;
 }
 
-fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int scale, int base)
 {
 	arb_setsign(a, b, c);
 	c = arb_expand(c, a->len + b->len);
