@@ -37,7 +37,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, int scale)
 	ARBT *u;
 	ARBT *v;
 	ARBT *temp;
-	ssize_t uscal = 0;
+	//ssize_t uscal = 0;
+	size_t uscal = 0;
 	int out_of_scale = 0;
 	size_t quodig = 0;
 	size_t offset = 0;

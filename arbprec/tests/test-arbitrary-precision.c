@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	b = arb_str2fxdpnt(argv[2]);
 	c = arb_expand(NULL, 1);
 	printf("mul\n");
-	c = arb_mul(a, b, c, scale, base);
+	c = arb_mul(a, b, c, base, scale);
 	arb_print(c);
 	printf("add\n");
 	c = arb_add(a, b, c, base);
