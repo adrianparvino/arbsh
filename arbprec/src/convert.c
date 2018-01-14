@@ -58,9 +58,10 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 		p[i] = arb2hrdware(o, size , 10); /* note: absorbs leading zeros */
 		_arb_copy_core(frac, o + size , z);
         }
-	b = arb_expand(b, (b->lp + z));
-	_arb_copy_core(b->number + b->lp, p, z);
-	b->rp = z;
+	size_t total = z;
+	b = arb_expand(b, (b->lp + total));
+	_arb_copy_core(b->number + b->lp, p, total);
+	b->rp = total;
 	
 	/* finish off */
 	b->len = b->lp + b->rp;
