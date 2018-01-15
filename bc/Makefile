@@ -1,5 +1,3 @@
-CC = clang
-
 CFLAGS += -Wall -Wextra -I./include/ -I../arbprec/include -std=c99 -fsanitize=address -fsanitize=undefined -g -O0
 
 BC_OBJ = $(shell for i in *.c ; do printf "%s\n" $${i%.c}.o ; done )
