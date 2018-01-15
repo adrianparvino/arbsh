@@ -1,8 +1,7 @@
-Arbitrary Precision Mathematics Library by Graff
+Arbitrary Precision Math Library by Graff and POSIX `bc' by Gavin Howard
 
-`bc' implementation by Gavin Howard
-
-
+	An arbitrary precision implementation, readline implementation and
+	POSIX bc implementation written by Graff, Howard, Hexing et al.
 
 BUILDING:
 ---------
