@@ -40,15 +40,6 @@ USING THE API:
 	to use the API.
 
 
-NOTES ON COPYING:
-----------------
-
-	This project is MIT licensed as per the current trends. Hoewever, this
-	is not an invitation to other developers to take ideas and code without
-	attribution! Please be ethical. If there is code here that you would
-	like to use -- pay proper attribution.
-
-
 REFERENCES:
 -----------
 
@@ -80,11 +71,7 @@ REFERENCES:
 
         pubs.opengroup.org/onlinepubs/9699919799/utilities/bc.html#top
 
-        https://en.wikipedia.org/wiki/Karatsuba_algorithm
-
-        this site loads too slow, i have not viewed it yet:
-        http://www.codewithc.com/c-program-for-newton-raphson-method/
-
+        https://en.wikipedia.org/wiki/Karatsuba_algorithm 
 
         https://stackoverflow.com/questions/2661541/picking-good-first-estimates-for-goldschmidt-division
 
@@ -97,5 +84,7 @@ REFERENCES:
 CONTACT:
 --------
 
-	cm0graff@gmail.com
+	CM Graff <cm0graff@gmail.com>
+
+	Gavin Howard <yzena.tech@gmail.com>
 
