@@ -51,6 +51,7 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	
 	ARBT *frac = arb_calloc(z * 2, sizeof(ARBT));
 	memcpy(frac, a->number + a->lp, a->rp * sizeof(ARBT));
+	
 	for (i = 0; i < z; ++i) {
 		memset(o, 0, z * sizeof(ARBT)); 
 		len = arb_mul_core(frac, z, obh->number, obh->len, o, ibase);
@@ -67,7 +68,6 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	b->len = b->lp + b->rp;
 	return b;
 }
-
 
 
 fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
@@ -118,6 +118,11 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	
 	ARBT *frac = arb_calloc(z * 2, sizeof(ARBT));
 	memcpy(frac, a->number + a->lp, a->rp * sizeof(ARBT));
+	
+	
+	// use the following formula for scale
+	// while (hold->len <= scale)
+	// multiply (hold, base, ....);
 	for (i = 0; i < z; ++i) {
 		memset(o, 0, z * sizeof(ARBT)); 
 		len = arb_mul_core(frac, z, obh->number, obh->len, o, ibase);
@@ -134,3 +139,4 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	b->len = b->lp + b->rp;
 	return b;
 }
+
