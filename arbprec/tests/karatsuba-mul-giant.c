@@ -1,6 +1,6 @@
 #include <arbprec/arbprec.h>
 
-#define MAXIMA 100000
+#define MAXIMA 1000000
 int main(int argc, char *argv[])
 {
 
@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 
 	while ( i < MAXIMA )
 	{
-		string1[i] = (i % 9) + '0';
+		string1[i] = (i % 10) + '0';
 		++i;
 	}
 	i = 0;
