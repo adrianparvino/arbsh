@@ -1,23 +1,31 @@
+num2=$3
+scale=$5
 if [ $1 = "add" ]
-then operator="+"
+then	operator="+"
 fi
 if [ $1 = "sub" ]
-then operator="-"
+then	operator="-"
 fi
 if [ $1 = "mul" ]
-then operator="*"
+then	operator="*"
+fi
+if [ $1 = "mul2" ]
+then	operator="*"
+	num2=$2
 fi
 if [ $1 = "div" ]
-then operator="/"
+then	operator="/"
 fi
 if [ $1 = "karatsuba-mul" ]
-then operator="*"
+then	operator="*"
+	scale=1000
 fi
 if [ $1 = "mod" ]
-then operator="%"
+then	operator="%"
 fi
+
 ./tests/$1 $2 $3 $4 $5 > log1
 
-echo "base=$4;scale=$5;$2 ${operator} $3" | bc -l > log2
+echo "base=$4;scale=$scale;$2 ${operator} $num2" | bc -l > log2
 
 diff log1 log2
