@@ -40,6 +40,7 @@ fxdpnt *arb_newtonian_div(fxdpnt *, fxdpnt *, fxdpnt *, int, int);
 fxdpnt *arb_alg_d(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 int _long_sub(ARBT *, size_t, ARBT *, size_t, int);
 int _long_add(ARBT *, size_t, ARBT *, size_t, int);
+fxdpnt *arb_mod(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 /* logical shift */
 fxdpnt *arb_rightshift(fxdpnt *, size_t, int);
 fxdpnt *arb_leftshift(fxdpnt *, size_t, int);
@@ -83,4 +84,5 @@ ARBT arb2hrdware(ARBT *, size_t, int);
 fxdpnt *hrdware2arb(size_t);
 fxdpnt *convall(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *convscaled(fxdpnt *, fxdpnt *, int, int, size_t);
+
 #endif // ARBSH_ARBPREC_H
