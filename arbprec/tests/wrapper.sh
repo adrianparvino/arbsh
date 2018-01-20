@@ -28,6 +28,9 @@ fi
 if [ $1 = "mod" ]
 then	operator="%"
 fi
+if [ $1 = "exp" ]
+then	operator="^"
+fi
 if [ $1 = "nsqrt" ]
 then	# this test does not work yet
 	./tests/$1 $2 $4 $5 > log1
