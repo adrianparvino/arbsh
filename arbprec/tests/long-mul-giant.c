@@ -1,10 +1,10 @@
 #include <arbprec/arbprec.h>
-#define MAXIMA 1000
+#define MAXIMA 10000
 int main(int argc, char *argv[])
 {
 
-	char *string1 = malloc(MAXIMA);
-	char *string2 = malloc(MAXIMA);
+	char *string1 = malloc(MAXIMA + 1);
+	char *string2 = malloc(MAXIMA + 1);
  
 	size_t i = 0;
 
@@ -19,6 +19,8 @@ int main(int argc, char *argv[])
 		string2[i] = (i % 9) + '0';
 		++i;
 	}
+	string1[i] = 0;
+	string2[i] = 0;
 	//fprintf(stderr, "past initialization\n");
 	write(2, string1, MAXIMA);
 	write(2, "*", 1);
@@ -32,8 +34,8 @@ int main(int argc, char *argv[])
 
 	a = arb_str2fxdpnt(string1);
 	b = arb_str2fxdpnt(string2);
-	arb_print(a);
-	arb_print(b);
+	//arb_print(a);
+	//arb_print(b);
 	c = arb_expand(NULL, MAXIMA*2);
 	c = arb_mul(a, b, c, 10, 10);
 	arb_print(c);
