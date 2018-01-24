@@ -145,6 +145,18 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 
 	if (pden != den && num != den)
 		arb_destruct(pden);
+	while (q->number[0] == 0)
+        {
+                //fprintf(stderr, "we hve a leading zero\n");
+                if (q->lp > 0)
+                {
+                        //fprintf(stderr, "we are in the if\n");
+                        q->len--;
+                        q->lp--;
+                        q->rp = q->len - q->lp;
+                        memmove(q->number, q->number + 1, q->len * sizeof(ARBT));
+                }else break;
+        }
 
 	return q;
 }

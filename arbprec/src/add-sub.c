@@ -51,6 +51,18 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	}
 	c->rp = c->len - c->lp;
 	arb_reverse(c->number, c->len);
+	while (c->number[0] == 0)
+        {
+                //fprintf(stderr, "we hve a leading zero\n");
+                if (c->lp > 0)
+                {
+                        //fprintf(stderr, "we are in the if\n");
+                        c->len--;
+                        c->lp--;
+                        c->rp = c->len - c->lp;
+                        memmove(c->number, c->number + 1, c->len * sizeof(ARBT));
+                }else break;
+        }
 	return c;
 }
 
@@ -98,6 +110,18 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	free(array);
 	c->rp = c->len - c->lp;
 	arb_reverse(c->number, c->len);
+	while (c->number[0] == 0)
+        {
+                //fprintf(stderr, "we hve a leading zero\n");
+                if (c->lp > 0)
+                {
+                        //fprintf(stderr, "we are in the if\n");
+                        c->len--;
+                        c->lp--;
+                        c->rp = c->len - c->lp;
+                        memmove(c->number, c->number + 1, c->len * sizeof(ARBT));
+                }else break;
+        }
 	return c;
 }
 

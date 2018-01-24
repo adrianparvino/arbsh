@@ -21,8 +21,8 @@ void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix, size_t sign)
 
 	for (i=0; i < len ; ++i){
 		// FIXME: this ruins answers that are true zero
-		if (number[i] == 0 && state == 0 && i < radix)
-			continue;
+		//if (number[i] == 0 && state == 0 && i < radix)
+		//	continue;
 		state = 1;
 
 		if (k % 68 == 0 && k != 0)
