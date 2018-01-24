@@ -7,7 +7,6 @@ fxdpnt *remove_leading_zeros(fxdpnt *c)
 {
 	bool effect = false;
 	size_t i = 0;
-	size_t len = c->len;
 	while (c->number[i] == 0)
         {
                 if (c->lp > 0)
