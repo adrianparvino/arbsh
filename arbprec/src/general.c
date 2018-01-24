@@ -9,7 +9,7 @@ fxdpnt *remove_leading_zeros(fxdpnt *c)
 	size_t i = 0;
 	while (c->number[i] == 0)
         {
-                if (c->lp > 1 || c->lp > 0 && c->rp)
+                if (c->lp > 1 || (c->lp > 0 && c->rp))
                 {
                         c->lp--;
 			++i;
@@ -59,13 +59,9 @@ fxdpnt *arb_construct(fxdpnt *flt, size_t len)
 	flt->number = arb_calloc(1, sizeof(ARBT) * len);
 	flt->allocated = len;
 	flt->rp = 0;
-	//flt->len = len;
+	flt->len = len;
 	flt->chunk = 4;
-
-	memset(flt->number, 0, sizeof(ARBT) * len);
-
-	//FIXME: lp should likely be "len"
-
+	flt->lp = 0;
 	return flt;
 }
 
