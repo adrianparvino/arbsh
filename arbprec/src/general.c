@@ -3,6 +3,21 @@
 
 #include <arbprec/arbprec.h>
 
+fxdpnt *remove_leading_zeros(fxdpnt *c)
+{
+	while (c->number[0] == 0)
+        {
+                if (c->lp > 0)
+                {
+                        c->len--;
+                        c->lp--;
+                        c->rp = c->len - c->lp;
+                        memmove(c->number, c->number + 1, c->len * sizeof(ARBT));
+                }else break;
+        }
+	return c;
+}
+
 void arb_free(fxdpnt *flt)
 {
 	arb_destruct(flt);
