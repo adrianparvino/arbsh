@@ -75,18 +75,6 @@ fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 	c->rp = MIN(a2.rp + b2.rp, maxi(scale, a2.rp, b2.rp));
 	c->len = c->rp + c->lp;
 	c = remove_leading_zeros(c);
-	/*
-	while (c->number[0] == 0)
-	{
-		if (c->lp > 0)
-		{
-			c->len--;
-			c->lp--;
-			c->rp = c->len - c->lp;
-			memmove(c->number, c->number + 1, c->len * sizeof(ARBT));
-		}else break;
-	}
-	*/
 	arb_destruct(&a2);
 
 	if (a != b)
