@@ -7,20 +7,24 @@ fxdpnt *remove_leading_zeros(fxdpnt *c)
 {
 	bool effect = false;
 	size_t i = 0;
+	size_t len = c->len;
 	while (c->number[i] == 0)
         {
                 if (c->lp > 0)
                 {
-                        c->len--;
                         c->lp--;
-                        c->rp = c->len - c->lp;
 			++i;
                 }else
 			break;
 		effect = true;
         }
 	if (effect)
-		memmove(c->number, c->number + i, c->len * sizeof(ARBT));
+	{
+		c = arb_leftshift(c, i, 1);
+		c->len -=i;
+		c->rp = c->len - c->lp;
+	}
+
 	return c;
 }
 
