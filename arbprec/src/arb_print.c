@@ -16,11 +16,9 @@ int arb_highbase(int a)
 void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix, size_t sign)
 {
 	size_t i = 0;
-	int state = 0;
 	size_t k = sign;
 
 	for (i=0; i < len ; ++i){
-		state = 1;
 
 		if (k % 68 == 0 && k != 0)
 			fprintf(fp, "\\\n");
