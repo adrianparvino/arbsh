@@ -2,7 +2,13 @@
 
 void _arb_copy_core(ARBT *b, ARBT *a, size_t len)
 {
-	memcpy(b, a, len * sizeof(ARBT));
+	//memcpy(b, a, len * sizeof(ARBT));
+	size_t i = 0;
+	while (i < len)
+	{
+		b[i] = a[i];
+		++i;
+	}
 }
 
 void arb_copy(fxdpnt *b, fxdpnt *a)

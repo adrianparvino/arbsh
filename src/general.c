@@ -44,7 +44,7 @@ void arb_destruct(fxdpnt *flt)
 
 void arb_init(fxdpnt *flt)
 {
-	assert(flt);
+	//assert(flt);
 	flt->sign = '+';
 	flt->len = 0;
 }

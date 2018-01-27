@@ -24,12 +24,12 @@ double newton_iteration(double x, double eps)
 
 fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 {
-	(void)scale;
+	//(void)scale;
 	// experimental function -- not working!!
 	fxdpnt *guess = arb_expand(NULL, a->len);
 	fxdpnt *newguess = arb_expand(NULL, 1); 
-	fxdpnt *hold = arb_expand(NULL, 1);
-	fxdpnt *hold2 = arb_expand(NULL, 1);
+	fxdpnt *hold = arb_expand(NULL, a->len);
+	fxdpnt *hold2 = arb_expand(NULL, a->len);
 	fxdpnt *two = arb_str2fxdpnt("2.00000");
 	fxdpnt *reciprocal;
 
@@ -42,16 +42,22 @@ fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	arb_print(guess);
 	arb_print(two);
 	size_t i = 0;
-	while (i < 10)
+	while (i < 100)
 	{ 
 		hold = arb_mul(b, guess, hold, base, scale); // x * guess
 		hold2 = arb_sub(two, hold, hold2, base); // 2 - x * guess
 		newguess = arb_mul(guess, hold2, newguess, base, scale); // guess * (2-x*guess)
+	
+		if (arb_compare(guess, newguess, base) == 0)
+                        break;
 		arb_copy(guess, newguess);
 		//arb_print(guess);
 		++i;
 	}
-	reciprocal = guess;
-	c = arb_mul(reciprocal, a, c, base, scale);
+	fprintf(stderr, "was here\n");
+	//reciprocal = guess;
+	//c = arb_mul(reciprocal, a, c, base, scale);
+	c = arb_expand(c, guess->len + a->len);
+	c = arb_mul(guess, a, c, base, scale);
 	return c;
 }
