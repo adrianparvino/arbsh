@@ -16,15 +16,15 @@ fxdpnt *arb_exp(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 	     arb_compare(b_, one, base) > 0;                // b_ > 1
 	     arb_sub(b_, two, b__, base), arb_copy(b_, b__) // b_ -= 2;
 	     )
-		{
-			arb_mul(c , a, c_, base, scale);
-			arb_mul(c_, a, c , base, scale);
-		}
+	{
+		arb_mul(c , a, c_, base, scale);
+		arb_mul(c_, a, c , base, scale);
+	}
 	if (arb_compare(b_, zero, base) > 0)
-		{
-			arb_copy(c_, c);
-			arb_mul(c_, a, c, base, scale);
-		}
+	{
+		arb_copy(c_, c);
+		arb_mul(c_, a, c, base, scale);
+	}
 	
  
 	arb_free(two);
