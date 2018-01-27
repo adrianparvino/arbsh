@@ -1,5 +1,7 @@
 #include <arbprec/arbprec.h>
-
+/*
+	Copyright 2018  Adrian Parvin D. Ouano  "arb_exp"
+*/
 fxdpnt *arb_exp(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 {
 	fxdpnt *zero = hrdware2arb(0);
