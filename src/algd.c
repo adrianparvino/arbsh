@@ -37,7 +37,6 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	ARBT *u;
 	ARBT *v;
 	ARBT *temp;
-	ssize_t uscal = 0;
 	int out_of_scale = 0;
 	size_t quodig = 0;
 	size_t offset = 0;
@@ -46,11 +45,19 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	size_t j = 0;
 	size_t k = 0;
 	ARBT qg = 0;
+	size_t partial = 0;
+	size_t nuscal = 0;
 
 	lea = num->lp + den->rp;
-	uscal = num->rp - den->rp;
-	if (uscal < (ssize_t)scale)
-		offset = scale - uscal; 
+
+	/* emulate a signed type */
+	if (den->rp >= num->rp)
+		partial = den->rp - num->rp;
+	else
+		nuscal = num->rp - den->rp;
+
+	if (nuscal < scale || (partial &&  partial < scale))
+		offset = scale - nuscal + partial;
 	else
 		offset = 0;
 
