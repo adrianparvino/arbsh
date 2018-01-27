@@ -62,12 +62,16 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	size_t z = 0, y = 0; // dummy variables for the mirror
 	char *array;
 
-	c->lp = MAX(a->lp, b->lp);
 	width = MAX(a->len, b->len);
-	c = arb_expand(c, width * 2); // fixme: this is way oversized
+	fxdpnt *c2 = arb_expand(NULL, width * 2);
+	c2->lp = MAX(a->lp, b->lp);
+	c2->len = 0;
+	c2->rp = c2->len - c2->lp;
+	
+	
 	array = arb_malloc((width * 2) * sizeof(ARBT)); // fixme: this is way oversized
 
-	for (; i < a->len || j < b->len;c->len++, ++r){
+	for (; i < a->len || j < b->len;c2->len++, ++r){
 		mir = arb_place(a, b, &y, r) - arb_place(b, a, &z, r) + mborrow; // mirror
 		sum = arb_place(a, b, &i, r) - arb_place(b, a, &j, r) + borrow;
 
@@ -76,7 +80,7 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 			borrow = -1;
 			sum += base;
 		}
-		c->number[c->len] = sum;
+		c2->number[c2->len] = sum;
 		// maintain a mirror for subtractions that cross the zero threshold
 		y = i;
 		z = j;
@@ -85,15 +89,18 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 			mborrow = -1;
 			mir += base;
 		}
-		array[c->len] = (base-1) - mir;
+		array[c2->len] = (base-1) - mir;
 	}
 	// a left over borrow indicates that the zero threshold was crossed
 	if (borrow == -1){
 		// swapping pointers would make this faster
-		_arb_copy_core(c->number, array, c->len);
-		arb_flipsign(c);
+		_arb_copy_core(c2->number, array, c2->len);
+		arb_flipsign(c2);
 	}
 	free(array);
+	c = arb_expand(c, width * 2); // fixme: this is way oversized
+	arb_copy(c, c2);
+	arb_free(c2);
 	c->rp = c->len - c->lp;
 	arb_reverse(c->number, c->len);
 	c = remove_leading_zeros(c);
