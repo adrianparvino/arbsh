@@ -3,8 +3,8 @@
 ARBT arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
 {
 	ARBT temp = 0;
-	if ((a->len - a->lp) < (b->len - b->lp))
-		if((b->len - b->lp) - (a->len - a->lp) > r)
+	if ((a->rp) < (b->rp))
+		if((b->rp) - (a->rp) > r)
 			return 0;
 	if (*cnt < a->len){
 		temp = a->number[a->len - *cnt - 1];
