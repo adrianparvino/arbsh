@@ -11,12 +11,11 @@ int main(int argc, char *argv[])
 	a = arb_str2fxdpnt(argv[1]);
 	b = arb_str2fxdpnt(argv[2]);
 	c = arb_expand(NULL, 1);
-	a = arb_add(a, a, a, base);
-	arb_print(a);
+	b = arb_sub(a, b, b, base);
+	arb_print(b);
 	arb_free(a);
 	arb_free(b);
 	arb_free(c);
-
 	return 0;
 }
 

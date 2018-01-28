@@ -7,5 +7,6 @@ diff log1 log2
 if [ "$?" != "0" ]; then
     echo "$1 * $2 failed"
     exit 1
+else echo "passed"
 fi
 

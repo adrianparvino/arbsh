@@ -38,25 +38,17 @@ fxdpnt *arb_newtonian_div(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, int scale)
 	memset(guess->number, 0, a->len);
 	guess->number[a->len -1] = 5;
 	guess->len = a->len;
-
-	arb_print(guess);
-	arb_print(two);
 	size_t i = 0;
-	while (i < 100)
+	while (i < 1000000)
 	{ 
-		hold = arb_mul(b, guess, hold, base, scale); // x * guess
-		hold2 = arb_sub(two, hold, hold2, base); // 2 - x * guess
-		newguess = arb_mul(guess, hold2, newguess, base, scale); // guess * (2-x*guess)
-	
+		hold = arb_mul(b, guess, hold, base, scale);
+		hold = arb_sub(two, hold, hold, base);
+		newguess = arb_mul(guess, hold, newguess, base, scale);
 		if (arb_compare(guess, newguess, base) == 0)
                         break;
 		arb_copy(guess, newguess);
-		//arb_print(guess);
 		++i;
 	}
-	fprintf(stderr, "was here\n");
-	//reciprocal = guess;
-	//c = arb_mul(reciprocal, a, c, base, scale);
 	c = arb_expand(c, guess->len + a->len);
 	c = arb_mul(guess, a, c, base, scale);
 	return c;

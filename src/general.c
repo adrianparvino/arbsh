@@ -44,9 +44,9 @@ void arb_destruct(fxdpnt *flt)
 
 void arb_init(fxdpnt *flt)
 {
-	//assert(flt);
+	assert(flt);
 	flt->sign = '+';
-	flt->len = 0;
+	// flt->len ... this was removed to fascilitate the usage case in add-sub.c
 }
 
 fxdpnt *arb_construct(fxdpnt *flt, size_t len)
