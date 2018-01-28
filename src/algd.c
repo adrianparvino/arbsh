@@ -76,14 +76,16 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 			quodig = lea-leb+scale+1;
 
 	q = arb_expand(q, quodig+scale);
-	q->lp = quodig-scale; q->rp = scale; q->len = q->lp + q->rp;
+	q->lp = quodig-scale;
+	q->rp = scale;
+	q->len = q->lp + q->rp;
 	
 	temp = arb_malloc((leb+1) * sizeof(ARBT));
 
 	if (out_of_scale)
 		goto end;
 
-	if (leb >lea)
+	if (leb > lea)
 		k=(leb-lea);
 	
 	for ( qg = b-1;j <= lea+scale-leb;++j, ++k, qg = b-1)
