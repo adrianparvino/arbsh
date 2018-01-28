@@ -34,8 +34,6 @@ REFERENCES:
 
 	https://gmplib.org/manual/Division-Algorithms.html#Division-Algorithms
 
-	http://personal.maths.surrey.ac.uk/st/H.Bruin/MMath/Cardinality.html
-
 	https://gmplib.org/manual/Karatsuba-Multiplication.html#Karatsuba-Multiplication
 
 	https://gmplib.org/manual/Multiplication-Algorithms.html#Multiplication-Algorithms
@@ -43,12 +41,6 @@ REFERENCES:
 	http://www.cs.utsa.edu/~wagner/CS3343/newton/division.html
 
 	http://mathworld.wolfram.com/NewtonsIteration.html
-
-	An RFC about base64 encoding:
-
-	http://www.rfc-editor.org/rfc/rfc4648.txt
-
-	See Knuth Vol 2. p237. for a division routine that may be faster.
 
 	http://www.cs.utsa.edu/~wagner/CS3343/newton/division.html
 
@@ -68,6 +60,9 @@ REFERENCES:
 
 	conversion of fractions between bases
 	http://mathforum.org/library/drmath/view/55744.html
+
+	A small web interface to manipulate floats using mouse clicks
+	http://evanw.github.io/float-toy
 
 
 CONTACTS:
