@@ -119,11 +119,14 @@ void *arb_realloc(void *ptr, size_t len)
 
 fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 {
-	if (flt == NULL){
-		flt = arb_alloc(request);
-		flt->allocated = request;
-	} else if (request >= flt->allocated){
-		flt->allocated = (request + flt->chunk);
+	size_t oreq = request;
+	size_t nreq = 2;
+	while (oreq >>= 1) { nreq <<= 1; }
+	if (flt == NULL) {
+		flt = arb_alloc(nreq);
+		flt->allocated = nreq;
+	} else if (nreq > flt->allocated) {
+		flt->allocated = nreq;
 		flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
 		memset(flt->number + flt->len, 0, (flt->allocated - flt->len) * sizeof(ARBT));
 	}
