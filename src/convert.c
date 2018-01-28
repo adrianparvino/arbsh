@@ -78,11 +78,11 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	size_t j = 0;
 	size_t k = 0;
 	size_t z = 0;
-	size_t len = 0;
+	
 	size_t size = 0;
 	
 	ARBT *p;
-	ARBT *o;
+	
 
 	/* real */
 	if (ibase > obase)
@@ -112,12 +112,12 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	z = a->rp;
 	fxdpnt *obh = hrdware2arb(obase);
 	p = arb_calloc(z * 2, sizeof(ARBT));
-	o = arb_calloc(z * 2, sizeof(ARBT));
+	//o = arb_calloc(z * 2, sizeof(ARBT));
 	fxdpnt *oo = arb_expand(NULL, z*2);
 	fxdpnt *ofrac = arb_expand(NULL, z*2);
 	
 	
-	ARBT *frac = arb_calloc(z * 2, sizeof(ARBT));
+	
 	memcpy(ofrac->number, a->number + a->lp, a->rp * sizeof(ARBT));
 	ofrac->len = a->rp;
 	ofrac->lp =  a->rp;
