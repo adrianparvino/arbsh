@@ -17,7 +17,6 @@ void arb_copy(fxdpnt *b, fxdpnt *a)
 	b->len = a->len;
 	b->rp = a->rp;
 	b->lp = a->lp;
-	//b->chunk = b->chunk;
 	b->sign = a->sign;
 	_arb_copy_core(b->number, a->number, a->len);
 }

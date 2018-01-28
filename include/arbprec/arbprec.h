@@ -22,7 +22,6 @@ typedef struct {	// Toym fixed point type
 	size_t rp;	// Length right of radix
 	size_t len;	// Length of number (count of digits / limbs)
 	size_t allocated;// Length of allocated memory
-	size_t chunk;	// Allocation chunk size (just avoids globals)
 	size_t scale;
 } fxdpnt;
 
