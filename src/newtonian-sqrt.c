@@ -2,21 +2,21 @@
 
 fxdpnt *arb_newton_sqrt(fxdpnt *a, fxdpnt *c, int base, int scale)
 {
-	// FIXME: calculate initial guess for newton's sqrt
-	fxdpnt *new_guess = NULL;
-	new_guess = arb_expand(new_guess, a->len); 
-	fxdpnt *guess = NULL; 
-	/* 1/2( 123 + 123 / 123) = 62.0  ==  (123+123 / 123)/2 */
-	guess = arb_expand(guess, a->len);
-	guess->number[0] = 5;
-	fxdpnt *ans = NULL;
-	ans = arb_expand(ans, a->len); 
-	fxdpnt *hold = NULL;
-	hold = arb_expand(hold, a->len);
-	fxdpnt *p5 = NULL;
-	p5 = arb_str2fxdpnt("0.5");
 	size_t i = 0;
-	while (i++ < 10000)
+	fxdpnt *new_guess;
+	fxdpnt *guess;
+	fxdpnt *ans;
+	fxdpnt *hold;
+	fxdpnt *p5 = NULL;
+
+	new_guess = arb_expand(NULL, a->len);
+	guess = arb_expand(NULL, a->len);
+	guess->number[0] = 5;
+	ans = arb_expand(NULL, a->len);
+	hold = arb_expand(NULL, a->len);
+	p5 = arb_str2fxdpnt("0.5");
+	
+	for (i=0;i < 10000;++i)
 	{
 		arb_copy(new_guess, guess);
 		ans = arb_alg_d(a, guess, ans, base, scale); 

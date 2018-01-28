@@ -52,7 +52,7 @@ void arb_flipsign(fxdpnt *);
 void arb_setsign(fxdpnt *, fxdpnt *, fxdpnt *);
 /* io */
 void arb_print(fxdpnt *);
-void _print_core(FILE *, ARBT *, size_t, size_t, size_t);
+void _print_core(FILE *, ARBT *, size_t, size_t, size_t, int);
 fxdpnt *arb_str2fxdpnt(const char *);
 fxdpnt *arb_parse_str(fxdpnt *, const char *);
 int arb_highbase(int);
@@ -76,19 +76,13 @@ void *arb_realloc(void *, size_t);
 void *arb_calloc(size_t, size_t);
 void arb_free(fxdpnt *);
 void arb_destruct(fxdpnt *);
-/* min / max */
-size_t maxi(size_t, size_t, size_t);
 /* base conversion */
 fxdpnt *convert(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *conv_frac(fxdpnt *, fxdpnt *, int, int);
-
-
 ARBT arb2hrdware(ARBT *, size_t, int);
-
 fxdpnt *hrdware2arb(size_t);
 fxdpnt *convall(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *convscaled(fxdpnt *, fxdpnt *, int, int, size_t);
-
 fxdpnt *remove_leading_zeros(fxdpnt *);
 
 #endif // ARBSH_ARBPREC_H

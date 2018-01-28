@@ -13,21 +13,21 @@ int arb_highbase(int a)
 		return a;
 }
 
-void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix, size_t sign)
+void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix, size_t sign, int fold)
 {
 	size_t i = 0;
 	size_t k = sign;
 
 	for (i=0; i < len ; ++i){
 
-		if (k % 68 == 0 && k != 0)
+		if (fold && k % 68 == 0 && k != 0)
 			fprintf(fp, "\\\n");
 
 		if (radix == i)
 		{
 			fprintf(fp, "."); 
 			++k;
-			if (k % 68 == 0 && k != 0) 
+			if (fold && k % 68 == 0 && k != 0) 
 				fprintf(fp, "\\\n"); 
 		}
 		fprintf(fp, "%c", arb_highbase((number[i])));
@@ -45,5 +45,16 @@ void arb_print(fxdpnt *flt)
 		putchar(flt->sign);
 		sign = 1;
 	}
-	_print_core(stdout, flt->number, flt->len, flt->lp, sign);
+	_print_core(stdout, flt->number, flt->len, flt->lp, sign, 1);
+}
+
+void arb_printline(fxdpnt *flt)
+{
+        size_t sign = 0;
+        if (flt->sign == '-')
+        {
+                putchar(flt->sign);
+                sign = 1;
+        }
+        _print_core(stdout, flt->number, flt->len, flt->lp, sign, 0);
 }

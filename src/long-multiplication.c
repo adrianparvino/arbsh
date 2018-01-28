@@ -30,19 +30,15 @@ fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 {
 	arb_setsign(a, b, c);
 	c = arb_expand(c, a->len + b->len);
+	fxdpnt *a2 = arb_expand(NULL, MAX(scale, a->len));
+	fxdpnt *b2 = arb_expand(NULL, MAX(scale, b->len));
 	fxdpnt *c2 = arb_expand(NULL, a->len + b->len);
-	fxdpnt *a2 = arb_expand(NULL, a->len);
-	fxdpnt *b2 = arb_expand(NULL, b->len);
 	arb_copy(a2, a);
 	arb_copy(b2, b);
-	arb_expand(a2, MAX(scale, a2->len));
-	arb_expand(b2, MAX(scale, b2->len));
 	arb_mul_core(a2->number, a2->len, b2->number, b2->len, c2->number, base);
 	arb_copy(c, c2);
 	c->lp = a2->lp + b2->lp;
-	c->rp = a2->rp + b2->rp;
-	c->rp = MAX(a2->rp, b2->rp);
-	c->rp = MIN(a2->rp + b2->rp, maxi(scale, a2->rp, b2->rp));
+	c->rp = MIN(a2->rp + b2->rp, MAX(scale, MAX(a2->rp, b2->rp)));
 	c->len = c->rp + c->lp;
 	c = remove_leading_zeros(c);
 	arb_free(a2);
