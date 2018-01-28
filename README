@@ -1,4 +1,4 @@
-Arbitrary Precision Math Library by Graff, Hexing, Ouano and Howard
+Arbitrary Precision Math Library by Graff, Hexing, Ouano, Howard and van Rijn
 
 	An arbitrary precision mathematics implementation.
 	
@@ -69,4 +69,5 @@ CONTACTS:
 	CM Graff   cm0graff@gmail.com
 	Gavin Howard   yzena.tech@gmail.com
 	Bao Hexing   HexingB@qq.com
+	Zach van Rijn me@zv.io
 
