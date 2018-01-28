@@ -25,8 +25,8 @@ TESTING:
 USING THE API:
 --------------
 
-	Look inside of the various tests inside of tests/ for examples on how
-	to use the API.
+	Look at the various tests inside of tests/ for examples on how to use 
+	the API.
 
 
 REFERENCES:
@@ -44,17 +44,15 @@ REFERENCES:
 
 	http://www.cs.utsa.edu/~wagner/CS3343/newton/division.html
 
-        https://en.wikipedia.org/wiki/Division_algorithm#Newton.E2.80.93Raphson_division
+	https://en.wikipedia.org/wiki/Division_algorithm#Newton.E2.80.93Raphson_division
 
-        https://stackoverflow.com/questions/9939322/fast-1-x-division-reciprocal
+	http://www.jamesbrennan.org/algebra/numbers/real_number_system.htm
 
-        http://www.jamesbrennan.org/algebra/numbers/real_number_system.htm
+	pubs.opengroup.org/onlinepubs/9699919799/utilities/bc.html
 
-        pubs.opengroup.org/onlinepubs/9699919799/utilities/bc.html#top
+	https://en.wikipedia.org/wiki/Karatsuba_algorithm
 
-        https://en.wikipedia.org/wiki/Karatsuba_algorithm
-
-        https://stackoverflow.com/questions/2661541/picking-good-first-estimates-for-goldschmidt-division
+	https://stackoverflow.com/questions/2661541/picking-good-first-estimates-for-goldschmidt-division
 
 	https://math.stackexchange.com/questions/92631/convert-numbers-from-one-base-to-another-using-repeated-divisions
 
