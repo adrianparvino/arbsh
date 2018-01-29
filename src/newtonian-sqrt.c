@@ -11,7 +11,11 @@ fxdpnt *arb_newton_sqrt(fxdpnt *a, fxdpnt *c, int base, int scale)
 
 	new_guess = arb_expand(NULL, a->len);
 	guess = arb_expand(NULL, a->len);
-	guess->number[0] = 5;
+	//guess->number[0] = 5;
+	guess->lp = a->lp / 2;
+	guess->rp = a->rp / 2;
+	guess->len = a->len / 2;
+	guess->number[0] = 1;
 	ans = arb_expand(NULL, a->len);
 	hold = arb_expand(NULL, a->len);
 	p5 = arb_str2fxdpnt("0.5");
