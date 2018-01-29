@@ -35,3 +35,34 @@ fxdpnt *arb_exp(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 
 	return c;
 }
+
+
+fxdpnt *arb_exp2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
+{
+	fxdpnt *zero = hrdware2arb(0);
+	fxdpnt *one  = hrdware2arb(1);
+	fxdpnt *two  = hrdware2arb(2);
+
+	if (arb_compare(b, zero, base) < 0) {
+		c = arb_expand(c, 1);
+		a = arb_alg_d(one, a, c, base, scale);
+		arb_flipsign(b);
+	}
+	if (arb_compare(b, zero, base) == 0) {
+		return one;
+	}
+	fxdpnt *r = arb_expand(NULL, 1);
+	arb_copy(r, one);
+	while (arb_compare(b, one, base) > 1) {
+		if (arb_compare((c = arb_mod(b, two, c, base, scale)), two, base) == 0) {
+			a = arb_mul(a, a, c, base, scale);
+			b = arb_alg_d(b, two, c, base, scale);
+		} else {
+			r = arb_mul(a, r, c, base, scale);
+			a = arb_mul(a, a, c, base, scale);
+			b = arb_alg_d(arb_sub(b, one, c, base), two, c, base, scale);
+		}
+	}
+
+	return c;
+}

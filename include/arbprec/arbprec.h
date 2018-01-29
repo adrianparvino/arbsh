@@ -61,6 +61,7 @@ int arb_compare(fxdpnt *, fxdpnt *, int);
 /* copying */
 void _arb_copy_core(ARBT *, ARBT *, size_t);
 void arb_copy(fxdpnt *, fxdpnt *);
+void arb_copyreverse(fxdpnt *, fxdpnt *);
 /* sqrt */
 fxdpnt *arb_babylonian_sqrt(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *arb_newton_sqrt(fxdpnt *, fxdpnt *, int, int);
