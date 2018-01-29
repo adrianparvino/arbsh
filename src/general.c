@@ -60,7 +60,6 @@ fxdpnt *arb_construct(fxdpnt *flt, size_t len)
 	flt->allocated = len;
 	flt->rp = 0;
 	flt->len = len;
-	flt->chunk = 4;
 	flt->lp = 0;
 	return flt;
 }
