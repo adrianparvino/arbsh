@@ -85,5 +85,6 @@ fxdpnt *hrdware2arb(size_t);
 fxdpnt *convall(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *convscaled(fxdpnt *, fxdpnt *, int, int, size_t);
 fxdpnt *remove_leading_zeros(fxdpnt *);
-
+fxdpnt *arb_exp(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
+fxdpnt *arb_exp2(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 #endif // ARBSH_ARBPREC_H
