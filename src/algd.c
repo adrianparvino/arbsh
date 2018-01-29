@@ -64,7 +64,9 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	_arb_copy_core(u + 1, num->number, (num->lp + num->rp));
 
 	leb = den->lp + den->rp;
-	v = den->number;
+	//v = den->number;
+	ARBT *vv = v = arb_malloc(leb * sizeof(ARBT));
+	memcpy(v, den->number, leb * sizeof(ARBT));
 	for (;*v == 0;v++,leb--); // this can run leb into the ground, be careful!!
 
 	quodig = scale+1;
@@ -116,6 +118,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	q = remove_leading_zeros(q);
 	free(temp);
 	free(u);
+	free(vv);
 	return q;
 }
 

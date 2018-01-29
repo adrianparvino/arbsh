@@ -2,7 +2,6 @@
 
 void _arb_copyreverse_core(ARBT *b, ARBT *a, size_t len)
 {
-	//memcpy(b, a, len * sizeof(ARBT));
 	size_t i = 0;
 	size_t j = len - 1;
 	for (i=0;i < len;++i, j--)
