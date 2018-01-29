@@ -5,7 +5,7 @@ int main(int argc, char *argv[])
 	if (argc < 2 )
 		arb_error("Needs a bignum like: 123.213");
 
-	fxdpnt *a, *b, *c;
+	fxdpnt *a;
 
 	a = arb_str2fxdpnt(argv[1]);
 
