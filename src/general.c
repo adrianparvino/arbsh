@@ -6,14 +6,10 @@ fxdpnt *remove_leading_zeros(fxdpnt *c)
 {
 	int effect = 0;
 	size_t i = 0;
-	while (c->number[i] == 0)
-        {
-                if (c->lp > 1 || (c->lp > 0 && c->rp))
-                {
-                        c->lp--;
-			++i;
-                }else
-			break;
+	for (i=0;c->number[i] == 0 && (c->lp > 1 || (c->lp > 0 && c->rp));)
+        { 
+		c->lp--;
+		++i;
 		effect = 1;
         }
 	if (effect)
