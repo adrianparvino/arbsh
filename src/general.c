@@ -1,11 +1,10 @@
 #include <assert.h>
 #include <string.h>
 #include <arbprec/arbprec.h>
-#include <stdbool.h>
 
 fxdpnt *remove_leading_zeros(fxdpnt *c)
 {
-	bool effect = false;
+	int effect = 0;
 	size_t i = 0;
 	while (c->number[i] == 0)
         {
@@ -15,7 +14,7 @@ fxdpnt *remove_leading_zeros(fxdpnt *c)
 			++i;
                 }else
 			break;
-		effect = true;
+		effect = 1;
         }
 	if (effect)
 	{

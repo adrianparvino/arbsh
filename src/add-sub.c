@@ -90,11 +90,12 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	}
 	// a left over borrow indicates that the zero threshold was crossed
 	if (borrow == -1){
-		// swapping pointers would make this faster
-		_arb_copy_core(c2->number, array, c2->len);
+		ARBT *tmp = c2->number;
+		c2->number = array;
+		free(tmp);
 		arb_flipsign(c2);
-	}
-	free(array);
+	}else 
+		free(array);
 	c = arb_expand(c, width * 2); // fixme: this is way oversized
 	size_t alp = a->lp;
 	size_t blp = b->lp;
