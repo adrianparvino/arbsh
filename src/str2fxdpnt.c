@@ -37,7 +37,7 @@ fxdpnt *arb_parse_str(fxdpnt *flt, const char *str)
 	size_t i = 0;
 	int flt_set = 0, sign_set = 0;
 
-	flt->len = flt->lp = flt->rp = 0;
+	flt->len = flt->lp = 0;
 
 	for (i = 0; str[i] != '\0'; ++i){
 		if (str[i] == '.'){
@@ -60,8 +60,6 @@ fxdpnt *arb_parse_str(fxdpnt *flt, const char *str)
 
 	if (flt_set == 0)
 		flt->lp = flt->len;
-
-	flt->rp = flt->len - flt->lp;
 
 	return flt;
 }

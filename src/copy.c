@@ -13,7 +13,6 @@ void arb_copyreverse(fxdpnt *b, fxdpnt *a)
 { 
 	b = arb_expand(b, a->len);
 	b->len = a->len;
-	b->rp = a->rp;
 	b->lp = a->lp;
 	b->sign = a->sign;
 	_arb_copyreverse_core(b->number, a->number, a->len);
@@ -31,7 +30,6 @@ void arb_copy(fxdpnt *b, fxdpnt *a)
 { 
 	b = arb_expand(b, a->len);
 	b->len = a->len;
-	b->rp = a->rp;
 	b->lp = a->lp;
 	b->sign = a->sign;
 	_arb_copy_core(b->number, a->number, a->len);

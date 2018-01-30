@@ -22,9 +22,7 @@ fxdpnt *remove_leading_zeros(fxdpnt *c)
 	{
 		c = arb_leftshift(c, i, 1);
 		c->len -=i;
-		c->rp = c->len - c->lp;
 	}
-
 	return c;
 }
 
@@ -59,7 +57,6 @@ fxdpnt *arb_construct(fxdpnt *flt, size_t len)
 	arb_init(flt);
 	flt->number = arb_calloc(1, sizeof(ARBT) * len);
 	flt->allocated = len;
-	flt->rp = 0;
 	flt->len = len;
 	flt->lp = 0;
 	return flt;
