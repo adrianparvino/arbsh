@@ -2,11 +2,17 @@
 #include <string.h>
 #include <arbprec/arbprec.h>
 
+size_t rr(fxdpnt *a)
+{
+	return a->len - a->lp;
+}
+
 fxdpnt *remove_leading_zeros(fxdpnt *c)
 {
 	int effect = 0;
 	size_t i = 0;
-	for (i=0;c->number[i] == 0 && (c->lp > 1 || (c->lp > 0 && c->rp));)
+	//for (i=0;c->number[i] == 0 && (c->lp > 1 || (c->lp > 0 && c->rp));)
+	for (i=0;c->number[i] == 0 && (c->lp > 1 || (c->lp > 0 && rr(c)));)
         { 
 		c->lp--;
 		++i;

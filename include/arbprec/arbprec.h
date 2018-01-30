@@ -86,5 +86,7 @@ fxdpnt *convscaled(fxdpnt *, fxdpnt *, int, int, size_t);
 fxdpnt *remove_leading_zeros(fxdpnt *);
 fxdpnt *arb_exp(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 fxdpnt *arb_exp2(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
+
+size_t rr(fxdpnt*);
 #endif
 

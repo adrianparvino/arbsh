@@ -3,8 +3,8 @@
 ARBT arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
 {
 	ARBT temp = 0;
-	if ((a->rp) < (b->rp))
-		if((b->rp) - (a->rp) > r)
+	if ((rr(a)) < (rr(b)))
+		if((rr(b)) - (rr(a)) > r)
 			return 0;
 	if (*cnt < a->len){
 		temp = a->number[a->len - *cnt - 1];
@@ -25,7 +25,7 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
         fxdpnt *c2 = arb_expand(NULL, width * 2);
         c2->lp = MAX(a->lp, b->lp);
         c2->len = 0;
-        c2->rp = c2->len - c2->lp;
+        //c2->rp = c2->len - c2->lp;
 
 	for (; i < a->len || j < b->len;c2->len++, ++r){
 		sum = arb_place(a, b, &i, r) + arb_place(b, a, &j, r) + carry;
@@ -45,7 +45,7 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	arb_copyreverse(c, c2);
 	arb_free(c2);
 	c->lp = MAX(alp, blp);
-	c->rp = c->len - c->lp;
+	//c->rp = c->len - c->lp;
 	c = remove_leading_zeros(c);
 	return c;
 }
@@ -66,7 +66,7 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	fxdpnt *c2 = arb_expand(NULL, width * 2);
 	c2->lp = MAX(a->lp, b->lp);
 	c2->len = 0;
-	c2->rp = c2->len - c2->lp;
+	//c2->rp = c2->len - c2->lp;
 	
 	array = arb_malloc((width * 2) * sizeof(ARBT)); // fixme: this is way oversized
 
@@ -102,7 +102,7 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	arb_copyreverse(c, c2);
 	arb_free(c2);
 	c->lp = MAX(alp, blp);
-	c->rp = c->len - c->lp;
+	//c->rp = c->len - c->lp;
 	c = remove_leading_zeros(c);
 	return c;
 }
