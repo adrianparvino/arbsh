@@ -1,5 +1,28 @@
 #include <arbprec/arbprec.h>
 
+void shmul(ARBT *num, int size, int digit, ARBT *result, int base)
+{
+        int carry, value;
+        size_t i = 0;
+
+        if (digit == 0)
+                memset (result, 0, size);
+        else if (digit == 1)
+                memcpy (result, num, size);
+        else
+        {
+                for (carry = 0, i = size ; i>0;i--)
+                {
+                        value = num[i-1] * digit + carry;
+                        result[i-1] = value % base;
+                        carry = value / base;
+
+                }
+                if (carry != 0)
+                        result[i-1] = carry;
+        }
+}
+
 int _long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 { 
 	int borrow = 0;
@@ -33,40 +56,35 @@ int _long_add(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 }
 
 fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
-{ 
+{
 	ARBT *u;
-	ARBT *v;
-	ARBT *temp;
-	ARBT qg = 0;
-	int out_of_scale = 0;
-	size_t quodig = 0;
-	size_t offset = 0;
-	size_t lea = 0;
-	size_t leb = 0;
-	size_t j = 0;
-	size_t k = 0;
-	size_t partial = 0;
-	size_t nuscal = 0;
+        ARBT *v;
+        ARBT *temp;
+        ssize_t uscal = 0;
+        int out_of_scale = 0;
+        size_t quodig = 0;
+        size_t offset = 0;
+        size_t lea = 0;
+        size_t leb = 0;
+        size_t j = 0;
+        size_t k = 0;
+        ARBT qg = 0;
 
-	lea = num->lp + den->rp;
-
-	/* emulate a signed type */
-	if (den->rp >= num->rp)
-		partial = den->rp - num->rp;
-	else
-		nuscal = num->rp - den->rp;
-	if (nuscal < scale || (partial && partial < scale))
-		offset = scale - nuscal + partial;
-	else
-		offset = 0;
+        lea = num->lp + den->rp;
+        uscal = num->rp - den->rp;
+        if (uscal < (ssize_t)scale)
+                offset = scale - uscal;
+        else
+                offset = 0;
 
 	u = arb_calloc(1, (num->lp + num->rp + offset + 3) * sizeof(ARBT));
+	ARBT *ut = arb_calloc(1, (num->lp + num->rp + offset + 3) * sizeof(ARBT));
 	_arb_copy_core(u + 1, num->number, (num->lp + num->rp));
 
 	leb = den->lp + den->rp;
 	//v = den->number;
-	ARBT *vv = v = arb_malloc(leb * sizeof(ARBT));
-	memcpy(v, den->number, leb * sizeof(ARBT));
+	ARBT *vv = v = arb_malloc(den->len * sizeof(ARBT));
+	memcpy(v, den->number, den->len * sizeof(ARBT));
 	for (;*v == 0;v++,leb--); // this can run leb into the ground, be careful!!
 
 	quodig = scale+1;
@@ -86,6 +104,14 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 
 	if (out_of_scale)
 		goto end;
+
+	ARBT norm = b / (*v + 1);
+	
+        if (norm != 1){
+		
+                shmul(u, lea+uscal+offset+1, norm, u, b);
+        	shmul(v, leb, norm, v, b); 
+        }
 
 	if (leb > lea)
 		k=(leb-lea);
@@ -118,7 +144,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	q = remove_leading_zeros(q);
 	free(temp);
 	free(u);
-	free(vv);
+	//free(vv);
 	return q;
 }
 

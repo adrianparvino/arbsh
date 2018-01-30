@@ -15,7 +15,7 @@
 #define MIN(a,b)      ((a)>(b)?(b):(a))
 
 /* structures */
-typedef struct {	// Toym fixed point type
+typedef struct {	// fxdpnt fixed point type
 	ARBT *number;	// The actual number
 	char sign;	// Sign
 	size_t lp;	// Length left of radix
@@ -86,4 +86,5 @@ fxdpnt *convscaled(fxdpnt *, fxdpnt *, int, int, size_t);
 fxdpnt *remove_leading_zeros(fxdpnt *);
 fxdpnt *arb_exp(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 fxdpnt *arb_exp2(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
-#endif // ARBSH_ARBPREC_H
+#endif
+
