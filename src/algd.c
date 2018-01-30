@@ -70,21 +70,19 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
         size_t k = 0;
         ARBT qg = 0;
 
-        //lea = num->lp + den->rp;
-        //uscal = num->rp - den->rp;
 	lea = num->lp + rr(den);
-	uscal = num->rp - rr(den);
+
+	uscal = rr(num) - rr(den);
         if (uscal < (ssize_t)scale)
                 offset = scale - uscal;
         else
                 offset = 0;
 
-	u = arb_calloc(1, (num->lp + num->rp + offset + 3) * sizeof(ARBT));
-	ARBT *ut = arb_calloc(1, (num->lp + num->rp + offset + 3) * sizeof(ARBT));
-	_arb_copy_core(u + 1, num->number, (num->lp + num->rp));
+	u = arb_calloc(1, (num->len + offset + 3) * sizeof(ARBT));
+	_arb_copy_core(u + 1, num->number, (num->len));
 
-	leb = den->lp + den->rp;
-	//v = den->number;
+	leb = den->len;
+
 	ARBT *vv = v = arb_malloc(den->len * sizeof(ARBT));
 	memcpy(v, den->number, den->len * sizeof(ARBT));
 	for (;*v == 0;v++,leb--); // this can run leb into the ground, be careful!!
@@ -99,8 +97,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 
 	q = arb_expand(q, quodig+scale);
 	q->lp = quodig-scale;
-	q->rp = scale;
-	q->len = q->lp + q->rp;
+	q->len = q->lp + scale;
 	
 	temp = arb_malloc((leb+1) * sizeof(ARBT));
 
