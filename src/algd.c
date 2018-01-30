@@ -70,8 +70,10 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
         size_t k = 0;
         ARBT qg = 0;
 
-        lea = num->lp + den->rp;
-        uscal = num->rp - den->rp;
+        //lea = num->lp + den->rp;
+        //uscal = num->rp - den->rp;
+	lea = num->lp + rr(den);
+	uscal = num->rp - rr(den);
         if (uscal < (ssize_t)scale)
                 offset = scale - uscal;
         else
