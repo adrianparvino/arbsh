@@ -32,8 +32,11 @@ void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix, size_t sign, 
 		}
 		fprintf(fp, "%c", arb_highbase((number[i])));
 		++k;
-	}	
-	fprintf(fp, "\n");
+	}
+
+	if (!len) fprintf(fp, "0\n");
+	else fprintf(fp, "\n");
+
 	fflush(fp);
 }
 
