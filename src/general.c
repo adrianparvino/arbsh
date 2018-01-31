@@ -13,11 +13,12 @@ fxdpnt *remove_leading_zeros(fxdpnt *c)
 	size_t i = 0;
 	
 	for (i=0;c->number[i] == 0 && (c->lp > 1 || (c->lp > 0 && rr(c)));)
-        { 
+	{ 
 		c->lp--;
 		++i;
 		effect = 1;
-        }
+	}
+
 	if (effect)
 	{
 		c = arb_leftshift(c, i, 1);
@@ -121,7 +122,6 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 	while (oreq >>= 1) { nreq <<= 1; }
 	if (flt == NULL) {
 		flt = arb_alloc(nreq);
-		flt->allocated = nreq;
 	} else if (nreq > flt->allocated) {
 		flt->allocated = nreq;
 		flt->number = arb_realloc(flt->number, flt->allocated * sizeof(ARBT));
