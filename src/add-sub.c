@@ -20,8 +20,6 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	size_t i = 0, j = 0, r = 0;
 	int sum = 0, carry = 0;
 	size_t width = MAX(a->len, b->len);
-	size_t alp = a->lp; // these are cached in case of a = function(a, a, a);
-        size_t blp = b->lp; // where the original values would be overwritten
         fxdpnt *c2 = arb_expand(NULL, width * 2);
 	c2->sign = c->sign;
         c2->lp = MAX(a->lp, b->lp);
@@ -44,7 +42,6 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	c = arb_expand(c, width * 2);
 	arb_copyreverse(c, c2);
 	arb_free(c2);
-	c->lp = MAX(alp, blp);
 	c = remove_leading_zeros(c);
 	return c;
 }
@@ -58,8 +55,6 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	int mir = 0;
 	size_t z = 0, y = 0; // dummy variables for the mirror
 	char *array;
-	size_t alp = a->lp; // these are cached in case of a = function(a, a, a);
-        size_t blp = b->lp; // where the original values would be overwritten
 
 	width = MAX(a->len, b->len);
 	fxdpnt *c2 = arb_expand(NULL, width * 2);
@@ -100,7 +95,6 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	c = arb_expand(c, width * 2);
 	arb_copyreverse(c, c2);
 	arb_free(c2);
-	c->lp = MAX(alp, blp);
 	c = remove_leading_zeros(c);
 	return c;
 }
