@@ -23,6 +23,7 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	size_t alp = a->lp; // these are cached in case of a = function(a, a, a);
         size_t blp = b->lp; // where the original values would be overwritten
         fxdpnt *c2 = arb_expand(NULL, width * 2);
+	c2->sign = c->sign;
         c2->lp = MAX(a->lp, b->lp);
         c2->len = 0;
 
@@ -62,6 +63,7 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 
 	width = MAX(a->len, b->len);
 	fxdpnt *c2 = arb_expand(NULL, width * 2);
+	c2->sign = c->sign;
 	c2->lp = MAX(a->lp, b->lp);
 	c2->len = 0;
 	
