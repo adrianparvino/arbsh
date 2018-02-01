@@ -46,7 +46,8 @@ fxdpnt *arb_rightshift(fxdpnt *, size_t, int);
 fxdpnt *arb_leftshift(fxdpnt *, size_t, int);
 void rightshift_core(ARBT *, size_t, size_t);
 /* general */
-void arb_reverse(ARBT *, size_t);
+//void arb_reverse(ARBT *, size_t);
+void arb_reverse(fxdpnt *);
 void arb_flipsign(fxdpnt *);
 void arb_setsign(fxdpnt *, fxdpnt *, fxdpnt *);
 /* io */

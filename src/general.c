@@ -46,6 +46,7 @@ void arb_init(fxdpnt *flt)
 {
 	assert(flt);
 	flt->sign = '+';
+	flt->len = 0;
 	// flt->len ... this was removed to fascilitate the usage case in add-sub.c
 }
 
