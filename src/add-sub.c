@@ -2,13 +2,13 @@
 
 void arb_reverse(fxdpnt *x)//ARBT *x, size_t lim)
 {
-        size_t i = 0, half = x->len / 2;
-        ARBT swap = 0;
-        for (;i < half; i++){
-                swap = x->number[i];
-                x->number[i] = x->number[x->len - i - 1];
-                x->number[x->len - i - 1] = swap;
-        }
+	size_t i = 0, half = x->len / 2;
+	ARBT swap = 0;
+	for (;i < half; i++){
+		swap = x->number[i];
+		x->number[i] = x->number[x->len - i - 1];
+		x->number[x->len - i - 1] = swap;
+	}
 }
 
 ARBT arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
@@ -100,7 +100,7 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
 	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
-        c2->lp = MAX(a->lp, b->lp);
+	c2->lp = MAX(a->lp, b->lp);
 	arb_init(c2);
 	if (a->sign == '-' && b->sign == '-')
 		arb_flipsign(c2);
@@ -114,7 +114,7 @@ fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
 	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
-        c2->lp = MAX(a->lp, b->lp);
+	c2->lp = MAX(a->lp, b->lp);
 	arb_init(c2);
 	if (a->sign == '-' && b->sign == '-')
 		arb_flipsign(c2);
