@@ -1,6 +1,6 @@
 #include <arbprec/arbprec.h>
 
-#if 0 // remove this after fully test of new implementation
+#if 1 // remove this after fully test of new implementation
 int arb_compare(fxdpnt *a, fxdpnt *b, int base)
 {
 	size_t i = 0;
@@ -25,7 +25,7 @@ int arb_compare(fxdpnt *a, fxdpnt *b, int base)
 	arb_free(c);
 	return 0;
 }
-#endif
+#else
 
 int arb_compare(fxdpnt *a, fxdpnt *b, int base)
 {
@@ -74,3 +74,4 @@ int arb_compare(fxdpnt *a, fxdpnt *b, int base)
 	(void)base;
 	return result;
 }
+#endif
