@@ -42,13 +42,13 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
         b->lp = k;
 
         /* fractional */
-        z = a->rp;
+        z = rr(a);
         fxdpnt *obh = hrdware2arb(obase);
         p = arb_calloc(z * 2, sizeof(ARBT));
         o = arb_calloc(z * 2, sizeof(ARBT));
 
         ARBT *frac = arb_calloc(z * 2, sizeof(ARBT));
-        memcpy(frac, a->number + a->lp, a->rp * sizeof(ARBT));
+        memcpy(frac, a->number + a->lp, rr(a) * sizeof(ARBT));
 
         for (i = 0; i < z; ++i) {
                 memset(o, 0, z * sizeof(ARBT));
@@ -60,13 +60,14 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
         size_t total = z;
         b = arb_expand(b, (b->lp + total));
         _arb_copy_core(b->number + b->lp, p, total);
-        b->rp = total;
+       // b->rp = total;
 
         /* finish off */
-        b->len = b->lp + b->rp;
+        //b->len = b->lp + b->rp;
+	b->len = b->lp + total;
         return b;
 }
-
+/*
 fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 {
 	scale = scale; // get rid of compiler warnings until this is used
@@ -84,7 +85,7 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	ARBT *p;
 	
 
-	/* real */
+	// real
 	if (ibase > obase)
 		k = (size_t) ((2*a->lp) / log10(obase)) ;
 	else 
@@ -108,7 +109,7 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	b->len = k;
 	b->lp = k;
 	
-	/* fractional */
+	// fractional
 	z = a->rp;
 	fxdpnt *obh = hrdware2arb(obase);
 	p = arb_calloc(z * 2, sizeof(ARBT));
@@ -131,7 +132,7 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 		memset(oo->number, 0, z * sizeof(ARBT)); 
 		oo = arb_mul(ofrac, obh, oo, ibase, 10);
 		size = oo->len - z; 
-		p[i] = arb2hrdware(oo->number, size , 10); /* note: absorbs leading zeros */ 
+		p[i] = arb2hrdware(oo->number, size , 10);
 		_arb_copy_core(ofrac->number, oo->number + size, z);
         }
 	size_t total = z;
@@ -139,8 +140,8 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	_arb_copy_core(b->number + b->lp, p, total);
 	b->rp = total;
 	
-	/* finish off */
+	// finish off
 	b->len = b->lp + b->rp;
 	return b;
 }
-
+*/
