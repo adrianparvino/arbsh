@@ -79,13 +79,16 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
                 offset = 0;
 
 	u = arb_calloc(1, (num->len + offset + 3) * sizeof(ARBT));
+	ARBT *uv = arb_calloc(1, (num->len + offset + 3) * sizeof(ARBT));
 	_arb_copy_core(u + 1, num->number, (num->len));
 
 	leb = den->len;
 
 	ARBT *vv = v = arb_malloc(den->len * sizeof(ARBT));
+	ARBT *vvv = arb_malloc(den->len * sizeof(ARBT));
 	memcpy(v, den->number, den->len * sizeof(ARBT));
-	for (;*v == 0;v++,leb--); // this can run leb into the ground, be careful!!
+	memcpy(vvv, den->number, den->len * sizeof(ARBT));
+	for (;*v == 0;v++, vvv++ ,leb--); // this can run leb into the ground, be careful!!
 
 	quodig = scale+1;
 	out_of_scale = 0;
@@ -107,9 +110,10 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	ARBT norm = b / (*v + 1);
 	
         if (norm != 1){
-		
-                shmul(u, lea+uscal+offset+1, norm, u, b);
-        	shmul(v, leb, norm, v, b); 
+                //shmul(u, lea+uscal+offset+1, norm, u, b);
+		arb_mul_core(u + 1, lea+uscal+offset +1, &norm, 1, uv, b);
+		u = uv;
+        	shmul(v, leb, norm, v, b);
         }
 
 	if (leb > lea)
