@@ -2,9 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 #define MAXIMA 10000
-int main(void)
+int main(int argc, char *argv[])
 {
 
+	if ( argc < 2)
+	{
+		printf("requires a test type, like 'div' or 'sub'\n");
+		return 1;
+	}
 	size_t i = 0;
 
 	srandom(time(NULL));
@@ -37,12 +42,35 @@ int main(void)
 	string2[i] = 0;
 	size_t scale = random() % 10000;
 	fprintf(stderr, "scale=%zu;\n", scale);
-	fprintf(stderr, "%s/%s\nquit\n", string1, string2);
+	if (strcmp(argv[1], "div") == 0)
+		fprintf(stderr, "%s / %s\nquit\n", string1, string2);
+	
+	if (strcmp(argv[1], "add") == 0)
+		fprintf(stderr, "%s + %s\nquit\n", string1, string2);
+	
+	if (strcmp(argv[1], "sub") == 0)
+		fprintf(stderr, "%s - %s\nquit\n", string1, string2);
+	
+	if (strcmp(argv[1], "mul") == 0)
+		fprintf(stderr, "%s * %s\nquit\n", string1, string2);
+
 	fxdpnt *a, *b, *c;
 	a = arb_str2fxdpnt(string1);
 	b = arb_str2fxdpnt(string2);
 	c = arb_expand(NULL, MAXIMA*2);
-	c = arb_alg_d(a, b, c, 10, scale);
+	
+	if (strcmp(argv[1], "div") == 0)
+		c = arb_alg_d(a, b, c, 10, scale);
+	
+	if (strcmp(argv[1], "add") == 0)
+		c = arb_add(a, b, c, 10);
+	
+	if (strcmp(argv[1], "sub") == 0)
+		c = arb_sub(a, b, c, 10);
+	
+	if (strcmp(argv[1], "mul") == 0)
+		c = arb_mul(a, b, c, 10, scale);
+	
 	arb_print(c);
 	arb_free(a);
 	arb_free(b);
