@@ -22,7 +22,7 @@ fxdpnt *remove_leading_zeros(fxdpnt *c)
 	if (effect)
 	{
 		c = arb_leftshift(c, i, 1);
-		c->len -=i;
+		c->len -= i;
 	}
 	return c;
 }
@@ -47,7 +47,6 @@ void arb_init(fxdpnt *flt)
 	assert(flt);
 	flt->sign = '+';
 	flt->len = 0;
-	// flt->len ... this was removed to fascilitate the usage case in add-sub.c
 }
 
 fxdpnt *arb_construct(fxdpnt *flt, size_t len)
