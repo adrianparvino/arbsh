@@ -85,7 +85,6 @@ fxdpnt *hrdware2arb(size_t);
 fxdpnt *convall(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *convscaled(fxdpnt *, fxdpnt *, int, int, size_t);
 fxdpnt *remove_leading_zeros(fxdpnt *);
-fxdpnt *remove_trailing_zeros(fxdpnt *c);
 fxdpnt *arb_exp(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 fxdpnt *arb_exp2(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 
