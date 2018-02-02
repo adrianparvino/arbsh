@@ -12,6 +12,17 @@
 #define ARBT char	// designed to be any type
 typedef struct fxdpnt fxdpnt;
 
+/* return the digital number at position idx in num
+ * e.g. 
+ *    arb_digit("123.45", -1) return 4
+ *    arb_digit("123.45", 0) return 3
+ *    arb_digit("123.45", 1) return 2
+ *    arb_digit("123.45", 7) return 0
+ *    arb_digit("123.45", -20) return 0
+ * TODO replace arb_place() with arb_digit()
+ */
+ARBT arb_digit(fxdpnt * num, ssize_t idx);
+
 /* function prototypes */
 /* arithmetic */
 fxdpnt *arb_mul(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);

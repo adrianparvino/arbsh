@@ -3,6 +3,15 @@
 #include <arbprec/arbprec.h>
 #include "fxdpnt.h"
 
+ARBT arb_digit(fxdpnt * num, ssize_t idx)
+{
+	if (idx > (ssize_t)(num->lp - 1) || idx < (ssize_t)(-rr(num))) {
+		return 0;
+	}
+
+	return num->number[num->lp - idx - 1];
+}
+
 size_t rr(fxdpnt *a)
 {
 	return a->len - a->lp;
