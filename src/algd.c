@@ -1,5 +1,28 @@
 #include <arbprec/arbprec.h>
 
+void shmul(ARBT *num, int size, int digit, ARBT *result, int base)
+{
+        int carry, value;
+        size_t i = 0;
+
+        if (digit == 0)
+                memset (result, 0, size);
+        else if (digit == 1)
+                memcpy (result, num, size);
+        else
+        {
+                for (carry = 0, i = size ; i>0;i--)
+                {
+                        value = num[i-1] * digit + carry;
+                        result[i-1] = value % base;
+                        carry = value / base;
+
+                }
+                if (carry != 0)
+                        result[i-1] = carry;
+        }
+}
+
 int _long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 { 
 	int borrow = 0;
@@ -56,17 +79,13 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
                 offset = 0;
 
 	u = arb_calloc(1, (num->len + offset + 3) * sizeof(ARBT));
-	ARBT *uv = arb_calloc(1, (num->len + offset + 3) * sizeof(ARBT));
 	_arb_copy_core(u + 1, num->number, (num->len));
 
 	leb = den->len;
 
 	ARBT *vv = v = arb_malloc(den->len * sizeof(ARBT));
-	ARBT *vvv = arb_malloc(den->len * sizeof(ARBT));
 	memcpy(v, den->number, den->len * sizeof(ARBT));
-	memcpy(vvv, den->number, den->len * sizeof(ARBT));
-	for (;*v == 0;v++, leb--); // this can run leb into the ground, be careful!!
-	for (;*vvv == 0;vvv++); // this can run leb into the ground, be careful!!
+	for (;*v == 0;v++,leb--); // this can run leb into the ground, be careful!!
 
 	quodig = scale+1;
 	out_of_scale = 0;
@@ -88,11 +107,9 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	ARBT norm = b / (*v + 1);
 	
         if (norm != 1){
-		arb_mul_core(u + 1, lea+uscal+offset +1, &norm, 1, uv, b);
-		u = uv;
-		arb_mul_core(v, leb, &norm, 1, vvv, b);
-		for (;*vvv == 0;vvv++);
-		v = vvv;
+		
+                shmul(u, lea+uscal+offset+1, norm, u, b);
+        	shmul(v, leb, norm, v, b); 
         }
 
 	if (leb > lea)
@@ -126,7 +143,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	q = remove_leading_zeros(q);
 	free(temp);
 	free(u);
-	free(vv);
+	//free(vv);
 	return q;
 }
 
