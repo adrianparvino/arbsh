@@ -28,7 +28,7 @@ int main(void)
 	string2[(random() % MAXIMA)] = '.';
 	string1[i] = 0;
 	string2[i] = 0;
-	size_t scale = random() % 100;
+	size_t scale = random() % 10000;
 	fprintf(stderr, "scale=%zu;\n", scale);
 	fprintf(stderr, "%s/%s\nquit\n", string1, string2);
 	fxdpnt *a, *b, *c;
