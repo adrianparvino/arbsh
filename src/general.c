@@ -117,9 +117,15 @@ void *arb_realloc(void *ptr, size_t len)
 
 fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 {
+	/* (re)allocates memory of size sufficient to hold the nearest
+	 * power of two elements of type ARBT so that small increments
+	 * do not cause us to repeatedly expand our allocation; large
+	 * requests are still handled in a single-shot.
+	 */
+
 	size_t oreq = request;
-	size_t nreq = 2;
-	while (oreq >>= 1) { nreq <<= 1; }
+	size_t nreq = 2;                   /* 1 = floor, 2 = ceiling  */
+	while (oreq >>= 1) { nreq <<= 1; } /* find nearest power of 2 */
 	if (flt == NULL) {
 		flt = arb_alloc(nreq);
 	} else if (nreq > flt->allocated) {
