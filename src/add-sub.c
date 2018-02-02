@@ -29,20 +29,22 @@ ARBT arb_place(fxdpnt *a, fxdpnt *b, size_t *cnt, size_t r)
 
 fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	size_t i = 0, j = 0, r = 0;
-	int sum = 0, carry = 0;
-	size_t width = MAX(a->len, b->len);
-
-	for (; i < a->len || j < b->len;c->len++, ++r){
-		sum = arb_place(a, b, &i, r) + arb_place(b, a, &j, r) + carry;
+	size_t sum = 0, carry = 0;
+	ssize_t highest = MAX(a->lp, b->lp) - 1;
+	ssize_t lowest = - MAX(rr(a), rr(b));
+	for (ssize_t idx = lowest; idx <= highest; idx++) {
+		sum = arb_digit(a, idx) + arb_digit(b, idx) + carry;
 		carry = 0;
-		if(sum >= base){
+		if (sum >= base) {
 			carry = 1;
 			sum -= base;
 		}
-		c->number[c->len] = sum;
+		c->number[idx - lowest] = sum;
 	}
-	if (carry){
+	c->len = highest - lowest + 1;
+	c->lp = highest + 1;
+
+	if (carry) {
 		c->number[c->len++] = 1;
 		c->lp += 1;
 	}
