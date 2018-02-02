@@ -1,28 +1,5 @@
 #include <arbprec/arbprec.h>
 
-void shmul(ARBT *num, int size, int digit, ARBT *result, int base)
-{
-        int carry, value;
-        size_t i = 0;
-
-        if (digit == 0)
-                memset (result, 0, size);
-        else if (digit == 1)
-                memcpy (result, num, size);
-        else
-        {
-                for (carry = 0, i = size ; i>0;i--)
-                {
-                        value = num[i-1] * digit + carry;
-                        result[i-1] = value % base;
-                        carry = value / base;
-
-                }
-                if (carry != 0)
-                        result[i-1] = carry;
-        }
-}
-
 int _long_sub(ARBT *u, size_t i, ARBT *v, size_t k, int b)
 { 
 	int borrow = 0;
@@ -88,7 +65,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	ARBT *vvv = arb_malloc(den->len * sizeof(ARBT));
 	memcpy(v, den->number, den->len * sizeof(ARBT));
 	memcpy(vvv, den->number, den->len * sizeof(ARBT));
-	for (;*v == 0;v++, vvv++ ,leb--); // this can run leb into the ground, be careful!!
+	for (;*v == 0;v++, leb--); // this can run leb into the ground, be careful!!
+	for (;*vvv == 0;vvv++); // this can run leb into the ground, be careful!!
 
 	quodig = scale+1;
 	out_of_scale = 0;
@@ -110,10 +88,11 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
 	ARBT norm = b / (*v + 1);
 	
         if (norm != 1){
-                //shmul(u, lea+uscal+offset+1, norm, u, b);
 		arb_mul_core(u + 1, lea+uscal+offset +1, &norm, 1, uv, b);
 		u = uv;
-        	shmul(v, leb, norm, v, b);
+		arb_mul_core(v, leb, &norm, 1, vvv, b);
+		for (;*vvv == 0;vvv++);
+		v = vvv;
         }
 
 	if (leb > lea)
