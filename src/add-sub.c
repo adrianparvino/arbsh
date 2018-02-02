@@ -109,7 +109,8 @@ fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 		c2 = arb_sub_inter(a, b, c2, base);
 	else
 		c2 = arb_add_inter(a, b, c2, base);
-	arb_free(c);
+	if (c)
+		arb_free(c);
 	return c2;
 }
 
@@ -131,6 +132,7 @@ fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 		c2 = arb_add_inter(a, b, c2, base);
 	else
 		c2 = arb_sub_inter(a, b, c2, base);
-	arb_free(c);
+	if (c)
+		arb_free(c);
 	return c2;
 }
