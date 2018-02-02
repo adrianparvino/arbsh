@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 fxdpnt *arb_mod(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 {

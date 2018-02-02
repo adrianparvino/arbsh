@@ -1,6 +1,7 @@
 #include <assert.h>
 
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 int arb_base(int a)
 {

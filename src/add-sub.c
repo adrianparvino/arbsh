@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 void arb_reverse(fxdpnt *x)//ARBT *x, size_t lim)
 {

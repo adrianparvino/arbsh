@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 fxdpnt *arb_leftshift(fxdpnt *a, size_t n, int faux)
 {

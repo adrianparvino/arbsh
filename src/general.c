@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <string.h>
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 size_t rr(fxdpnt *a)
 {

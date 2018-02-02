@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 #if 0 // remove this after fully test of new implementation
 int arb_compare(fxdpnt *a, fxdpnt *b, int base)

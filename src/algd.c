@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 void shmul(ARBT *num, int size, int digit, ARBT *result, int base)
 {

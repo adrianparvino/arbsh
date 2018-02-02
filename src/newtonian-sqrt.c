@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 fxdpnt *arb_newton_sqrt(fxdpnt *a, fxdpnt *c, int base, int scale)
 {

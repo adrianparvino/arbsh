@@ -1,4 +1,5 @@
 #include <arbprec/arbprec.h>
+#include "fxdpnt.h"
 
 void _arb_copyreverse_core(ARBT *b, ARBT *a, size_t len)
 {
