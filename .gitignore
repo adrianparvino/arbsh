@@ -24,4 +24,5 @@ tests/nsqrt
 tests/print
 tests/sub
 tests/test-arbitrary-precision
+tests/comp
 
