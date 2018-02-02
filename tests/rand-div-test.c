@@ -7,11 +7,13 @@ int main(void)
 
 	char *string1 = malloc(MAXIMA + 1);
 	char *string2 = malloc(MAXIMA + 1);
+	
+	if (!string1 || !string2)
+		return 1;
 
 	size_t i = 0;
 
-	srandom(time(NULL));// this does not need to be time seed
-	// srand(time(NULL));
+	srandom(time(NULL));
 
 	while ( i < MAXIMA )
 	{

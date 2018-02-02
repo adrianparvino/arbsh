@@ -43,12 +43,20 @@ void _print_core(FILE *fp, ARBT *number, size_t len, size_t radix, size_t sign, 
 void arb_print(fxdpnt *flt)
 {
 	size_t sign = 0;
+	
+	if (iszero(flt) == 0)
+	{
+		fprintf(stdout, "0\n");
+		goto end;
+	}
 	if (flt->sign == '-')
 	{
 		putchar(flt->sign);
 		sign = 1;
 	}
 	_print_core(stdout, flt->number, flt->len, flt->lp, sign, 1);
+	end:
+	fflush(stdout);
 }
 
 void arb_printline(fxdpnt *flt)

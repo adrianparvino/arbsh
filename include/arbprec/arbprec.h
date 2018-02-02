@@ -88,5 +88,6 @@ fxdpnt *arb_exp(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 fxdpnt *arb_exp2(fxdpnt *, fxdpnt *, fxdpnt *, int, size_t);
 
 size_t rr(fxdpnt*);
+int iszero(fxdpnt*);
 #endif
 
