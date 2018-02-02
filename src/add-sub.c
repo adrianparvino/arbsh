@@ -44,12 +44,11 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 		c->number[c->len++] = 1;
 		c->lp += 1;
 	}
-
 	arb_reverse(c);
-	c->lp = MAX(a->lp, b->lp);
 	c = remove_leading_zeros(c);
 	return c;
 }
+
 
 fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
@@ -59,9 +58,9 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	int mir = 0;
 	size_t z = 0, y = 0; // dummy variables for the mirror
 	char *array;
-	
-	array = arb_malloc(((a->len + b->len) * 2) * sizeof(ARBT));
-	
+
+	array = arb_malloc((MAX(a->len, b->len) * 2) * sizeof(ARBT)); // fixme: this is way oversized
+
 	for (; i < a->len || j < b->len;c->len++, ++r){
 		mir = arb_place(a, b, &y, r) - arb_place(b, a, &z, r) + mborrow; // mirror
 		sum = arb_place(a, b, &i, r) - arb_place(b, a, &j, r) + borrow;
@@ -91,46 +90,47 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	}else 
 		free(array);
 	arb_reverse(c);
-	c->lp = MAX(a->lp, b->lp);
 	c = remove_leading_zeros(c);
 	return c;
 }
 
 fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len));
+	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
+	c2->lp = MAX(a->lp, b->lp);
 	arb_init(c2);
-	if (a->sign == '-' && b->sign == '-')
+	if (a->sign == '-' && b->sign == '-') {
 		arb_flipsign(c2);
-	else if (a->sign == '-'){
-		c2 = arb_sub_inter(b, a, c2, base);
-	}
-	else if (b->sign == '-'){
-		c2 = arb_sub_inter(a, b, c2, base);
-	}
-	else {
 		c2 = arb_add_inter(a, b, c2, base);
 	}
-	arb_free(c);
+	else if (a->sign == '-')
+		c2 = arb_sub_inter(b, a, c2, base);
+	else if (b->sign == '-')
+		c2 = arb_sub_inter(a, b, c2, base);
+	else
+		c2 = arb_add_inter(a, b, c2, base);
+	free(c);
 	return c2;
 }
 
 fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len));
+	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
+	c2->lp = MAX(a->lp, b->lp);
 	arb_init(c2);
 	if (a->sign == '-' && b->sign == '-')
+	{
 		arb_flipsign(c2);
+		c2 = arb_sub_inter(a, b, c2, base);
+	}
 	else if (a->sign == '-'){
 		arb_flipsign(c2);
 		c2 = arb_add_inter(a, b, c2, base);
 	}
-	else if (b->sign == '-' || a->sign == '-'){
+	else if (b->sign == '-' || a->sign == '-')
 		c2 = arb_add_inter(a, b, c2, base);
-	}
-	else {
+	else
 		c2 = arb_sub_inter(a, b, c2, base);
-	}
-	arb_free(c);
+	free(c);
 	return c2;
 }
