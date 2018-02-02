@@ -8,18 +8,6 @@ size_t rr(fxdpnt *a)
 	return a->len - a->lp;
 }
 
-fxdpnt *remove_trailing_zeros(fxdpnt *c)
-{
-	while (rr(c)) {
-		if (c->number[c->len - 1] == 0) {
-			c->len--;
-		} else {
-			break;
-		}
-	}
-	return c;
-}
-
 fxdpnt *remove_leading_zeros(fxdpnt *c)
 {
 	int effect = 0;
