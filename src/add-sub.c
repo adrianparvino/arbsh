@@ -46,6 +46,7 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	}
 
 	arb_reverse(c);
+	c->lp = MAX(a->lp, b->lp);
 	c = remove_leading_zeros(c);
 	return c;
 }
@@ -59,8 +60,8 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	size_t z = 0, y = 0; // dummy variables for the mirror
 	char *array;
 	
-	array = arb_malloc(((MAX(a->len, b->len)) * 2) * sizeof(ARBT)); // fixme: this is way oversized
-
+	array = arb_malloc(((a->len + b->len) * 2) * sizeof(ARBT));
+	
 	for (; i < a->len || j < b->len;c->len++, ++r){
 		mir = arb_place(a, b, &y, r) - arb_place(b, a, &z, r) + mborrow; // mirror
 		sum = arb_place(a, b, &i, r) - arb_place(b, a, &j, r) + borrow;
@@ -90,14 +91,14 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	}else 
 		free(array);
 	arb_reverse(c);
+	c->lp = MAX(a->lp, b->lp);
 	c = remove_leading_zeros(c);
 	return c;
 }
 
 fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
-	c2->lp = MAX(a->lp, b->lp);
+	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len));
 	arb_init(c2);
 	if (a->sign == '-' && b->sign == '-')
 		arb_flipsign(c2);
@@ -116,8 +117,7 @@ fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 
 fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
-	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
-	c2->lp = MAX(a->lp, b->lp);
+	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len));
 	arb_init(c2);
 	if (a->sign == '-' && b->sign == '-')
 		arb_flipsign(c2);
