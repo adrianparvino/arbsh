@@ -3,7 +3,7 @@
 int main(int argc, char *argv[])
 {
 	if (argc < 5 )
-		arb_error("Needs 3 args, such as: 123 123 base scale");
+		arb_error("Needs 4 args, such as: 123 123 base scale");
 
 
 	int base = strtol(argv[3], 0, 10);
