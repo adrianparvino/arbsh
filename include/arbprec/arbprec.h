@@ -70,6 +70,8 @@ void arb_error(char *);
 /* allocation */
 fxdpnt *arb_alloc(size_t);
 fxdpnt *arb_expand(fxdpnt *, size_t);
+fxdpnt *arb_expand2(fxdpnt *, size_t);
+fxdpnt *arb_expand_nozero(fxdpnt *, size_t);
 void *arb_malloc(size_t);
 void *arb_realloc(void *, size_t);
 void *arb_calloc(size_t, size_t);

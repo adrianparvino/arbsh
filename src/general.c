@@ -135,4 +135,3 @@ fxdpnt *arb_expand(fxdpnt *flt, size_t request)
 	}
 	return flt;
 }
-
