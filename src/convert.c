@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <math.h>
 
-fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
+fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 {
 	char digi[] = "0123456789ABCDEF";
 	arb_copy(b, a);
@@ -48,8 +48,6 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	ofrac->len = rr(a);
 	ofrac->lp = 0;
 	fxdpnt *intpart = arb_expand(NULL, a->lp);
-	memcpy(intpart, a->number, a->lp * sizeof(ARBT));
-	
 	fxdpnt *t = arb_str2fxdpnt("1");
 	for (i = 0; t->len <= rr(a); ++i) {
 		ofrac = arb_mul(ofrac, obh, ofrac, ibase, 10);
