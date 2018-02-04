@@ -70,6 +70,7 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 
 fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 {
+	char digi[] = "0123456789ABCDEF";
 	scale = scale; // get rid of compiler warnings until this is used
 	arb_copy(b, a);
 	ARBT *sv;
@@ -121,22 +122,25 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	fxdpnt *intpart = arb_expand(NULL, a->lp);
 	memcpy(intpart, a->number, a->lp * sizeof(ARBT));
 	size_t digit = 0;
-	for (i = 0; i < z; ++i) {
+	fxdpnt *t = arb_str2fxdpnt("1");
+	//for (i = 0; i < z; ++i) {
+	for (i = 0; t->len < rr(a); ++i) {
 		ofrac = arb_mul(ofrac, obh, ofrac, ibase, 10);
-		arb_print(ofrac);
-		digit = fxd2sizet(ofrac, ibase);
+		//arb_print(ofrac);
+		digit = fxd2sizet(ofrac, 10);
 		//printf("%zu digit\n", digit);
 		intpart = hrdware2arb(digit);
-		arb_print(intpart);
-		ofrac = arb_sub(ofrac, intpart, ofrac, ibase);
-		p[i] = digit;
+		//arb_print(intpart);
+		ofrac = arb_sub(ofrac, intpart, ofrac, 10);
+		p[i] = digi[digit];
 		//printf("%zu digit\n", digit);
+		t = arb_mul(t, obh, t, 10, 10);
         }
-	size_t total = z;
-	b = arb_expand(b, (b->lp + total));
-	_arb_copy_core(b->number + b->lp, p, total);
+	size_t total = i;
+	b = arb_expand(b, (b->lp + i));
+	_arb_copy_core(b->number + b->lp, p, i);
 	// finish off
-	b->len = b->lp + total;
+	b->len = b->lp + i;
 	return b;
 }
 
