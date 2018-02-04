@@ -12,25 +12,22 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	size_t j = 0;
 	size_t k = 0;
 	size_t digit = 0;
-	size_t q = 0;
 
 	// integer
 	if (ibase > obase)
 		k = (size_t) ((2*a->lp) / log10(obase));
 	else 
 		k = a->lp;
-	
+
 	b = arb_expand(b, k);
 	memset(b->number, 0, k*sizeof(ARBT)); // something is wrong with arb_expand
 	b->len = b->lp = k;
-	
-	for (i = 0; i < k; ++i) { 
+
+	for (i = 0; i < k; ++i) {
 		if ( i >= k-(a->lp))
-			carry = a->number[q++];
-		else {
-			q = 0;
+			carry = a->number[i-(k-(a->lp))];
+		else
 			carry = 0;
-		}
 		prod = 0;
 		for (j = k; j > 0; j--) {
 			prod = (b->number[j-1] * ibase) + carry;
@@ -38,7 +35,7 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 			carry = prod / obase;
 		}
 	}
-	
+
 	// non-integer
 	fxdpnt *ob = hrdware2arb(obase);
 	fxdpnt *ofrac = arb_expand(NULL, rr(a)*2);
@@ -55,7 +52,7 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 		b = arb_expand(b, (b->lp + i));
 		b->number[b->lp + i] = digi[digit];
 		b->len++;
-		t = arb_mul(t, obh, t, 10, 10);
+		t = arb_mul(t, ob, t, 10, 10);
         }
 	b = remove_leading_zeros(b);
 	return b;
