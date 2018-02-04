@@ -67,7 +67,7 @@ fxdpnt *convall(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	b->len = b->lp + total;
         return b;
 }
-/*
+
 fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 {
 	scale = scale; // get rid of compiler warnings until this is used
@@ -110,38 +110,33 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	b->lp = k;
 	
 	// fractional
-	z = a->rp;
+	z = rr(a);
 	fxdpnt *obh = hrdware2arb(obase);
 	p = arb_calloc(z * 2, sizeof(ARBT));
-	//o = arb_calloc(z * 2, sizeof(ARBT));
 	fxdpnt *oo = arb_expand(NULL, z*2);
 	fxdpnt *ofrac = arb_expand(NULL, z*2);
-	
-	
-	
-	memcpy(ofrac->number, a->number + a->lp, a->rp * sizeof(ARBT));
-	ofrac->len = a->rp;
-	ofrac->lp =  a->rp;
-	a->rp = 0;
-
-	
-	// use the following formula for scale
-	// while (hold->len <= scale)
-	// multiply (hold, base, ....);
-	for (i = 0; i < z; ++i) { 
-		memset(oo->number, 0, z * sizeof(ARBT)); 
-		oo = arb_mul(ofrac, obh, oo, ibase, 10);
-		size = oo->len - z; 
-		p[i] = arb2hrdware(oo->number, size , 10);
-		_arb_copy_core(ofrac->number, oo->number + size, z);
+	memcpy(ofrac->number, a->number + a->lp, rr(a) * sizeof(ARBT));
+	ofrac->len = rr(a);
+	ofrac->lp = 0;
+	fxdpnt *intpart = arb_expand(NULL, a->lp);
+	memcpy(intpart, a->number, a->lp * sizeof(ARBT));
+	size_t digit = 0;
+	for (i = 0; i < z; ++i) {
+		ofrac = arb_mul(ofrac, obh, ofrac, ibase, 10);
+		arb_print(ofrac);
+		digit = fxd2sizet(ofrac, ibase);
+		//printf("%zu digit\n", digit);
+		intpart = hrdware2arb(digit);
+		arb_print(intpart);
+		ofrac = arb_sub(ofrac, intpart, ofrac, ibase);
+		p[i] = digit;
+		//printf("%zu digit\n", digit);
         }
 	size_t total = z;
 	b = arb_expand(b, (b->lp + total));
 	_arb_copy_core(b->number + b->lp, p, total);
-	b->rp = total;
-	
 	// finish off
-	b->len = b->lp + b->rp;
+	b->len = b->lp + total;
 	return b;
 }
-*/
+
