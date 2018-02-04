@@ -44,16 +44,21 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 	ofrac->lp = 0;
 	fxdpnt *z = arb_expand(NULL, a->lp);
 	fxdpnt *t = arb_str2fxdpnt("1");
-	for (i = 0; t->len <= rr(a); ++i) {
-		ofrac = arb_mul(ofrac, ob, ofrac, ibase, 10);
+	for (i=0; t->len <= rr(a);i++) {
+		ofrac = arb_mul(ofrac, ob, ofrac, 10, 10);
 		digit = fxd2sizet(ofrac, 10);
 		z = hrdware2arb(digit);
 		ofrac = arb_sub(ofrac, z, ofrac, 10);
 		b = arb_expand(b, (b->lp + i));
-		b->number[b->lp + i] = digi[digit];
-		b->len++;
+		b->number[b->len++] = digi[digit];
 		t = arb_mul(t, ob, t, 10, 10);
-        }
+	}
 	b = remove_leading_zeros(b);
+	arb_free(ob);
+	arb_free(ofrac);
+	arb_free(z);
+	arb_free(t);
 	return b;
 }
+
+
