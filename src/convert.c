@@ -56,9 +56,9 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 		ofrac = arb_sub(ofrac, intpart, ofrac, 10);
 		b = arb_expand(b, (b->lp + i));
 		b->number[b->lp + i] = digi[digit];
+		b->len++;
 		t = arb_mul(t, obh, t, 10, 10);
         }
-	b->len = b->lp + i;
 	b = remove_leading_zeros(b);
 	return b;
 }
