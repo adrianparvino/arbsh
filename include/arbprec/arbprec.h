@@ -80,6 +80,8 @@ fxdpnt *convert(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *conv_frac(fxdpnt *, fxdpnt *, int, int);
 ARBT arb2hrdware(ARBT *, size_t, int);
 fxdpnt *hrdware2arb(size_t);
+void hrdware2arb2(fxdpnt **num, int val, int);
+//fxdpnt *hrdware2arb2(fxdpnt *num, int val);
 fxdpnt *convall(fxdpnt *, fxdpnt *, int, int);
 fxdpnt *convscaled(fxdpnt *, fxdpnt *, int, int, size_t);
 fxdpnt *remove_leading_zeros(fxdpnt *);

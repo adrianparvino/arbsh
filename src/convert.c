@@ -43,8 +43,6 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 	
 	// fractional
 	fxdpnt *obh = hrdware2arb(obase);
-	p = arb_calloc(1, (rr(a) * 1000) * sizeof(ARBT));
-	
 	fxdpnt *ofrac = arb_expand(NULL, rr(a)*2);
 	memcpy(ofrac->number, a->number + a->lp, rr(a) * sizeof(ARBT));
 	ofrac->len = rr(a);
@@ -58,14 +56,11 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase, size_t scale)
 		digit = fxd2sizet(ofrac, 10);
 		intpart = hrdware2arb(digit);
 		ofrac = arb_sub(ofrac, intpart, ofrac, 10);
-		p[i] = digi[digit];
+		b = arb_expand(b, (b->lp + i));
+		b->number[b->lp + i] = digi[digit];
 		t = arb_mul(t, obh, t, 10, 10);
         }
-	
-	b = arb_expand(b, (b->lp + i) + 1000000);
-	_arb_copy_core(b->number + b->lp, p, i);
-	// finish off
 	b->len = b->lp + i;
+	b = remove_leading_zeros(b);
 	return b;
 }
-
