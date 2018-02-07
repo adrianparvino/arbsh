@@ -31,8 +31,8 @@ fxdpnt *convscaled(fxdpnt *a, fxdpnt *b, int ibase, int obase)
 		prod = 0;
 		for (j = k; j > 0; j--) {
 			prod = (b->number[j-1] * ibase) + carry;
-			b->number[j-1] = prod % obase;
 			carry = prod / obase;
+			b->number[j-1] = prod % obase;
 		}
 	}
 

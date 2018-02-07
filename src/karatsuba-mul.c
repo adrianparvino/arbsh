@@ -26,52 +26,51 @@
 */
 static fxdpnt *arb_karatsuba_mul_core(fxdpnt *x, fxdpnt *y, fxdpnt *z, int base)
 {
+	if (x->len == 0 || y->len == 0) {
+		z = arb_expand(z, 1);
+		z->lp = z->len = 0;
+		return z;
+	}
+
   if (y->len == 1) {
-    arb_expand(z, x->len + 1);
-    arb_mul_core(x->number, x->len, y->number, y->len, z->number, base);
-    z->lp = z->len = x->len + 1;
+    // arb_expand(z, x->len + 1);
+    z = arb_mul(x, y, z, base, 0);
+    // z->lp = z->len = x->len + 1;
+	// z = remove_leading_zeros(z);
     return z;
   } else if (x->len == 1) {
-    arb_expand(z, y->len + 1);
-    arb_mul_core(y->number, y->len, x->number, x->len, z->number, base);
-    z->lp = z->len = y->len + 1;
+    // arb_expand(z, y->len + 1);
+    z = arb_mul(y, x, z, base, 0);
+    // z->lp = z->len = y->len + 1;
+	// z = remove_leading_zeros(z);
     return z;
   }
 
   size_t m = MIN(x->len, y->len) / 2;
 
-  fxdpnt *x1 = arb_expand(NULL, x->len - m); x1 = arb_expand(x1, x->len - m);
-  fxdpnt *y1 = arb_expand(NULL, y->len - m); y1 = arb_expand(y1, y->len - m);
-  fxdpnt *x0 = arb_expand(NULL, m); x0 = arb_expand(x0, m);
-  fxdpnt *y0 = arb_expand(NULL, m); y0 = arb_expand(y0, m);
+  fxdpnt *x1 = arb_expand(NULL, x->len - m); // x1 = arb_expand(x1, x->len - m);
+  fxdpnt *y1 = arb_expand(NULL, y->len - m); // y1 = arb_expand(y1, y->len - m);
+  fxdpnt *x0 = arb_expand(NULL, m); // x0 = arb_expand(x0, m);
+  fxdpnt *y0 = arb_expand(NULL, m); // y0 = arb_expand(y0, m);
 
   memcpy(x1->number, x->number, (x->len - m) * sizeof (ARBT));
   memcpy(y1->number, y->number, (y->len - m) * sizeof (ARBT));
   memcpy(x0->number, x->number + x->len - m, m * sizeof (ARBT));
   memcpy(y0->number, y->number + y->len - m, m * sizeof (ARBT));
 
-  x1->lp = x1->len = x->len - m; x1->rp = 0;
-  y1->lp = y1->len = y->len - m; y1->rp = 0;
-  x0->lp = x0->len = m; x0->rp = 0;
-  y0->lp = y0->len = m; y0->rp = 0;
+  x1->lp = x1->len = x->len - m;
+  y1->lp = y1->len = y->len - m;
+  x0->lp = x0->len = m;
+  y0->lp = y0->len = m;
 
-  fxdpnt *z1 = arb_expand(NULL, 1);
-  fxdpnt *z2 = arb_expand(NULL, 1);
-  fxdpnt *z3 = arb_expand(NULL, 1);
-  fxdpnt *z4 = arb_expand(NULL, 1);
-  fxdpnt *z5 = arb_expand(NULL, 1);
+  fxdpnt *z1 = arb_karatsuba_mul_core(x1, y1, NULL, base);
+  fxdpnt *z2 = arb_add(x1, x0, NULL, base);
+  fxdpnt *z3 = arb_add(y1, y0, NULL, base);
+  fxdpnt *z4 = arb_karatsuba_mul_core(x0, y0, NULL, base);
+  fxdpnt *z5 = arb_karatsuba_mul_core(z2, z3, NULL, base);
 
-  z1 = arb_karatsuba_mul_core(x1, y1, z1, base);
-  z2 = arb_add(x1, x0, z2, base);
-  z3 = arb_add(y1, y0, z3, base);
-  z4 = arb_karatsuba_mul_core(x0, y0, z4, base);
-  z5 = arb_karatsuba_mul_core(z2, z3, z5, base);
-
-  fxdpnt *z6 = arb_expand(NULL, 1);
-  fxdpnt *z7 = arb_expand(NULL, 1);
-
-  z6 = arb_sub(z5, z1, z6, base);
-  z7 = arb_sub(z6, z4, z7, base);
+  fxdpnt *z6 = arb_sub(z5, z1, NULL, base);
+  fxdpnt *z7 = arb_sub(z6, z4, NULL, base);
   z7 = arb_expand(z7, z7->len + m);
   z7->lp += m;
   z7->len += m;
@@ -80,8 +79,7 @@ static fxdpnt *arb_karatsuba_mul_core(fxdpnt *x, fxdpnt *y, fxdpnt *z, int base)
   z1->lp += 2 * m;
   z1->len += 2 * m;
 
-  fxdpnt *z8 = arb_expand(NULL, 1);
-  z8 = arb_add(z1, z7, z8, base);
+  fxdpnt *z8 = arb_add(z1, z7, NULL, base);
   z = arb_add(z8, z4, z, base);
 
   arb_free(x0);
@@ -102,10 +100,15 @@ static fxdpnt *arb_karatsuba_mul_core(fxdpnt *x, fxdpnt *y, fxdpnt *z, int base)
 
 fxdpnt *arb_karatsuba_mul(fxdpnt *x, fxdpnt *y, fxdpnt *z, int base)
 {
-  arb_setsign(x, y, z);
+  size_t x_lp = x->lp;
+  size_t y_lp = y->lp;
+  x->lp = x->len;
+  y->lp = y->len;
   z = arb_karatsuba_mul_core(x, y, z, base);
-  z->rp = x->rp + y->rp;
-  z->lp = z->len - z->rp;
+  arb_setsign(x, y, z);
+  z->len = x->len + y->len;
+  z->lp = z->len - (x->len - x_lp) - (y->len - y_lp);
+  z = remove_leading_zeros(z);
   return z;
 }
 
