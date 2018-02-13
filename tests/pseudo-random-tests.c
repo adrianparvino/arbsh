@@ -64,6 +64,9 @@ int main(int argc, char *argv[])
 	
 	if (strcmp(argv[1], "mul") == 0)
 		fprintf(stderr, "%s * %s\nquit\n", string1, string2);
+	
+	if (strcmp(argv[1], "mod") == 0)
+		fprintf(stderr, "%s %% %s\nquit\n", string1, string2);
 
 	fxdpnt *a, *b, *c;
 	a = arb_str2fxdpnt(string1);
@@ -81,6 +84,9 @@ int main(int argc, char *argv[])
 	
 	if (strcmp(argv[1], "mul") == 0)
 		c = arb_mul(a, b, c, 10, scale);
+
+	if (strcmp(argv[1], "mod") == 0)
+		c = arb_mod(a, b, c, 10, scale);
 	
 	arb_print(c);
 	arb_free(a);
