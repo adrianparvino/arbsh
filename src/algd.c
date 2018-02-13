@@ -70,6 +70,8 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
         size_t k = 0;
         ARBT qg = 0;
 
+	arb_setsign(num, den, q);
+
 	lea = num->lp + rr(den);
 
 	uscal = rr(num) - rr(den);
@@ -110,7 +112,7 @@ fxdpnt *arb_alg_d(fxdpnt *num, fxdpnt *den, fxdpnt *q, int b, size_t scale)
         if (norm != 1){
 		
                 shmul(u, lea+uscal+offset+1, norm, u, b);
-        	shmul(v, leb, norm, v, b); 
+        	shmul(v, leb, norm, v, b);
         }
 
 	if (leb > lea)

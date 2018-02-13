@@ -30,9 +30,15 @@ size_t arb_mul_core(ARBT *a, size_t alen, ARBT *b, size_t blen, ARBT *c, int bas
 
 fxdpnt *arb_mul(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 {
+	
 	fxdpnt *a2 = arb_expand(NULL, MAX(scale, a->len));
 	fxdpnt *b2 = arb_expand(NULL, MAX(scale, b->len));
 	fxdpnt *c2 = arb_expand(NULL, a2->len + b2->len);
+
+
+	arb_setsign(a, b, c2);
+
+
 	arb_copy(a2, a);
 	arb_copy(b2, b);
 	arb_mul_core(a2->number, a2->len, b2->number, b2->len, c2->number, base);
