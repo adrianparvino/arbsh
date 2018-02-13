@@ -24,13 +24,24 @@ int main(int argc, char *argv[])
 		return 1;
 
 
+	
+	int sign = (random() % 2);
+	if (sign == 0)
+		string1[i++] = '-';
+	
 	while ( i < MAXIMA1 )
 	{
 		string1[i] = (random() % 10) + '0';
 		++i;
 	}
+	
 	string1[i] = 0;
 	i = 0;
+	
+	sign = (random() % 2);
+	if (sign == 0)
+		string2[i++] = '-';
+	
 	while ( i < MAXIMA2 )
 	{
 		string2[i] = (random() % 10) + '0';
