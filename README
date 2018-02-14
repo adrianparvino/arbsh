@@ -20,6 +20,9 @@ TESTING:
 		./tests/testall.sh add
 		./tests/testall.sh sub
 		./tests/testall.sh karatsuba-mul
+		./tests/pseudo-random-wrapper.sh function
+		./tests/prand-a-a-a-wrapper.sh ag-function
+
 
 
 USING THE API:
