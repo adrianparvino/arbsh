@@ -45,7 +45,10 @@ int main(int argc, char *argv[])
 	
 	if (strcmp(argv[1], "sub") == 0)
 		fprintf(stderr, "%s - %s\nquit\n", string1, string2);
-	
+
+	if (strcmp(argv[1], "karatsuba-mul2") == 0)
+		fprintf(stderr, "%s * %s\nquit\n", string1, string2);
+
 	if (strcmp(argv[1], "mul") == 0)
 		fprintf(stderr, "%s * %s\nquit\n", string1, string2);
 	
@@ -68,6 +71,9 @@ int main(int argc, char *argv[])
 	
 	if (strcmp(argv[1], "mul") == 0)
 		c = arb_mul(a, b, c, 10, scale);
+	
+	if (strcmp(argv[1], "karatsuba-mul2") == 0)
+		c = arb_karatsuba_mul2(a, b, c, 10, scale);
 
 	if (strcmp(argv[1], "mod") == 0)
 		c = arb_mod(a, b, c, 10, scale);

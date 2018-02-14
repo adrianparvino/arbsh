@@ -125,6 +125,7 @@ fxdpnt *arb_karatsuba_mul2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t sca
   c2->lp = a2->lp + b2->lp;
   c2->len = MIN(rr(a2) + rr(b2), MAX(scale, MAX(rr(a2), rr(b2)))) + c2->lp;
   c2 = remove_leading_zeros(c2);
+  
   arb_free(a2);
   arb_free(b2);
   if (c)
