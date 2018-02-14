@@ -45,7 +45,7 @@ fxdpnt *arb_add_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 		c->lp += 1;
 	}
 	arb_reverse(c);
-	c = remove_leading_zeros(c);
+
 	return c;
 }
 
@@ -90,7 +90,7 @@ fxdpnt *arb_sub_inter(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	}else 
 		free(array);
 	arb_reverse(c);
-	c = remove_leading_zeros(c);
+	
 	return c;
 }
 
@@ -111,10 +111,57 @@ fxdpnt *arb_add(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 		c2 = arb_add_inter(a, b, c2, base);
 	if (c)
 		arb_free(c);
+	c2 = remove_leading_zeros(c2);
 	return c2;
 }
 
 fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
+	c2->lp = MAX(a->lp, b->lp);
+	arb_init(c2);
+	if (a->sign == '-' && b->sign == '-')
+	{
+		arb_flipsign(c2);
+		c2 = arb_sub_inter(a, b, c2, base);
+	}
+	else if (a->sign == '-'){
+		arb_flipsign(c2);
+		c2 = arb_add_inter(a, b, c2, base);
+	}
+	else if (b->sign == '-' || a->sign == '-')
+		c2 = arb_add_inter(a, b, c2, base);
+	else
+		c2 = arb_sub_inter(a, b, c2, base);
+	if (c)
+		arb_free(c);
+	c2 = remove_leading_zeros(c2);
+	return c2;
+}
+
+
+
+fxdpnt *arb_add2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
+{
+	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
+	c2->lp = MAX(a->lp, b->lp);
+	arb_init(c2);
+	if (a->sign == '-' && b->sign == '-') {
+		arb_flipsign(c2);
+		c2 = arb_add_inter(a, b, c2, base);
+	}
+	else if (a->sign == '-')
+		c2 = arb_sub_inter(b, a, c2, base);
+	else if (b->sign == '-')
+		c2 = arb_sub_inter(a, b, c2, base);
+	else
+		c2 = arb_add_inter(a, b, c2, base);
+	if (c)
+		arb_free(c);
+	return c2;
+}
+
+fxdpnt *arb_sub2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
 	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
 	c2->lp = MAX(a->lp, b->lp);
