@@ -2,6 +2,28 @@
 #include <stdlib.h>
 #include <time.h>
 #define MAXIMA 10000
+#define BASE_MAX 10
+                
+
+char *make_bignum(size_t limit, int base)
+{
+	size_t truelim = random() % limit;
+	char *ret;
+	size_t i = 0;
+	int sign;
+	if (!(ret = malloc(truelim + 1)))
+		return NULL;
+	sign = (random() % 2);
+        if (sign == 0)
+                ret[i++] = '-';
+	for(;i < truelim; i++)
+                ret[i] = arb_highbase((random() % base));
+
+	ret[(random() % truelim)] = '.';
+	ret[i] = 0;
+	return ret;
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -10,47 +32,9 @@ int main(int argc, char *argv[])
 		printf("requires a test type, like 'div' or 'sub'\n");
 		return 1;
 	}
-	size_t i = 0;
-
-	srandom(time(NULL));
-
-	size_t MAXIMA1 = (random() % MAXIMA);
-	size_t MAXIMA2 = (random() % MAXIMA);
+	char *string1 = make_bignum(MAXIMA, BASE_MAX);
+	char *string2 = make_bignum(MAXIMA, BASE_MAX);
 	
-	char *string1 = malloc(MAXIMA1 + 1);
-	char *string2 = malloc(MAXIMA2 + 1);
-	
-	if (!string1 || !string2)
-		return 1;
-
-
-	
-	int sign = (random() % 2);
-	if (sign == 0)
-		string1[i++] = '-';
-	
-	while ( i < MAXIMA1 )
-	{
-		string1[i] = (random() % 10) + '0';
-		++i;
-	}
-	
-	string1[i] = 0;
-	i = 0;
-	
-	sign = (random() % 2);
-	if (sign == 0)
-		string2[i++] = '-';
-	
-	while ( i < MAXIMA2 )
-	{
-		string2[i] = (random() % 10) + '0';
-		++i;
-	}
-	string1[(random() % MAXIMA1)] = '.';
-	string2[(random() % MAXIMA2)] = '.';
-	
-	string2[i] = 0;
 	size_t scale = random() % 10000;
 	fprintf(stderr, "scale=%zu;\n", scale);
 	if (strcmp(argv[1], "div") == 0)

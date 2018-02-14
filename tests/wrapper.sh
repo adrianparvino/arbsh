@@ -41,7 +41,7 @@ then	operator="/"
 fi
 if [ $1 = "karatsuba-mul" ]
 then	operator="*"
-	scale=1000
+	#scale=1000
 fi
 if [ $1 = "mod" ]
 then	operator="%"

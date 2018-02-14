@@ -139,8 +139,6 @@ fxdpnt *arb_sub(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 	return c2;
 }
 
-
-
 fxdpnt *arb_add2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base)
 {
 	fxdpnt *c2 = arb_expand(NULL, (a->len + b->len) * 2);
