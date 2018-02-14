@@ -3,8 +3,7 @@
 int main(int argc, char *argv[])
 {
 	if (argc < 4 )
-		arb_error("Needs 3 args, such as:  123 / 123 base");
- 
+		arb_error("Needs 3 args, such as: 123 123 base");
 	
 	int base = strtol(argv[3], 0, 10);
 	fxdpnt *a, *b, *c;
