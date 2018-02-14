@@ -115,25 +115,19 @@ fxdpnt *arb_karatsuba_mul(fxdpnt *x, fxdpnt *y, fxdpnt *z, int base)
 
 fxdpnt *arb_karatsuba_mul2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 {
-
-        fxdpnt *a2 = arb_expand(NULL, MAX(scale, a->len));
-        fxdpnt *b2 = arb_expand(NULL, MAX(scale, b->len));
-        fxdpnt *c2 = arb_expand(NULL, a2->len + b2->len);
-
-
-        arb_setsign(a, b, c2);
-
-
-        arb_copy(a2, a);
-        arb_copy(b2, b);
-        
-	c2 = arb_karatsuba_mul_core(a2, b2, c2, base);
-        c2->lp = a2->lp + b2->lp;
-        c2->len = MIN(rr(a2) + rr(b2), MAX(scale, MAX(rr(a2), rr(b2)))) + c2->lp;
-        c2 = remove_leading_zeros(c2);
-        arb_free(a2);
-        arb_free(b2);
-        if (c)
-                arb_free(c);
-        return c2;
+  fxdpnt *a2 = arb_expand(NULL, MAX(scale, a->len));
+  fxdpnt *b2 = arb_expand(NULL, MAX(scale, b->len));
+  fxdpnt *c2 = arb_expand(NULL, a2->len + b2->len);
+  arb_setsign(a, b, c2);
+  arb_copy(a2, a);
+  arb_copy(b2, b);
+  c2 = arb_karatsuba_mul_core(a2, b2, c2, base);
+  c2->lp = a2->lp + b2->lp;
+  c2->len = MIN(rr(a2) + rr(b2), MAX(scale, MAX(rr(a2), rr(b2)))) + c2->lp;
+  c2 = remove_leading_zeros(c2);
+  arb_free(a2);
+  arb_free(b2);
+  if (c)
+    arb_free(c);
+  return c2;
 }
