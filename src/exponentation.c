@@ -15,10 +15,10 @@ fxdpnt *arb_exp(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 	c = arb_expand(c, MAX(scale, a->len * b->len + 1));
 	//fxdpnt *c_ = arb_expand(NULL, MAX(scale, c->rp));
 
-	for (arb_copy(b_, b), arb_copy(c, one);             // b_ = b; c = 1
-	     arb_compare(b_, one, base) > 0;                // b_ > 1
-	     arb_sub(b_, two, b__, base), arb_copy(b_, b__) // b_ -= 2;
-	     )
+	for (arb_copy(b_, b), arb_copy(c, one);		// b_ = b; c = 1
+		  arb_compare(b_, one, base) > 0;	// b_ > 1
+		  arb_sub(b_, two, b__, base), arb_copy(b_, b__) // b_ -= 2;
+		  )
 	{
 		arb_mul(c , a, c_, base, scale);
 		arb_mul(c_, a, c , base, scale);
@@ -67,3 +67,32 @@ fxdpnt *arb_exp2(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 
 	return c;
 }
+
+fxdpnt *arb_exp3(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
+{
+	fxdpnt *t;
+	fxdpnt *o;
+	size_t e;
+	size_t z;
+
+	t = arb_expand(NULL, a->len);
+	o = arb_expand(NULL, a->len);
+
+	e = fxd2sizet(b, 10);
+	z = MIN(rr(a)*e, MAX(scale, rr(a)));
+
+	arb_copy(o, a);
+	for (;!(e & 1); e/=2)
+		o = arb_mul(o, o, o, base, z);
+
+	arb_copy(t, o);
+	for (e /= 2; e ; e/=2)
+	{ 
+		o = arb_mul(o, o, o, base, z);
+		if ((e & 1) == 1)
+			t = arb_mul(t, o, t, base, z);
+	}
+
+	return t;
+}
+
