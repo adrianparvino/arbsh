@@ -32,6 +32,10 @@ then	operator="*"
 	num2=$2
 fi
 
+if [ $1 = "exp" ]
+then	operator="^"
+fi
+
 if [ $1 = "ag-div" ]
 then	operator="/"
 	spec=1
@@ -40,6 +44,11 @@ if [ $1 = "div" ]
 then	operator="/"
 fi
 if [ $1 = "karatsuba-mul" ]
+then	operator="*"
+	#scale=1000
+fi
+
+if [ $1 = "karatsuba-mul2" ]
 then	operator="*"
 	#scale=1000
 fi
