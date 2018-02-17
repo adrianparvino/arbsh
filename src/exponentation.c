@@ -82,14 +82,14 @@ fxdpnt *arb_exp3(fxdpnt *a, fxdpnt *b, fxdpnt *c, int base, size_t scale)
 	z = MIN(rr(a)*e, MAX(scale, rr(a)));
 
 	arb_copy(o, a);
-	for (;!(e % 2); e/=2)
+	for (;!(e%2); e/=2)
 		o = arb_mul(o, o, o, base, z);
 
 	arb_copy(t, o);
 	for (e /= 2; e ; e/=2)
 	{ 
 		o = arb_mul(o, o, o, base, z);
-		if ((e % 2) == 1)
+		if ((e%2) == 1)
 			t = arb_mul(t, o, t, base, z);
 	}
 
